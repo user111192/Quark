@@ -245,14 +245,17 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 							IItemHandler otherHandler = otherHolder.orElseGet(EmptyHandler::new);
 							boolean any = false;
 							for (int i = 0; i < otherHandler.getSlots(); i++) {
-								ItemStack inserting = otherHandler.extractItem(i, 64, simulate);
+								ItemStack inserting = otherHandler.extractItem(i, 64, true);
 								if (!inserting.isEmpty()) {
-									ItemStack result = ItemHandlerHelper.insertItem(handler, inserting, simulate);
+									ItemStack result = ItemHandlerHelper.insertItem(handler, inserting, true);
 									if (result.isEmpty() || result.getCount() != inserting.getCount()) {
 										if (simulate) {
 											return shulkerBox;
+										} else {
+											ItemHandlerHelper.insertItem(handler, otherHandler.extractItem(i, inserting.getCount() - result.getCount(), false), false);
+
+											any = true;
 										}
-										any = true;
 									}
 								}
 							}
