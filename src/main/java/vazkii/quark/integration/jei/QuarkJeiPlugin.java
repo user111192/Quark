@@ -5,6 +5,7 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.*;
@@ -20,10 +21,15 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.ItemNBTHelper;
+import vazkii.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import vazkii.quark.addons.oddities.client.screen.CrateScreen;
+import vazkii.quark.addons.oddities.module.MatrixEnchantingModule;
+import vazkii.quark.addons.oddities.util.Influence;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
@@ -48,6 +54,9 @@ import java.util.stream.Stream;
 @JeiPlugin
 public class QuarkJeiPlugin implements IModPlugin {
 	private static final ResourceLocation UID = new ResourceLocation(Quark.MOD_ID, Quark.MOD_ID);
+
+	public static final RecipeType<InfluenceEntry> INFLUENCING =
+		 RecipeType.create(Quark.MOD_ID, "influence", InfluenceEntry.class);
 
 	@Nonnull
 	@Override
@@ -88,6 +97,16 @@ public class QuarkJeiPlugin implements IModPlugin {
 		registration.getCraftingCategory().addCategoryExtension(ElytraDuplicationRecipe.class, ElytraDuplicationExtension::new);
 	}
 
+	private boolean matrix() {
+		return ModuleLoader.INSTANCE.isModuleEnabled(MatrixEnchantingModule.class) && MatrixEnchantingModule.allowInfluencing && !MatrixEnchantingModule.candleInfluencingFailed;
+	}
+
+	@Override
+	public void registerCategories(@Nonnull IRecipeCategoryRegistration registration) {
+		if (matrix())
+			registration.addRecipeCategories(new InfluenceCategory(registration.getJeiHelpers().getGuiHelper()));
+	}
+
 	@Override
 	public void registerRecipes(@Nonnull IRecipeRegistration registration) {
 		IVanillaRecipeFactory factory = registration.getVanillaRecipeFactory();
@@ -102,6 +121,10 @@ public class QuarkJeiPlugin implements IModPlugin {
 
 		if (ModuleLoader.INSTANCE.isModuleEnabled(ColorRunesModule.class))
 			registerRuneAnvilRecipes(registration, factory);
+
+		if (matrix())
+			registerInfluenceRecipes(registration);
+
 	}
 
 	@Override
@@ -109,6 +132,13 @@ public class QuarkJeiPlugin implements IModPlugin {
 		if(ModuleLoader.INSTANCE.isModuleEnabled(VariantFurnacesModule.class)) {
 			registration.addRecipeCatalyst(new ItemStack(VariantFurnacesModule.deepslateFurnace), RecipeTypes.FUELING, RecipeTypes.SMELTING);
 			registration.addRecipeCatalyst(new ItemStack(VariantFurnacesModule.blackstoneFurnace), RecipeTypes.FUELING, RecipeTypes.SMELTING);
+		}
+
+		if (matrix()) {
+			if (MatrixEnchantingModule.automaticallyConvert)
+				registration.addRecipeCatalyst(new ItemStack(Blocks.ENCHANTING_TABLE), INFLUENCING);
+			else
+				registration.addRecipeCatalyst(new ItemStack(MatrixEnchantingModule.matrixEnchanter), INFLUENCING);
 		}
 	}
 
@@ -193,6 +223,24 @@ public class QuarkJeiPlugin implements IModPlugin {
 				Collections.singletonList(veryDamaged), Collections.singletonList(damaged));
 
 		registration.addRecipes(RecipeTypes.ANVIL, Arrays.asList(materialRepair, toolRepair));
+	}
+
+	private void registerInfluenceRecipes(@Nonnull IRecipeRegistration registration) {
+		registration.addRecipes(INFLUENCING,
+			 Arrays.stream(DyeColor.values()).map(color -> {
+				 Block candle = MatrixEnchantingTableBlockEntity.CANDLES.get(color.getId());
+				 Influence influence = MatrixEnchantingModule.candleInfluences.get(color);
+
+				 return new InfluenceEntry(candle, influence);
+			 }).filter(InfluenceEntry::hasAny).collect(Collectors.toList()));
+
+		registration.addRecipes(INFLUENCING,
+			 MatrixEnchantingModule.customInfluences.entrySet().stream().map(entry -> {
+				 Block block = entry.getKey().getBlock();
+				 Influence influence = entry.getValue().influence();
+
+				 return new InfluenceEntry(block, influence);
+			 }).filter(InfluenceEntry::hasAny).collect(Collectors.toList()));
 	}
 
 	private static class CrateGuiHandler implements IGuiContainerHandler<CrateScreen> {

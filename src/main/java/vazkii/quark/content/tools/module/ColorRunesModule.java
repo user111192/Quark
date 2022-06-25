@@ -79,8 +79,12 @@ public class ColorRunesModule extends QuarkModule {
 
 		LazyOptional<IRuneColorProvider> cap = get(target);
 
-		if (cap.isPresent())
-			return cap.orElse((s) -> -1).getRuneColor(target);
+		if (cap.isPresent()) {
+			int color = cap.orElse((s) -> -1).getRuneColor(target);
+			if (color != -1)
+				return color;
+		}
+
 		if (!ItemNBTHelper.getBoolean(target, TAG_RUNE_ATTACHED, false))
 			return -1;
 
@@ -139,6 +143,16 @@ public class ColorRunesModule extends QuarkModule {
 			packetConsumer.accept(QuarkNetwork.toVanillaPacket(new UpdateTridentMessage(trident.getId(), stack), NetworkDirection.PLAY_TO_CLIENT));
 		else
 			TRIDENT_STACK_REFERENCES.put(trident, stack);
+	}
+
+	public static ItemStack withRune(ItemStack stack, ItemStack rune) {
+		ItemNBTHelper.setBoolean(stack, ColorRunesModule.TAG_RUNE_ATTACHED, true);
+		ItemNBTHelper.setCompound(stack, ColorRunesModule.TAG_RUNE_COLOR, rune.serializeNBT());
+		return stack;
+	}
+
+	public static ItemStack withRune(ItemStack stack, DyeColor color) {
+		return withRune(stack, new ItemStack(runes.get(color.getId())));
 	}
 
 	@Override
