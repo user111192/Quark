@@ -45,37 +45,35 @@ public class ShulkerBoxTooltips {
 	@OnlyIn(Dist.CLIENT)
 	public static void makeTooltip(RenderTooltipEvent.GatherComponents event) {
 		ItemStack stack = event.getItemStack();
-		if(SimilarBlockTypeHandler.isShulkerBox(stack) && stack.hasTag()) {
-			CompoundTag cmp = ItemNBTHelper.getCompound(stack, "BlockEntityTag", true);
+		if(SimilarBlockTypeHandler.isShulkerBox(stack)) {
+			CompoundTag cmp = ItemNBTHelper.getCompound(stack, "BlockEntityTag", false);
 
-			if (cmp != null) {
-				if(cmp.contains("LootTable"))
-					return;
+			if(cmp.contains("LootTable"))
+				return;
 
-				if (!cmp.contains("id")) {
-					cmp = cmp.copy();
-					cmp.putString("id", "minecraft:shulker_box");
-				}
+			if (!cmp.contains("id")) {
+				cmp = cmp.copy();
+				cmp.putString("id", "minecraft:shulker_box");
+			}
 
-				BlockEntity te = BlockEntity.loadStatic(BlockPos.ZERO, ((BlockItem) stack.getItem()).getBlock().defaultBlockState(), cmp);
-				if (te != null && te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent()) {
-					List<Either<FormattedText, TooltipComponent>> tooltip = event.getTooltipElements();
-					List<Either<FormattedText, TooltipComponent>> tooltipCopy = new ArrayList<>(tooltip);
+			BlockEntity te = BlockEntity.loadStatic(BlockPos.ZERO, ((BlockItem) stack.getItem()).getBlock().defaultBlockState(), cmp);
+			if (te != null && te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent()) {
+				List<Either<FormattedText, TooltipComponent>> tooltip = event.getTooltipElements();
+				List<Either<FormattedText, TooltipComponent>> tooltipCopy = new ArrayList<>(tooltip);
 
-					for (int i = 1; i < tooltipCopy.size(); i++) {
-						Either<FormattedText, TooltipComponent> either = tooltipCopy.get(i);
-						if(either.left().isPresent()) {
-							String s = either.left().get().getString();
-							if (!s.startsWith("\u00a7") || s.startsWith("\u00a7o"))
-								tooltip.remove(either);
-						}
+				for (int i = 1; i < tooltipCopy.size(); i++) {
+					Either<FormattedText, TooltipComponent> either = tooltipCopy.get(i);
+					if(either.left().isPresent()) {
+						String s = either.left().get().getString();
+						if (!s.startsWith("\u00a7") || s.startsWith("\u00a7o"))
+							tooltip.remove(either);
 					}
-
-					if(!ImprovedTooltipsModule.shulkerBoxRequireShift || Screen.hasShiftDown())
-						tooltip.add(1, Either.right(new ShulkerComponent(stack)));
-					if(ImprovedTooltipsModule.shulkerBoxRequireShift && !Screen.hasShiftDown())
-						tooltip.add(1, Either.left(new TranslatableComponent("quark.misc.shulker_box_shift")));
 				}
+
+				if(!ImprovedTooltipsModule.shulkerBoxRequireShift || Screen.hasShiftDown())
+					tooltip.add(1, Either.right(new ShulkerComponent(stack)));
+				if(ImprovedTooltipsModule.shulkerBoxRequireShift && !Screen.hasShiftDown())
+					tooltip.add(1, Either.left(new TranslatableComponent("quark.misc.shulker_box_shift")));
 			}
 		}
 	}
