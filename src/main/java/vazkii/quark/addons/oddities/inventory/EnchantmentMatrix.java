@@ -3,6 +3,7 @@ package vazkii.quark.addons.oddities.inventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.world.entity.player.Player;
@@ -486,7 +487,7 @@ public class EnchantmentMatrix {
 					}
 				}
 
-				influence = influences.getOrDefault(enchantment, 0);
+				influence = Mth.clamp(influences.getOrDefault(enchantment, 0), -MatrixEnchantingModule.influenceMax, MatrixEnchantingModule.influenceMax);
 				float multiplier = 1F + influence * (float) MatrixEnchantingModule.influencePower;
 				mutableWeight.val *= multiplier;
 

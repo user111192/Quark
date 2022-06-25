@@ -7,7 +7,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -284,8 +283,6 @@ public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlo
 						int curr = influences.getOrDefault(e, 0);
 						influences.put(e, curr - count);
 					}
-
-					influences.replaceAll((e, v) -> Mth.clamp(v, -MatrixEnchantingModule.influenceMax, MatrixEnchantingModule.influenceMax));
 
 					return 1;
 				}
