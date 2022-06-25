@@ -2,6 +2,7 @@ package vazkii.quark.integration.jei;
 
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.EnchantedBookItem;
@@ -21,11 +22,13 @@ public class InfluenceEntry implements IRecipeCategoryExtension {
 	private final ItemStack candleStack;
 	private final ItemStack boost;
 	private final ItemStack dampen;
+	private final List<ItemStack> associatedBooks;
 
 	public InfluenceEntry(Block candle, Influence influence) {
 		this.candleStack = new ItemStack(candle);
 		this.boost = getEnchantedBook(influence.boost(), DyeColor.GREEN, ChatFormatting.GREEN, "quark.jei.boost_influence");
 		this.dampen = getEnchantedBook(influence.dampen(), DyeColor.RED, ChatFormatting.RED, "quark.jei.dampen_influence");
+		this.associatedBooks = buildAssociatedBooks(influence);
 	}
 
 	public ItemStack getBoostBook() {
@@ -37,7 +40,11 @@ public class InfluenceEntry implements IRecipeCategoryExtension {
 	}
 
 	public ItemStack getCandleStack() {
-		return candleStack;
+		return this.candleStack;
+	}
+
+	public List<ItemStack> getAssociatedBooks() {
+		return this.associatedBooks;
 	}
 
 	private static ItemStack getEnchantedBook(List<Enchantment> enchantments, DyeColor runeColor, ChatFormatting chatColor, String locKey) {
@@ -53,6 +60,23 @@ public class InfluenceEntry implements IRecipeCategoryExtension {
 		}
 
 		return stack;
+	}
+
+	private static List<ItemStack> buildAssociatedBooks(Influence influence) {
+		NonNullList<ItemStack> books = NonNullList.create();
+		for (Enchantment enchantment : influence.boost()) {
+			for (int i = 0; i < enchantment.getMaxLevel(); i++) {
+				books.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, i)));
+			}
+		}
+
+		for (Enchantment enchantment : influence.dampen()) {
+			for (int i = 0; i < enchantment.getMaxLevel(); i++) {
+				books.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, i)));
+			}
+		}
+
+		return books;
 	}
 
 	public boolean hasAny() {

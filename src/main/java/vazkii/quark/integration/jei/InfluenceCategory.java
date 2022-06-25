@@ -82,5 +82,8 @@ public class InfluenceCategory implements IRecipeCategory<InfluenceEntry> {
 
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 55, 19)
 			 .addItemStack(recipe.getDampenBook());
+
+		builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT)
+			 .addItemStacks(recipe.getAssociatedBooks());
 	}
 }
