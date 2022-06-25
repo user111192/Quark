@@ -150,8 +150,8 @@
 	"quark.jei.makes_copy": "Makes Copy",
 	"quark.jei.any_enchanted": "Any Enchanted Item",
 	"quark.jei.influence": "Matrix Influencing",
-	"quark.jei.boost_influence": "Boosts:",
-	"quark.jei.dampen_influence": "Dampens:",
+	"quark.jei.boost_influence": "Boosts odds of:",
+	"quark.jei.dampen_influence": "Dampens odds of:",
 
 	"quark.keybind.change_hotbar": "Hotbar Swapper",
 	"quark.keybind.lock_rotation": "Rotation Lock",
