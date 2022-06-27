@@ -5,6 +5,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -125,6 +126,8 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 		Screen gui = mc.screen;
 		if (mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui && containerGui.getMenu().getCarried().isEmpty()) {
 			Slot under = containerGui.getSlotUnderMouse();
+			if (containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.getSelectedTab() != CreativeModeTab.TAB_INVENTORY.getId())
+				return;
 
 			if (under != null) {
 				ItemStack underStack = under.getItem();

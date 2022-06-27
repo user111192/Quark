@@ -116,6 +116,10 @@ public class CommonProxy {
 		return new IConfigCallback.Dummy();
 	}
 
+	public boolean isClientPlayerHoldingShift() {
+		return false;
+	}
+
 	public static final class RegistryListener {
 
 		private static boolean registerDone;

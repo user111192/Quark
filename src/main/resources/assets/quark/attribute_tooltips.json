@@ -1,0 +1,148 @@
+{
+  "minecraft:generic.max_health": {
+    "display": {
+      "mainhand": "difference",
+      "offhand": "difference",
+      "feet": "difference",
+      "legs": "difference",
+      "chest": "difference",
+      "head": "difference",
+      "potion": "difference"
+    },
+    "texture": "quark:attribute/max_health",
+    "base_value": 20
+  },
+  "minecraft:generic.knockback_resistance": {
+    "display": {
+      "mainhand": "percentage",
+      "offhand": "percentage",
+      "feet": "percentage",
+      "legs": "percentage",
+      "chest": "percentage",
+      "head": "percentage",
+      "potion": "percentage"
+    },
+    "texture": "quark:attribute/knockback_resistance"
+  },
+  "minecraft:generic.movement_speed": {
+    "display": {
+      "mainhand": "multiplier",
+      "offhand": "multiplier",
+      "feet": "multiplier",
+      "legs": "multiplier",
+      "chest": "multiplier",
+      "head": "multiplier",
+      "potion": "multiplier"
+    },
+    "texture": "quark:attribute/speed"
+  },
+  "minecraft:generic.attack_damage": {
+    "display": {
+      "mainhand": "additive",
+      "offhand": "difference",
+      "feet": "difference",
+      "legs": "difference",
+      "chest": "difference",
+      "head": "difference",
+      "potion": "difference"
+    },
+    "texture": "quark:attribute/attack_damage"
+  },
+  "minecraft:generic.attack_knockback": {
+    "display": {
+      "mainhand": "additive",
+      "offhand": "difference",
+      "feet": "difference",
+      "legs": "difference",
+      "chest": "difference",
+      "head": "difference",
+      "potion": "difference"
+    },
+    "texture": "quark:attribute/attack_knockback"
+  },
+  "minecraft:generic.attack_speed": {
+    "display": {
+      "mainhand": "additive",
+      "offhand": "difference",
+      "feet": "difference",
+      "legs": "difference",
+      "chest": "difference",
+      "head": "difference",
+      "potion": "multiplier"
+    },
+    "texture": "quark:attribute/attack_speed",
+    "base_value": 4
+  },
+  "minecraft:generic.armor": {
+    "display": {
+      "mainhand": "additive",
+      "offhand": "additive",
+      "feet": "additive",
+      "legs": "additive",
+      "chest": "additive",
+      "head": "additive",
+      "potion": "additive"
+    },
+    "texture": "quark:attribute/armor"
+  },
+  "minecraft:generic.armor_toughness": {
+    "display": {
+      "mainhand": "additive",
+      "offhand": "additive",
+      "feet": "additive",
+      "legs": "additive",
+      "chest": "additive",
+      "head": "additive",
+      "potion": "additive"
+    },
+    "texture": "quark:attribute/armor_toughness"
+  },
+  "minecraft:generic.luck": {
+    "display": {
+      "mainhand": "percentage",
+      "offhand": "percentage",
+      "feet": "percentage",
+      "legs": "percentage",
+      "chest": "percentage",
+      "head": "percentage",
+      "potion": "percentage"
+    },
+    "texture": "quark:attribute/luck"
+  },
+  "forge:swim_speed": {
+    "display": {
+      "mainhand": "multiplier",
+      "offhand": "multiplier",
+      "feet": "multiplier",
+      "legs": "multiplier",
+      "chest": "multiplier",
+      "head": "multiplier",
+      "potion": "multiplier"
+    },
+    "texture": "quark:attribute/swim_speed"
+  },
+  "forge:entity_gravity": {
+    "display": {
+      "mainhand": "multiplier",
+      "offhand": "multiplier",
+      "feet": "multiplier",
+      "legs": "multiplier",
+      "chest": "multiplier",
+      "head": "multiplier",
+      "potion": "multiplier"
+    },
+    "texture": "quark:attribute/gravity"
+  },
+  "forge:reach_distance": {
+    "display": {
+      "mainhand": "difference",
+      "offhand": "difference",
+      "feet": "difference",
+      "legs": "difference",
+      "chest": "difference",
+      "head": "difference",
+      "potion": "difference"
+    },
+    "texture": "quark:attribute/reach_distance"
+  }
+}
