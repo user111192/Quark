@@ -1,7 +1,6 @@
 package vazkii.quark.content.client.tooltip;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -15,10 +14,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
@@ -28,7 +28,6 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.TippedArrowItem;
-import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,6 +41,7 @@ import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 import vazkii.quark.content.client.resources.AttributeDisplayType;
 import vazkii.quark.content.client.resources.AttributeIconEntry;
 import vazkii.quark.content.client.resources.AttributeSlot;
+import vazkii.quark.content.client.hax.PseudoAccessorItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -117,7 +117,7 @@ public class AttributeTooltips {
 					if (!slotAttributes.isEmpty() && !slot.hasCanonicalSlot())
 						allAreSame = false;
 
-					onlyInvalid = extractAttributeValues(stack, tooltipRaw, attributeTooltips, onlyInvalid, slot, slotAttributes);
+					onlyInvalid = extractAttributeValues(stack, attributeTooltips, onlyInvalid, slot, slotAttributes);
 				}
 			}
 
@@ -149,46 +149,15 @@ public class AttributeTooltips {
 		}
 	}
 
-	private static final UUID DUMMY_UUID = new UUID(0, 0);
-	private static final AttributeModifier DUMMY_MODIFIER = new AttributeModifier(DUMMY_UUID, "NO-OP", 0.0, AttributeModifier.Operation.ADDITION);
-
 	public static Multimap<Attribute, AttributeModifier> getModifiers(ItemStack stack, AttributeSlot slot) {
-		if (slot == AttributeSlot.POTION) {
-			List<MobEffectInstance> potions = PotionUtils.getMobEffects(stack);
-			Multimap<Attribute, AttributeModifier> out = HashMultimap.create();
-
-			for (MobEffectInstance effect : potions) {
-				MobEffect potion = effect.getEffect();
-				Map<Attribute, AttributeModifier> map = potion.getAttributeModifiers();
-
-				for (Attribute attribute : map.keySet()) {
-					AttributeModifier baseModifier = map.get(attribute);
-					AttributeModifier amplified = new AttributeModifier(baseModifier.getName(), potion.getAttributeModifierValue(effect.getAmplifier(), baseModifier), baseModifier.getOperation());
-					out.put(attribute, amplified);
-				}
-			}
-
-			return out;
+		var capturedModifiers = ((PseudoAccessorItemStack) (Object) stack).quark$getCapturedAttributes();
+		if (capturedModifiers.containsKey(slot)) {
+			return capturedModifiers.get(slot);
 		}
-
-		Multimap<Attribute, AttributeModifier> out = stack.getAttributeModifiers(slot.getCanonicalSlot());
-		if(out.isEmpty())
-			out = LinkedHashMultimap.create();
-		else out = LinkedHashMultimap.create(out); // convert to our own map
-
-		if (slot == AttributeSlot.MAINHAND) {
-			if (EnchantmentHelper.getDamageBonus(stack, MobType.UNDEFINED) > 0)
-				out.put(Attributes.ATTACK_DAMAGE, DUMMY_MODIFIER);
-			if (out.containsKey(Attributes.ATTACK_DAMAGE) && !out.containsKey(Attributes.ATTACK_SPEED))
-				out.put(Attributes.ATTACK_SPEED, DUMMY_MODIFIER);
-			else if (out.containsKey(Attributes.ATTACK_SPEED) && !out.containsKey(Attributes.ATTACK_DAMAGE))
-				out.put(Attributes.ATTACK_DAMAGE, DUMMY_MODIFIER);
-		}
-
-		return out;
+		return ImmutableMultimap.of();
 	}
 
-	public static boolean extractAttributeValues(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltip, Map<AttributeSlot, MutableComponent> attributeTooltips, boolean onlyInvalid, AttributeSlot slot, Multimap<Attribute, AttributeModifier> slotAttributes) {
+	public static boolean extractAttributeValues(ItemStack stack, Map<AttributeSlot, MutableComponent> attributeTooltips, boolean onlyInvalid, AttributeSlot slot, Multimap<Attribute, AttributeModifier> slotAttributes) {
 		boolean anyInvalid = false;
 		for(Attribute attr : slotAttributes.keySet()) {
 			AttributeIconEntry entry = getIconForAttribute(attr);
@@ -209,24 +178,6 @@ public class AttributeTooltips {
 			}
 		}
 		return onlyInvalid;
-	}
-
-	private static TranslatableComponent getMatchingOrSibling(FormattedText component, String key) {
-		if (component instanceof TranslatableComponent translate)
-			return key.equals(translate.getKey()) ?
-					translate : null;
-
-		if(component instanceof Component cmp)
-			for (Component sibling : cmp.getSiblings()) {
-				if (sibling instanceof TranslatableComponent)
-					return getMatchingOrSibling(sibling, key);
-			}
-
-		return null;
-	}
-
-	private static boolean equalsOrSibling(FormattedText component, String key) {
-		return getMatchingOrSibling(component, key) != null;
 	}
 
 	@OnlyIn(Dist.CLIENT)
