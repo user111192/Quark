@@ -9,8 +9,7 @@
       "head": "difference",
       "potion": "difference"
     },
-    "texture": "quark:attribute/max_health",
-    "base_value": 20
+    "texture": "quark:attribute/max_health"
   },
   "minecraft:generic.knockback_resistance": {
     "display": {
@@ -38,7 +37,7 @@
   },
   "minecraft:generic.attack_damage": {
     "display": {
-      "mainhand": "additive",
+      "mainhand": "flat",
       "offhand": "difference",
       "feet": "difference",
       "legs": "difference",
@@ -50,7 +49,7 @@
   },
   "minecraft:generic.attack_knockback": {
     "display": {
-      "mainhand": "additive",
+      "mainhand": "flat",
       "offhand": "difference",
       "feet": "difference",
       "legs": "difference",
@@ -62,7 +61,7 @@
   },
   "minecraft:generic.attack_speed": {
     "display": {
-      "mainhand": "additive",
+      "mainhand": "flat",
       "offhand": "difference",
       "feet": "difference",
       "legs": "difference",
@@ -70,30 +69,29 @@
       "head": "difference",
       "potion": "multiplier"
     },
-    "texture": "quark:attribute/attack_speed",
-    "base_value": 4
+    "texture": "quark:attribute/attack_speed"
   },
   "minecraft:generic.armor": {
     "display": {
-      "mainhand": "additive",
-      "offhand": "additive",
-      "feet": "additive",
-      "legs": "additive",
-      "chest": "additive",
-      "head": "additive",
-      "potion": "additive"
+      "mainhand": "flat",
+      "offhand": "flat",
+      "feet": "flat",
+      "legs": "flat",
+      "chest": "flat",
+      "head": "flat",
+      "potion": "flat"
     },
     "texture": "quark:attribute/armor"
   },
   "minecraft:generic.armor_toughness": {
     "display": {
-      "mainhand": "additive",
-      "offhand": "additive",
-      "feet": "additive",
-      "legs": "additive",
-      "chest": "additive",
-      "head": "additive",
-      "potion": "additive"
+      "mainhand": "flat",
+      "offhand": "flat",
+      "feet": "flat",
+      "legs": "flat",
+      "chest": "flat",
+      "head": "flat",
+      "potion": "flat"
     },
     "texture": "quark:attribute/armor_toughness"
   },
