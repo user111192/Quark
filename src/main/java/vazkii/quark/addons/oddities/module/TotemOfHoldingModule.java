@@ -22,7 +22,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.client.render.entity.TotemOfHoldingRenderer;
 import vazkii.quark.addons.oddities.entity.TotemOfHoldingEntity;
-import vazkii.quark.addons.oddities.item.SoulCompassItem;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -46,8 +45,6 @@ public class TotemOfHoldingModule extends QuarkModule {
 
 	public static EntityType<TotemOfHoldingEntity> totemType;
 
-	public static SoulCompassItem soulCompass;
-
 	public static final ModelResourceLocation MODEL_LOC = new ModelResourceLocation(new ResourceLocation(Quark.MOD_ID, "totem_of_holding"), "inventory");
 
 	@Config(description = "Set this to false to remove the behaviour where totems destroy themselves if the player dies again.")
@@ -67,9 +64,6 @@ public class TotemOfHoldingModule extends QuarkModule {
 
 	@Override
 	public void register() {
-		soulCompass = new SoulCompassItem(this);
-		soulCompass.setCondition(() -> enableSoulCompass);
-
 		totemType = EntityType.Builder.of(TotemOfHoldingEntity::new, MobCategory.MISC)
 				.sized(0.5F, 1F)
 				.updateInterval(128) // update interval
@@ -84,8 +78,6 @@ public class TotemOfHoldingModule extends QuarkModule {
 	@OnlyIn(Dist.CLIENT)
 	public void clientSetup() {
 		EntityRenderers.register(totemType, TotemOfHoldingRenderer::new);
-
-		enqueue(() -> ItemProperties.register(soulCompass, new ResourceLocation("angle"), SoulCompassItem::angle));
 	}
 
 	@Override
