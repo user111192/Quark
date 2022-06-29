@@ -7,7 +7,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -41,6 +40,8 @@ import java.util.Map.Entry;
 import java.util.function.Predicate;
 
 public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlockEntity implements MenuProvider {
+
+	public static final List<Block> CANDLES = Lists.newArrayList(Blocks.WHITE_CANDLE, Blocks.ORANGE_CANDLE, Blocks.MAGENTA_CANDLE, Blocks.LIGHT_BLUE_CANDLE, Blocks.YELLOW_CANDLE, Blocks.LIME_CANDLE, Blocks.PINK_CANDLE, Blocks.GRAY_CANDLE, Blocks.LIGHT_GRAY_CANDLE, Blocks.CYAN_CANDLE, Blocks.PURPLE_CANDLE, Blocks.BLUE_CANDLE, Blocks.BROWN_CANDLE, Blocks.GREEN_CANDLE, Blocks.RED_CANDLE, Blocks.BLACK_CANDLE);
 
 	public static final int OPER_ADD = 0;
 	public static final int OPER_PLACE = 1;
@@ -283,8 +284,6 @@ public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlo
 						influences.put(e, curr - count);
 					}
 
-					influences.replaceAll((e, v) -> Mth.clamp(v, -MatrixEnchantingModule.influenceMax, MatrixEnchantingModule.influenceMax));
-
 					return 1;
 				}
 			}
@@ -353,7 +352,6 @@ public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlo
 
 	private record CandleInfluencer(boolean inverted) implements IEnchantmentInfluencer {
 
-		private static final List<Block> CANDLES = Lists.newArrayList(Blocks.WHITE_CANDLE, Blocks.ORANGE_CANDLE, Blocks.MAGENTA_CANDLE, Blocks.LIGHT_BLUE_CANDLE, Blocks.YELLOW_CANDLE, Blocks.LIME_CANDLE, Blocks.PINK_CANDLE, Blocks.GRAY_CANDLE, Blocks.LIGHT_GRAY_CANDLE, Blocks.CYAN_CANDLE, Blocks.PURPLE_CANDLE, Blocks.BLUE_CANDLE, Blocks.BROWN_CANDLE, Blocks.GREEN_CANDLE, Blocks.RED_CANDLE, Blocks.BLACK_CANDLE);
 		private static final CandleInfluencer INSTANCE = new CandleInfluencer(false);
 		private static final CandleInfluencer INVERTED_INSTANCE = new CandleInfluencer(true);
 

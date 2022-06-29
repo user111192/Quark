@@ -23,16 +23,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -188,7 +189,7 @@ public class SimpleHarvestModule extends QuarkModule {
 		if (isHarvesting)
 			return;
 		isHarvesting = true;
-		if (click(event.getPlayer(), event.getHand(), event.getPos())) {
+		if (click(event.getPlayer(), event.getHand(), event.getPos(), event.getHitVec())) {
 			event.setCanceled(true);
 			event.setCancellationResult(InteractionResult.sidedSuccess(event.getWorld().isClientSide));
 		}
@@ -213,13 +214,15 @@ public class SimpleHarvestModule extends QuarkModule {
 		return false;
 	}
 
-	public static boolean click(Player player, InteractionHand hand, BlockPos pos) {
+	public static boolean click(Player player, InteractionHand hand, BlockPos pos, BlockHitResult pick) {
 		if (player == null || hand == null)
 			return false;
 
-		BlockHitResult pick = Item.getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.ANY);
-
 		if(pick.getType() != HitResult.Type.BLOCK || !pick.getBlockPos().equals(pos))
+			return false;
+
+		BlockState stateAt = player.level.getBlockState(pos);
+		if (stateAt.getToolModifiedState(new UseOnContext(player, hand, pick), ToolActions.HOE_TILL, true) != null)
 			return false;
 
 		ItemStack inHand = player.getItemInHand(hand);

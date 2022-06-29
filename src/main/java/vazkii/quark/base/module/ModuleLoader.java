@@ -8,6 +8,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -29,7 +30,8 @@ public final class ModuleLoader {
 
 	private enum Step {
 		CONSTRUCT, CONSTRUCT_CLIENT, REGISTER, POST_REGISTER, CONFIG_CHANGED, CONFIG_CHANGED_CLIENT, SETUP, SETUP_CLIENT,
-		MODEL_REGISTRY, MODEL_BAKE, MODEL_LAYERS, TEXTURE_STITCH, POST_TEXTURE_STITCH, LOAD_COMPLETE, FIRST_CLIENT_TICK
+		REGISTER_RELOADABLE, MODEL_REGISTRY, MODEL_BAKE, MODEL_LAYERS, TEXTURE_STITCH, POST_TEXTURE_STITCH, LOAD_COMPLETE,
+		FIRST_CLIENT_TICK
 	}
 
 	public static final ModuleLoader INSTANCE = new ModuleLoader();
@@ -101,6 +103,11 @@ public final class ModuleLoader {
 	public void clientSetup(ParallelDispatchEvent event) {
 		this.event = event;
 		dispatch(Step.SETUP_CLIENT, QuarkModule::clientSetup);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public void registerReloadListeners(RegisterClientReloadListenersEvent event) {
+		dispatch(Step.SETUP_CLIENT, m -> m.registerReloadListeners(event::registerReloadListener));
 	}
 
 	@OnlyIn(Dist.CLIENT)

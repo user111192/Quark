@@ -10,6 +10,7 @@ import java.time.Month;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -20,10 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -64,6 +62,7 @@ public class ClientProxy extends CommonProxy {
 		super.registerListeners(bus);
 
 		bus.addListener(this::clientSetup);
+		bus.addListener(this::registerReloadListeners);
 		bus.addListener(this::modelRegistry);
 		bus.addListener(this::modelBake);
 		bus.addListener(this::modelLayers);
@@ -76,6 +75,10 @@ public class ClientProxy extends CommonProxy {
 		WoodSetHandler.clientSetup(event);
 
 		ModuleLoader.INSTANCE.clientSetup(event);
+	}
+
+	public void registerReloadListeners(RegisterClientReloadListenersEvent event) {
+		ModuleLoader.INSTANCE.registerReloadListeners(event);
 	}
 
 	public void modelRegistry(ModelRegistryEvent event) {
@@ -132,6 +135,11 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public IConfigCallback getConfigCallback() {
 		return IngameConfigHandler.INSTANCE;
+	}
+
+	@Override
+	public boolean isClientPlayerHoldingShift() {
+		return Screen.hasShiftDown();
 	}
 
 	private static void copyProgrammerArtIfMissing() {
