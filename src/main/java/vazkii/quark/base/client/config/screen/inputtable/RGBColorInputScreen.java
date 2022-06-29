@@ -1,18 +1,18 @@
 package vazkii.quark.base.client.config.screen.inputtable;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import vazkii.quark.api.config.IConfigCategory;
 import vazkii.quark.api.config.IConfigElement;
 import vazkii.quark.base.module.config.type.inputtable.RGBAColorConfig;
 import vazkii.quark.base.module.config.type.inputtable.RGBColorConfig;
-
-import javax.annotation.Nonnull;
 
 public class RGBColorInputScreen extends AbstractInputtableConfigTypeScreen<RGBColorConfig> {
 
@@ -27,8 +27,8 @@ public class RGBColorInputScreen extends AbstractInputtableConfigTypeScreen<RGBC
 		int x = width / 2 - 110;
 		int y = 55;
 
-		Component prefix = new TextComponent("");
-		Component suffix = new TextComponent("");
+		Component prefix = Component.literal("");
+		Component suffix = Component.literal("");
 
 		int cnt = (original instanceof RGBAColorConfig ? 4 : 3);
 		for(int i = 0; i < cnt; i++) {
@@ -47,8 +47,8 @@ public class RGBColorInputScreen extends AbstractInputtableConfigTypeScreen<RGBC
 		super.render(mstack, mouseX, mouseY, partialTicks);
 
 		int titleLeft = width / 2;
-		drawCenteredString(mstack, font, new TextComponent(category.getGuiDisplayName()).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
-		drawCenteredString(mstack, font, new TextComponent(element.getGuiDisplayName()), titleLeft, 30, 0xFFFFFF);
+		drawCenteredString(mstack, font, Component.literal(category.getGuiDisplayName()).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
+		drawCenteredString(mstack, font, Component.literal(element.getGuiDisplayName()), titleLeft, 30, 0xFFFFFF);
 
 		int sliders = 0;
 		boolean needsUpdate = false;

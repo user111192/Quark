@@ -1,23 +1,29 @@
 package vazkii.quark.base.recipe;
 
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import vazkii.arl.util.ItemNBTHelper;
-
-import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * @author WireSegal
@@ -134,11 +140,7 @@ public class DataMaintainingRecipe implements CraftingRecipe {
 		}
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DataMaintainingRecipe> {
-
-		public Serializer() {
-			setRegistryName("quark:maintaining");
-		}
+	public static class Serializer implements RecipeSerializer<DataMaintainingRecipe> {
 
 		@Nonnull
 		@Override
@@ -184,7 +186,7 @@ public class DataMaintainingRecipe implements CraftingRecipe {
 		@SuppressWarnings("unchecked")
 		public void toNetwork(@Nonnull FriendlyByteBuf buffer, @Nonnull DataMaintainingRecipe recipe) {
 			recipe.pullDataFrom.toNetwork(buffer);
-			buffer.writeUtf(Objects.toString(recipe.parent.getSerializer().getRegistryName()), 32767);
+			buffer.writeUtf(Objects.toString(Registry.RECIPE_SERIALIZER.getKey(recipe.parent.getSerializer())), 32767);
 			((RecipeSerializer<Recipe<?>>) recipe.parent.getSerializer()).toNetwork(buffer, recipe.parent);
 		}
 	}

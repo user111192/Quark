@@ -1,7 +1,11 @@
 package vazkii.quark.base.client.handler;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -12,10 +16,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import vazkii.quark.base.Quark;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @EventBusSubscriber(modid = Quark.MOD_ID, value = Dist.CLIENT)
 public class RequiredModTooltipHandler {
@@ -51,7 +51,7 @@ public class RequiredModTooltipHandler {
 		if(ITEMS.containsKey(item)) {
 			String mod = ITEMS.get(item);
 			if (!ModList.get().isLoaded(mod)) {
-				event.getToolTip().add(new TranslatableComponent("quark.misc.mod_disabled", mod).withStyle(ChatFormatting.GRAY));
+				event.getToolTip().add(Component.translatable("quark.misc.mod_disabled", mod).withStyle(ChatFormatting.GRAY));
 			}
 		}
 	}

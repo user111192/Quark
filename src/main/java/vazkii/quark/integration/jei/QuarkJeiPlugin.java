@@ -1,5 +1,15 @@
 package vazkii.quark.integration.jei;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -7,19 +17,31 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
-import mezz.jei.api.registration.*;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.ISubtypeRegistration;
+import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.*;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen;
@@ -40,11 +62,6 @@ import vazkii.quark.content.tools.module.ColorRunesModule;
 import vazkii.quark.content.tools.module.PickarangModule;
 import vazkii.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
 
-import javax.annotation.Nonnull;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 @JeiPlugin
 public class QuarkJeiPlugin implements IModPlugin {
 	private static final ResourceLocation UID = new ResourceLocation(Quark.MOD_ID, Quark.MOD_ID);
@@ -64,12 +81,12 @@ public class QuarkJeiPlugin implements IModPlugin {
 	public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime) {
 		List<ItemStack> disabledItems = RequiredModTooltipHandler.disabledItems();
 		if (!disabledItems.isEmpty())
-			jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM, disabledItems);
+			jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, disabledItems);
 
 		ModuleLoader.INSTANCE.initJEICompat(() -> {
 			NonNullList<ItemStack> stacks = NonNullList.create();
 			for (Item item : ForgeRegistries.ITEMS.getValues()) {
-				ResourceLocation loc = item.getRegistryName();
+				ResourceLocation loc = Registry.ITEM.getKey(item);
 				if (loc != null && loc.getNamespace().equals("quark")) {
 					if ((item instanceof IQuarkItem quarkItem && !quarkItem.isEnabled()) ||
 							(item instanceof BlockItem blockItem && blockItem.getBlock() instanceof IQuarkBlock quarkBlock && !quarkBlock.isEnabled())) {
@@ -79,7 +96,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 			}
 
 			if (!stacks.isEmpty())
-				Minecraft.getInstance().submitAsync(() -> jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM, stacks));
+				Minecraft.getInstance().submitAsync(() -> jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, stacks));
 		});
 	}
 
@@ -136,7 +153,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 	}
 
 	private void registerRuneAnvilRecipes(@Nonnull IRecipeRegistration registration, @Nonnull IVanillaRecipeFactory factory) {
-		Random random = new Random();
+		RandomSource random = new LegacyRandomSource(new Random().nextLong());
 		Stream<ItemStack> displayItems;
 		if (ModuleLoader.INSTANCE.isModuleEnabled(ImprovedTooltipsModule.class) && ImprovedTooltipsModule.enchantingTooltips) {
 			displayItems = EnchantedBookTooltips.getTestItems().stream();
@@ -168,9 +185,9 @@ public class QuarkJeiPlugin implements IModPlugin {
 
 	// Runes only show up and can be only anvilled on enchanted items, so make some random enchanted items
 	@Nonnull
-	private static ItemStack makeEnchantedDisplayItem(ItemStack input, Random random) {
+	private static ItemStack makeEnchantedDisplayItem(ItemStack input, RandomSource random) {
 		ItemStack stack = input.copy();
-		stack.setHoverName(new TranslatableComponent("quark.jei.any_enchanted"));
+		stack.setHoverName(Component.translatable("quark.jei.any_enchanted"));
 		if (stack.getItemEnchantability() <= 0) { // If it can't take anything in ench. tables...
 			stack.enchant(Enchantments.UNBREAKING, 3); // it probably accepts unbreaking anyways
 			return stack;

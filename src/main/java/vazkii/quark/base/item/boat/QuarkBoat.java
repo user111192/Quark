@@ -1,5 +1,12 @@
 package vazkii.quark.base.item.boat;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -12,11 +19,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import vazkii.quark.base.handler.WoodSetHandler;
-
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
 
 public class QuarkBoat extends Boat {
 
@@ -79,7 +81,7 @@ public class QuarkBoat extends Boat {
 
 	@Override
 	public ItemEntity spawnAtLocation(ItemLike itemLike) {
-		if(itemLike.asItem().getRegistryName().getPath().contains("_planks"))
+		if(Registry.ITEM.getKey(itemLike.asItem()).getPath().contains("_planks"))
 			return super.spawnAtLocation(getTypeRecord(getQuarkBoatType()).planks);
 		return super.spawnAtLocation(itemLike);
 	}

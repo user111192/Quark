@@ -2,6 +2,7 @@ package vazkii.quark.content.world.gen.structure.processor;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BaseSpawner;
@@ -29,7 +30,7 @@ public class BigDungeonSpawnerProcessor extends StructureProcessor {
 	@Override
 	public StructureBlockInfo process(LevelReader worldReaderIn, BlockPos pos, BlockPos otherposidk, StructureBlockInfo otherinfoidk, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
 		if(blockInfo.state.getBlock() instanceof SpawnerBlock) {
-			Random rand = placementSettingsIn.getRandom(blockInfo.pos);
+			RandomSource rand = placementSettingsIn.getRandom(blockInfo.pos);
 			BlockEntity tile = BlockEntity.loadStatic(blockInfo.pos, blockInfo.state, blockInfo.nbt);
 
 			if(tile instanceof SpawnerBlockEntity spawner) {

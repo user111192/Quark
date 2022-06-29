@@ -1,12 +1,16 @@
 package vazkii.quark.base.client.render;
 
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -19,25 +23,24 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.ModelHandler;
 import vazkii.quark.base.item.boat.QuarkBoat;
 
-import javax.annotation.Nonnull;
-import java.util.Map;
-
 public class QuarkBoatRenderer extends EntityRenderer<QuarkBoat> {
 
-	private final Map<String, Pair<ResourceLocation, BoatModel>> boatResources;
+	private record BoatModelTuple(ResourceLocation resloc, BoatModel model) {}
+	
+	private final Map<String, BoatModelTuple> boatResources;
 
-	public QuarkBoatRenderer(EntityRendererProvider.Context context) {
+	public QuarkBoatRenderer(EntityRendererProvider.Context context, boolean chest) {
 		super(context);
 		this.shadowRadius = 0.8F;
-		boatResources = computeBoatResources(context);
+		boatResources = computeBoatResources(chest, context);
 	}
 
-	private static Map<String, Pair<ResourceLocation, BoatModel>> computeBoatResources(EntityRendererProvider.Context context) {
+	private static Map<String, BoatModelTuple> computeBoatResources(boolean chest, EntityRendererProvider.Context context) {
 		return QuarkBoat.boatTypes().collect(ImmutableMap.toImmutableMap(Functions.identity(), name -> {
 			ResourceLocation texture = new ResourceLocation(Quark.MOD_ID, "textures/model/entity/boat/" + name + ".png");
-			BoatModel model = new BoatModel(context.bakeLayer(ModelHandler.quark_boat));
+			BoatModel model = new BoatModel(context.bakeLayer(chest ? ModelHandler.quark_boat_chest : ModelHandler.quark_boat), chest);
 
-			return Pair.of(texture, model);
+			return new BoatModelTuple(texture, model);
 		}));
 	}
 
@@ -63,9 +66,10 @@ public class QuarkBoatRenderer extends EntityRenderer<QuarkBoat> {
 			matrix.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), boat.getBubbleAngle(partialTicks), true));
 		}
 
-		Pair<ResourceLocation, BoatModel> pair = getModelWithLocation(boat);
-		ResourceLocation loc = pair.getFirst();
-		BoatModel model = pair.getSecond();
+		BoatModelTuple tuple = getModelWithLocation(boat);
+		ResourceLocation loc = tuple.resloc();
+		BoatModel model = tuple.model();
+		
 		matrix.scale(-1.0F, -1.0F, 1.0F);
 		matrix.mulPose(Vector3f.YP.rotationDegrees(90.0F));
 		model.setupAnim(boat, partialTicks, 0.0F, -0.1F, 0.0F, 0.0F);
@@ -84,10 +88,10 @@ public class QuarkBoatRenderer extends EntityRenderer<QuarkBoat> {
 	@Override
 	@Deprecated // forge: override getModelWithLocation to change the texture / model
 	public ResourceLocation getTextureLocation(@Nonnull QuarkBoat boat) {
-		return getModelWithLocation(boat).getFirst();
+		return getModelWithLocation(boat).resloc();
 	}
 
-	public Pair<ResourceLocation, BoatModel> getModelWithLocation(QuarkBoat boat) {
+	public BoatModelTuple getModelWithLocation(QuarkBoat boat) {
 		return this.boatResources.get(boat.getQuarkBoatType());
 	}
 

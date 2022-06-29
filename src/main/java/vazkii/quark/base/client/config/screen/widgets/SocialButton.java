@@ -1,17 +1,18 @@
 package vazkii.quark.base.client.config.screen.widgets;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 public class SocialButton extends Button {
 
@@ -22,7 +23,7 @@ public class SocialButton extends Button {
 	private final int socialId;
 
 	public SocialButton(int x, int y, Component text, int textColor, int socialId, OnPress onClick) {
-		super(x, y, 20, 20, new TextComponent(""), onClick);
+		super(x, y, 20, 20, Component.literal(""), onClick);
 		this.textColor = textColor;
 		this.socialId = socialId;
 		this.text = text;

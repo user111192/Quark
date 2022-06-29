@@ -27,7 +27,6 @@ public final class QuarkNetwork {
 		network.register(HarvestMessage.class, NetworkDirection.PLAY_TO_SERVER);
 		network.register(RequestEmoteMessage.class, NetworkDirection.PLAY_TO_SERVER);
 		network.register(LinkItemMessage.class, NetworkDirection.PLAY_TO_SERVER);
-		network.register(OpenBoatChestMessage.class, NetworkDirection.PLAY_TO_SERVER);
 		network.register(ChangeHotbarMessage.class, NetworkDirection.PLAY_TO_SERVER);
 		network.register(SetLockProfileMessage.class, NetworkDirection.PLAY_TO_SERVER);
 

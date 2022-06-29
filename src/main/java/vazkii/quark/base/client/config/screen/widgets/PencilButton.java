@@ -1,19 +1,19 @@
 package vazkii.quark.base.client.config.screen.widgets;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import vazkii.quark.base.handler.MiscUtil;
-
-import javax.annotation.Nonnull;
 
 public class PencilButton extends Button {
 
 	public PencilButton(int x, int y, OnPress pressable) {
-		super(x, y, 20, 20, new TextComponent(""), pressable);
+		super(x, y, 20, 20, Component.literal(""), pressable);
 	}
 
 	@Override

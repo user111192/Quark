@@ -1,12 +1,14 @@
 package vazkii.quark.base.proxy;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,19 +17,26 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import vazkii.arl.util.ClientTicker;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.capability.CapabilityHandler;
-import vazkii.quark.base.handler.*;
+import vazkii.quark.base.handler.BrewingHandler;
+import vazkii.quark.base.handler.ContributorRewardHandler;
+import vazkii.quark.base.handler.FuelHandler;
+import vazkii.quark.base.handler.QuarkSounds;
+import vazkii.quark.base.handler.UndergroundBiomeHandler;
+import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.IConfigCallback;
 import vazkii.quark.base.network.QuarkNetwork;
-import vazkii.quark.base.recipe.*;
+import vazkii.quark.base.recipe.DataMaintainingCampfireRecipe;
+import vazkii.quark.base.recipe.DataMaintainingRecipe;
+import vazkii.quark.base.recipe.DataMaintainingSmeltingRecipe;
+import vazkii.quark.base.recipe.DataMaintainingSmokingRecipe;
+import vazkii.quark.base.recipe.ExclusionRecipe;
 import vazkii.quark.base.world.EntitySpawnHandler;
 import vazkii.quark.base.world.WorldGenHandler;
-
-import java.time.LocalDateTime;
-import java.time.Month;
 
 public class CommonProxy {
 
@@ -37,11 +46,11 @@ public class CommonProxy {
 	private boolean configGuiSaving = false;
 
 	public void start() {
-		ForgeRegistries.RECIPE_SERIALIZERS.register(ExclusionRecipe.SERIALIZER);
-		ForgeRegistries.RECIPE_SERIALIZERS.register(DataMaintainingRecipe.SERIALIZER);
-		ForgeRegistries.RECIPE_SERIALIZERS.register(DataMaintainingSmeltingRecipe.SERIALIZER);
-		ForgeRegistries.RECIPE_SERIALIZERS.register(DataMaintainingCampfireRecipe.SERIALIZER);
-		ForgeRegistries.RECIPE_SERIALIZERS.register(DataMaintainingSmokingRecipe.SERIALIZER);
+		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":exclusion", ExclusionRecipe.SERIALIZER);
+		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":maintaining", DataMaintainingRecipe.SERIALIZER);
+		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":maintaining_smelting", DataMaintainingSmeltingRecipe.SERIALIZER);
+		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":maintaining_campfire", DataMaintainingCampfireRecipe.SERIALIZER);
+		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":maintaining_smoking", DataMaintainingSmokingRecipe.SERIALIZER);
 
 		QuarkSounds.start();
 		ModuleLoader.INSTANCE.start();
@@ -121,7 +130,7 @@ public class CommonProxy {
 		private static boolean registerDone;
 
 		@SubscribeEvent(priority = EventPriority.HIGHEST)
-		public static void registerContent(RegistryEvent.Register<?> event) {
+		public static void registerContent(RegisterEvent event) {
 			if(registerDone)
 				return;
 			registerDone = true;

@@ -1,10 +1,17 @@
 package vazkii.quark.base.proxy;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -29,13 +36,6 @@ import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.IConfigCallback;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.Month;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -109,7 +109,7 @@ public class ClientProxy extends CommonProxy {
 		mc.submit(() -> {
 			if(mc.hasSingleplayerServer() && mc.player != null && mc.getSingleplayerServer() != null)
 				for(int i = 0; i < 3; i++)
-					mc.player.sendMessage(new TranslatableComponent("quark.misc.reloaded" + i).withStyle(i == 0 ? ChatFormatting.AQUA : ChatFormatting.WHITE), Util.NIL_UUID);
+					mc.player.sendSystemMessage(Component.translatable("quark.misc.reloaded" + i).withStyle(i == 0 ? ChatFormatting.AQUA : ChatFormatting.WHITE));
 		});
 	}
 
@@ -118,7 +118,7 @@ public class ClientProxy extends CommonProxy {
 		if (player instanceof LocalPlayer lPlayer) {
 			var mc = Minecraft.getInstance();
 			if (mc.gameMode != null && mc.level != null)
-				return mc.gameMode.useItemOn(lPlayer, mc.level, hand, hit);
+				return mc.gameMode.useItemOn(lPlayer, hand, hit);
 		}
 		return InteractionResult.PASS;
 	}

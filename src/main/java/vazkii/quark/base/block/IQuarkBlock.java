@@ -2,6 +2,7 @@ package vazkii.quark.base.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.extensions.IForgeBlock;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.module.QuarkModule;
 
 import javax.annotation.Nullable;
@@ -44,7 +46,7 @@ public interface IQuarkBlock extends IForgeBlock {
 		Material material = state.getMaterial();
 		if (material == Material.WOOL || material == Material.LEAVES)
 			return 60;
-		ResourceLocation loc = state.getBlock().getRegistryName();
+		ResourceLocation loc = Registry.BLOCK.getKey(state.getBlock());
 		if (loc != null && (loc.getPath().endsWith("_log") || loc.getPath().endsWith("_wood")) && state.getMaterial().isFlammable())
 			return 5;
 		return state.getMaterial().isFlammable() ? 20 : 0;
@@ -59,5 +61,14 @@ public interface IQuarkBlock extends IForgeBlock {
 		if (material == Material.WOOL || material == Material.LEAVES)
 			return 30;
 		return state.getMaterial().isFlammable() ? 5 : 0;
+	}
+	
+	static String inherit(IQuarkBlock parent, String format) {
+		return inherit(parent.getBlock(), format);
+	}
+	
+	static String inherit(Block parent, String format) {
+		ResourceLocation parentName = RegistryHelper.getRegistryName(parent, Registry.BLOCK);
+		return String.format(format, parentName);
 	}
 }

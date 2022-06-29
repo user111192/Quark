@@ -1,26 +1,32 @@
 package vazkii.quark.base.recipe;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author WireSegal
@@ -137,11 +143,7 @@ public class ExclusionRecipe implements CraftingRecipe {
 		}
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ExclusionRecipe> {
-
-		public Serializer() {
-			setRegistryName("quark:exclusion");
-		}
+	public static class Serializer implements RecipeSerializer<ExclusionRecipe> {
 
 		@Nonnull
 		@Override
@@ -200,7 +202,7 @@ public class ExclusionRecipe implements CraftingRecipe {
 			buffer.writeVarInt(recipe.excluded.size());
 			for (ResourceLocation loc : recipe.excluded)
 				buffer.writeUtf(loc.toString(), 32767);
-			buffer.writeUtf(Objects.toString(recipe.parent.getSerializer().getRegistryName()), 32767);
+			buffer.writeUtf(Objects.toString(Registry.RECIPE_SERIALIZER.getKey(recipe.parent.getSerializer())), 32767);
 			((RecipeSerializer<Recipe<?>>) recipe.parent.getSerializer()).toNetwork(buffer, recipe.parent);
 		}
 	}

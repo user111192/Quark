@@ -1,20 +1,25 @@
 package vazkii.quark.base.recipe;
 
+import javax.annotation.Nonnull;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.CampfireCookingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import vazkii.arl.util.ItemNBTHelper;
-
-import javax.annotation.Nonnull;
 
 /**
  * @author WireSegal
@@ -122,11 +127,7 @@ public class DataMaintainingCampfireRecipe extends CampfireCookingRecipe {
 		return parent.getToastSymbol();
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DataMaintainingCampfireRecipe> {
-
-		public Serializer() {
-			setRegistryName("quark:maintaining_campfire");
-		}
+	public static class Serializer implements RecipeSerializer<DataMaintainingCampfireRecipe> {
 
 		@Nonnull
 		@Override

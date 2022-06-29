@@ -1,22 +1,24 @@
 package vazkii.quark.base.client.config.screen.widgets;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
-import vazkii.quark.api.config.IConfigObject;
-import vazkii.quark.base.handler.MiscUtil;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
-import java.util.function.Supplier;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import vazkii.quark.api.config.IConfigObject;
+import vazkii.quark.base.handler.MiscUtil;
 
 public class CheckboxButton extends Button {
 
 	private final Supplier<Boolean> checkedSupplier;
 
 	public CheckboxButton(int x, int y, Supplier<Boolean> checkedSupplier, OnPress onClick) {
-		super(x, y, 20, 20, new TextComponent(""), onClick);
+		super(x, y, 20, 20, Component.literal(""), onClick);
 		this.checkedSupplier = checkedSupplier;
 	}
 

@@ -10,6 +10,7 @@
  */
 package vazkii.quark.base.util;
 
+import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import vazkii.arl.util.RegistryHelper;
@@ -20,7 +21,7 @@ public class QuarkEffect extends MobEffect {
 
 	public QuarkEffect(String name, MobEffectCategory type, int color) {
 		super(type, color);
-		RegistryHelper.register(this, name);
+		RegistryHelper.register(this, name, Registry.MOB_EFFECT_REGISTRY);
 		bareName = name;
 	}
 }

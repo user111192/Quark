@@ -1,6 +1,9 @@
 package vazkii.quark.content.world.gen.structure;
 
+import java.util.Optional;
+
 import com.mojang.serialization.Codec;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -20,8 +23,6 @@ import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.content.world.module.BigDungeonModule;
-
-import java.util.Optional;
 
 public class BigDungeonStructure extends StructureFeature<JigsawConfiguration> {
 

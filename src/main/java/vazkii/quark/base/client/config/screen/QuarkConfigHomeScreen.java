@@ -1,5 +1,7 @@
 package vazkii.quark.base.client.config.screen;
 
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -12,8 +14,7 @@ import net.minecraft.client.renderer.CubeMap;
 import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
@@ -27,8 +28,6 @@ import vazkii.quark.base.client.config.screen.widgets.SocialButton;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.module.ModuleCategory;
-
-import javax.annotation.Nonnull;
 
 public class QuarkConfigHomeScreen extends AbstractQScreen {
 
@@ -97,24 +96,24 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 		}
 
 		bWidth = 200;
-		addRenderableWidget(new Button(width / 2 - bWidth / 2, height - 30, bWidth, 20, new TranslatableComponent("quark.gui.config.save"), this::commit));
+		addRenderableWidget(new Button(width / 2 - bWidth / 2, height - 30, bWidth, 20, Component.translatable("quark.gui.config.save"), this::commit));
 
 		vStart = height - 55;
 		bWidth = 20;
 		pad = 5;
 		left = (width - (bWidth + pad) * 5) / 2;
-		addRenderableWidget(new SocialButton(left, vStart, new TranslatableComponent("quark.gui.config.social.website"), 0x48ddbc, 0, webLink("https://quarkmod.net")));
-		addRenderableWidget(new SocialButton(left + bWidth + pad, vStart,new TranslatableComponent("quark.gui.config.social.discord"), 0x7289da, 1, webLink("https://discord.gg/vm")));
-		addRenderableWidget(new SocialButton(left + (bWidth + pad) * 2, vStart, new TranslatableComponent("quark.gui.config.social.patreon"), 0xf96854, 2, webLink("https://patreon.com/vazkii")));
-		addRenderableWidget(new SocialButton(left + (bWidth + pad) * 3, vStart, new TranslatableComponent("quark.gui.config.social.reddit"), 0xff4400, 3, webLink("https://reddit.com/r/quarkmod")));
-		addRenderableWidget(new SocialButton(left + (bWidth + pad) * 4, vStart, new TranslatableComponent("quark.gui.config.social.twitter"), 0x1da1f2, 4, webLink("https://twitter.com/VazkiiMods")));
+		addRenderableWidget(new SocialButton(left, vStart, Component.translatable("quark.gui.config.social.website"), 0x48ddbc, 0, webLink("https://quarkmod.net")));
+		addRenderableWidget(new SocialButton(left + bWidth + pad, vStart, Component.translatable("quark.gui.config.social.discord"), 0x7289da, 1, webLink("https://discord.gg/vm")));
+		addRenderableWidget(new SocialButton(left + (bWidth + pad) * 2, vStart, Component.translatable("quark.gui.config.social.patreon"), 0xf96854, 2, webLink("https://patreon.com/vazkii")));
+		addRenderableWidget(new SocialButton(left + (bWidth + pad) * 3, vStart, Component.translatable("quark.gui.config.social.reddit"), 0xff4400, 3, webLink("https://reddit.com/r/quarkmod")));
+		addRenderableWidget(new SocialButton(left + (bWidth + pad) * 4, vStart, Component.translatable("quark.gui.config.social.twitter"), 0x1da1f2, 4, webLink("https://twitter.com/VazkiiMods")));
 	}
 
 	private static Component componentFor(IConfigCategory c) {
-		TranslatableComponent comp = new TranslatableComponent("quark.category." + c.getName());
+		MutableComponent comp = Component.translatable("quark.category." + c.getName());
 
 		if(c.isDirty())
-			comp.append(new TextComponent("*").withStyle(ChatFormatting.GOLD));
+			comp.append(Component.translatable("*").withStyle(ChatFormatting.GOLD));
 
 		return comp;
 	}

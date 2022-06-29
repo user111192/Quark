@@ -1,17 +1,19 @@
 package vazkii.quark.base.client.config.screen;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import vazkii.quark.base.client.config.obj.ListObject;
 import vazkii.quark.base.client.config.screen.widgets.ScrollableWidgetList;
 import vazkii.quark.base.client.config.screen.widgets.StringElementList;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ListInputScreen extends AbstractScrollingWidgetScreen {
 
@@ -32,7 +34,7 @@ public class ListInputScreen extends AbstractScrollingWidgetScreen {
 	public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
 		super.render(mstack, mouseX, mouseY, partialTicks);
 
-		drawCenteredString(mstack, font, new TextComponent(object.getGuiDisplayName()).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
+		drawCenteredString(mstack, font, Component.literal(object.getGuiDisplayName()).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
 	}
 
 	public void addNew() {

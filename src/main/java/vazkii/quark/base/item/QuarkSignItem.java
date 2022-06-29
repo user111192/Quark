@@ -1,5 +1,9 @@
 package vazkii.quark.base.item;
 
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -7,11 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
-import java.util.Objects;
-import java.util.function.BooleanSupplier;
 
 public class QuarkSignItem extends SignItem implements IQuarkItem {
 
@@ -21,7 +22,7 @@ public class QuarkSignItem extends SignItem implements IQuarkItem {
 	public QuarkSignItem(QuarkModule module, Block sign, Block wallSign) {
 		super(new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_DECORATIONS), sign, wallSign);
 
-		RegistryHelper.registerItem(this, Objects.toString(sign.getRegistryName()));
+		RegistryHelper.registerItem(this, IQuarkBlock.inherit(sign, "%s"));
 		this.module = module;
 	}
 

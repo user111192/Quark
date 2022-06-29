@@ -3,6 +3,7 @@ package vazkii.quark.base.block;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,7 +31,7 @@ public class QuarkInheritedPaneBlock extends QuarkPaneBlock implements IQuarkBlo
 	}
 
 	public QuarkInheritedPaneBlock(IQuarkBlock parent, Block.Properties properties) {
-		this(parent, parent.getBlock().getRegistryName() + "_pane", properties);
+		this(parent, IQuarkBlock.inherit(parent, "%s_pane"), properties);
 	}
 
 	public QuarkInheritedPaneBlock(IQuarkBlock parent) {

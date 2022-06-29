@@ -1,25 +1,26 @@
 package vazkii.quark.base.client.config.screen.widgets;
 
+import java.awt.Color;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import vazkii.arl.util.ClientTicker;
 import vazkii.quark.base.client.config.screen.QuarkConfigHomeScreen;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.MiscUtil;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
 
 public class QButton extends Button {
 
@@ -79,7 +80,7 @@ public class QButton extends Button {
 	private Celebration celebrating;
 
 	public QButton(int x, int y) {
-		super(x, y, 20, 20, new TextComponent("q"), QButton::click);
+		super(x, y, 20, 20, Component.literal("q"), QButton::click);
 
 		Calendar calendar = Calendar.getInstance();
 		int month = calendar.get(Calendar.MONTH) + 1;

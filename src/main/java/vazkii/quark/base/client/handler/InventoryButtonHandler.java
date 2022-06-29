@@ -22,7 +22,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -54,7 +54,7 @@ public final class InventoryButtonHandler {
 			Quark.LOG.info(print);
 
 			if(mc.player != null)
-				mc.player.sendMessage(new TextComponent(print), mc.player.getUUID());
+				mc.player.sendSystemMessage(Component.literal(print));
 		}
 		currentButtons.clear();
 

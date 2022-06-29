@@ -1,13 +1,13 @@
 package vazkii.quark.base.handler;
 
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 
 public class StructureBlockReplacementHandler {
 
@@ -33,7 +33,7 @@ public class StructureBlockReplacementHandler {
 		return structureHolder.get();
 	}
 
-	public static void setActiveStructure(ConfiguredStructureFeature<?, ?> structure, PiecesContainer components) {
+	public static void setActiveStructure(Structure structure, PiecesContainer components) {
 		StructureHolder curr = getCurrentStructureHolder();
 		if(curr == null) {
 			curr = new StructureHolder();
@@ -50,7 +50,7 @@ public class StructureBlockReplacementHandler {
 	}
 
 	public static class StructureHolder {
-		public ConfiguredStructureFeature<?, ?> currentStructure;
+		public Structure currentStructure;
 		public List<StructurePiece> currentComponents;
 	}
 

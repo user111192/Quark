@@ -1,22 +1,23 @@
 package vazkii.quark.mixin;
 
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
+import java.util.Random;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import vazkii.quark.base.handler.StructureBlockReplacementHandler;
 
-import java.util.Random;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
+import vazkii.quark.base.handler.StructureBlockReplacementHandler;
 
 @Mixin(StructureStart.class)
 public class StructureStartMixin {
@@ -27,15 +28,15 @@ public class StructureStartMixin {
 
 	@Shadow
 	@Final
-	private ConfiguredStructureFeature<?, ?> feature;
+	private Structure structure;
 
 	@Inject(method = "placeInChunk", at = @At("HEAD"))
-	public void injectReference(WorldGenLevel level, StructureFeatureManager manager, ChunkGenerator generator, Random random, BoundingBox bounds, ChunkPos pos, CallbackInfo callback) {
-		StructureBlockReplacementHandler.setActiveStructure(feature, pieceContainer);
+	public void injectReference(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, Random random, BoundingBox bounds, ChunkPos pos, CallbackInfo callback) {
+		StructureBlockReplacementHandler.setActiveStructure(structure, pieceContainer);
 	}
 
 	@Inject(method = "placeInChunk", at = @At("RETURN"))
-	public void resetReference(WorldGenLevel level, StructureFeatureManager manager, ChunkGenerator generator, Random random, BoundingBox bounds, ChunkPos pos, CallbackInfo callback) {
+	public void resetReference(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, Random random, BoundingBox bounds, ChunkPos pos, CallbackInfo callback) {
 		StructureBlockReplacementHandler.setActiveStructure(null, null);
 	}
 

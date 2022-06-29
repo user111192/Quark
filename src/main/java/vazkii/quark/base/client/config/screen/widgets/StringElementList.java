@@ -1,5 +1,7 @@
 package vazkii.quark.base.client.config.screen.widgets;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.ChatFormatting;
@@ -7,11 +9,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import vazkii.quark.base.client.config.screen.ListInputScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
-
-import javax.annotation.Nonnull;
 
 public class StringElementList extends ScrollableWidgetList<ListInputScreen, StringElementList.Entry>{
 
@@ -41,16 +40,16 @@ public class StringElementList extends ScrollableWidgetList<ListInputScreen, Str
 
 			if(s != null) {
 				Minecraft mc = Minecraft.getInstance();
-				EditBox field = new EditBox(mc.font, 10, 3, 210, 20, new TextComponent(""));
+				EditBox field = new EditBox(mc.font, 10, 3, 210, 20, Component.literal(""));
 				field.setMaxLength(256);
 				field.setValue(initialString);
 				field.moveCursorTo(0);
 				field.setResponder(str -> parent.list.set(index, str));
 				children.add(new WidgetWrapper(field));
 
-				children.add(new WidgetWrapper(new Button(230, 3, 20, 20, new TextComponent("-").withStyle(ChatFormatting.RED), b -> parent.remove(index))));
+				children.add(new WidgetWrapper(new Button(230, 3, 20, 20, Component.literal("-").withStyle(ChatFormatting.RED), b -> parent.remove(index))));
 			} else {
-				children.add(new WidgetWrapper(new Button(10, 3, 20, 20, new TextComponent("+").withStyle(ChatFormatting.GREEN), b -> parent.addNew())));
+				children.add(new WidgetWrapper(new Button(10, 3, 20, 20, Component.literal("+").withStyle(ChatFormatting.GREEN), b -> parent.addNew())));
 			}
 		}
 
@@ -65,7 +64,7 @@ public class StringElementList extends ScrollableWidgetList<ListInputScreen, Str
 		@Nonnull
 		@Override
 		public Component getNarration() {
-			return new TextComponent(string);
+			return Component.literal(string);
 		}
 
 	}

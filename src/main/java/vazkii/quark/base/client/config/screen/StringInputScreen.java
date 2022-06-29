@@ -8,7 +8,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import vazkii.quark.base.client.config.obj.AbstractStringInputObject;
 
 public class StringInputScreen<T> extends AbstractInputScreen<T> {
@@ -26,7 +26,7 @@ public class StringInputScreen<T> extends AbstractInputScreen<T> {
 	public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
 		super.render(mstack, mouseX, mouseY, partialTicks);
 
-		drawCenteredString(mstack, font, new TextComponent(object.getGuiDisplayName()).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
+		drawCenteredString(mstack, font, Component.literal(object.getGuiDisplayName()).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
 		drawCenteredString(mstack, font, I18n.get("quark.gui.config.defaultvalue", object.defaultObj), width / 2, 30, 0xFFFFFF);
 
 		input.render(mstack, mouseX, mouseY, partialTicks);
@@ -34,7 +34,7 @@ public class StringInputScreen<T> extends AbstractInputScreen<T> {
 
 	@Override
 	protected void onInit() {
-		input = new EditBox(font, width / 2 - 100, 60, 200, 20, new TextComponent(""));
+		input = new EditBox(font, width / 2 - 100, 60, 200, 20, Component.literal(""));
 		input.setFilter(object::isStringValid);
 		input.setMaxLength(object.getMaxStringLength());
 		input.setResponder(this::update);

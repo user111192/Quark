@@ -22,7 +22,7 @@ public record FlagRecipeCondition(ConfigFlagManager manager, String flag,
 
 	@Override
 	@SuppressWarnings("removal")
-	public boolean test() {
+	public boolean test(IContext context) {
 		if (flag.contains("%"))
 			throw new RuntimeException("Illegal flag: " + flag);
 

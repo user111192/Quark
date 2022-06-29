@@ -1,5 +1,13 @@
 package vazkii.quark.base.client.handler;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.EntityModel;
@@ -15,17 +23,16 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import org.apache.commons.lang3.tuple.Pair;
 import vazkii.quark.addons.oddities.client.model.BackpackModel;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.render.QuarkArmorModel;
-import vazkii.quark.content.mobs.client.model.*;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import vazkii.quark.content.mobs.client.model.CrabModel;
+import vazkii.quark.content.mobs.client.model.ForgottenHatModel;
+import vazkii.quark.content.mobs.client.model.FoxhoundModel;
+import vazkii.quark.content.mobs.client.model.ShibaModel;
+import vazkii.quark.content.mobs.client.model.StonelingModel;
+import vazkii.quark.content.mobs.client.model.ToretoiseModel;
+import vazkii.quark.content.mobs.client.model.WraithModel;
 
 @EventBusSubscriber(modid = Quark.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 @OnlyIn(Dist.CLIENT)
@@ -40,7 +47,9 @@ public class ModelHandler {
 	public static ModelLayerLocation crab;
 	public static ModelLayerLocation toretoise;
 	public static ModelLayerLocation wraith;
+	
 	public static ModelLayerLocation quark_boat;
+	public static ModelLayerLocation quark_boat_chest;
 
 	public static ModelLayerLocation forgotten_hat;
 	public static ModelLayerLocation backpack;
@@ -57,7 +66,9 @@ public class ModelHandler {
 		crab = addModel("crab", CrabModel::createBodyLayer, CrabModel::new);
 		toretoise = addModel("toretoise", ToretoiseModel::createBodyLayer, ToretoiseModel::new);
 		wraith = addModel("wraith", WraithModel::createBodyLayer, WraithModel::new);
-		quark_boat = addModel("quark_boat", BoatModel::createBodyModel, BoatModel::new);
+		
+		quark_boat = addModel("quark_boat", () -> BoatModel.createBodyModel(false), r -> new BoatModel(r, false));
+		quark_boat_chest = addModel("quark_boat_chest", () -> BoatModel.createBodyModel(true), r -> new BoatModel(r, true));
 
 		forgotten_hat = addArmorModel("forgotten_hat", ForgottenHatModel::createBodyLayer);
 		backpack = addArmorModel("backpack", BackpackModel::createBodyLayer);

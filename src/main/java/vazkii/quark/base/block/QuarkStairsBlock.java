@@ -1,5 +1,10 @@
 package vazkii.quark.base.block;
 
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
@@ -18,10 +23,6 @@ import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.QuarkModule;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.function.BooleanSupplier;
-
 public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IBlockColorProvider {
 
 	private final IQuarkBlock parent;
@@ -31,7 +32,7 @@ public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IBlockC
 		super(parent.getBlock()::defaultBlockState, VariantHandler.realStateCopy(parent));
 
 		this.parent = parent;
-		RegistryHelper.registerBlock(this, parent.getBlock().getRegistryName() + "_stairs");
+		RegistryHelper.registerBlock(this, IQuarkBlock.inherit(parent, "%s_stairs"));
 		RegistryHelper.setCreativeTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
 
 		RenderLayerHandler.setInherited(this, parent.getBlock());

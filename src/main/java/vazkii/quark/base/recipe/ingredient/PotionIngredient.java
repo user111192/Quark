@@ -2,6 +2,8 @@ package vazkii.quark.base.recipe.ingredient;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -57,8 +59,8 @@ public class PotionIngredient extends Ingredient {
 	public JsonElement toJson() {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", Objects.toString(CraftingHelper.getID(PotionIngredient.Serializer.INSTANCE)));
-		json.addProperty("item", Objects.toString(item.getRegistryName()));
-		json.addProperty("potion", Objects.toString(potion.getRegistryName()));
+		json.addProperty("item", Objects.toString(Registry.ITEM.getKey(item)));
+		json.addProperty("potion", Objects.toString(Registry.POTION.getKey(potion)));
 		return json;
 	}
 

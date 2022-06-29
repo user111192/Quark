@@ -9,7 +9,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -35,7 +34,7 @@ public class TopLayerTooltipHandler {
 	}
 
 	public static void setTooltip(List<String> tooltip, int tooltipX, int tooltipY) {
-		TopLayerTooltipHandler.tooltip = tooltip.stream().map(TextComponent::new).collect(Collectors.toList());
+		TopLayerTooltipHandler.tooltip = tooltip.stream().map(Component::literal).collect(Collectors.toList());
 		TopLayerTooltipHandler.tooltipX = tooltipX;
 		TopLayerTooltipHandler.tooltipY = tooltipY;
 	}

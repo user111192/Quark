@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
@@ -23,7 +24,7 @@ public class BigDungeonChestProcessor extends StructureProcessor {
 	@Override
 	public StructureBlockInfo process(LevelReader worldReaderIn, BlockPos pos, BlockPos otherposidk, StructureBlockInfo otherinfoidk, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
 		if(blockInfo.state.getBlock() instanceof ChestBlock) {
-			Random rand = placementSettingsIn.getRandom(blockInfo.pos);
+			RandomSource rand = placementSettingsIn.getRandom(blockInfo.pos);
 			if(rand.nextDouble() > BigDungeonModule.chestChance)
 				return new StructureBlockInfo(blockInfo.pos, Blocks.CAVE_AIR.defaultBlockState(), new CompoundTag());
 			if (blockInfo.nbt.getString("id").equals("minecraft:chest")) {

@@ -1,20 +1,21 @@
 package vazkii.quark.base.client.config.screen.widgets;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import vazkii.quark.api.config.IConfigElement;
 import vazkii.quark.api.config.IConfigObject;
 import vazkii.quark.base.client.config.ConfigCategory;
 import vazkii.quark.base.client.config.screen.CategoryScreen;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
-
-import javax.annotation.Nonnull;
-import java.util.LinkedList;
-import java.util.List;
 
 public class ConfigElementList<T extends IConfigElement & IWidgetProvider> extends ScrollableWidgetList<CategoryScreen, ConfigElementList.Entry<T>> {
 
@@ -116,7 +117,7 @@ public class ConfigElementList<T extends IConfigElement & IWidgetProvider> exten
 		@Nonnull
 		@Override
 		public Component getNarration() {
-			return new TextComponent(element == null ? "" : element.getGuiDisplayName());
+			return Component.literal(element == null ? "" : element.getGuiDisplayName());
 		}
 
 	}

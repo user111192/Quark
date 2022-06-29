@@ -1,22 +1,23 @@
 package vazkii.quark.base.client.config.screen.inputtable;
 
+import java.util.Arrays;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import vazkii.quark.api.config.IConfigCategory;
 import vazkii.quark.api.config.IConfigElement;
 import vazkii.quark.base.module.config.type.inputtable.ConvulsionMatrixConfig;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
 
 public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScreen<ConvulsionMatrixConfig> {
 
@@ -31,8 +32,8 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 		int x = width / 2 - 33;
 		int y = 55;
 
-		Component prefix = new TextComponent("");
-		Component suffix = new TextComponent("");
+		Component prefix = Component.literal("");
+		Component suffix = Component.literal("");
 
 		for(int i = 0; i < 9; i++)
 			addRenderableWidget(new ForgeSlider(x + w * (i % 3), y + 25 * (i / 3), w - p, 20, prefix, suffix, 0f, 2f, original.colorMatrix[i], 0, 1, false) {
@@ -42,9 +43,9 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 				}
 			});
 
-		addRenderableWidget(new Button(x, y + 115, w - p, 20, new TextComponent("Identity"), this::onSlide));
-		addRenderableWidget(new Button(x + w, y + 115, w - p, 20, new TextComponent("Dreary"), this::onSlide));
-		addRenderableWidget(new Button(x + w * 2, y + 115, w - p, 20, new TextComponent("Vibrant"), this::onSlide));
+		addRenderableWidget(new Button(x, y + 115, w - p, 20, Component.literal("Identity"), this::onSlide));
+		addRenderableWidget(new Button(x + w, y + 115, w - p, 20, Component.literal("Dreary"), this::onSlide));
+		addRenderableWidget(new Button(x + w * 2, y + 115, w - p, 20, Component.literal("Vibrant"), this::onSlide));
 	}
 
 	@Override
@@ -56,8 +57,8 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 		int size = 60;
 
 		int titleLeft = width / 2 + 66;
-		drawCenteredString(mstack, font, new TextComponent(category.getGuiDisplayName()).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
-		drawCenteredString(mstack, font, new TextComponent("Presets"), titleLeft, 155, 0xFFFFFF);
+		drawCenteredString(mstack, font, Component.literal(category.getGuiDisplayName()).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
+		drawCenteredString(mstack, font, Component.literal("Presets"), titleLeft, 155, 0xFFFFFF);
 
 		int sliders = 0;
 		boolean needsUpdate = false;
