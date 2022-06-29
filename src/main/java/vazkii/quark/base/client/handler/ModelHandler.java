@@ -38,7 +38,6 @@ public class ModelHandler {
 	public static ModelLayerLocation foxhound;
 	public static ModelLayerLocation stoneling;
 	public static ModelLayerLocation crab;
-	public static ModelLayerLocation frog;
 	public static ModelLayerLocation toretoise;
 	public static ModelLayerLocation wraith;
 	public static ModelLayerLocation quark_boat;
@@ -56,7 +55,6 @@ public class ModelHandler {
 		foxhound = addModel("foxhound", FoxhoundModel::createBodyLayer, FoxhoundModel::new);
 		stoneling = addModel("stoneling", StonelingModel::createBodyLayer, StonelingModel::new);
 		crab = addModel("crab", CrabModel::createBodyLayer, CrabModel::new);
-		frog = addModel("frog", FrogModel::createBodyLayer, FrogModel::new);
 		toretoise = addModel("toretoise", ToretoiseModel::createBodyLayer, ToretoiseModel::new);
 		wraith = addModel("wraith", WraithModel::createBodyLayer, WraithModel::new);
 		quark_boat = addModel("quark_boat", BoatModel::createBodyModel, BoatModel::new);

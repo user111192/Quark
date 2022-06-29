@@ -70,14 +70,10 @@ public class WraithModule extends QuarkModule {
 
 	public static TagKey<Block> wraithSpawnableTag;
 
-	public static TagKey<ConfiguredStructureFeature<?, ?>> soulBeadTargetTag;
-
 	public static List<String> validWraithSounds;
 
 	@Override
 	public void register() {
-		new SoulBeadItem(this);
-
 		wraithType = EntityType.Builder.of(Wraith::new, MobCategory.MONSTER)
 				.sized(0.6F, 1.95F)
 				.clientTrackingRange(8)
@@ -104,7 +100,6 @@ public class WraithModule extends QuarkModule {
 	@Override
 	public void setup() {
 		wraithSpawnableTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "wraith_spawnable"));
-		soulBeadTargetTag = TagKey.create(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, new ResourceLocation(Quark.MOD_ID, "soul_bead_target"));
 	}
 
 	@Override
