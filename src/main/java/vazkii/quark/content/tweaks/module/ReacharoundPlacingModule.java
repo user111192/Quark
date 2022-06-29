@@ -1,12 +1,18 @@
 package vazkii.quark.content.tweaks.module;
 
+import java.util.List;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -34,7 +40,6 @@ import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.apache.commons.lang3.tuple.Pair;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.RayTraceHandler;
 import vazkii.quark.base.module.LoadModule;
@@ -42,9 +47,6 @@ import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.inputtable.RGBColorConfig;
-
-import java.util.List;
-import java.util.Objects;
 
 @LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
 public class ReacharoundPlacingModule extends QuarkModule {
@@ -84,13 +86,13 @@ public class ReacharoundPlacingModule extends QuarkModule {
 
 		if(player != null && currentTarget != null) {
 			Window res = event.getWindow();
-			PoseStack matrix = event.getMatrixStack();
+			PoseStack matrix = event.getPoseStack();
 			String text = (currentTarget.dir.getAxis() == Axis.Y ? display : displayHorizontal);
 
 			matrix.pushPose();
 			matrix.translate(res.getGuiScaledWidth() / 2F, res.getGuiScaledHeight() / 2f - 4, 0);
 
-			float scale = Math.min(5, ticksDisplayed + event.getPartialTicks()) / 5F;
+			float scale = Math.min(5, ticksDisplayed + event.getPartialTick()) / 5F;
 			scale *= scale;
 			int opacity = ((int) (255 * scale)) << 24;
 
@@ -225,15 +227,12 @@ public class ReacharoundPlacingModule extends QuarkModule {
 
 	private boolean validateReacharoundStack(ItemStack stack) {
 		Item item = stack.getItem();
-		String name = Objects.toString(item.getRegistryName());
+		String name = Registry.ITEM.getKey(item).toString();
 		if (blacklist.contains(name))
 			return false;
 		return item instanceof BlockItem || stack.is(reacharoundTag) || whitelist.contains(name);
 	}
 
-	private record ReacharoundTarget(BlockPos pos, Direction dir,
-									 InteractionHand hand) {
-
-	}
+	private record ReacharoundTarget(BlockPos pos, Direction dir, InteractionHand hand) {}
 
 }

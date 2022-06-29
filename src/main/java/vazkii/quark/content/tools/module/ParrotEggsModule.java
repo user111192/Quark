@@ -1,9 +1,17 @@
 package vazkii.quark.content.tools.module;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.Util;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.Position;
+import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -12,6 +20,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -37,13 +46,6 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.tools.entity.ParrotEgg;
 import vazkii.quark.content.tools.item.ParrotEggItem;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 @LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
 public class ParrotEggsModule extends QuarkModule {
@@ -76,7 +78,7 @@ public class ParrotEggsModule extends QuarkModule {
 				.updateInterval(10) // update interval
 				.setCustomClientFactory((spawnEntity, world) -> new ParrotEgg(parrotEggType, world))
 				.build("parrot_egg");
-		RegistryHelper.register(parrotEggType, "parrot_egg");
+		RegistryHelper.register(parrotEggType, "parrot_egg", Registry.ENTITY_TYPE_REGISTRY);
 
 		parrotEggs = new ArrayList<>();
 		for (int i = 0; i < ParrotEgg.VARIANTS; i++) {
@@ -184,7 +186,7 @@ public class ParrotEggsModule extends QuarkModule {
 
 	private int getResultingEggColor(Parrot parrot) {
 		int color = parrot.getVariant();
-		Random rand = parrot.level.random;
+		RandomSource rand = parrot.level.random;
 		if(rand.nextBoolean())
 			return color;
 		return rand.nextInt(ParrotEgg.VARIANTS);

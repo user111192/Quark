@@ -1,10 +1,11 @@
 package vazkii.quark.content.tools.item;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -28,8 +29,6 @@ import net.minecraft.world.phys.Vec3;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
 
 public class SlimeInABucketItem extends QuarkItem {
 
@@ -103,7 +102,7 @@ public class SlimeInABucketItem extends QuarkItem {
 			CompoundTag cmp = ItemNBTHelper.getCompound(stack, TAG_ENTITY_DATA, false);
 			if(cmp != null && cmp.contains("CustomName")) {
 				Component custom = Component.Serializer.fromJson(cmp.getString("CustomName"));
-				return new TranslatableComponent("item.quark.slime_in_a_bucket.named", custom);
+				return Component.translatable("item.quark.slime_in_a_bucket.named", custom);
 			}
 		}
 

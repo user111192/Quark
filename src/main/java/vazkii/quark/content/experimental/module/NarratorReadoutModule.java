@@ -1,14 +1,17 @@
 package vazkii.quark.content.experimental.module;
 
+import java.util.List;
+
 import com.mojang.text2speech.Narrator;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
@@ -29,8 +32,6 @@ import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
-
-import java.util.List;
 
 @LoadModule(category = ModuleCategory.EXPERIMENTAL, enabledByDefault = false, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class NarratorReadoutModule extends QuarkModule {
@@ -173,9 +174,9 @@ public class NarratorReadoutModule extends QuarkModule {
 						List<Component> bros = print.getSiblings();
 
 						for(Component sib : bros) {
-							if(sib instanceof TranslatableComponent ttc) {
+							if(sib instanceof MutableComponent mut && mut.getContents() instanceof TranslatableContents ttc) {
 								if(ttc.getKey().contains("enchantment.level.")) {
-									bros.set(bros.indexOf(sib), new TextComponent(ttc.getKey().substring("enchantment.level.".length())));
+									bros.set(bros.indexOf(sib), Component.translatable(ttc.getKey().substring("enchantment.level.".length())));
 									break;
 								}
 							}

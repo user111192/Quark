@@ -1,5 +1,6 @@
 package vazkii.quark.content.automation.module;
 
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import vazkii.arl.util.RegistryHelper;
@@ -18,7 +19,7 @@ public class EnderWatcherModule extends QuarkModule {
 	public void register() {
 		Block ender_watcher = new EnderWatcherBlock(this);
 		blockEntityType = BlockEntityType.Builder.of(EnderWatcherBlockEntity::new, ender_watcher).build(null);
-		RegistryHelper.register(blockEntityType, "ender_watcher");
+		RegistryHelper.register(blockEntityType, "ender_watcher", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 	}
 	
 }

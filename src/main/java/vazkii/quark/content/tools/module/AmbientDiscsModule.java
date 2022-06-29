@@ -1,10 +1,14 @@
 package vazkii.quark.content.tools.module;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
@@ -22,9 +26,6 @@ import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
 public class AmbientDiscsModule extends QuarkModule {
@@ -46,7 +47,7 @@ public class AmbientDiscsModule extends QuarkModule {
 	}
 
 	private void disc(SoundEvent sound) {
-		String name = sound.getRegistryName().getPath().replaceAll(".+\\.", "");
+		String name = Registry.SOUND_EVENT.getKey(sound).getPath().replaceAll(".+\\.", "");
 		discs.add(new QuarkMusicDiscItem(15, () -> sound, name, this, true));
 	}
 

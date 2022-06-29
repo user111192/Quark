@@ -1,6 +1,11 @@
 package vazkii.quark.content.client.module;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
 import com.mojang.blaze3d.platform.Window;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -8,7 +13,11 @@ import net.minecraft.world.entity.EquipmentSlot.Type;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,10 +32,6 @@ import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
 
 @LoadModule(category = ModuleCategory.CLIENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class UsageTickerModule extends QuarkModule {
@@ -77,7 +82,7 @@ public class UsageTickerModule extends QuarkModule {
 		if(event.getType() == ElementType.ALL) {
 			Window window = event.getWindow();
 			Player player = Minecraft.getInstance().player;
-			float partial = event.getPartialTicks();
+			float partial = event.getPartialTick();
 
 			for(TickerElement ticker : elements)
 				if(ticker != null)

@@ -3,6 +3,7 @@ package vazkii.quark.content.automation.module;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -98,7 +99,7 @@ public class PistonsMoveTileEntitiesModule extends QuarkModule {
 		if (state.getBlock() == Blocks.PISTON_HEAD)
 			return true;
 
-		ResourceLocation res = state.getBlock().getRegistryName();
+		ResourceLocation res = Registry.BLOCK.getKey(state.getBlock());
 		return res == null || PistonsMoveTileEntitiesModule.movementBlacklist.contains(res.toString()) || PistonsMoveTileEntitiesModule.movementBlacklist.contains(res.getNamespace());
 	}
 
@@ -167,7 +168,7 @@ public class PistonsMoveTileEntitiesModule extends QuarkModule {
 				world.setBlock(pos, state, 0);
 
 			if (entity != null && !world.isClientSide) {
-				if (delayedUpdateList.contains(Objects.toString(block.getRegistryName())))
+				if (delayedUpdateList.contains(Objects.toString(Registry.BLOCK.getKey(block))))
 					registerDelayedUpdate(world, pos, entity);
 				else {
 					entity.setBlockState(state);

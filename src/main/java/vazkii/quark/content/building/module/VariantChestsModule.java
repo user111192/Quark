@@ -29,6 +29,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
 import vazkii.quark.base.module.LoadModule;
@@ -219,7 +220,7 @@ public class VariantChestsModule extends QuarkModule {
 
 	@Override
 	public void register() {
-		ForgeRegistries.RECIPE_SERIALIZERS.register(MixedExclusionRecipe.SERIALIZER);
+		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":mixed_exclusion", MixedExclusionRecipe.SERIALIZER);
 
 		VANILLA_WOODS.forEach(s -> addChest(s.name(), Blocks.CHEST));
 		MOD_WOODS.forEach(s -> addModChest(s, Blocks.CHEST));
@@ -236,8 +237,8 @@ public class VariantChestsModule extends QuarkModule {
 		chestTEType = registerChests(VariantChestBlockEntity::new, chestTypes);
 		trappedChestTEType = registerChests(VariantTrappedChestBlockEntity::new, trappedChestTypes);
 
-		RegistryHelper.register(chestTEType, "variant_chest");
-		RegistryHelper.register(trappedChestTEType, "variant_trapped_chest");
+		RegistryHelper.register(chestTEType, "variant_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(trappedChestTEType, "variant_trapped_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 	}
 
 	@Override
@@ -273,7 +274,7 @@ public class VariantChestsModule extends QuarkModule {
 
 	private static BlockState getGenerationChestBlockState(ServerLevelAccessor accessor, BlockState current, StructureHolder structure) {
 		if (staticEnabled && replaceWorldgenChests && current.getBlock() == Blocks.CHEST) {
-			Optional<ResourceLocation> res = accessor.registryAccess().registry(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).map(
+			Optional<ResourceLocation> res = accessor.registryAccess().registry(Registry.STRUCTURE_REGISTRY).map(
 					(it) -> it.getKey(structure.currentStructure));
 			if (res.isEmpty())
 				return null; // no change

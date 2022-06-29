@@ -19,7 +19,7 @@ public class BlossomTreeConfig extends AbstractConfigType {
 	
 	public BlossomTreeConfig(int rarity, BiomeDictionary.Type type) {
 		this.rarity = rarity;
-		biomeConfig = CompoundBiomeConfig.fromBiomeTypes(false, type);
+		biomeConfig = CompoundBiomeConfig.fromBiomeTags(false, type);
 	}
 	
 }

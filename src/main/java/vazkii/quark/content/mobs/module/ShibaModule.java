@@ -28,7 +28,7 @@ public class ShibaModule extends QuarkModule {
 	public static EntityType<Shiba> shibaType;
 	
 	@Config
-	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(40, 1, 3, CompoundBiomeConfig.fromBiomeTypes(false, BiomeDictionary.Type.MOUNTAIN));
+	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(40, 1, 3, CompoundBiomeConfig.fromBiomeTags(false, BiomeDictionary.Type.MOUNTAIN));
 
 	@Config public static boolean ignoreAreasWithSkylight = false;
 	

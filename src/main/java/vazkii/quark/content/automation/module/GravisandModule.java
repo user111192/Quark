@@ -2,6 +2,7 @@ package vazkii.quark.content.automation.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
+import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
@@ -33,7 +34,7 @@ public class GravisandModule extends QuarkModule {
 				.updateInterval(20) // update interval
 				.setCustomClientFactory((spawnEntity, world) -> new Gravisand(gravisandType, world))
 				.build("gravisand");
-		RegistryHelper.register(gravisandType, "gravisand");
+		RegistryHelper.register(gravisandType, "gravisand", Registry.ENTITY_TYPE_REGISTRY);
 	}
 
 	@Override

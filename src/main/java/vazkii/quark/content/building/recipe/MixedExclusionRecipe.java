@@ -1,5 +1,7 @@
 package vazkii.quark.content.building.recipe;
 
+import javax.annotation.Nonnull;
+
 import com.google.gson.JsonObject;
 
 import net.minecraft.core.NonNullList;
@@ -16,10 +18,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-import vazkii.quark.base.Quark;
-
-import javax.annotation.Nonnull;
 
 public class MixedExclusionRecipe implements CraftingRecipe, IShapedRecipe<CraftingContainer> {
 
@@ -137,11 +135,7 @@ public class MixedExclusionRecipe implements CraftingRecipe, IShapedRecipe<Craft
 		return true;
 	}
 
-	private static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<MixedExclusionRecipe> {
-
-		public Serializer() {
-			setRegistryName(Quark.MOD_ID + ":mixed_exclusion");
-		}
+	private static class Serializer implements RecipeSerializer<MixedExclusionRecipe> {
 
 		@Nonnull
 		@Override

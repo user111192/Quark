@@ -1,6 +1,6 @@
 package vazkii.quark.content.building.block;
 
-import java.util.Random;
+import javax.annotation.Nonnull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -8,6 +8,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -17,8 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
 
 public class SoulFurnaceBlock extends VariantFurnaceBlock {
 
@@ -31,7 +30,7 @@ public class SoulFurnaceBlock extends VariantFurnaceBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Random random) {
+	public void animateTick(BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull RandomSource random) {
 		if(state.getValue(LIT) && state.getValue(SOUL)) {
 			double d0 = (double)pos.getX() + 0.5D;
 			double d1 = pos.getY();

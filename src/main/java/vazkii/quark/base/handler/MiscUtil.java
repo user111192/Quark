@@ -1,21 +1,38 @@
 package vazkii.quark.base.handler;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+
 import net.minecraft.Util;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.WorldlyContainer;
@@ -55,20 +72,10 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.config.screen.AbstractQScreen;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
 import vazkii.quark.mixin.accessor.AccessorLootTable;
-
-import javax.annotation.Nonnull;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 @EventBusSubscriber(modid = Quark.MOD_ID)
 public class MiscUtil {
@@ -147,7 +154,7 @@ public class MiscUtil {
 		return !entity.noPhysics && entity.level.getBlockState(pos).isSuffocating(entity.level, pos);
 	}
 
-	public static boolean validSpawnLight(ServerLevelAccessor world, BlockPos pos, Random rand) {
+	public static boolean validSpawnLight(ServerLevelAccessor world, BlockPos pos, RandomSource rand) {
 		if (world.getBrightness(LightLayer.SKY, pos) > rand.nextInt(32)) {
 			return false;
 		} else {
@@ -164,7 +171,7 @@ public class MiscUtil {
 		return state.getMaterial() == Material.STONE && state.isValidSpawn(world, below, type);
 	}
 
-	public static <T extends IForgeRegistryEntry<T>> List<T> massRegistryGet(Collection<String> coll, IForgeRegistry<T> registry) {
+	public static <T> List<T> massRegistryGet(Collection<String> coll, IForgeRegistry<T> registry) {
 		return coll.stream().map(ResourceLocation::new).map(registry::getValue).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 

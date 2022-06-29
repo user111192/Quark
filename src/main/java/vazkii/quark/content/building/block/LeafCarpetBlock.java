@@ -37,7 +37,7 @@ public class LeafCarpetBlock extends QuarkBlock implements IBlockColorProvider {
 	private ItemStack baseStack;
 
 	public LeafCarpetBlock(String name, Block base, QuarkModule module) {
-		super(name + "_leaf_carpet", module, CreativeModeTab.TAB_DECORATIONS,
+		super(name, module, CreativeModeTab.TAB_DECORATIONS,
 				Block.Properties.of(Material.CLOTH_DECORATION)
 						.strength(0F)
 						.sound(SoundType.GRASS)

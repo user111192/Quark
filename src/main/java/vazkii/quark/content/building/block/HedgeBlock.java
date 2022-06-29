@@ -1,5 +1,9 @@
 package vazkii.quark.content.building.block;
 
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
@@ -8,6 +12,7 @@ import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -32,9 +37,6 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.building.module.HedgesModule;
 import vazkii.quark.content.world.block.BlossomLeavesBlock;
 
-import javax.annotation.Nonnull;
-import java.util.function.BooleanSupplier;
-
 public class HedgeBlock extends FenceBlock implements IQuarkBlock, IBlockColorProvider {
 
 	private final QuarkModule module;
@@ -49,11 +51,12 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IBlockColorPr
 		this.module = module;
 		this.leaf = leaf;
 
+		ResourceLocation leafRes = RegistryHelper.getInternalName(leaf);
 		if (leaf instanceof BlossomLeavesBlock) {
-			String colorName = leaf.getRegistryName().getPath().replaceAll("_blossom_leaves", "");
+			String colorName = leafRes.getPath().replaceAll("_blossom_leaves", "");
 			RegistryHelper.registerBlock(this, colorName + "_blossom_hedge");
 		} else {
-			RegistryHelper.registerBlock(this, leaf.getRegistryName().getPath().replaceAll("_leaves", "_hedge"));
+			RegistryHelper.registerBlock(this, leafRes.getPath().replaceAll("_leaves", "_hedge"));
 		}
 
 		RegistryHelper.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);

@@ -1,5 +1,8 @@
 package vazkii.quark.content.building.block;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
@@ -14,7 +17,11 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -32,12 +39,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.interf.IBlockColorProvider;
 import vazkii.arl.interf.IItemColorProvider;
+import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.QuarkSlabBlock;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class VerticalSlabBlock extends QuarkBlock implements SimpleWaterloggedBlock, IBlockColorProvider {
 
@@ -47,7 +52,8 @@ public class VerticalSlabBlock extends QuarkBlock implements SimpleWaterloggedBl
 	public final Block parent;
 
 	public VerticalSlabBlock(Block parent, QuarkModule module) {
-		super(parent.getRegistryName().getPath().replace("_slab", "_vertical_slab"), module, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(parent));
+		super(IQuarkBlock.inherit(parent, s -> s.replace("_slab", "_vertical_slab")), 
+				module, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(parent));
 		this.parent = parent;
 
 		if(!(parent instanceof SlabBlock))

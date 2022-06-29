@@ -4,6 +4,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -26,8 +27,6 @@ import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
-
-import java.util.Random;
 
 @LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
 public class PigLittersModule extends QuarkModule {
@@ -60,7 +59,7 @@ public class PigLittersModule extends QuarkModule {
 			animal.getPersistentData().putBoolean(GOLDEN_CARROT_TAG, true);
 	}
 
-	private static int getNumberBetween(Random random, int boundA, int boundB) {
+	private static int getNumberBetween(RandomSource random, int boundA, int boundB) {
 		int min = Math.min(boundA, boundB);
 		int max = Math.max(boundA, boundB);
 

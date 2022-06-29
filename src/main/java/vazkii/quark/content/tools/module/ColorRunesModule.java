@@ -1,13 +1,24 @@
 package vazkii.quark.content.tools.module;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.projectile.ThrownTrident;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CompassItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
@@ -33,13 +44,6 @@ import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.UpdateTridentMessage;
 import vazkii.quark.content.tools.client.render.GlintRenderTypes;
 import vazkii.quark.content.tools.item.RuneItem;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * @author WireSegal
@@ -207,7 +211,7 @@ public class ColorRunesModule extends QuarkModule {
 			int cost = Math.max(1, applyCost);
 
 			if(name != null && !name.isEmpty() && (!out.hasCustomHoverName() || !out.getHoverName().getString().equals(name))) {
-				out.setHoverName(new TextComponent(name));
+				out.setHoverName(Component.literal(name));
 				cost++;
 			}
 

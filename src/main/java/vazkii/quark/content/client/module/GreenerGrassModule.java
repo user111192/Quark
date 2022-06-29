@@ -1,24 +1,25 @@
 package vazkii.quark.content.client.module;
 
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.core.Holder.Reference;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IRegistryDelegate;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.inputtable.ConvulsionMatrixConfig;
 import vazkii.quark.mixin.client.accessor.AccessorBlockColors;
-
-import java.util.List;
-import java.util.Map;
 
 @LoadModule(category = ModuleCategory.CLIENT)
 public class GreenerGrassModule extends QuarkModule {
@@ -68,14 +69,14 @@ public class GreenerGrassModule extends QuarkModule {
 		BlockColors colors = Minecraft.getInstance().getBlockColors();
 
 		// Can't be AT'd as it's changed by forge
-		Map<IRegistryDelegate<Block>, BlockColor> map = ((AccessorBlockColors) colors).quark$getBlockColors();
+		Map<Reference<Block>, BlockColor> map = ((AccessorBlockColors) colors).quark$getBlockColors();
 
 		for(String id : ids) {
 			Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(id));
 			if (block != null) {
-				if (block.delegate == null)
+				if (block.builtInRegistryHolder() == null)
 					return;
-				BlockColor color = map.get(block.delegate);
+				BlockColor color = map.get(block.builtInRegistryHolder());
 				if(color != null)
 					colors.register(getGreenerColor(color, leaves), block);
 			}

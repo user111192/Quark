@@ -1,9 +1,15 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -13,8 +19,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.BlockItem;
@@ -33,10 +39,6 @@ import vazkii.arl.util.ItemNBTHelper;
 import vazkii.quark.base.handler.SimilarBlockTypeHandler;
 import vazkii.quark.content.client.module.ChestSearchingModule;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShulkerBoxTooltips {
 
@@ -73,7 +75,7 @@ public class ShulkerBoxTooltips {
 				if(!ImprovedTooltipsModule.shulkerBoxRequireShift || Screen.hasShiftDown())
 					tooltip.add(1, Either.right(new ShulkerComponent(stack)));
 				if(ImprovedTooltipsModule.shulkerBoxRequireShift && !Screen.hasShiftDown())
-					tooltip.add(1, Either.left(new TranslatableComponent("quark.misc.shulker_box_shift")));
+					tooltip.add(1, Either.left(Component.translatable("quark.misc.shulker_box_shift")));
 			}
 		}
 	}

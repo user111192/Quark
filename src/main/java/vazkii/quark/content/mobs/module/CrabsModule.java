@@ -47,7 +47,7 @@ public class CrabsModule extends QuarkModule {
 	public static EntityType<Crab> crabType;
 
 	@Config
-	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(5, 1, 3, CompoundBiomeConfig.fromBiomeTypes(false, BiomeDictionary.Type.BEACH));
+	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(5, 1, 3, CompoundBiomeConfig.fromBiomeTags(false, BiomeDictionary.Type.BEACH));
 
 	public static TagKey<Block> crabSpawnableTag;
 

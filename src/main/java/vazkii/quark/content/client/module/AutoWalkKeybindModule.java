@@ -72,7 +72,7 @@ public class AutoWalkKeybindModule extends QuarkModule {
 			case 1 -> displayMessage = "oOo " + message + " OoO";
 			}
 			
-			mc.font.drawShadow(event.getMatrixStack(), displayMessage, x, y, 0xFFFFFFFF);
+			mc.font.drawShadow(event.getPoseStack(), displayMessage, x, y, 0xFFFFFFFF);
 		}
 	}
 	

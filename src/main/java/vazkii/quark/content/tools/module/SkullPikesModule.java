@@ -2,6 +2,7 @@ package vazkii.quark.content.tools.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -47,7 +48,7 @@ public class SkullPikesModule extends QuarkModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new SkullPike(skullPikeType, world))
 				.build("skull_pike");
-		RegistryHelper.register(skullPikeType, "skull_pike");
+		RegistryHelper.register(skullPikeType, "skull_pike", Registry.ENTITY_TYPE_REGISTRY);
 	}
 
 	@Override

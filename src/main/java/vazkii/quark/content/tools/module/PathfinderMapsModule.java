@@ -1,7 +1,15 @@
 package vazkii.quark.content.tools.module;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -9,10 +17,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
@@ -36,15 +44,8 @@ import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.AbstractConfigType;
-import vazkii.quark.content.tools.loot.PathfinderMapFunction;
 import vazkii.quark.content.tools.loot.InBiomeCondition;
-
-import javax.annotation.Nonnull;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.function.Predicate;
+import vazkii.quark.content.tools.loot.PathfinderMapFunction;
 
 @LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
 public class PathfinderMapsModule extends QuarkModule {
@@ -174,14 +175,14 @@ public class PathfinderMapsModule extends QuarkModule {
 
 		Component biomeComponent = key
 				.map(ResourceKey::location)
-				.<MutableComponent>map((it) -> new TranslatableComponent("biome." + it.getNamespace() + "." + it.getPath()))
-				.orElse(new TranslatableComponent("item.quark.biome_map.unknown").withStyle(ChatFormatting.RED));
+				.<MutableComponent>map((it) -> Component.translatable("biome." + it.getNamespace() + "." + it.getPath()))
+				.orElse(Component.translatable("item.quark.biome_map.unknown").withStyle(ChatFormatting.RED));
 
 		ItemStack stack = MapItem.create(world, biomePos.getX(), biomePos.getZ(), (byte) 2, true, true);
 		// fillExplorationMap
 		MapItem.renderBiomePreviewMap(serverLevel, stack);
 		MapItemSavedData.addTargetDecoration(stack, biomePos, "+", Type.RED_X);
-		stack.setHoverName(new TranslatableComponent("item.quark.biome_map", biomeComponent));
+		stack.setHoverName(Component.translatable("item.quark.biome_map", biomeComponent));
 
 		stack.getOrCreateTagElement("display").putInt("MapColor", color);
 
@@ -191,7 +192,7 @@ public class PathfinderMapsModule extends QuarkModule {
 	private record PathfinderMapTrade(TradeInfo info) implements ItemListing {
 
 		@Override
-		public MerchantOffer getOffer(@Nonnull Entity entity, @Nonnull Random random) {
+		public MerchantOffer getOffer(@Nonnull Entity entity, @Nonnull RandomSource random) {
 			if (!info.enabled)
 				return null;
 

@@ -1,5 +1,9 @@
 package vazkii.quark.base.world;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.BooleanSupplier;
+
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
@@ -14,15 +18,12 @@ import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.item.QuarkSpawnEggItem;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.type.CostSensitiveEntitySpawnConfig;
 import vazkii.quark.base.module.config.type.EntitySpawnConfig;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.BooleanSupplier;
 
 @EventBusSubscriber(modid = Quark.MOD_ID)
 public class EntitySpawnHandler {
@@ -45,7 +46,7 @@ public class EntitySpawnHandler {
 	}
 
 	public static void addEgg(EntityType<? extends Mob> entityType, int color1, int color2, QuarkModule module, BooleanSupplier enabledSupplier) {
-		new QuarkSpawnEggItem(() -> entityType, color1, color2, entityType.getRegistryName().getPath() + "_spawn_egg", module,
+		new QuarkSpawnEggItem(() -> entityType, color1, color2, RegistryHelper.getInternalName(entityType) + "_spawn_egg", module,
 				new Item.Properties().tab(CreativeModeTab.TAB_MISC))
 		.setCondition(enabledSupplier);
 	}

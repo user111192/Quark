@@ -2,6 +2,7 @@ package vazkii.quark.content.tweaks.module;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -58,7 +59,7 @@ public class SignEditingModule extends QuarkModule {
 				&& (!requiresEmptyHand || stack.isEmpty())
 				&& !(stack.getItem() instanceof DyeItem)
 				&& !(stack.getItem() == Items.GLOW_INK_SAC)
-				&& !tile.getBlockState().getBlock().getRegistryName().getNamespace().equals("signbutton")
+				&& !Registry.BLOCK.getKey(tile.getBlockState().getBlock()).getNamespace().equals("signbutton")
 				&& player.mayUseItemAt(event.getPos(), event.getFace(), event.getItemStack())
 				&& !event.getEntity().isDiscrete()) {
 

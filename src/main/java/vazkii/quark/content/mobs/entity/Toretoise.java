@@ -1,5 +1,10 @@
 package vazkii.quark.content.mobs.entity;
 
+import java.util.List;
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -9,14 +14,26 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FollowParentGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,11 +57,6 @@ import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.content.automation.module.IronRodModule;
 import vazkii.quark.content.mobs.module.ToretoiseModule;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
 
 public class Toretoise extends Animal {
 
@@ -324,7 +336,7 @@ public class Toretoise extends Animal {
 		return !isTamed;
 	}
 
-	public static boolean spawnPredicate(EntityType<? extends Toretoise> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
+	public static boolean spawnPredicate(EntityType<? extends Toretoise> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && pos.getY() <= ToretoiseModule.maxYLevel && MiscUtil.validSpawnLight(world, pos, rand) && MiscUtil.validSpawnLocation(type, world, reason, pos);
 	}
 

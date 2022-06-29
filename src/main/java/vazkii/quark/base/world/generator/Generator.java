@@ -1,11 +1,11 @@
 package vazkii.quark.base.world.generator;
 
-import java.util.Random;
 import java.util.function.BooleanSupplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -37,7 +37,7 @@ public abstract class Generator implements IGenerator {
 		return seedIncrement + 1;
 	}
 
-	public abstract void generateChunk(WorldGenRegion worldIn, ChunkGenerator generator, Random rand, BlockPos pos);
+	public abstract void generateChunk(WorldGenRegion worldIn, ChunkGenerator generator, RandomSource rand, BlockPos pos);
 
 	@Override
 	public boolean canGenerate(ServerLevelAccessor world) {

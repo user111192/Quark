@@ -1,5 +1,13 @@
 package vazkii.quark.content.tools.item;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -7,7 +15,6 @@ import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
@@ -25,7 +32,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.apache.commons.lang3.tuple.Pair;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.quark.api.ITrowelable;
 import vazkii.quark.api.IUsageTickerOverride;
@@ -34,11 +40,6 @@ import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.tools.module.SeedPouchModule;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
 
 public class SeedPouchItem extends QuarkItem implements IUsageTickerOverride, ITrowelable {
 
@@ -216,9 +217,9 @@ public class SeedPouchItem extends QuarkItem implements IUsageTickerOverride, IT
 			return base;
 
 		MutableComponent comp = base.copy();
-		comp.append(new TextComponent(" ("));
+		comp.append(Component.literal(" ("));
 		comp.append(contents.getLeft().getHoverName());
-		comp.append(new TextComponent(")"));
+		comp.append(Component.literal(")"));
 		return comp;
 	}
 
@@ -287,7 +288,7 @@ public class SeedPouchItem extends QuarkItem implements IUsageTickerOverride, IT
 	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
 		super.fillItemCategory(group, items);
 
-		if(SeedPouchModule.showAllVariantsInCreative && isEnabled() && allowdedIn(group)) {
+		if(SeedPouchModule.showAllVariantsInCreative && isEnabled() && allowedIn(group)) {
 			List<Item> tagItems;
 
 			try {

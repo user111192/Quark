@@ -1,9 +1,14 @@
 package vazkii.quark.content.automation.block;
 
+import java.util.EnumSet;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -31,10 +36,6 @@ import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.automation.base.RandomizerPowerState;
 
-import javax.annotation.Nonnull;
-import java.util.EnumSet;
-import java.util.Random;
-
 /**
  * @author WireSegal
  * Created at 9:57 AM on 8/26/19.
@@ -58,7 +59,7 @@ public class RedstoneRandomizerBlock extends QuarkBlock {
 	}
 
 	@Override
-	public void tick(@Nonnull BlockState state, @Nonnull ServerLevel world, @Nonnull BlockPos pos, @Nonnull Random rand) {
+	public void tick(@Nonnull BlockState state, @Nonnull ServerLevel world, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		boolean isPowered = isPowered(state);
 		boolean willBePowered = shouldBePowered(world, pos, state);
 		if(isPowered != willBePowered) {
@@ -190,7 +191,7 @@ public class RedstoneRandomizerBlock extends QuarkBlock {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull Random rand) {
+	public void animateTick(BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		if (stateIn.getValue(POWERED) != RandomizerPowerState.OFF) {
 			double x = (pos.getX() + 0.5D) + (rand.nextFloat() - 0.5D) * 0.2D;
 			double y = (pos.getY() + 0.4D) + (rand.nextFloat() - 0.5D) * 0.2D;

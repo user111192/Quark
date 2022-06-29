@@ -2,6 +2,7 @@ package vazkii.quark.content.building.module;
 
 import java.util.function.ToIntFunction;
 
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -29,7 +30,7 @@ public class VariantFurnacesModule extends QuarkModule {
 		blackstoneFurnace = new SoulFurnaceBlock("blackstone", this, Properties.copy(Blocks.BLACKSTONE).lightLevel(litBlockEmission(13)));
 
 		blockEntityType = BlockEntityType.Builder.of(VariantFurnaceBlockEntity::new, deepslateFurnace, blackstoneFurnace).build(null);
-		RegistryHelper.register(blockEntityType, "variant_furnace");
+		RegistryHelper.register(blockEntityType, "variant_furnace", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 	}
 
 	private static ToIntFunction<BlockState> litBlockEmission(int lvl) {

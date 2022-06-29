@@ -1,5 +1,7 @@
 package vazkii.quark.content.building.module;
 
+import java.util.Optional;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -7,8 +9,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import vazkii.quark.base.block.QuarkPaneBlock;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler;
@@ -17,8 +19,6 @@ import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
-
-import java.util.Optional;
 
 @LoadModule(category = ModuleCategory.BUILDING)
 public class GoldBarsModule extends QuarkModule {
@@ -43,7 +43,7 @@ public class GoldBarsModule extends QuarkModule {
 
 	private static BlockState getGenerationBarBlockState(ServerLevelAccessor accessor, BlockState current, StructureHolder structure) {
 		if(staticEnabled && generateInNetherFortress && current.getBlock() == Blocks.NETHER_BRICK_FENCE) {
-			Optional<ResourceKey<ConfiguredStructureFeature<?, ?>>> res = accessor.registryAccess().registry(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).flatMap(
+			Optional<ResourceKey<Structure>> res = accessor.registryAccess().registry(Registry.STRUCTURE_REGISTRY).flatMap(
 					(it) -> it.getResourceKey(structure.currentStructure));
 			if (res.isEmpty())
 				return null; // no change

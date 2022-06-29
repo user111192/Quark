@@ -1,6 +1,15 @@
 package vazkii.quark.content.tools.module;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Lists;
+
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -8,14 +17,19 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
 import net.minecraft.world.inventory.MerchantContainer;
 import net.minecraft.world.inventory.MerchantMenu;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
@@ -50,10 +64,6 @@ import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.tools.item.AncientTomeItem;
 import vazkii.quark.content.tools.loot.EnchantTome;
 import vazkii.quark.content.world.module.MonsterBoxModule;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 @LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
 public class AncientTomesModule extends QuarkModule {
@@ -240,7 +250,7 @@ public class AncientTomesModule extends QuarkModule {
 						int cost = normalUpgradeCost;
 
 						if(name != null && !name.isEmpty() && (!out.hasCustomHoverName() || !out.getHoverName().getString().equals(name))) {
-							out.setHoverName(new TextComponent(name));
+							out.setHoverName(Component.literal(name));
 							cost++;
 						}
 
@@ -329,9 +339,11 @@ public class AncientTomesModule extends QuarkModule {
 		};
 
 		List<String> strings = new ArrayList<>();
-		for(Enchantment e : enchants)
-			if(e != null && e.getRegistryName() != null)
-				strings.add(e.getRegistryName().toString());
+		for(Enchantment e : enchants) {
+			ResourceLocation regname = Registry.ENCHANTMENT.getKey(e);
+			if(e != null && regname != null)
+				strings.add(regname.toString());
+		}
 
 		return strings;
 	}
@@ -422,7 +434,7 @@ public class AncientTomesModule extends QuarkModule {
 	private class ExchangeAncientTomesTrade implements ItemListing {
 		@Nullable
 		@Override
-		public MerchantOffer getOffer(@Nonnull Entity trader, @Nonnull Random random) {
+		public MerchantOffer getOffer(@Nonnull Entity trader, @Nonnull RandomSource random) {
 			if (validEnchants.isEmpty() || !enabled)
 				return null;
 			Enchantment target = validEnchants.get(random.nextInt(validEnchants.size()));

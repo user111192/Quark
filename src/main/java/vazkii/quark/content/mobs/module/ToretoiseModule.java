@@ -5,13 +5,15 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.Registry;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.Tags;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.module.LoadModule;
@@ -46,7 +48,7 @@ public class ToretoiseModule extends QuarkModule {
 	public static DimensionConfig dimensions = DimensionConfig.overworld(false);
 
 	@Config
-	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(120, 2, 4, CompoundBiomeConfig.fromBiomeTypes(true, BiomeDictionary.Type.VOID, BiomeDictionary.Type.NETHER, BiomeDictionary.Type.END));
+	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(120, 2, 4, CompoundBiomeConfig.fromBiomeTags(true, Tags.Biomes.IS_VOID, BiomeTags.IS_NETHER, BiomeTags.IS_END));
 
 	@Override
 	public void register() {
@@ -57,7 +59,7 @@ public class ToretoiseModule extends QuarkModule {
 				.setCustomClientFactory((spawnEntity, world) -> new Toretoise(toretoiseType, world))
 				.build("toretoise");
 
-		RegistryHelper.register(toretoiseType, "toretoise");
+		RegistryHelper.register(toretoiseType, "toretoise", Registry.ENTITY_TYPE_REGISTRY);
 
 		EntitySpawnHandler.registerSpawn(this, toretoiseType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Toretoise::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(toretoiseType, 0x55413b, 0x383237, spawnConfig);

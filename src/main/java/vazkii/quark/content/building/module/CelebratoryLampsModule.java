@@ -1,7 +1,7 @@
 package vazkii.quark.content.building.module;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +38,7 @@ public class CelebratoryLampsModule extends QuarkModule {
 			ItemStack stack = event.getItemStack();
 			Item item = stack.getItem();
 			if(item == stone_lamp.asItem() || item == stone_brick_lamp.asItem())
-				event.getToolTip().add(1, new TranslatableComponent("quark.misc.celebration").withStyle(ChatFormatting.GRAY));
+				event.getToolTip().add(1, Component.translatable("quark.misc.celebration").withStyle(ChatFormatting.GRAY));
 		}
 	}
 	

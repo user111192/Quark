@@ -1,5 +1,7 @@
 package vazkii.quark.content.building.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -22,12 +24,11 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
 
 public class WoodPostBlock extends QuarkBlock implements SimpleWaterloggedBlock {
 
@@ -48,7 +49,8 @@ public class WoodPostBlock extends QuarkBlock implements SimpleWaterloggedBlock 
 	};
 
 	public WoodPostBlock(QuarkModule module, Block parent, String prefix, boolean nether) {
-		super(prefix + parent.getRegistryName().getPath().replace("_fence", "_post"), module, CreativeModeTab.TAB_BUILDING_BLOCKS,
+		super(IQuarkBlock.inherit(parent, s -> prefix + s.replace("_fence", "_post")), 
+				module, CreativeModeTab.TAB_BUILDING_BLOCKS,
 				Properties.copy(parent).sound(nether ? SoundType.STEM : SoundType.WOOD));
 
 		BlockState state = stateDefinition.any().setValue(WATERLOGGED, false).setValue(AXIS, Axis.Y);

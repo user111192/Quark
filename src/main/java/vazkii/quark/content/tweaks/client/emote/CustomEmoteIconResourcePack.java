@@ -123,4 +123,6 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 	}
 
 
+
+
 }

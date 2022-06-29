@@ -15,6 +15,7 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.resources.sounds.TickableSoundInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
@@ -53,7 +54,7 @@ public class EmoteSound extends AbstractSoundInstance implements TickableSoundIn
 	}
 
 	public EmoteSound(Player player, EmoteTemplate template, ResourceLocation sound, float volume, float pitch, boolean repeating, boolean endWithSequence) {
-		super(sound, SoundSource.PLAYERS);
+		super(sound, SoundSource.PLAYERS, SoundInstance.createUnseededRandom());
 		this.player = new WeakReference<>(player);
 		this.template = template;
 		this.endWithSequence = endWithSequence;

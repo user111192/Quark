@@ -2,6 +2,7 @@ package vazkii.quark.content.building.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.BlockItem;
@@ -36,7 +37,7 @@ public class StoolsModule extends QuarkModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new Stool(stoolEntity, world))
 				.build("stool");
-		RegistryHelper.register(stoolEntity, "stool");
+		RegistryHelper.register(stoolEntity, "stool", Registry.ENTITY_TYPE_REGISTRY);
 	}
 
 	@SubscribeEvent

@@ -1,19 +1,5 @@
 package vazkii.quark.content.client.resources;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.util.profiling.ProfilerFiller;
-import org.apache.logging.log4j.Logger;
-import vazkii.quark.base.Quark;
-import vazkii.quark.content.client.tooltip.AttributeTooltips;
-
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,6 +7,23 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nonnull;
+
+import org.apache.logging.log4j.Logger;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.profiling.ProfilerFiller;
+import vazkii.quark.base.Quark;
+import vazkii.quark.content.client.tooltip.AttributeTooltips;
 
 public class AttributeTooltipManager extends SimplePreparableReloadListener<Map<String, AttributeIconEntry>> {
 	private static final Gson GSON = new GsonBuilder()
@@ -36,11 +39,11 @@ public class AttributeTooltipManager extends SimplePreparableReloadListener<Map<
 		Map<String, AttributeIconEntry> tooltips = new HashMap<>();
 		profiler.startTick();
 		try {
-			for (Resource resource : manager.getResources(new ResourceLocation("quark", "attribute_tooltips.json"))) {
-				profiler.push(resource.getSourceName());
+			for (Resource resource : manager.getResourceStack(new ResourceLocation("quark", "attribute_tooltips.json"))) {
+				profiler.push(resource.sourcePackId());
 
 				try {
-					InputStream stream = resource.getInputStream();
+					InputStream stream = resource.open();
 
 					try {
 						Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
@@ -81,7 +84,7 @@ public class AttributeTooltipManager extends SimplePreparableReloadListener<Map<
 						stream.close();
 					}
 				} catch (RuntimeException err) {
-					LOGGER.warn("Invalid {} in resourcepack: '{}'", "attribute_tooltips.json", resource.getSourceName(), err);
+					LOGGER.warn("Invalid {} in resourcepack: '{}'", "attribute_tooltips.json", resource.sourcePackId(), err);
 				}
 
 				profiler.pop();

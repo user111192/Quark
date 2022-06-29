@@ -1,24 +1,24 @@
 package vazkii.quark.content.tweaks.client.screen.widgets;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.content.tweaks.client.emote.EmoteDescriptor;
 import vazkii.quark.content.tweaks.module.EmotesModule;
-
-import javax.annotation.Nonnull;
 
 public class EmoteButton extends TranslucentButton {
 
 	public final EmoteDescriptor desc;
 
 	public EmoteButton(int x, int y, EmoteDescriptor desc, OnPress onPress) {
-		super(x, y, EmotesModule.EMOTE_BUTTON_WIDTH - 1, EmotesModule.EMOTE_BUTTON_WIDTH - 1, new TextComponent(""), onPress);
+		super(x, y, EmotesModule.EMOTE_BUTTON_WIDTH - 1, EmotesModule.EMOTE_BUTTON_WIDTH - 1, Component.literal(""), onPress);
 		this.desc = desc;
 	}
 

@@ -10,16 +10,23 @@
  */
 package vazkii.quark.content.management.module;
 
+import java.util.List;
+
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.server.players.PlayerList;
@@ -42,8 +49,6 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.LinkItemMessage;
-
-import java.util.List;
 
 @LoadModule(category = ModuleCategory.MANAGEMENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class ItemSharingModule extends QuarkModule {
@@ -105,7 +110,7 @@ public class ItemSharingModule extends QuarkModule {
 
 		if(!item.isEmpty() && player instanceof ServerPlayer serverPlayer) {
 			Component comp = item.getDisplayName();
-			Component fullComp = new TranslatableComponent("chat.type.text", player.getDisplayName(), comp);
+			Component fullComp = Component.translatable("chat.type.text", player.getDisplayName(), comp);
 
 			PlayerList players = serverPlayer.server.getPlayerList();
 
@@ -118,7 +123,7 @@ public class ItemSharingModule extends QuarkModule {
 				threshold += 20;
 
 				if (threshold > 200 && !players.isOp(player.getGameProfile()))
-					handler.onDisconnect(new TranslatableComponent("disconnect.spam"));
+					handler.onDisconnect(Component.translatable("disconnect.spam"));
 
 				handler.chatSpamTickCount = threshold;
 			}
@@ -138,7 +143,7 @@ public class ItemSharingModule extends QuarkModule {
 			component.withStyle(style);
 		}
 
-		MutableComponent out = new TextComponent("   ");
+		MutableComponent out = Component.literal("   ");
 		out.setStyle(style);
 		return out.append(component);
 	}

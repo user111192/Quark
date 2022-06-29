@@ -1,8 +1,13 @@
 package vazkii.quark.base.world.generator;
 
+import java.util.BitSet;
+import java.util.function.BooleanSupplier;
+import java.util.function.Predicate;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -11,11 +16,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import vazkii.quark.base.module.config.type.DimensionConfig;
 import vazkii.quark.base.module.config.type.OrePocketConfig;
-
-import java.util.BitSet;
-import java.util.Random;
-import java.util.function.BooleanSupplier;
-import java.util.function.Predicate;
 
 public class OreGenerator extends Generator {
 
@@ -57,7 +57,7 @@ public class OreGenerator extends Generator {
 	}
 
 	@Override
-	public void generateChunk(WorldGenRegion worldIn, ChunkGenerator generator, Random rand, BlockPos pos) {
+	public void generateChunk(WorldGenRegion worldIn, ChunkGenerator generator, RandomSource rand, BlockPos pos) {
 		oreConfig.forEach(pos, rand, npos -> place(worldIn, rand, npos));
 	}
 
@@ -66,7 +66,7 @@ public class OreGenerator extends Generator {
 	// VENTURE ONLY IF YOU'RE BRAVER THAN ME
 	// =============================================================================================
 
-	public boolean place(LevelAccessor worldIn, Random rand, BlockPos pos) {
+	public boolean place(LevelAccessor worldIn, RandomSource rand, BlockPos pos) {
 		float angle = rand.nextFloat() * (float)Math.PI;
 		float factor = (float)oreConfig.clusterSize / 8.0F;
 		int minFactor = Mth.ceil(((float)oreConfig.clusterSize / 16.0F * 2.0F + 1.0F) / 2.0F);
@@ -95,7 +95,7 @@ public class OreGenerator extends Generator {
 		return false;
 	}
 
-	protected boolean doPlace(LevelAccessor worldIn, Random random, double x1, double x2, double z1, double z2, double y1, double y2, int maxX, int maxY, int maxZ, int searchSize, int secondarySearchSize) {
+	protected boolean doPlace(LevelAccessor worldIn, RandomSource random, double x1, double x2, double z1, double z2, double y1, double y2, int maxX, int maxY, int maxZ, int searchSize, int secondarySearchSize) {
 		int blocksPlaced = 0;
 		BitSet bitset = new BitSet(searchSize * secondarySearchSize * searchSize);
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();

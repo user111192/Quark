@@ -1,6 +1,7 @@
 package vazkii.quark.content.tools.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.Registry;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -68,7 +69,7 @@ public class PickarangModule extends QuarkModule {
 				.updateInterval(10) // update interval
 				.setCustomClientFactory((spawnEntity, world) -> new Pickarang(pickarangType, world))
 				.build("pickarang");
-		RegistryHelper.register(pickarangType, "pickarang");
+		RegistryHelper.register(pickarangType, "pickarang", Registry.ENTITY_TYPE_REGISTRY);
 
 		pickarang = new PickarangItem("pickarang", this, propertiesFor(durability, false), false);
 		flamarang = new PickarangItem("flamerang", this, propertiesFor(netheriteDurability, true), true);

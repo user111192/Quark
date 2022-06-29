@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
+import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -49,7 +50,7 @@ public class LeafCarpetModule extends QuarkModule {
 	}
 
 	private LeafCarpetBlock carpetBlock(Block base) {
-		LeafCarpetBlock carpet = new LeafCarpetBlock(base.getRegistryName().getPath().replaceAll("_leaves", ""), base, this);
+		LeafCarpetBlock carpet = new LeafCarpetBlock(IQuarkBlock.inherit(base, s -> s.replaceAll("_leaves", "_leaf_carpet")), base, this);
 		carpets.add(carpet);
 		return carpet;
 	}

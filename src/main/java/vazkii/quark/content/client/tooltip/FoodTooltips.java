@@ -1,9 +1,14 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -13,7 +18,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
@@ -24,9 +28,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 public class FoodTooltips {
 
@@ -68,7 +69,7 @@ public class FoodTooltips {
 
 				String prefix = isPoison(food) ? "quark.misc.bad_saturation" : "quark.misc.saturation";
 
-				Component saturationText = new TranslatableComponent(prefix + saturationSimplified).withStyle(ChatFormatting.GRAY);
+				Component saturationText = Component.translatable(prefix + saturationSimplified).withStyle(ChatFormatting.GRAY);
 				List<Either<FormattedText, TooltipComponent>> tooltip = event.getTooltipElements();
 
 				if (tooltip.isEmpty()) {

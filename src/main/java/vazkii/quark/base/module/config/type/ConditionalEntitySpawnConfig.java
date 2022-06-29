@@ -10,7 +10,7 @@ public class ConditionalEntitySpawnConfig extends EntitySpawnConfig {
 
 	public final String flag;
 	
-	public ConditionalEntitySpawnConfig(String flag, int spawnWeight, int minGroupSize, int maxGroupSize, BiomeTypeConfig biomes) {
+	public ConditionalEntitySpawnConfig(String flag, int spawnWeight, int minGroupSize, int maxGroupSize, BiomeTagConfig biomes) {
 		super(spawnWeight, minGroupSize, maxGroupSize, biomes);
 		this.flag = flag;
 	}

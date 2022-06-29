@@ -13,7 +13,7 @@ public class BigStoneClusterConfig extends ClusterSizeConfig {
 	public boolean enabled = true;
 
 	public BigStoneClusterConfig(BiomeDictionary.Type... types) {
-		this(DimensionConfig.overworld(false), 14, 9, 4, 20, 80, CompoundBiomeConfig.fromBiomeTypes(false, types));
+		this(DimensionConfig.overworld(false), 14, 9, 4, 20, 80, CompoundBiomeConfig.fromBiomeTags(false, types));
 	}
 
 	public BigStoneClusterConfig(DimensionConfig dimensions, int clusterSize, int sizeVariation, int rarity, int minYLevel, int maxYLevel, IBiomeConfig biomes) {

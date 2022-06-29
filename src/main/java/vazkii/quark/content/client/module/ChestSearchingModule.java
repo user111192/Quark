@@ -1,7 +1,16 @@
 package vazkii.quark.content.client.module;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiPredicate;
+import java.util.regex.Pattern;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
@@ -10,9 +19,9 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
@@ -39,6 +48,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 import vazkii.arl.util.ItemNBTHelper;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.api.IQuarkButtonAllowed;
 import vazkii.quark.base.client.handler.InventoryButtonHandler;
 import vazkii.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
@@ -52,10 +62,6 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.inputtable.RGBAColorConfig;
 import vazkii.quark.content.management.client.screen.widgets.MiniInventoryButton;
-
-import java.util.*;
-import java.util.function.BiPredicate;
-import java.util.regex.Pattern;
 
 @LoadModule(category = ModuleCategory.CLIENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class ChestSearchingModule extends QuarkModule {
@@ -91,7 +97,7 @@ public class ChestSearchingModule extends QuarkModule {
 				(gui instanceof IQuarkButtonAllowed || GeneralConfig.isScreenAllowed(gui))) {
 			Minecraft mc = gui.getMinecraft();
 			if(InventoryTransferHandler.accepts(chest.getMenu(), mc.player)) {
-				searchBar = new EditBox(mc.font, 18, 6, 117, 10, new TextComponent(text));
+				searchBar = new EditBox(mc.font, 18, 6, 117, 10, Component.literal(text));
 
 				searchBar.setValue(text);
 				searchBar.setMaxLength(50);
@@ -211,7 +217,7 @@ public class ChestSearchingModule extends QuarkModule {
 			return false;
 
 		Item item = stack.getItem();
-		ResourceLocation res = item.getRegistryName();
+		ResourceLocation res = Registry.ITEM.getKey(item);
 		if(SimilarBlockTypeHandler.isShulkerBox(res)) {
 			CompoundTag cmp = ItemNBTHelper.getCompound(stack, "BlockEntityTag", true);
 			if (cmp != null) {
@@ -280,7 +286,7 @@ public class ChestSearchingModule extends QuarkModule {
 		//		if(search.matches("favou?rites?") && FavoriteItems.isItemFavorited(stack))
 		//			return true;
 
-		ResourceLocation itemName = item.getRegistryName();
+		ResourceLocation itemName = Registry.ITEM.getKey(item);
 		Optional<? extends ModContainer> mod = ModList.get().getModContainerById(itemName.getPath());
 		if(mod.isPresent() && matcher.test(mod.orElse(null).getModInfo().getDisplayName().toLowerCase(Locale.ROOT), search))
 			return true;

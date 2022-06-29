@@ -1,6 +1,10 @@
 package vazkii.quark.content.mobs.module;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +16,7 @@ import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RegistryHelper;
@@ -31,9 +35,6 @@ import vazkii.quark.content.mobs.client.render.entity.WraithRenderer;
 import vazkii.quark.content.mobs.entity.SoulBead;
 import vazkii.quark.content.mobs.entity.Wraith;
 import vazkii.quark.content.mobs.item.SoulBeadItem;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @LoadModule(category = ModuleCategory.MOBS)
 public class WraithModule extends QuarkModule {
@@ -70,7 +71,7 @@ public class WraithModule extends QuarkModule {
 
 	public static TagKey<Block> wraithSpawnableTag;
 
-	public static TagKey<ConfiguredStructureFeature<?, ?>> soulBeadTargetTag;
+	public static TagKey<Structure> soulBeadTargetTag;
 
 	public static List<String> validWraithSounds;
 
@@ -84,7 +85,7 @@ public class WraithModule extends QuarkModule {
 				.fireImmune()
 				.setCustomClientFactory((spawnEntity, world) -> new Wraith(wraithType, world))
 				.build("wraith");
-		RegistryHelper.register(wraithType, "wraith");
+		RegistryHelper.register(wraithType, "wraith", Registry.ENTITY_TYPE_REGISTRY);
 
 		soulBeadType = EntityType.Builder.of(SoulBead::new, MobCategory.MISC)
 				.sized(0F, 0F)
@@ -93,7 +94,7 @@ public class WraithModule extends QuarkModule {
 				.fireImmune()
 				.setCustomClientFactory((spawnEntity, world) -> new SoulBead(soulBeadType, world))
 				.build("soul_bead");
-		RegistryHelper.register(soulBeadType, "soul_bead");
+		RegistryHelper.register(soulBeadType, "soul_bead", Registry.ENTITY_TYPE_REGISTRY);
 
 		EntitySpawnHandler.registerSpawn(this, wraithType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(wraithType, 0xececec, 0xbdbdbd, spawnConfig);
@@ -104,7 +105,7 @@ public class WraithModule extends QuarkModule {
 	@Override
 	public void setup() {
 		wraithSpawnableTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "wraith_spawnable"));
-		soulBeadTargetTag = TagKey.create(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, new ResourceLocation(Quark.MOD_ID, "soul_bead_target"));
+		soulBeadTargetTag = TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(Quark.MOD_ID, "soul_bead_target"));
 	}
 
 	@Override

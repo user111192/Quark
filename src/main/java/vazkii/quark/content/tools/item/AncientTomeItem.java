@@ -1,10 +1,18 @@
 package vazkii.quark.content.tools.item;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.Level;
@@ -15,9 +23,6 @@ import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
 import vazkii.quark.content.tools.module.AncientTomesModule;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 public class AncientTomeItem extends QuarkItem {
 
@@ -65,7 +70,7 @@ public class AncientTomeItem extends QuarkItem {
 	}
 
 	public static Component getFullTooltipText(Enchantment ench) {
-		return new TranslatableComponent("quark.misc.ancient_tome_tooltip", new TranslatableComponent(ench.getDescriptionId()), new TranslatableComponent("enchantment.level." + (ench.getMaxLevel() + 1))).withStyle(ChatFormatting.GRAY);
+		return Component.translatable("quark.misc.ancient_tome_tooltip", Component.translatable(ench.getDescriptionId()), Component.translatable("enchantment.level." + (ench.getMaxLevel() + 1))).withStyle(ChatFormatting.GRAY);
 	}
 
 	@Override

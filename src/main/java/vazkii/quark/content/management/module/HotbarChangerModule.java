@@ -90,14 +90,14 @@ public class HotbarChangerModule extends QuarkModule {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public void hudPre(RenderGameOverlayEvent.PreLayer event) {
-		float shift = -getRealHeight(event.getPartialTicks()) + 22;
+		float shift = -getRealHeight(event.getPartialTick()) + 22;
 		if(shift < 0) {
 			IIngameOverlay overlay = event.getOverlay();
 			if(overlay == ForgeIngameGui.PLAYER_HEALTH_ELEMENT) {
-				event.getMatrixStack().translate(0, shift, 0);
+				event.getPoseStack().translate(0, shift, 0);
 				shifting = true;
 			} else if(shifting && (event.getType() == ElementType.DEBUG || overlay == ForgeIngameGui.POTION_ICONS_ELEMENT)) {
-				event.getMatrixStack().translate(0, -shift, 0);
+				event.getPoseStack().translate(0, -shift, 0);
 				shifting = false;
 			}
 		}
@@ -111,11 +111,11 @@ public class HotbarChangerModule extends QuarkModule {
 
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
-		PoseStack matrix = event.getMatrixStack();
+		PoseStack matrix = event.getPoseStack();
 
 		if(event.getType() == ElementType.ALL) {
 			Window res = event.getWindow();
-			float realHeight = getRealHeight(event.getPartialTicks());
+			float realHeight = getRealHeight(event.getPartialTick());
 			float xStart = res.getGuiScaledWidth() / 2f - 91;
 			float yStart = res.getGuiScaledHeight() - realHeight;
 

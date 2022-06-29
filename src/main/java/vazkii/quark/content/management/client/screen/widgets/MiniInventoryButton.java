@@ -1,24 +1,25 @@
 package vazkii.quark.content.management.client.screen.widgets;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.MiscUtil;
-
-import javax.annotation.Nonnull;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 
 public class MiniInventoryButton extends Button {
 
@@ -30,7 +31,7 @@ public class MiniInventoryButton extends Button {
 	private BooleanSupplier shiftTexture = () -> false;
 
 	public MiniInventoryButton(AbstractContainerScreen<?> parent, int type, int x, int y, Consumer<List<String>> tooltip, OnPress onPress) {
-		super(parent.getGuiLeft() + x, parent.getGuiTop() + y, 10, 10, new TextComponent(""), onPress);
+		super(parent.getGuiLeft() + x, parent.getGuiTop() + y, 10, 10, Component.literal(""), onPress);
 		this.parent = parent;
 		this.type = type;
 		this.tooltip = tooltip;
@@ -79,7 +80,7 @@ public class MiniInventoryButton extends Button {
 	@Override
 	protected MutableComponent createNarrationMessage() {
 		List<String> tooltip = getTooltip();
-		return tooltip.isEmpty() ? new TextComponent("") : new TranslatableComponent("gui.narrate.button", getTooltip().get(0));
+		return tooltip.isEmpty() ? Component.literal("") : Component.translatable("gui.narrate.button", getTooltip().get(0));
 	}
 
 	public List<String> getTooltip() {

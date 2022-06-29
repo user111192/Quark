@@ -1,6 +1,9 @@
 package vazkii.quark.content.management.module;
 
+import java.util.List;
+
 import com.mojang.datafixers.util.Either;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -8,7 +11,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -16,7 +19,12 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ElytraItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -39,8 +47,6 @@ import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
-
-import java.util.List;
 
 @LoadModule(category = ModuleCategory.MANAGEMENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class ExpandedItemInteractionsModule extends QuarkModule {
@@ -102,9 +108,9 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 					int x = event.getMouseX();
 					int y = event.getMouseY();
 					if (enableLavaInteraction && canTrashItem(underStack, held, under, mc.player)) {
-						gui.renderComponentTooltip(event.getPoseStack(), List.of(new TranslatableComponent("quark.misc.trash_item").withStyle(ChatFormatting.RED)), x, y);
+						gui.renderComponentTooltip(event.getPoseStack(), List.of(Component.translatable("quark.misc.trash_item").withStyle(ChatFormatting.RED)), x, y);
 					} else if (enableShulkerBoxInteraction && tryAddToShulkerBox(mc.player, underStack, held, under, true, true, true) != null) {
-						gui.renderComponentTooltip(event.getPoseStack(), List.of(new TranslatableComponent(
+						gui.renderComponentTooltip(event.getPoseStack(), List.of(Component.translatable(
 							 SimilarBlockTypeHandler.isShulkerBox(held) ? "quark.misc.merge_shulker_box" : "quark.misc.insert_shulker_box"
 						).withStyle(ChatFormatting.YELLOW)), x, y, underStack);
 					} else if (enableShulkerBoxInteraction && SimilarBlockTypeHandler.isShulkerBox(underStack)) {
@@ -133,7 +139,7 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 				ItemStack underStack = under.getItem();
 
 				if (event.getItemStack() == underStack && armorOverride(underStack, ItemStack.EMPTY, under, ClickAction.SECONDARY, mc.player, true)) {
-					event.getTooltipElements().add(Either.left(new TranslatableComponent("quark.misc.equip_armor").withStyle(ChatFormatting.YELLOW)));
+					event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.equip_armor").withStyle(ChatFormatting.YELLOW)));
 				}
 			}
 

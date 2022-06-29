@@ -1,5 +1,7 @@
 package vazkii.quark.integration.jei;
 
+import javax.annotation.Nonnull;
+
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -16,8 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import vazkii.quark.addons.oddities.module.MatrixEnchantingModule;
 import vazkii.quark.base.Quark;
 
-import javax.annotation.Nonnull;
-
 public class InfluenceCategory implements IRecipeCategory<InfluenceEntry> {
 
 	public static final ResourceLocation UID = new ResourceLocation(Quark.MOD_ID, "influence");
@@ -29,9 +29,9 @@ public class InfluenceCategory implements IRecipeCategory<InfluenceEntry> {
 	private final Component localizedName;
 
 	public InfluenceCategory(IGuiHelper guiHelper) {
-		this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(MatrixEnchantingModule.matrixEnchanter));
+		this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(MatrixEnchantingModule.matrixEnchanter));
 		this.background = guiHelper.drawableBuilder(TEXTURE, 0, 0, 72, 36).setTextureSize(128, 128).build();
-		this.localizedName = new TranslatableComponent("quark.jei.influence");
+		this.localizedName = Component.translatable("quark.jei.influence");
 	}
 
 	@Nonnull

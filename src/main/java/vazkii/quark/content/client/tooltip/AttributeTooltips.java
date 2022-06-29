@@ -1,11 +1,20 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -17,12 +26,16 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.ai.attributes.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -37,15 +50,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
+import vazkii.quark.content.client.hax.PseudoAccessorItemStack;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 import vazkii.quark.content.client.resources.AttributeDisplayType;
 import vazkii.quark.content.client.resources.AttributeIconEntry;
 import vazkii.quark.content.client.resources.AttributeSlot;
-import vazkii.quark.content.client.hax.PseudoAccessorItemStack;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 /**
  * @author WireSegal
@@ -72,21 +81,21 @@ public class AttributeTooltips {
 	private static Component format(Attribute attribute, double value, AttributeDisplayType displayType) {
 		switch (displayType) {
 			case DIFFERENCE -> {
-				return new TextComponent((value > 0 ? "+" : "") + ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(value))
+				return Component.literal((value > 0 ? "+" : "") + ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(value))
 					 .withStyle(value < 0 ? ChatFormatting.RED : ChatFormatting.WHITE);
 			}
 			case PERCENTAGE -> {
-				return new TextComponent((value > 0 ? "+" : "") + ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(value * 100) + "%")
+				return Component.literal((value > 0 ? "+" : "") + ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(value * 100) + "%")
 					 .withStyle(value < 0 ? ChatFormatting.RED : ChatFormatting.WHITE);
 			}
 			case MULTIPLIER -> {
 				AttributeSupplier supplier = DefaultAttributes.getSupplier(EntityType.PLAYER);
 				double scaledValue = value / supplier.getBaseValue(attribute);
-				return new TextComponent(ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(scaledValue) + "x")
+				return Component.literal(ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(scaledValue) + "x")
 					 .withStyle(scaledValue < 1 ? ChatFormatting.RED : ChatFormatting.WHITE);
 			}
 			default -> {
-				return new TextComponent(ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(value))
+				return Component.literal(ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(value))
 					 .withStyle(value < 0 ? ChatFormatting.RED : ChatFormatting.WHITE);
 			}
 		}
@@ -167,13 +176,13 @@ public class AttributeTooltips {
 				double attributeValue = getAttribute(mc.player, slot, stack, slotAttributes, attr);
 				if (attributeValue != 0) {
 					if (!attributeTooltips.containsKey(slot))
-						attributeTooltips.put(slot, new TextComponent(""));
+						attributeTooltips.put(slot, Component.literal(""));
 					attributeTooltips.get(slot).append(format(attr, attributeValue, entry.displayTypes().get(slot)).getString()).append("/");
 				}
 			} else if (!anyInvalid) {
 				anyInvalid = true;
 				if (!attributeTooltips.containsKey(slot))
-					attributeTooltips.put(slot, new TextComponent(""));
+					attributeTooltips.put(slot, Component.literal(""));
 				attributeTooltips.get(slot).append("[+]");
 			}
 		}

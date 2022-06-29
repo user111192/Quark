@@ -1,9 +1,11 @@
 package vazkii.quark.integration.jei;
 
+import java.util.List;
+
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
@@ -14,8 +16,6 @@ import net.minecraft.world.level.block.Block;
 import vazkii.quark.addons.oddities.util.Influence;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
 import vazkii.quark.content.tools.module.ColorRunesModule;
-
-import java.util.List;
 
 public class InfluenceEntry implements IRecipeCategoryExtension {
 
@@ -54,7 +54,7 @@ public class InfluenceEntry implements IRecipeCategoryExtension {
 			if (!EnchantmentsBegoneModule.shouldBegone(enchantment)) {
 				if (stack.isEmpty())
 					stack = ColorRunesModule.withRune(new ItemStack(Items.ENCHANTED_BOOK), runeColor)
-						 .setHoverName(new TranslatableComponent(locKey).withStyle(chatColor));
+						 .setHoverName(Component.translatable(locKey).withStyle(chatColor));
 				EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(enchantment, enchantment.getMaxLevel()));
 			}
 		}

@@ -1,9 +1,19 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.datafixers.util.Either;
 import com.mojang.math.Matrix4f;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
@@ -11,8 +21,8 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -22,9 +32,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 public class MapTooltips {
 
@@ -39,7 +46,7 @@ public class MapTooltips {
 			if(!ImprovedTooltipsModule.mapRequireShift || Screen.hasShiftDown())
 				tooltip.add(1, Either.right(new MapComponent(stack)));
 			else if(ImprovedTooltipsModule.mapRequireShift && !Screen.hasShiftDown())
-				tooltip.add(1, Either.left(new TranslatableComponent("quark.misc.map_shift")));
+				tooltip.add(1, Either.left(Component.translatable("quark.misc.map_shift")));
 		}
 	}
 
@@ -76,8 +83,7 @@ public class MapTooltips {
 			buffer.vertex(mat, size, size, 0.0F).uv(1.0F, 1.0f).endVertex();
 			buffer.vertex(mat, size, -pad, 0.0F).uv(1.0F, 0.0F).endVertex();
 			buffer.vertex(mat, -pad, -pad, 0.0F).uv(0.0F, 0.0F).endVertex();
-			buffer.end();
-			BufferUploader.end(buffer);
+			BufferUploader.draw(buffer.end());
 
 			MultiBufferSource.BufferSource immediateBuffer = MultiBufferSource.immediate(buffer);
 			mc.gameRenderer.getMapRenderer().render(pose, immediateBuffer, mapID, mapdata, true, 240);

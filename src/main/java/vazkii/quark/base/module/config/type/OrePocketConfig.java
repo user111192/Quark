@@ -1,9 +1,9 @@
 package vazkii.quark.base.module.config.type;
 
-import java.util.Random;
 import java.util.function.Consumer;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import vazkii.quark.base.module.config.Config;
 
 public class OrePocketConfig extends AbstractConfigType {
@@ -33,11 +33,11 @@ public class OrePocketConfig extends AbstractConfigType {
 		this.clusterCount = clusterCount;
 	}
 
-	public int getRandomHeight(Random rand) {
+	public int getRandomHeight(RandomSource rand) {
 		return minHeight + rand.nextInt(maxHeight - minHeight);
 	}
 
-	public void forEach(BlockPos chunkCorner, Random rand, Consumer<BlockPos> callback) {
+	public void forEach(BlockPos chunkCorner, RandomSource rand, Consumer<BlockPos> callback) {
 		if(clusterCount < 1 && clusterCount > 0)
 			clusterCount = (rand.nextDouble() < clusterCount ? 1 : 0);
 		

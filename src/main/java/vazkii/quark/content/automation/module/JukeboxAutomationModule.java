@@ -124,7 +124,7 @@ public class JukeboxAutomationModule extends QuarkModule {
 				JukeboxBlockEntity jukebox = (JukeboxBlockEntity) world.getBlockEntity(pos);
 				if (jukebox != null) {
 					ItemStack currentRecord = jukebox.getRecord();
-					((JukeboxBlock) state.getBlock()).setRecord(world, pos, state, stack);
+					((JukeboxBlock) state.getBlock()).setRecord(null, world, pos, state, stack);
 					world.levelEvent(null, 1010, pos, Item.getId(stack.getItem()));
 
 					return currentRecord;

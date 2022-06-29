@@ -1,15 +1,17 @@
 package vazkii.quark.base.world;
 
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
-
-import javax.annotation.Nonnull;
-import java.util.Random;
-import java.util.stream.Stream;
 
 public class ChunkCornerPlacement extends PlacementModifier {
 
@@ -18,7 +20,7 @@ public class ChunkCornerPlacement extends PlacementModifier {
 
 	@Nonnull
 	@Override // getPositions
-	public Stream<BlockPos> getPositions(@Nonnull PlacementContext wdc, @Nonnull Random random, @Nonnull BlockPos pos) {
+	public Stream<BlockPos> getPositions(@Nonnull PlacementContext wdc, @Nonnull RandomSource random, @Nonnull BlockPos pos) {
 		return ImmutableSet.of(pos).stream();
 	}
 

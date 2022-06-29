@@ -1,9 +1,17 @@
 package vazkii.quark.content.tweaks.module;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.UUID;
+
+import org.lwjgl.opengl.GL11;
+
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -14,8 +22,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.KeybindComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -37,7 +43,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.lwjgl.opengl.GL11;
 import vazkii.arl.network.MessageSerializer;
 import vazkii.quark.api.IRotationLockable;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
@@ -50,11 +55,6 @@ import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.SetLockProfileMessage;
 import vazkii.quark.content.building.block.VerticalSlabBlock;
 import vazkii.quark.content.building.block.VerticalSlabBlock.VerticalSlabType;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
 
 @LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
 public class LockRotationModule extends QuarkModule {
@@ -199,7 +199,7 @@ public class LockRotationModule extends QuarkModule {
 	@OnlyIn(Dist.CLIENT)
 	public void onHUDRender(RenderGameOverlayEvent.Post event) {
 		if(event.getType() == ElementType.ALL && clientProfile != null) {
-			PoseStack matrix = event.getMatrixStack();
+			PoseStack matrix = event.getPoseStack();
 
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -228,9 +228,9 @@ public class LockRotationModule extends QuarkModule {
 		else {
 			boolean locked = player.getPersistentData().getBoolean(TAG_LOCKED_ONCE);
 			if(!locked) {
-				Component keybind = new KeybindComponent("quark.keybind.lock_rotation").withStyle(ChatFormatting.AQUA);
-				Component text = new TranslatableComponent("quark.misc.rotation_lock", keybind);
-				player.sendMessage(text, UUID.randomUUID());
+				Component keybind = Component.keybind("quark.keybind.lock_rotation").withStyle(ChatFormatting.AQUA);
+				Component text = Component.translatable("quark.misc.rotation_lock", keybind);
+				player.sendSystemMessage(text);
 
 				player.getPersistentData().putBoolean(TAG_LOCKED_ONCE, true);
 			}

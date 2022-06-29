@@ -1,8 +1,14 @@
 package vazkii.quark.content.tools.module;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
+import org.lwjgl.glfw.GLFW;
+
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -11,7 +17,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.network.chat.KeybindComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +28,6 @@ import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.RenderTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.lwjgl.glfw.GLFW;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.handler.QuarkSounds;
@@ -31,9 +36,6 @@ import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.experimental.module.OverlayShaderModule;
-
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 @LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class CameraModule extends QuarkModule {
@@ -355,7 +357,7 @@ public class CameraModule extends QuarkModule {
 			text = ChatFormatting.AQUA + I18n.get("quark.camera.header");
 			mc.font.drawShadow(matrix, text, (float) (twidth / 2 - mc.font.width(text) / 2), 6, 0xFFFFFF);
 
-			text = I18n.get("quark.camera.info", new KeybindComponent("quark.keybind.camera_mode").getString());
+			text = I18n.get("quark.camera.info", Component.keybind("quark.keybind.camera_mode").getString());
 			mc.font.drawShadow(matrix, text, (float) (twidth / 2 - mc.font.width(text) / 2), 16, 0xFFFFFF);
 
 			ResourceLocation CAMERA_TEXTURE = new ResourceLocation(Quark.MOD_ID, "textures/misc/camera.png");

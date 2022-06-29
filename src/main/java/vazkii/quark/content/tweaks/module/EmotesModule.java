@@ -1,10 +1,22 @@
 package vazkii.quark.content.tweaks.module;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.function.Consumer;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -13,7 +25,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.RepositorySource;
@@ -37,14 +49,13 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.RequestEmoteMessage;
-import vazkii.quark.content.tweaks.client.emote.*;
+import vazkii.quark.content.tweaks.client.emote.CustomEmoteIconResourcePack;
+import vazkii.quark.content.tweaks.client.emote.EmoteBase;
+import vazkii.quark.content.tweaks.client.emote.EmoteDescriptor;
+import vazkii.quark.content.tweaks.client.emote.EmoteHandler;
+import vazkii.quark.content.tweaks.client.emote.ModelAccessor;
 import vazkii.quark.content.tweaks.client.screen.widgets.EmoteButton;
 import vazkii.quark.content.tweaks.client.screen.widgets.TranslucentButton;
-
-import javax.annotation.Nonnull;
-import java.io.File;
-import java.util.*;
-import java.util.function.Consumer;
 
 @LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class EmotesModule extends QuarkModule {
@@ -213,7 +224,7 @@ public class EmotesModule extends QuarkModule {
 			}
 
 			event.addListener(new TranslucentButton(gui.width - 1 - EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, buttonY, EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, 20,
-					new TranslatableComponent("quark.gui.button.emotes"),
+					Component.translatable("quark.gui.button.emotes"),
 					(b) -> {
 						for(Button bt : emoteButtons)
 							if(bt instanceof EmoteButton) {
@@ -247,7 +258,7 @@ public class EmotesModule extends QuarkModule {
 		if(event.getType() == ElementType.ALL) {
 			Minecraft mc = Minecraft.getInstance();
 			Window res = event.getWindow();
-			PoseStack stack = event.getMatrixStack();
+			PoseStack stack = event.getPoseStack();
 			EmoteBase emote = EmoteHandler.getPlayerEmote(mc.player);
 			if(emote != null && emote.timeDone < emote.totalTime) {
 				ResourceLocation resource = emote.desc.texture;

@@ -1,16 +1,17 @@
 package vazkii.quark.content.building.block;
 
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.block.CustomWeatheringCopper;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
-import java.util.Optional;
-import java.util.Random;
 
 public class WeatheringCopperVerticalSlabBlock extends VerticalSlabBlock implements CustomWeatheringCopper {
 	private final WeatheringCopper.WeatherState weatherState;
@@ -24,7 +25,7 @@ public class WeatheringCopperVerticalSlabBlock extends VerticalSlabBlock impleme
 	}
 
 	@Override
-	public void randomTick(@Nonnull BlockState state, @Nonnull ServerLevel world, @Nonnull BlockPos pos, @Nonnull Random random) {
+	public void randomTick(@Nonnull BlockState state, @Nonnull ServerLevel world, @Nonnull BlockPos pos, @Nonnull RandomSource random) {
 		this.onRandomTick(state, world, pos, random);
 	}
 

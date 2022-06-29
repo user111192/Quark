@@ -1,5 +1,6 @@
 package vazkii.quark.content.automation.module;
 
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -29,6 +30,6 @@ public class ChuteModule extends QuarkModule {
 						.sound(SoundType.WOOD));
 
 		blockEntityType = BlockEntityType.Builder.of(ChuteBlockEntity::new, chute).build(null);
-		RegistryHelper.register(blockEntityType, "chute");
+		RegistryHelper.register(blockEntityType, "chute", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 	}
 }

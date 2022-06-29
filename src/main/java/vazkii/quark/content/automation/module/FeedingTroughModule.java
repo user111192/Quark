@@ -1,16 +1,20 @@
 package vazkii.quark.content.automation.module;
 
 import java.util.Objects;
+import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
+import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -19,6 +23,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -88,8 +93,8 @@ public class FeedingTroughModule extends QuarkModule {
 
 		Vec3 position = animal.position();
 		Pair<BlockPos, FakePlayer> pair = level.getPoiManager().findAllClosestFirst(
-					feedingTroughPoi.getPredicate(), p -> p.distSqr(new Vec3i(position.x, position.y, position.z)) <= range * range,
-						animal.blockPosition(), (int) range, PoiManager.Occupancy.ANY)
+				feedingTroughPoi::is, p -> p.distSqr(new Vec3i(position.x, position.y, position.z)) <= range * range,
+				animal.blockPosition(), (int) range, PoiManager.Occupancy.ANY)
 				.map(pos -> level.getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough ? trough : null)
 				.filter(Objects::nonNull)
 				.map(trough -> Pair.of(trough.getBlockPos(), trough.getFoodHolder(goal)))
@@ -114,9 +119,15 @@ public class FeedingTroughModule extends QuarkModule {
 	public void register() {
 		Block feedingTrough = new FeedingTroughBlock("feeding_trough", this, CreativeModeTab.TAB_DECORATIONS,
 				Block.Properties.of(Material.WOOD).strength(0.6F).sound(SoundType.WOOD));
+
 		blockEntityType = BlockEntityType.Builder.of(FeedingTroughBlockEntity::new, feedingTrough).build(null);
-		RegistryHelper.register(blockEntityType, "feeding_trough");
-		feedingTroughPoi = new PoiType("quark:feeding_trough", PoiType.getBlockStates(feedingTrough), 1, 32);
-		RegistryHelper.register(feedingTroughPoi, "feeding_trough");
+		RegistryHelper.register(blockEntityType, "feeding_trough", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+
+		feedingTroughPoi = new PoiType(getBlockStates(feedingTrough), 1, 32);
+		RegistryHelper.register(feedingTroughPoi, "feeding_trough", Registry.POINT_OF_INTEREST_TYPE_REGISTRY);
+	}
+
+	private static Set<BlockState> getBlockStates(Block p_218074_) {
+		return ImmutableSet.copyOf(p_218074_.getStateDefinition().getPossibleStates());
 	}
 }

@@ -9,6 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -22,7 +23,7 @@ public class DragonScalesModule extends QuarkModule {
 
 	@Override
 	public void register() {
-		ForgeRegistries.RECIPE_SERIALIZERS.register(ElytraDuplicationRecipe.SERIALIZER.setRegistryName("quark:elytra_duplication"));
+		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":elytra_duplication", ElytraDuplicationRecipe.SERIALIZER);
 
 		dragon_scale = new QuarkItem("dragon_scale", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
 	}

@@ -1,13 +1,19 @@
 package vazkii.quark.content.automation.block.be;
 
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.authlib.GameProfile;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
@@ -28,11 +34,6 @@ import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.util.MovableFakePlayer;
 import vazkii.quark.content.automation.block.FeedingTroughBlock;
 import vazkii.quark.content.automation.module.FeedingTroughModule;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 /**
  * @author WireSegal
@@ -176,7 +177,7 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 	@Override
 	@Nonnull
 	protected Component getDefaultName() {
-		return new TranslatableComponent("quark.container.feeding_trough");
+		return Component.translatable("quark.container.feeding_trough");
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -143,7 +142,7 @@ public class GameNerfsModule extends QuarkModule {
 		if(!nerfMending)
 			return;
 		
-		Component itemgotmodified = new TranslatableComponent("quark.misc.repaired").withStyle(ChatFormatting.YELLOW);
+		Component itemgotmodified = Component.translatable("quark.misc.repaired").withStyle(ChatFormatting.YELLOW);
 		int repairCost = event.getItemStack().getBaseRepairCost();
 		if(repairCost > 0)
 			event.getToolTip().add(itemgotmodified);

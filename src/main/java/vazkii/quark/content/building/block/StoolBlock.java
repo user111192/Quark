@@ -1,9 +1,12 @@
 package vazkii.quark.content.building.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -36,9 +39,6 @@ import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.building.entity.Stool;
 import vazkii.quark.content.building.module.StoolsModule;
-
-import javax.annotation.Nonnull;
-import java.util.Random;
 
 public class StoolBlock extends QuarkBlock implements SimpleWaterloggedBlock {
 
@@ -81,7 +81,7 @@ public class StoolBlock extends QuarkBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public void tick(@Nonnull BlockState state, @Nonnull ServerLevel worldIn, @Nonnull BlockPos pos, @Nonnull Random rand) {
+	public void tick(@Nonnull BlockState state, @Nonnull ServerLevel worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		fixState(worldIn, pos, state);
 	}
 

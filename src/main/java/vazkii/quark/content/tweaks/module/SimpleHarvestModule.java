@@ -10,11 +10,18 @@
  */
 package vazkii.quark.content.tweaks.module;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -28,7 +35,12 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.GrowingPlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -37,7 +49,6 @@ import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
@@ -46,11 +57,6 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.HarvestMessage;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
 public class SimpleHarvestModule extends QuarkModule {
@@ -139,8 +145,8 @@ public class SimpleHarvestModule extends QuarkModule {
 		return new String[] { harvestKey };
 	}
 
-	private boolean isVanilla(IForgeRegistryEntry<?> entry) {
-		ResourceLocation loc = entry.getRegistryName();
+	private boolean isVanilla(Block entry) {
+		ResourceLocation loc = Registry.BLOCK.getKey(entry);
 		if (loc == null)
 			return true; // Just in case
 
@@ -171,8 +177,8 @@ public class SimpleHarvestModule extends QuarkModule {
 
 				if(!stack.isEmpty())
 					Block.popResource(world, pos, stack);
-			});
-		inWorld.spawnAfterBreak(serverLevel, pos, copy);
+			});	
+		inWorld.spawnAfterBreak(serverLevel, pos, copy, true); // true = is player
 
 		// ServerLevel sets this to `false` in the constructor, do we really need this check?
 		if (!world.isClientSide) {
