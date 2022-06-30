@@ -1,10 +1,11 @@
 package vazkii.quark.addons.oddities.block.be;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -27,8 +28,6 @@ import vazkii.quark.addons.oddities.block.CrateBlock;
 import vazkii.quark.addons.oddities.capability.CrateItemHandler;
 import vazkii.quark.addons.oddities.inventory.CrateMenu;
 import vazkii.quark.addons.oddities.module.CrateModule;
-
-import javax.annotation.Nonnull;
 
 public class CrateBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 
@@ -155,7 +154,7 @@ public class CrateBlockEntity extends BaseContainerBlockEntity implements Worldl
 	@Nonnull
 	@Override
 	protected Component getDefaultName() {
-		return new TranslatableComponent(CrateModule.crate.getDescriptionId());
+		return Component.translatable(CrateModule.crate.getDescriptionId());
 	}
 
 	@Nonnull

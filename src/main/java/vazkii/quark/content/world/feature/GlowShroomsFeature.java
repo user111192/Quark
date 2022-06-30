@@ -2,12 +2,12 @@ package vazkii.quark.content.world.feature;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -46,7 +46,7 @@ public class GlowShroomsFeature extends Feature<NoneFeatureConfiguration> {
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> config) {
 		WorldGenLevel worldgenlevel = config.level();
 		BlockPos blockpos = config.origin();
-		Random rng = config.random();
+		RandomSource rng = config.random();
 
 		MutableBlockPos setPos = new MutableBlockPos(blockpos.getX(), blockpos.getY(), blockpos.getZ());
 		for(int i = -6; i < 7; i++)

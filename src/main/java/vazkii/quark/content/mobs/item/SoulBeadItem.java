@@ -33,7 +33,7 @@ public class SoulBeadItem extends QuarkItem {
 		ItemStack itemstack = playerIn.getItemInHand(handIn);
 
 		if(!worldIn.isClientSide) {
-			BlockPos blockpos = ((ServerLevel)worldIn).findNearestMapFeature(WraithModule.soulBeadTargetTag, playerIn.blockPosition(), 100, false);
+			BlockPos blockpos = ((ServerLevel)worldIn).findNearestMapStructure(WraithModule.soulBeadTargetTag, playerIn.blockPosition(), 100, false);
 
 			if(blockpos != null) {
 				itemstack.shrink(1);

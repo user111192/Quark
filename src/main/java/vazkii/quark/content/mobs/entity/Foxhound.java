@@ -10,6 +10,16 @@
  */
 package vazkii.quark.content.mobs.entity;
 
+import static vazkii.quark.content.mobs.ai.FindPlaceToSleepGoal.Target.FURNACE;
+import static vazkii.quark.content.mobs.ai.FindPlaceToSleepGoal.Target.GLOWING;
+import static vazkii.quark.content.mobs.ai.FindPlaceToSleepGoal.Target.LIT_FURNACE;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,15 +32,30 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.BegGoal;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
@@ -62,14 +87,6 @@ import vazkii.quark.content.mobs.ai.FindPlaceToSleepGoal;
 import vazkii.quark.content.mobs.ai.SleepGoal;
 import vazkii.quark.content.mobs.module.FoxhoundModule;
 import vazkii.quark.content.tweaks.ai.WantLoveGoal;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
-
-import static vazkii.quark.content.mobs.ai.FindPlaceToSleepGoal.Target.*;
 
 public class Foxhound extends Wolf implements Enemy {
 
@@ -413,10 +430,10 @@ public class Foxhound extends Wolf implements Enemy {
 
 	@Override
 	public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
-		return worldIn.getBlockState(pos.below()).is(FoxhoundModule.foxhoundSpawnableTag) ? 10.0F : worldIn.getBrightness(pos) - 0.5F;
+		return worldIn.getBlockState(pos.below()).is(FoxhoundModule.foxhoundSpawnableTag) ? 10.0F : worldIn.getRawBrightness(pos, 0) - 0.5F;
 	}
 
-	public static boolean spawnPredicate(EntityType<? extends Foxhound> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
+	public static boolean spawnPredicate(EntityType<? extends Foxhound> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && world.getBlockState(pos.below()).is(FoxhoundModule.foxhoundSpawnableTag);
 	}
 

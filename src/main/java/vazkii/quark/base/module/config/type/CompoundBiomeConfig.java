@@ -8,14 +8,14 @@ import vazkii.quark.base.module.config.ConfigFlagManager;
 
 public class CompoundBiomeConfig extends AbstractConfigType implements IBiomeConfig {
 
-	@Config(description = "Types of biomes this should spawn in. Must match both this and 'biomes' to spawn.")
-	public BiomeTagConfig types;
+	@Config(description = "Biome tags for which this should spawn in. Must match both this and 'biomes' to spawn.")
+	public BiomeTagConfig tags;
 
 	@Config(description = "Biome names this should spawn in. Must match both this and 'types' to spawn.")
 	public StrictBiomeConfig biomes;
 
-	private CompoundBiomeConfig(BiomeTagConfig types, StrictBiomeConfig biomes) {
-		this.types = types;
+	private CompoundBiomeConfig(BiomeTagConfig tags, StrictBiomeConfig biomes) {
+		this.tags = tags;
 		this.biomes = biomes;
 	}
 
@@ -48,13 +48,13 @@ public class CompoundBiomeConfig extends AbstractConfigType implements IBiomeCon
 
 	@Override
 	public void onReload(ConfigFlagManager flagManager) {
-		types.onReload(flagManager);
+		tags.onReload(flagManager);
 		biomes.onReload(flagManager);
 	}
 
 	@Override
 	public boolean canSpawn(ResourceLocation b) {
-		return b != null && types.canSpawn(b) && biomes.canSpawn(b);
+		return b != null && tags.canSpawn(b) && biomes.canSpawn(b);
 	}
 
 }

@@ -8,11 +8,12 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.Tags;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -28,10 +29,10 @@ import vazkii.quark.content.world.gen.BigStoneClusterGenerator;
 @LoadModule(category = ModuleCategory.WORLD)
 public class BigStoneClustersModule extends QuarkModule {
 
-	@Config public static BigStoneClusterConfig calcite = new BigStoneClusterConfig(BiomeDictionary.Type.MOUNTAIN);
-	@Config public static BigStoneClusterConfig limestone = new BigStoneClusterConfig(BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.OCEAN);
-	@Config public static BigStoneClusterConfig jasper = new BigStoneClusterConfig(BiomeDictionary.Type.MESA, BiomeDictionary.Type.SANDY);
-	@Config public static BigStoneClusterConfig shale = new BigStoneClusterConfig(BiomeDictionary.Type.SNOWY);
+	@Config public static BigStoneClusterConfig calcite = new BigStoneClusterConfig(BiomeTags.IS_MOUNTAIN);
+	@Config public static BigStoneClusterConfig limestone = new BigStoneClusterConfig(Tags.Biomes.IS_SWAMP, BiomeTags.IS_OCEAN);
+	@Config public static BigStoneClusterConfig jasper = new BigStoneClusterConfig(BiomeTags.IS_BADLANDS, Tags.Biomes.IS_SANDY);
+	@Config public static BigStoneClusterConfig shale = new BigStoneClusterConfig(Tags.Biomes.IS_SNOWY);
 	
 	@Config public static BigStoneClusterConfig myalite = new AirStoneClusterConfig(DimensionConfig.end(false), 20, 6, 100, 58, 62, 
 			CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:end_highlands"))

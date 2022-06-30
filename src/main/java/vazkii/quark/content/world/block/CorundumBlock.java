@@ -1,11 +1,16 @@
 package vazkii.quark.content.world.block;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.mojang.math.Vector3f;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -21,10 +26,6 @@ import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.world.module.CorundumModule;
 import vazkii.quark.content.world.module.SpiralSpiresModule;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Random;
 
 /**
  * @author WireSegal
@@ -67,7 +68,7 @@ public class CorundumBlock extends QuarkGlassBlock {
 	}
 
 	@Override
-	public void tick(@Nonnull BlockState state, @Nonnull ServerLevel worldIn, @Nonnull BlockPos pos, @Nonnull Random random) {
+	public void tick(@Nonnull BlockState state, @Nonnull ServerLevel worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource random) {
 		if(canGrow(worldIn, pos) && random.nextInt(CorundumModule.caveCrystalGrowthChance) == 0) {
 			BlockState down = worldIn.getBlockState(pos.below());
 			BlockPos up = pos.above();
@@ -84,7 +85,7 @@ public class CorundumBlock extends QuarkGlassBlock {
 	}
 
 	@Override
-	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull Random rand) {
+	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		if(canGrow(worldIn, pos)) {
 			double x = (double)pos.getX() + rand.nextDouble();
 			double y = (double)pos.getY() + rand.nextDouble();

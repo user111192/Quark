@@ -1,5 +1,11 @@
 package vazkii.quark.base.handler;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
@@ -8,12 +14,9 @@ import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.ForgeRegistries;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.content.building.block.VerticalSlabBlock;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 @EventBusSubscriber(modid = Quark.MOD_ID)
 public class FuelHandler {
@@ -30,7 +33,8 @@ public class FuelHandler {
 	}
 
 	public static void addWood(Block block) {
-		if(Objects.toString(block.getRegistryName()).contains("crimson") || Objects.toString(block.getRegistryName()).contains("warped"))
+		String regname = Objects.toString(RegistryHelper.getRegistryName(block, Registry.BLOCK));
+		if(regname.contains("crimson") || regname.contains("warped"))
 			return; //do nothing if block is crimson or warped, since they aren't flammable. #3549
 		if(block instanceof VerticalSlabBlock || block instanceof SlabBlock)
 			addFuel(block, 150);
@@ -38,9 +42,11 @@ public class FuelHandler {
 	}
 
 	public static void addAllWoods() {
-		for(Block block : ForgeRegistries.BLOCKS)
-			if(block != null && block.getRegistryName().getNamespace().equals(Quark.MOD_ID) && block.defaultBlockState().getMaterial() == Material.WOOD)
+		for(Block block : ForgeRegistries.BLOCKS) {
+			ResourceLocation regname = RegistryHelper.getRegistryName(block, Registry.BLOCK);
+			if(block != null && regname.getNamespace().equals(Quark.MOD_ID) && block.defaultBlockState().getMaterial() == Material.WOOD)
 				addWood(block);
+		}
 	}
 
 	@SubscribeEvent

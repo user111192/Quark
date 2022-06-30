@@ -1,7 +1,13 @@
 package vazkii.quark.addons.oddities.client.screen;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -10,8 +16,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,10 +29,6 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.oddities.MatrixEnchanterOperationMessage;
-
-import javax.annotation.Nonnull;
-import java.util.LinkedList;
-import java.util.List;
 
 public class MatrixEnchantingScreen extends AbstractContainerScreen<MatrixEnchantingMenu> {
 
@@ -148,26 +148,26 @@ public class MatrixEnchantingScreen extends AbstractContainerScreen<MatrixEnchan
 
 		if(hoveredPiece != null) {
 			List<Component> tooltip = new LinkedList<>();
-			tooltip.add(new TranslatableComponent(hoveredPiece.enchant.getFullname(hoveredPiece.level).getString().replaceAll("\\u00A7.", "")).withStyle(ChatFormatting.GOLD));
+			tooltip.add(Component.translatable(hoveredPiece.enchant.getFullname(hoveredPiece.level).getString().replaceAll("\\u00A7.", "")).withStyle(ChatFormatting.GOLD));
 
 			if(hoveredPiece.influence > 0)
-				tooltip.add(new TranslatableComponent("quark.gui.enchanting.influence", (int) (hoveredPiece.influence * MatrixEnchantingModule.influencePower * 100)).withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.translatable("quark.gui.enchanting.influence", (int) (hoveredPiece.influence * MatrixEnchantingModule.influencePower * 100)).withStyle(ChatFormatting.GRAY));
 			else if (hoveredPiece.influence < 0)
-				tooltip.add(new TranslatableComponent("quark.gui.enchanting.dampen", (int) (hoveredPiece.influence * MatrixEnchantingModule.influencePower * 100)).withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.translatable("quark.gui.enchanting.dampen", (int) (hoveredPiece.influence * MatrixEnchantingModule.influencePower * 100)).withStyle(ChatFormatting.GRAY));
 
 			int max = hoveredPiece.getMaxXP();
 			if(max > 0)
-				tooltip.add(new TranslatableComponent("quark.gui.enchanting.upgrade", hoveredPiece.xp, max).withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.translatable("quark.gui.enchanting.upgrade", hoveredPiece.xp, max).withStyle(ChatFormatting.GRAY));
 
 			if(gridHoverX == -1) {
-				tooltip.add(new TextComponent(""));
-				tooltip.add(new TranslatableComponent("quark.gui.enchanting.left_click").withStyle(ChatFormatting.GRAY));
-				tooltip.add(new TranslatableComponent("quark.gui.enchanting.right_click").withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.literal(""));
+				tooltip.add(Component.translatable("quark.gui.enchanting.left_click").withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.translatable("quark.gui.enchanting.right_click").withStyle(ChatFormatting.GRAY));
 			} else if(selectedPiece != -1) {
 				Piece p = getPiece(selectedPiece);
 				if(p != null && p.enchant == hoveredPiece.enchant && hoveredPiece.level < hoveredPiece.enchant.getMaxLevel()) {
-					tooltip.add(new TextComponent(""));
-					tooltip.add(new TranslatableComponent("quark.gui.enchanting.merge").withStyle(ChatFormatting.GRAY));
+					tooltip.add(Component.literal(""));
+					tooltip.add(Component.translatable("quark.gui.enchanting.merge").withStyle(ChatFormatting.GRAY));
 				}
 			}
 

@@ -1,7 +1,9 @@
 package vazkii.quark.content.mobs.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
@@ -19,7 +21,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.BiomeDictionary;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.BrewingHandler;
@@ -47,7 +48,7 @@ public class CrabsModule extends QuarkModule {
 	public static EntityType<Crab> crabType;
 
 	@Config
-	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(5, 1, 3, CompoundBiomeConfig.fromBiomeTags(false, BiomeDictionary.Type.BEACH));
+	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(5, 1, 3, CompoundBiomeConfig.fromBiomeTags(false, BiomeTags.IS_BEACH));
 
 	public static TagKey<Block> crabSpawnableTag;
 
@@ -86,7 +87,7 @@ public class CrabsModule extends QuarkModule {
 				.clientTrackingRange(8)
 				.setCustomClientFactory((spawnEntity, world) -> new Crab(crabType, world))
 				.build("crab");
-		RegistryHelper.register(crabType, "crab");
+		RegistryHelper.register(crabType, "crab", Registry.ENTITY_TYPE_REGISTRY);
 
 		EntitySpawnHandler.registerSpawn(this, crabType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Crab::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(crabType, 0x893c22, 0x916548, spawnConfig);

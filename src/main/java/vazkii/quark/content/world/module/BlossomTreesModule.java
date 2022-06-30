@@ -1,10 +1,16 @@
 package vazkii.quark.content.world.module;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.common.base.Functions;
+
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.Tags;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.WoodSet;
@@ -20,18 +26,15 @@ import vazkii.quark.content.world.block.BlossomSaplingBlock.BlossomTree;
 import vazkii.quark.content.world.config.BlossomTreeConfig;
 import vazkii.quark.content.world.gen.BlossomTreeGenerator;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @LoadModule(category = ModuleCategory.WORLD)
 public class BlossomTreesModule extends QuarkModule {
 
-	@Config public BlossomTreeConfig blue = new BlossomTreeConfig(200, BiomeDictionary.Type.SNOWY);
-	@Config public BlossomTreeConfig lavender = new BlossomTreeConfig(100, BiomeDictionary.Type.SWAMP);
-	@Config public BlossomTreeConfig orange = new BlossomTreeConfig(100, BiomeDictionary.Type.SAVANNA);
-	@Config public BlossomTreeConfig pink = new BlossomTreeConfig(100, BiomeDictionary.Type.MOUNTAIN);
-	@Config public BlossomTreeConfig yellow = new BlossomTreeConfig(200, BiomeDictionary.Type.PLAINS);
-	@Config public BlossomTreeConfig red = new BlossomTreeConfig(30, BiomeDictionary.Type.MESA);
+	@Config public BlossomTreeConfig blue = new BlossomTreeConfig(200, Tags.Biomes.IS_SNOWY);
+	@Config public BlossomTreeConfig lavender = new BlossomTreeConfig(100, Tags.Biomes.IS_SWAMP);
+	@Config public BlossomTreeConfig orange = new BlossomTreeConfig(100, Tags.Biomes.IS_SAVANNA);
+	@Config public BlossomTreeConfig pink = new BlossomTreeConfig(100, BiomeTags.IS_MOUNTAIN);
+	@Config public BlossomTreeConfig yellow = new BlossomTreeConfig(200, Tags.Biomes.IS_PLAINS);
+	@Config public BlossomTreeConfig red = new BlossomTreeConfig(30, BiomeTags.IS_BADLANDS);
 
 	@Config public static boolean dropLeafParticles = true;
 
@@ -70,7 +73,7 @@ public class BlossomTreesModule extends QuarkModule {
 		BlossomLeavesBlock leaves = new BlossomLeavesBlock(colorName, this, color);
 		BlossomTree tree = new BlossomTree(leaves);
 		BlossomSaplingBlock sapling = new BlossomSaplingBlock(colorName, this, tree, leaves);
-		VariantHandler.addFlowerPot(sapling, sapling.getRegistryName().getPath(), Functions.identity());
+		VariantHandler.addFlowerPot(sapling, RegistryHelper.getInternalName(sapling).getPath(), Functions.identity());
 
 		trees.put(tree, config);
 	}

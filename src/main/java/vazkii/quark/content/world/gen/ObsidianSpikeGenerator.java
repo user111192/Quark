@@ -1,11 +1,10 @@
 package vazkii.quark.content.world.gen;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -28,7 +27,7 @@ public class ObsidianSpikeGenerator extends Generator {
 	}
 
 	@Override
-	public void generateChunk(WorldGenRegion world, ChunkGenerator generator, Random rand, BlockPos chunkCorner) {
+	public void generateChunk(WorldGenRegion world, ChunkGenerator generator, RandomSource rand, BlockPos chunkCorner) {
 		if(rand.nextFloat() < NetherObsidianSpikesModule.chancePerChunk) {
 			for(int i = 0; i < NetherObsidianSpikesModule.triesPerChunk; i++) {
 				BlockPos pos = chunkCorner.offset(rand.nextInt(16), 50, rand.nextInt(16));
@@ -45,7 +44,7 @@ public class ObsidianSpikeGenerator extends Generator {
 		}
 	}
 	
-	public static void placeSpikeAt(LevelAccessor world, BlockPos pos, Random rand) {
+	public static void placeSpikeAt(LevelAccessor world, BlockPos pos, RandomSource rand) {
 		int heightBelow = 10;
 		int heightBottom = 3 + rand.nextInt(3);
 		int heightMiddle = 2 + rand.nextInt(4);

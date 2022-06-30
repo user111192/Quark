@@ -1,9 +1,22 @@
 package vazkii.quark.addons.oddities.inventory;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.world.entity.player.Player;
@@ -14,12 +27,6 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.addons.oddities.module.MatrixEnchantingModule;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
-import java.util.List;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class EnchantmentMatrix {
 
@@ -45,9 +52,9 @@ public class EnchantmentMatrix {
 
 	public final boolean book;
 	public final ItemStack target;
-	public final Random rng;
+	public final RandomSource rng;
 
-	public EnchantmentMatrix(ItemStack target, Random rng) {
+	public EnchantmentMatrix(ItemStack target, RandomSource rng) {
 		this.target = target;
 		this.rng = rng;
 		book = target.getItem() == Items.BOOK;
@@ -139,7 +146,7 @@ public class EnchantmentMatrix {
 		ForgeRegistries.ENCHANTMENTS.forEach(enchantment -> {
 			if ((!enchantment.isTreasureOnly() || MatrixEnchantingModule.allowTreasures)
 					&& !EnchantmentsBegoneModule.shouldBegone(enchantment)
-					&& !MatrixEnchantingModule.disallowedEnchantments.contains(Objects.toString(enchantment.getRegistryName()))
+					&& !MatrixEnchantingModule.disallowedEnchantments.contains(Objects.toString(Registry.ENCHANTMENT.getKey(enchantment)))
 					&& (enchantment.canApplyAtEnchantingTable(target) || (book && enchantment.isAllowedOnBooks()))) {
 				int enchantLevel = 1;
 				if (book) {
@@ -392,7 +399,7 @@ public class EnchantmentMatrix {
 			this.influence = wrapper.influence;
 			this.type = type;
 
-			Random rng = new Random(Objects.toString(enchant.getRegistryName()).hashCode());
+			Random rng = new Random(Objects.toString(Registry.ENCHANTMENT.getKey(enchant)).hashCode());
 			float h = rng.nextFloat();
 			float s = rng.nextFloat() * 0.2F + 0.8F;
 			float b = rng.nextFloat() * 0.25F + 0.75F;
@@ -435,7 +442,7 @@ public class EnchantmentMatrix {
 			cmp.putInt(TAG_COLOR, color);
 			cmp.putInt(TAG_TYPE, type);
 			if (enchant != null)
-				cmp.putString(TAG_ENCHANTMENT, Objects.toString(enchant.getRegistryName()));
+				cmp.putString(TAG_ENCHANTMENT, Objects.toString(Registry.ENCHANTMENT.getKey(enchant)));
 			cmp.putInt(TAG_LEVEL, level);
 			cmp.putInt(TAG_X, x);
 			cmp.putInt(TAG_Y, y);

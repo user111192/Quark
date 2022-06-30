@@ -1,6 +1,7 @@
 package vazkii.quark.content.mobs.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -48,7 +49,7 @@ public class ForgottenModule extends QuarkModule {
 				.setCustomClientFactory((spawnEntity, world) -> new Forgotten(forgottenType, world))
 				.build("forgotten");
 
-		RegistryHelper.register(forgottenType, "forgotten");
+		RegistryHelper.register(forgottenType, "forgotten", Registry.ENTITY_TYPE_REGISTRY);
 		EntitySpawnHandler.addEgg(forgottenType, 0x969487, 0x3a3330, this, () -> true);
 
 		EntityAttributeHandler.put(forgottenType, Forgotten::registerAttributes);

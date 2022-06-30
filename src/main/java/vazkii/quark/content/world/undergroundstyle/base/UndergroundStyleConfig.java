@@ -1,6 +1,7 @@
 package vazkii.quark.content.world.undergroundstyle.base;
 
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.biome.Biome;
 import vazkii.quark.base.module.config.type.ClusterSizeConfig;
 import vazkii.quark.base.module.config.type.IBiomeConfig;
 
@@ -8,13 +9,15 @@ public class UndergroundStyleConfig<T extends UndergroundStyle> extends ClusterS
 
 	public final T biomeObj;
 
-	public UndergroundStyleConfig(T biomeObj, int rarity, boolean isBlacklist, BiomeDictionary.Type... categories) {
-		super(rarity, 26, 14, 14, 6, isBlacklist, categories);
+	@SafeVarargs
+	public UndergroundStyleConfig(T biomeObj, int rarity, boolean isBlacklist, TagKey<Biome>... tags) {
+		super(rarity, 26, 14, 14, 6, isBlacklist, tags);
 		this.biomeObj = biomeObj;
 	}
 
-	public UndergroundStyleConfig(T biomeObj, int rarity, BiomeDictionary.Type... categories) {
-		this(biomeObj, rarity, false, categories);
+	@SafeVarargs
+	public UndergroundStyleConfig(T biomeObj, int rarity, TagKey<Biome>... tags) {
+		this(biomeObj, rarity, false, tags);
 	}
 	
 	public UndergroundStyleConfig(T biomeObj, int rarity, int horizontal, int vertical, int horizontalVariation, int verticalVariation, IBiomeConfig config) {

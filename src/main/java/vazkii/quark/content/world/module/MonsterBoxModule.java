@@ -1,5 +1,6 @@
 package vazkii.quark.content.world.module;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -56,7 +57,7 @@ public class MonsterBoxModule extends QuarkModule {
 		monster_box = new MonsterBoxBlock(this);
 
 		blockEntityType = BlockEntityType.Builder.of(MonsterBoxBlockEntity::new, monster_box).build(null);
-		RegistryHelper.register(blockEntityType, "monster_box");
+		RegistryHelper.register(blockEntityType, "monster_box", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 	}
 
 	@Override

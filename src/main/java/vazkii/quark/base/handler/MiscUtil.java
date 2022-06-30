@@ -20,6 +20,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.Util;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
+import net.minecraft.commands.arguments.blocks.BlockStateParser.BlockResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -255,8 +256,8 @@ public class MiscUtil {
 
 	public static BlockState fromString(String key) {
 		try {
-			BlockStateParser parser = new BlockStateParser(new StringReader(key), false).parse(false);
-			BlockState state = parser.getState();
+			BlockResult result = BlockStateParser.parseForBlock(Registry.BLOCK, new StringReader(key), false);
+			BlockState state = result.blockState();
 			return state == null ? Blocks.AIR.defaultBlockState() : state;
 		} catch (CommandSyntaxException e) {
 			return Blocks.AIR.defaultBlockState();

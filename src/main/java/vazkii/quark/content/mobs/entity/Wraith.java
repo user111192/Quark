@@ -1,5 +1,7 @@
 package vazkii.quark.content.mobs.entity;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -30,8 +33,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.content.mobs.module.WraithModule;
-
-import javax.annotation.Nonnull;
 
 public class Wraith extends Zombie {
 
@@ -69,7 +70,7 @@ public class Wraith extends Zombie {
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(@Nonnull DifficultyInstance difficulty) {
+	protected void populateDefaultEquipmentSlots(RandomSource rand, @Nonnull DifficultyInstance difficulty) {
 		// NO-OP
 	}
 

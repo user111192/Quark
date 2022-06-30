@@ -1,5 +1,10 @@
 package vazkii.quark.addons.oddities.entity;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -19,10 +24,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import vazkii.quark.addons.oddities.module.TotemOfHoldingModule;
-
-import javax.annotation.Nonnull;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author WireSegal
@@ -55,12 +56,12 @@ public class TotemOfHoldingEntity extends Entity {
 	}
 
 	public void setOwner(Player player) {
-		owner = Player.createPlayerUUID(player.getGameProfile()).toString();
+		owner = player.getUUID().toString();
 	}
 
 	private Player getOwnerEntity() {
 		for(Player player : level.players()) {
-			String uuid = Player.createPlayerUUID(player.getGameProfile()).toString();
+			String uuid = player.getUUID().toString();
 			if(uuid.equals(owner))
 				return player;
 		}

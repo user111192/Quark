@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
@@ -12,11 +13,11 @@ import net.minecraft.world.entity.SpawnPlacements.SpawnPredicate;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
@@ -51,16 +52,15 @@ public class EntitySpawnHandler {
 		.setCondition(enabledSupplier);
 	}
 
-	@SubscribeEvent
-	public static void onBiomeLoaded(BiomeLoadingEvent ev) {
-		MobSpawnSettingsBuilder builder = ev.getSpawns();
+	public static void modifyBiome(Holder<Biome> biome, ModifiableBiomeInfo.BiomeInfo.Builder biomeInfoBuilder) {
+		MobSpawnSettingsBuilder builder = biomeInfoBuilder.getMobSpawnSettings();
 
 		for(TrackedSpawnConfig c : trackedSpawnConfigs) {
 			List<MobSpawnSettings.SpawnerData> l = builder.getSpawner(c.classification);
 			if(!c.secondary)
 				l.removeIf(e -> e.type.equals(c.entityType));
 
-			if(c.config.isEnabled() && c.config.biomes.canSpawn(ev))
+			if(c.config.isEnabled() && c.config.biomes.canSpawn(biome))
 				l.add(c.entry);
 
 			if(c.config instanceof CostSensitiveEntitySpawnConfig csc) {

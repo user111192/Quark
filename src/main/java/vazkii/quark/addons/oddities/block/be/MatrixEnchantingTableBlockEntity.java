@@ -1,12 +1,24 @@
 package vazkii.quark.addons.oddities.block.be;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -32,12 +44,6 @@ import vazkii.quark.addons.oddities.inventory.MatrixEnchantingMenu;
 import vazkii.quark.addons.oddities.module.MatrixEnchantingModule;
 import vazkii.quark.addons.oddities.util.Influence;
 import vazkii.quark.api.IEnchantmentInfluencer;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.function.Predicate;
 
 public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlockEntity implements MenuProvider {
 
@@ -321,7 +327,7 @@ public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlo
 			if(!newId.equals(matrixId)) {
 				CompoundTag matrixCmp = cmp.getCompound(TAG_MATRIX);
 				matrixId = newId;
-				matrix = new EnchantmentMatrix(getItem(0), new Random());
+				matrix = new EnchantmentMatrix(getItem(0), RandomSource.create());
 				matrix.readFromNBT(matrixCmp);
 			}
 			clientMatrixDirty = true;

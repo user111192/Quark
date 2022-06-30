@@ -65,7 +65,7 @@ public interface IQuarkBlock extends IForgeBlock {
 		return state.getMaterial().isFlammable() ? 5 : 0;
 	}
 	
-	static String inherit(IQuarkBlock parent, String format) {
+	static String inheritQuark(IQuarkBlock parent, String format) {
 		return inherit(parent.getBlock(), format);
 	}
 	

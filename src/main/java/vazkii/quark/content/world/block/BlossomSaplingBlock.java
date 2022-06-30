@@ -1,11 +1,13 @@
 package vazkii.quark.content.world.block;
 
 import java.util.OptionalInt;
-import java.util.Random;
 import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -27,8 +29,6 @@ import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.world.module.BlossomTreesModule;
-
-import javax.annotation.Nonnull;
 
 public class BlossomSaplingBlock extends SaplingBlock implements IQuarkBlock {
 
@@ -88,7 +88,7 @@ public class BlossomSaplingBlock extends SaplingBlock implements IQuarkBlock {
 		}
 
 		@Override
-		protected Holder<ConfiguredFeature<TreeConfiguration, ?>> getConfiguredFeature(@Nonnull Random rand, boolean hjskfsd) {
+		protected Holder<ConfiguredFeature<TreeConfiguration, ?>> getConfiguredFeature(@Nonnull RandomSource rand, boolean hjskfsd) {
 			return Holder.direct(new ConfiguredFeature<>(Feature.TREE, config));
 		}
 

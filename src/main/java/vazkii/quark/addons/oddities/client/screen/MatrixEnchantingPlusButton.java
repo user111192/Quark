@@ -1,18 +1,18 @@
 package vazkii.quark.addons.oddities.client.screen;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
-
-import javax.annotation.Nonnull;
+import net.minecraft.network.chat.Component;
 
 public class MatrixEnchantingPlusButton extends Button {
 
 	public MatrixEnchantingPlusButton(int x, int y, OnPress onPress) {
-		super(x, y, 50, 12, new TextComponent(""), onPress);
+		super(x, y, 50, 12, Component.literal(""), onPress);
 	}
 
 	@Override

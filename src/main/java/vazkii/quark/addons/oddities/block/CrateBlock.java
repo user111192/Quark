@@ -1,8 +1,12 @@
 package vazkii.quark.addons.oddities.block;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -28,10 +32,6 @@ import vazkii.quark.addons.oddities.block.be.CrateBlockEntity;
 import vazkii.quark.addons.oddities.module.CrateModule;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Random;
 
 public class CrateBlock extends QuarkBlock implements EntityBlock {
 
@@ -93,7 +93,7 @@ public class CrateBlock extends QuarkBlock implements EntityBlock {
 	}
 
 	@Override
-	public void tick(@Nonnull BlockState state, ServerLevel worldIn, @Nonnull BlockPos pos, @Nonnull Random rand) {
+	public void tick(@Nonnull BlockState state, ServerLevel worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		BlockEntity tileentity = worldIn.getBlockEntity(pos);
 		if(tileentity instanceof CrateBlockEntity)
 			((CrateBlockEntity)tileentity).crateTick();

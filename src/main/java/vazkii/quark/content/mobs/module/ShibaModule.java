@@ -1,6 +1,8 @@
 package vazkii.quark.content.mobs.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.Registry;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements.Type;
@@ -9,7 +11,6 @@ import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.BiomeDictionary;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.module.LoadModule;
@@ -28,7 +29,7 @@ public class ShibaModule extends QuarkModule {
 	public static EntityType<Shiba> shibaType;
 	
 	@Config
-	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(40, 1, 3, CompoundBiomeConfig.fromBiomeTags(false, BiomeDictionary.Type.MOUNTAIN));
+	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(40, 1, 3, CompoundBiomeConfig.fromBiomeTags(false, BiomeTags.IS_MOUNTAIN));
 
 	@Config public static boolean ignoreAreasWithSkylight = false;
 	
@@ -39,7 +40,7 @@ public class ShibaModule extends QuarkModule {
 				.clientTrackingRange(8)
 				.setCustomClientFactory((spawnEntity, world) -> new Shiba(shibaType, world))
 				.build("shiba");
-		RegistryHelper.register(shibaType, "shiba");
+		RegistryHelper.register(shibaType, "shiba", Registry.ENTITY_TYPE_REGISTRY);
 		
 		EntitySpawnHandler.registerSpawn(this, shibaType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(shibaType, 0xa86741, 0xe8d5b6, spawnConfig);

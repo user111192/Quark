@@ -25,6 +25,7 @@ public class BiomeTagConfig extends AbstractConfigType implements IBiomeConfig {
 
 	private List<TagKey<Biome>> tags;
 
+	@SafeVarargs
 	protected BiomeTagConfig(boolean isBlacklist, TagKey<Biome>... tagsIn) {
 		this.isBlacklist = isBlacklist;
 
@@ -46,7 +47,7 @@ public class BiomeTagConfig extends AbstractConfigType implements IBiomeConfig {
 			return false;
 		
 		ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, resource);
-		Set<TagKey<Biome>> biomeTags = null; // TODO
+		Set<TagKey<Biome>> biomeTags = null; // TODO 1.19: implement
 
 		synchronized (mutex) {
 			if(tags == null)
@@ -73,7 +74,7 @@ public class BiomeTagConfig extends AbstractConfigType implements IBiomeConfig {
 	public void updateTypes() {
 		tags = new LinkedList<>();
 		for (String s : biomeTagStrings) {
-			TagKey<Biome> tag = null; // TODO
+			TagKey<Biome> tag = null; // TODO 1.19: implement
 			
 			if (tag != null)
 				tags.add(tag);

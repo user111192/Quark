@@ -1,7 +1,22 @@
 package vazkii.quark.base.handler;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.WeakHashMap;
+
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -14,12 +29,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.quark.base.Quark;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.*;
 
 @Mod.EventBusSubscriber(modid = Quark.MOD_ID)
 public class ContributorRewardHandler {
@@ -65,7 +74,7 @@ public class ContributorRewardHandler {
 	@OnlyIn(Dist.CLIENT)
 	public static void onRenderPlayer(RenderPlayerEvent.Post event) {
 		Player player = event.getPlayer();
-		String uuid = Player.createPlayerUUID(player.getGameProfile()).toString();
+		String uuid = player.getUUID().toString();
 		if(player instanceof AbstractClientPlayer clientPlayer && DEV_UUID.contains(uuid) && !done.contains(uuid)) {
 			if(clientPlayer.isCapeLoaded()) {
 				PlayerInfo info = clientPlayer.playerInfo;

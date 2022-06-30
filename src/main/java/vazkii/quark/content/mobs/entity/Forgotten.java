@@ -1,6 +1,13 @@
 package vazkii.quark.content.mobs.entity;
 
+import java.util.List;
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -8,12 +15,19 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -38,11 +52,6 @@ import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.content.mobs.module.ForgottenModule;
 import vazkii.quark.content.tools.module.ColorRunesModule;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.stream.Stream;
 
 public class Forgotten extends Skeleton {
 
@@ -146,10 +155,10 @@ public class Forgotten extends Skeleton {
 	protected void dropCustomDeathLoot(@Nonnull DamageSource source, int looting, boolean recentlyHitIn) {
 		// NO-OP
 	}
-
+	
 	@Override
-	protected void populateDefaultEquipmentSlots(@Nonnull DifficultyInstance difficulty) {
-		super.populateDefaultEquipmentSlots(difficulty);
+	protected void populateDefaultEquipmentSlots(RandomSource rand, @Nonnull DifficultyInstance difficulty) {
+		super.populateDefaultEquipmentSlots(rand, difficulty);
 
 		prepareEquipment();
 	}

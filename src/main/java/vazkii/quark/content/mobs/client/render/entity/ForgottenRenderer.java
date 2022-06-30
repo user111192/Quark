@@ -22,7 +22,7 @@ public class ForgottenRenderer extends SkeletonRenderer {
 		super(context);
 		addLayer(new ForgottenClothingLayer<>(this, context.getModelSet()));
 		addLayer(new ForgottenEyesLayer(this));
-		addLayer(new ForgottenSheathedItemLayer(this));
+		addLayer(new ForgottenSheathedItemLayer(this, context.getItemInHandRenderer()));
 	}
 
 	@Nonnull

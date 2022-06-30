@@ -1,5 +1,7 @@
 package vazkii.quark.addons.oddities.client.screen;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -7,11 +9,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.Mth;
 import vazkii.quark.addons.oddities.inventory.EnchantmentMatrix.Piece;
-
-import javax.annotation.Nonnull;
 
 public class MatrixEnchantingPieceList extends ObjectSelectionList<MatrixEnchantingPieceList.PieceEntry> {
 
@@ -125,7 +124,7 @@ public class MatrixEnchantingPieceList extends ObjectSelectionList<MatrixEnchant
 		@Nonnull
 		@Override
 		public Component getNarration() {
-			return new TextComponent("");
+			return Component.literal("");
 		}
 
 	}

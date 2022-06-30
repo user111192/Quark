@@ -1,13 +1,18 @@
 package vazkii.quark.addons.oddities.item;
 
+import java.util.Map;
+import java.util.function.Consumer;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +24,12 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DyeableArmorItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -43,10 +53,6 @@ import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
 import vazkii.quark.base.handler.ProxiedItemStackHandler;
 import vazkii.quark.base.item.IQuarkItem;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
-import java.util.Map;
-import java.util.function.Consumer;
 
 public class BackpackItem extends DyeableArmorItem implements IQuarkItem, IItemColorProvider, MenuProvider {
 
@@ -251,7 +257,7 @@ public class BackpackItem extends DyeableArmorItem implements IQuarkItem, IItemC
 	@Nonnull
 	@Override
 	public Component getDisplayName() {
-		return new TranslatableComponent(getDescriptionId());
+		return Component.translatable(getDescriptionId());
 	}
 
 

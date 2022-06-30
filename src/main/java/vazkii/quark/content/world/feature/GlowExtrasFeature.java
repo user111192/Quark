@@ -1,9 +1,13 @@
 package vazkii.quark.content.world.feature;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -13,12 +17,12 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.CountPlacement;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraft.world.level.levelgen.placement.RandomOffsetPlacement;
 import vazkii.quark.content.world.module.GlimmeringWealdModule;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 public class GlowExtrasFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -37,7 +41,7 @@ public class GlowExtrasFeature extends Feature<NoneFeatureConfiguration> {
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> config) {
 		WorldGenLevel worldgenlevel = config.level();
 		BlockPos blockpos = config.origin();
-		Random rng = config.random();
+		RandomSource rng = config.random();
 
 		MutableBlockPos setPos = new MutableBlockPos(blockpos.getX(), blockpos.getY(), blockpos.getZ());
 		final int horiz = 2;

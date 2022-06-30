@@ -1,5 +1,7 @@
 package vazkii.quark.content.world.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
@@ -22,11 +24,10 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
-
-import javax.annotation.Nonnull;
 
 public class CorundumClusterBlock extends QuarkBlock implements SimpleWaterloggedBlock {
 
@@ -54,7 +55,7 @@ public class CorundumClusterBlock extends QuarkBlock implements SimpleWaterlogge
 	}
 
 	public CorundumClusterBlock(CorundumBlock base) {
-		super(base.getRegistryName().getPath() + "_cluster", base.getModule(), CreativeModeTab.TAB_DECORATIONS,
+		super(IQuarkBlock.inheritQuark(base, "%s_cluster"), base.getModule(), CreativeModeTab.TAB_DECORATIONS,
 				Block.Properties.copy(base)
 				.sound(SoundType.AMETHYST_CLUSTER));
 

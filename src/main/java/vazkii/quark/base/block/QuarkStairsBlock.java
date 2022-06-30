@@ -32,7 +32,7 @@ public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IBlockC
 		super(parent.getBlock()::defaultBlockState, VariantHandler.realStateCopy(parent));
 
 		this.parent = parent;
-		RegistryHelper.registerBlock(this, IQuarkBlock.inherit(parent, "%s_stairs"));
+		RegistryHelper.registerBlock(this, IQuarkBlock.inheritQuark(parent, "%s_stairs"));
 		RegistryHelper.setCreativeTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
 
 		RenderLayerHandler.setInherited(this, parent.getBlock());

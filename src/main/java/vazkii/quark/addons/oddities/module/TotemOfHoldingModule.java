@@ -1,10 +1,14 @@
 package vazkii.quark.addons.oddities.module;
 
+import java.util.Collection;
+import java.util.Objects;
+
 import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -27,9 +31,6 @@ import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
-
-import java.util.Collection;
-import java.util.Objects;
 
 /**
  * @author WireSegal
@@ -71,7 +72,7 @@ public class TotemOfHoldingModule extends QuarkModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new TotemOfHoldingEntity(totemType, world))
 				.build("totem");
-		RegistryHelper.register(totemType, "totem");
+		RegistryHelper.register(totemType, "totem", Registry.ENTITY_TYPE_REGISTRY);
 	}
 
 	@Override

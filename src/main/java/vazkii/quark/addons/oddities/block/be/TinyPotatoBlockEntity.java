@@ -1,14 +1,17 @@
 package vazkii.quark.addons.oddities.block.be;
 
 
-import net.minecraft.Util;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -27,18 +30,13 @@ import vazkii.quark.addons.oddities.util.TinyPotatoInfo;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.QuarkSounds;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-
 public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements Nameable {
 	public static final String TAG_NAME = "name";
 	public static final String TAG_ANGRY = TinyPotatoBlock.ANGRY;
 	private static final int JUMP_EVENT = 0;
 
 	public int jumpTicks = 0;
-	public Component name = new TextComponent("");
+	public Component name = Component.literal("");
 	private int nextDoIt = 0;
 	public boolean angry = false;
 
@@ -127,7 +125,7 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 					taterGender = GENDER.getOrDefault(info.name(), taterGender);
 				}
 				if (player instanceof ServerPlayer serverPlayer)
-					serverPlayer.sendMessage(new TranslatableComponent("quark.misc.my_" + taterGender), ChatType.GAME_INFO, Util.NIL_UUID);
+					serverPlayer.sendSystemMessage(Component.translatable("quark.misc.my_" + taterGender), ChatType.GAME_INFO);
 			}
 		}
 	}
@@ -218,7 +216,7 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 	@Nonnull
 	@Override
 	public Component getName() {
-		return new TranslatableComponent(TinyPotatoModule.tiny_potato.getDescriptionId());
+		return Component.translatable(TinyPotatoModule.tiny_potato.getDescriptionId());
 	}
 
 	@Nullable

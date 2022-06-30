@@ -1,5 +1,19 @@
 package vazkii.quark.base.world;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
+import com.mojang.serialization.Codec;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -8,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
@@ -20,18 +35,20 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.common.world.ModifiableBiomeInfo;
+import net.minecraftforge.common.world.ModifiableBiomeInfo.BiomeInfo.Builder;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.world.generator.IGenerator;
-
-import java.util.*;
-import java.util.concurrent.*;
 
 @EventBusSubscriber(modid = Quark.MOD_ID)
 public class WorldGenHandler {
@@ -77,9 +94,8 @@ public class WorldGenHandler {
 		});
 	}
 
-	@SubscribeEvent
-	public static void onBiomesLoaded(BiomeLoadingEvent ev) {
-		BiomeGenerationSettingsBuilder settings = ev.getGeneration();
+	public static void modifyBiome(Holder<Biome> biome, ModifiableBiomeInfo.BiomeInfo.Builder biomeInfoBuilder) {
+		BiomeGenerationSettingsBuilder settings = biomeInfoBuilder.getGenerationSettings();
 
 		for(GenerationStep.Decoration stage : GenerationStep.Decoration.values()) {
 			List<Holder<PlacedFeature>> features = settings.getFeatures(stage);
@@ -134,6 +150,35 @@ public class WorldGenHandler {
 		} catch(Exception e) {
 			throw new RuntimeException("Error generating " + gen, e);
 		}
+	}
+	
+	public static void registerBiomeModifier(IEventBus bus) {
+        DeferredRegister<Codec<? extends BiomeModifier>> biomeModifiers = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Quark.MOD_ID);
+        biomeModifiers.register(bus);
+        biomeModifiers.register(QuarkBiomeModifier.RESOURCE.getPath(), QuarkBiomeModifier::makeCodec);
+	}
+	
+	private static class QuarkBiomeModifier implements BiomeModifier {
+
+		public static final ResourceLocation RESOURCE = new ResourceLocation(Quark.MOD_ID, "biome_modifier");
+	    private static final RegistryObject<Codec<? extends BiomeModifier>> SERIALIZER = RegistryObject.create(RESOURCE, ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Quark.MOD_ID);
+
+		
+		@Override
+		public void modify(Holder<Biome> biome, Phase phase, Builder builder) {
+			if(phase == Phase.ADD) {
+				WorldGenHandler.modifyBiome(biome, builder);
+				EntitySpawnHandler.modifyBiome(biome, builder);
+			}
+		}
+
+	    public Codec<? extends BiomeModifier> codec() {
+	        return (Codec<? extends BiomeModifier>) SERIALIZER.get();
+	    }
+
+	    public static Codec<QuarkBiomeModifier> makeCodec() {
+	        return Codec.unit(QuarkBiomeModifier::new);
+	    }
 	}
 
 }

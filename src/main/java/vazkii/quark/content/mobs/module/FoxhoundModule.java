@@ -2,6 +2,7 @@ package vazkii.quark.content.mobs.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -61,7 +62,7 @@ public class FoxhoundModule extends QuarkModule {
 				.fireImmune()
 				.setCustomClientFactory((spawnEntity, world) -> new Foxhound(foxhoundType, world))
 				.build("foxhound");
-		RegistryHelper.register(foxhoundType, "foxhound");
+		RegistryHelper.register(foxhoundType, "foxhound", Registry.ENTITY_TYPE_REGISTRY);
 
 		EntitySpawnHandler.registerSpawn(this, foxhoundType, MobCategory.MONSTER, Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Foxhound::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.track(this, foxhoundType, MobCategory.MONSTER, lesserSpawnConfig, true);

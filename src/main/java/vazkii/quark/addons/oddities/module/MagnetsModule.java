@@ -2,6 +2,7 @@ package vazkii.quark.addons.oddities.module;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -40,10 +41,10 @@ public class MagnetsModule extends QuarkModule {
 		magnetized_block = new MovingMagnetizedBlock(this);
 
 		magnetType = BlockEntityType.Builder.of(MagnetBlockEntity::new, magnet).build(null);
-		RegistryHelper.register(magnetType, "magnet");
+		RegistryHelper.register(magnetType, "magnet", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 
 		magnetizedBlockType = BlockEntityType.Builder.of(MagnetizedBlockBlockEntity::new, magnetized_block).build(null);
-		RegistryHelper.register(magnetizedBlockType, "magnetized_block");
+		RegistryHelper.register(magnetizedBlockType, "magnetized_block", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 	}
 
 	@Override

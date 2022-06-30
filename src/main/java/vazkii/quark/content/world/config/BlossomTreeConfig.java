@@ -1,6 +1,7 @@
 package vazkii.quark.content.world.config;
 
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.biome.Biome;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.AbstractConfigType;
 import vazkii.quark.base.module.config.type.CompoundBiomeConfig;
@@ -17,9 +18,9 @@ public class BlossomTreeConfig extends AbstractConfigType {
 	@Config
 	public int rarity;
 	
-	public BlossomTreeConfig(int rarity, BiomeDictionary.Type type) {
+	public BlossomTreeConfig(int rarity, TagKey<Biome> tag) {
 		this.rarity = rarity;
-		biomeConfig = CompoundBiomeConfig.fromBiomeTags(false, type);
+		biomeConfig = CompoundBiomeConfig.fromBiomeTags(false, tag);
 	}
 	
 }

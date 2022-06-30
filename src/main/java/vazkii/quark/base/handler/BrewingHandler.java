@@ -1,6 +1,16 @@
 package vazkii.quark.base.handler;
 
+import java.util.List;
+import java.util.function.Supplier;
+
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
+
 import com.google.common.collect.Lists;
+
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -12,16 +22,11 @@ import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.Triple;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.recipe.ingredient.FlagIngredient;
 import vazkii.quark.mixin.accessor.AccessorPotionBrewing;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * @author WireSegal
@@ -47,7 +52,7 @@ public class BrewingHandler {
 
 	public static void addPotionMix(String flag, Supplier<Ingredient> reagent, MobEffect effect,
 									@Nullable MobEffect negation, int normalTime, int longTime, int strongTime) {
-		ResourceLocation loc = effect.getRegistryName();
+		ResourceLocation loc = Registry.MOB_EFFECT.getKey(effect);
 		if (loc != null) {
 			String baseName = loc.getPath();
 			boolean hasStrong = strongTime > 0;
@@ -59,7 +64,7 @@ public class BrewingHandler {
 			addPotionMix(flag, reagent, normalType, longType, strongType);
 
 			if (negation != null) {
-				ResourceLocation negationLoc = negation.getRegistryName();
+				ResourceLocation negationLoc = Registry.MOB_EFFECT.getKey(negation);
 				if (negationLoc != null) {
 					String negationBaseName = negationLoc.getPath();
 
@@ -125,12 +130,12 @@ public class BrewingHandler {
 	}
 
 	private static void addBrewingRecipe(Potion input, Ingredient reagent, Potion output) {
-		AccessorPotionBrewing.quark$getPotionMixes().add(new PotionBrewing.Mix<>(input, reagent, output));
+		AccessorPotionBrewing.quark$getPotionMixes().add(new PotionBrewing.Mix<>(ForgeRegistries.POTIONS, input, reagent, output));
 	}
 
 	private static Potion addPotion(MobEffectInstance eff, String baseName, String name) {
 		Potion effect = new Potion(Quark.MOD_ID + "." + baseName, eff);
-		RegistryHelper.register(effect, name);
+		RegistryHelper.register(effect, name, Registry.POTION_REGISTRY);
 
 		return effect;
 	}

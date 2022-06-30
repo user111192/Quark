@@ -1,16 +1,20 @@
 package vazkii.quark.content.world.module;
 
+import java.util.List;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.common.BiomeDictionary;
-import org.apache.commons.lang3.tuple.Pair;
 import vazkii.quark.api.IIndirectConnector;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.QuarkInheritedPaneBlock;
@@ -23,8 +27,6 @@ import vazkii.quark.content.world.block.CorundumClusterBlock;
 import vazkii.quark.content.world.undergroundstyle.CorundumStyle;
 import vazkii.quark.content.world.undergroundstyle.base.AbstractUndergroundStyleModule;
 import vazkii.quark.content.world.undergroundstyle.base.UndergroundStyleConfig;
-
-import java.util.List;
 
 @LoadModule(category = ModuleCategory.WORLD)
 public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle> {
@@ -109,7 +111,7 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 
 	@Override
 	protected UndergroundStyleConfig<CorundumStyle> getStyleConfig() {
-		return new UndergroundStyleConfig<>(new CorundumStyle(), 400, true, BiomeDictionary.Type.OCEAN).setDefaultSize(72, 20, 22, 4);
+		return new UndergroundStyleConfig<>(new CorundumStyle(), 400, true, BiomeTags.IS_OCEAN).setDefaultSize(72, 20, 22, 4);
 	}
 
 	public record ClusterConnection(CorundumClusterBlock cluster) implements IIndirectConnector {

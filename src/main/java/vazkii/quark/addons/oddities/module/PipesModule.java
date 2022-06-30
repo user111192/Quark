@@ -2,6 +2,7 @@ package vazkii.quark.addons.oddities.module;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -41,7 +42,7 @@ public class PipesModule extends QuarkModule {
 		pipe = new PipeBlock(this);
 		
 		blockEntityType = BlockEntityType.Builder.of(PipeBlockEntity::new, pipe).build(null);
-		RegistryHelper.register(blockEntityType, "pipe");
+		RegistryHelper.register(blockEntityType, "pipe", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 	}
 	
 	@Override

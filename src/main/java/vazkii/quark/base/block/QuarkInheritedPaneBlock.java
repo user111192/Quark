@@ -1,9 +1,10 @@
 package vazkii.quark.base.block;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,8 +13,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.interf.IBlockColorProvider;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.quark.base.handler.RenderLayerHandler;
-
-import javax.annotation.Nullable;
 
 /**
  * @author WireSegal
@@ -31,7 +30,7 @@ public class QuarkInheritedPaneBlock extends QuarkPaneBlock implements IQuarkBlo
 	}
 
 	public QuarkInheritedPaneBlock(IQuarkBlock parent, Block.Properties properties) {
-		this(parent, IQuarkBlock.inherit(parent, "%s_pane"), properties);
+		this(parent, IQuarkBlock.inheritQuark(parent, "%s_pane"), properties);
 	}
 
 	public QuarkInheritedPaneBlock(IQuarkBlock parent) {

@@ -1,10 +1,17 @@
 package vazkii.quark.addons.oddities.module;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.DyeColor;
@@ -38,8 +45,6 @@ import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
-
-import java.util.*;
 
 @LoadModule(category = ModuleCategory.ODDITIES, hasSubscriptions = true)
 public class MatrixEnchantingModule extends QuarkModule {
@@ -151,10 +156,10 @@ public class MatrixEnchantingModule extends QuarkModule {
 		matrixEnchanter = new MatrixEnchantingTableBlock(this);
 
 		menuType = IForgeMenuType.create(MatrixEnchantingMenu::fromNetwork);
-		RegistryHelper.register(menuType, "matrix_enchanting");
+		RegistryHelper.register(menuType, "matrix_enchanting", Registry.MENU_REGISTRY);
 
 		blockEntityType = BlockEntityType.Builder.of(MatrixEnchantingTableBlockEntity::new, matrixEnchanter).build(null);
-		RegistryHelper.register(blockEntityType, "matrix_enchanting");
+		RegistryHelper.register(blockEntityType, "matrix_enchanting", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 	}
 
 	@Override
@@ -169,7 +174,7 @@ public class MatrixEnchantingModule extends QuarkModule {
 	public void onTooltip(ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
 		if(showTooltip && ItemNBTHelper.verifyExistence(stack, MatrixEnchantingTableBlockEntity.TAG_STACK_MATRIX))
-			event.getToolTip().add(new TranslatableComponent("quark.gui.enchanting.pending").withStyle(ChatFormatting.AQUA));
+			event.getToolTip().add(Component.translatable("quark.gui.enchanting.pending").withStyle(ChatFormatting.AQUA));
 	}
 
 	@SubscribeEvent

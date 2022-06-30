@@ -34,7 +34,6 @@ import vazkii.quark.base.capability.dummy.DummySorting;
 @Mod.EventBusSubscriber(modid = Quark.MOD_ID)
 public class CapabilityHandler {
 	
-	// TODO LOW PRIO this doesnt seem safe
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		registerLambda(event, ITransferManager.class, (player) -> false);
 
@@ -50,7 +49,6 @@ public class CapabilityHandler {
 
 	private static <T> void register(RegisterCapabilitiesEvent event, Class<T> clazz, Callable<T> provider) {
 		event.register(clazz);
-//		CapabilityManager.INSTANCE.register(clazz, new CapabilityFactory<>(), provider);
 	}
 
 	private static final ResourceLocation DROPOFF_MANAGER = new ResourceLocation(Quark.MOD_ID, "dropoff");

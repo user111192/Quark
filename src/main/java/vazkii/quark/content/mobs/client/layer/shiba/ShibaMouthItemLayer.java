@@ -1,9 +1,11 @@
 package vazkii.quark.content.mobs.client.layer.shiba;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -14,12 +16,13 @@ import net.minecraft.world.item.TridentItem;
 import vazkii.quark.content.mobs.client.model.ShibaModel;
 import vazkii.quark.content.mobs.entity.Shiba;
 
-import javax.annotation.Nonnull;
-
 public class ShibaMouthItemLayer extends RenderLayer<Shiba, ShibaModel> {
 
-	public ShibaMouthItemLayer(RenderLayerParent<Shiba, ShibaModel> model) {
+	private final ItemInHandRenderer itemInHandRenderer;
+
+	public ShibaMouthItemLayer(RenderLayerParent<Shiba, ShibaModel> model, ItemInHandRenderer itemInHandRenderer) {
 		super(model);
+		this.itemInHandRenderer = itemInHandRenderer;
 	}
 
 	@Override
@@ -45,7 +48,7 @@ public class ShibaMouthItemLayer extends RenderLayer<Shiba, ShibaModel> {
 
 		matrix.mulPose(Vector3f.YP.rotationDegrees(45));
 		matrix.mulPose(Vector3f.XP.rotationDegrees(90));
-		Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, item, ItemTransforms.TransformType.NONE, true, matrix, bufferIn, packedLightIn);
+		itemInHandRenderer.renderItem(entitylivingbaseIn, item, ItemTransforms.TransformType.NONE, true, matrix, bufferIn, packedLightIn);
 		matrix.popPose();
 	}
 }

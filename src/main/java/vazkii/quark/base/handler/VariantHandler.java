@@ -1,5 +1,10 @@
 package vazkii.quark.base.handler;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Function;
+
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -12,10 +17,6 @@ import vazkii.quark.base.block.QuarkSlabBlock;
 import vazkii.quark.base.block.QuarkStairsBlock;
 import vazkii.quark.base.block.QuarkWallBlock;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Function;
 
 public class VariantHandler {
 
@@ -56,7 +57,7 @@ public class VariantHandler {
 
 		FlowerPotBlock potted = new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> block, props);
 		RenderLayerHandler.setRenderType(potted, RenderTypeSkeleton.CUTOUT);
-		ResourceLocation resLoc = block.getRegistryName();
+		ResourceLocation resLoc = Registry.BLOCK.getKey(block);
 		if (resLoc == null)
 			resLoc = new ResourceLocation("missingno");
 

@@ -1,10 +1,17 @@
 package vazkii.quark.content.world.block;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -20,11 +27,6 @@ import vazkii.quark.base.block.QuarkBushBlock;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.QuarkModule;
 
-import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 public class GlowLichenGrowthBlock extends QuarkBushBlock implements BonemealableBlock {
 
 	protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
@@ -38,7 +40,7 @@ public class GlowLichenGrowthBlock extends QuarkBushBlock implements Bonemealabl
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull Random rand) {
+	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		super.animateTick(stateIn, worldIn, pos, rand);
 
 		// spreading
@@ -78,14 +80,14 @@ public class GlowLichenGrowthBlock extends QuarkBushBlock implements Bonemealabl
 	}
 
 	@Override
-	public boolean isBonemealSuccess(@Nonnull Level world, @Nonnull Random random, @Nonnull BlockPos pos, @Nonnull BlockState state) {
+	public boolean isBonemealSuccess(@Nonnull Level world, @Nonnull RandomSource random, @Nonnull BlockPos pos, @Nonnull BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(@Nonnull ServerLevel world, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull BlockState state) {
+	public void performBonemeal(@Nonnull ServerLevel world, @Nonnull RandomSource rand, @Nonnull BlockPos pos, @Nonnull BlockState state) {
 		List<Direction> list = Lists.newArrayList(MiscUtil.HORIZONTALS);
-		Collections.shuffle(list, rand);
+		Collections.shuffle(list);
 		for(Direction dir : list) {
 			BlockPos offPos = pos.relative(dir);
 			if(canSpread(world, offPos)) {

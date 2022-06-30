@@ -1,5 +1,7 @@
 package vazkii.quark.content.mobs.client.render.entity;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -9,8 +11,6 @@ import vazkii.quark.content.mobs.client.layer.shiba.ShibaCollarLayer;
 import vazkii.quark.content.mobs.client.layer.shiba.ShibaMouthItemLayer;
 import vazkii.quark.content.mobs.client.model.ShibaModel;
 import vazkii.quark.content.mobs.entity.Shiba;
-
-import javax.annotation.Nonnull;
 
 public class ShibaRenderer extends MobRenderer<Shiba, ShibaModel> {
 
@@ -26,13 +26,13 @@ public class ShibaRenderer extends MobRenderer<Shiba, ShibaModel> {
 	public ShibaRenderer(EntityRendererProvider.Context context) {
 		super(context, ModelHandler.model(ModelHandler.shiba), 0.5F);
 		addLayer(new ShibaCollarLayer(this));
-		addLayer(new ShibaMouthItemLayer(this));
+		addLayer(new ShibaMouthItemLayer(this, context.getItemInHandRenderer()));
 	}
 
 	@Nonnull
 	@Override
 	public ResourceLocation getTextureLocation(Shiba entity) {
-		if(entity.hasCustomName() && entity.getCustomName().getContents().trim().equalsIgnoreCase("doge"))
+		if(entity.hasCustomName() && entity.getCustomName().getContents().toString().trim().equalsIgnoreCase("doge"))
 			return SHIBA_DOGE;
 
 		long least = Math.abs(entity.getUUID().getLeastSignificantBits());

@@ -1,8 +1,13 @@
 package vazkii.quark.content.world.block;
 
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -18,10 +23,6 @@ import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.world.module.GlimmeringWealdModule;
-
-import javax.annotation.Nonnull;
-import java.util.Random;
-import java.util.function.BooleanSupplier;
 
 public class HugeGlowShroomBlock extends HugeMushroomBlock implements IQuarkBlock {
 
@@ -58,7 +59,7 @@ public class HugeGlowShroomBlock extends HugeMushroomBlock implements IQuarkBloc
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull Random rand) {
+	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		super.animateTick(stateIn, worldIn, pos, rand);
 
 		BlockState below = worldIn.getBlockState(pos.below());
@@ -66,7 +67,7 @@ public class HugeGlowShroomBlock extends HugeMushroomBlock implements IQuarkBloc
 			worldIn.addParticle(ParticleTypes.END_ROD, pos.getX() + rand.nextDouble(), pos.getY(), pos.getZ() + rand.nextDouble(), 0, -0.05 - Math.random() * 0.05, 0);
 	}
 
-	public static boolean place(LevelAccessor worldIn, Random rand, BlockPos pos) {
+	public static boolean place(LevelAccessor worldIn, RandomSource rand, BlockPos pos) {
 		Block block = worldIn.getBlockState(pos.below()).getBlock();
 		if (block != Blocks.DEEPSLATE) {
 			return false;

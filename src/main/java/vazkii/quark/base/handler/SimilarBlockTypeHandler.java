@@ -1,15 +1,15 @@
 package vazkii.quark.base.handler;
 
-import com.google.common.collect.ImmutableSet;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import com.google.common.collect.ImmutableSet;
+
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 
 /**
  * @author WireSegal
@@ -22,11 +22,11 @@ public class SimilarBlockTypeHandler {
 						Blocks.YELLOW_SHULKER_BOX, Blocks.LIME_SHULKER_BOX, Blocks.PINK_SHULKER_BOX, Blocks.GRAY_SHULKER_BOX,
 						Blocks.LIGHT_GRAY_SHULKER_BOX, Blocks.CYAN_SHULKER_BOX, Blocks.PURPLE_SHULKER_BOX, Blocks.BLUE_SHULKER_BOX,
 						Blocks.BROWN_SHULKER_BOX, Blocks.GREEN_SHULKER_BOX, Blocks.RED_SHULKER_BOX, Blocks.BLACK_SHULKER_BOX)
-				.stream().map(IForgeRegistryEntry::getRegistryName).map(Objects::toString).collect(Collectors.toList());
+				.stream().map(Registry.BLOCK::getKey).map(Objects::toString).collect(Collectors.toList());
 	}
 
 	public static boolean isShulkerBox(ItemStack stack) {
-		return isShulkerBox(stack.getItem().getRegistryName()) && !stack.isEmpty() && stack.getMaxStackSize() == 1;
+		return isShulkerBox(Registry.ITEM.getKey(stack.getItem())) && !stack.isEmpty() && stack.getMaxStackSize() == 1;
 	}
 
 	public static boolean isShulkerBox(ResourceLocation loc) {

@@ -1,8 +1,11 @@
 package vazkii.quark.content.world.gen;
 
+import java.util.Optional;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,9 +20,6 @@ import vazkii.quark.base.world.generator.Generator;
 import vazkii.quark.content.world.block.BlossomSaplingBlock.BlossomTree;
 import vazkii.quark.content.world.config.BlossomTreeConfig;
 
-import java.util.Optional;
-import java.util.Random;
-
 public class BlossomTreeGenerator extends Generator {
 
 	private BlossomTreeConfig config;
@@ -32,7 +32,7 @@ public class BlossomTreeGenerator extends Generator {
 	}
 
 	@Override
-	public void generateChunk(WorldGenRegion worldIn, ChunkGenerator generator, Random rand, BlockPos pos) {
+	public void generateChunk(WorldGenRegion worldIn, ChunkGenerator generator, RandomSource rand, BlockPos pos) {
 		BlockPos placePos = pos.offset(rand.nextInt(16), 0, rand.nextInt(16));
 		if(config.biomeConfig.canSpawn(getBiome(worldIn, placePos, false)) && rand.nextInt(config.rarity) == 0) {
 			placePos = worldIn.getHeightmapPos(Types.MOTION_BLOCKING, placePos).below();

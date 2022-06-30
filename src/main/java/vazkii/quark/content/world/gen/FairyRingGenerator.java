@@ -1,13 +1,16 @@
 package vazkii.quark.content.world.gen;
 
+import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biome.BiomeCategory;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -20,9 +23,6 @@ import vazkii.quark.base.module.config.type.DimensionConfig;
 import vazkii.quark.base.world.generator.Generator;
 import vazkii.quark.content.world.module.FairyRingsModule;
 
-import java.util.List;
-import java.util.Random;
-
 public class FairyRingGenerator extends Generator {
 
 	public FairyRingGenerator(DimensionConfig dimConfig) {
@@ -30,19 +30,17 @@ public class FairyRingGenerator extends Generator {
 	}
 
 	@Override
-	public void generateChunk(WorldGenRegion worldIn, ChunkGenerator generator, Random rand, BlockPos corner) {
+	public void generateChunk(WorldGenRegion worldIn, ChunkGenerator generator, RandomSource rand, BlockPos corner) {
 		int x = corner.getX() + rand.nextInt(16);
 		int z = corner.getZ() + rand.nextInt(16);
 		BlockPos center = new BlockPos(x, 128, z);
 
 		Holder<Biome> biome = getBiome(worldIn, center, false);
 
-		Biome.BiomeCategory category = Biome.getBiomeCategory(biome);
-
 		double chance = 0;
-		if(category == BiomeCategory.FOREST)
+		if(biome.is(BiomeTags.IS_FOREST))
 			chance = FairyRingsModule.forestChance;
-		else if(category == BiomeCategory.PLAINS)
+		else if(biome.is(Tags.Biomes.IS_PLAINS))
 			chance = FairyRingsModule.plainsChance;
 
 		if(rand.nextDouble() < chance) {
@@ -59,7 +57,7 @@ public class FairyRingGenerator extends Generator {
 		}
 	}
 
-	public static void spawnFairyRing(WorldGenLevel world, ChunkGenerator generator, BlockPos pos, Holder<Biome> biome, Random rand) {
+	public static void spawnFairyRing(WorldGenLevel world, ChunkGenerator generator, BlockPos pos, Holder<Biome> biome, RandomSource rand) {
 		List<ConfiguredFeature<?, ?>> features = biome.value().getGenerationSettings().getFlowerFeatures();
 
 

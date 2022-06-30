@@ -42,6 +42,7 @@ public class ClusterSizeConfig extends AbstractConfigType {
 	@Config.Min(0)
 	public int verticalVariation;
 	
+	@SafeVarargs
 	public ClusterSizeConfig(int rarity, int horizontal, int vertical, int horizontalVariation, int verticalVariation, boolean isBlacklist, TagKey<Biome>... tags) {
 		this(rarity, horizontal, vertical, horizontalVariation, verticalVariation, new BiomeTagConfig(isBlacklist, tags));
 	}

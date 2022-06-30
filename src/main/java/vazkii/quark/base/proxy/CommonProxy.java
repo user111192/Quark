@@ -42,7 +42,6 @@ public class CommonProxy {
 
 	private int lastConfigChange = -11;
 	public static boolean jingleTheBells = false;
-	private boolean registerDone = false;
 	private boolean configGuiSaving = false;
 
 	public void start() {
@@ -69,6 +68,8 @@ public class CommonProxy {
 		bus.addListener(this::loadComplete);
 		bus.addListener(this::configChanged);
 		bus.addListener(this::registerCapabilities);
+		
+		WorldGenHandler.registerBiomeModifier(bus);
 
 		bus.register(RegistryListener.class);
 	}

@@ -1,6 +1,9 @@
 package vazkii.quark.content.world.module;
 
+import java.util.List;
+
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.data.worldgen.features.FeatureUtils;
@@ -46,8 +49,6 @@ import vazkii.quark.content.world.block.HugeGlowShroomBlock;
 import vazkii.quark.content.world.feature.GlowExtrasFeature;
 import vazkii.quark.content.world.feature.GlowShroomsFeature;
 
-import java.util.List;
-
 @LoadModule(category = ModuleCategory.WORLD)
 public class GlimmeringWealdModule extends QuarkModule {
 
@@ -79,7 +80,7 @@ public class GlimmeringWealdModule extends QuarkModule {
 
 		makeFeatures();
 
-		RegistryHelper.register(makeBiome());
+		RegistryHelper.register(makeBiome(), Registry.BIOME_REGISTRY);
 		UndergroundBiomeHandler.addUndergroundBiome(this, Climate.parameters(FULL_RANGE, FULL_RANGE, FULL_RANGE, FULL_RANGE, Climate.Parameter.span(1.55F, 2F), FULL_RANGE, 0F), BIOME_NAME);
 	}
 
@@ -104,9 +105,8 @@ public class GlimmeringWealdModule extends QuarkModule {
 
 	private static Holder<PlacedFeature> place(String featureName, Feature<NoneFeatureConfiguration> feature, List<PlacementModifier> placer) {
 		String name = Quark.MOD_ID + ":" + featureName;
-		feature.setRegistryName(name);
 
-		RegistryHelper.register(feature);
+		RegistryHelper.register(feature, name, Registry.FEATURE_REGISTRY);
 		Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> configured = FeatureUtils.register(name, feature, NoneFeatureConfiguration.NONE);
 		return PlacementUtils.register(name, configured, placer);
 	}
@@ -134,8 +134,8 @@ public class GlimmeringWealdModule extends QuarkModule {
 		settings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ORE_LAPIS_EXTRA);
 
 		Music music = Musics.createGameMusic(QuarkSounds.MUSIC_GLIMMERING_WEALD);
-		Biome biome = OverworldBiomes.biome(Biome.Precipitation.RAIN, Biome.BiomeCategory.UNDERGROUND, 0.8F, 0.4F, mobs, settings, music);
-		biome.setRegistryName(BIOME_NAME);
+		Biome biome = OverworldBiomes.biome(Biome.Precipitation.RAIN, 0.8F, 0.4F, mobs, settings, music);
+		RegistryHelper.setInternalName(biome, BIOME_NAME);
 
 		return biome;
 	}

@@ -1,11 +1,14 @@
 package vazkii.quark.content.world.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,9 +38,6 @@ import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.world.module.ChorusVegetationModule;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
-
 public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlock, IForgeShearable {
 
 	protected static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 13, 14);
@@ -50,6 +50,7 @@ public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlo
 				.noCollission()
 				.instabreak()
 				.sound(SoundType.GRASS)
+				.offsetType(OffsetType.XZ)
 				.randomTicks());
 
 		this.simple = simple;
@@ -57,13 +58,13 @@ public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlo
 	}
 
 	@Override
-	public void randomTick(@Nonnull BlockState state, @Nonnull ServerLevel worldIn, @Nonnull BlockPos pos, Random random) {
+	public void randomTick(@Nonnull BlockState state, @Nonnull ServerLevel worldIn, @Nonnull BlockPos pos, RandomSource random) {
 		if(random.nextDouble() < ChorusVegetationModule.passiveTeleportChance)
 			teleport(pos, random, worldIn, state);
 	}
 
 	@Override
-	public void animateTick(@Nonnull BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+	public void animateTick(@Nonnull BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		worldIn.addParticle(ParticleTypes.PORTAL, pos.getX() + 0.2 + rand.nextDouble() * 0.6, pos.getY() + 0.3, pos.getZ() + 0.2 + rand.nextDouble() * 0.6, 0, 0, 0);
 	}
 
@@ -88,7 +89,7 @@ public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlo
 			runAwayFromWater(pos, worldIn.random, serverLevel, state);
 	}
 
-	private void runAwayFromWater(BlockPos pos, Random random, ServerLevel worldIn, BlockState state) {
+	private void runAwayFromWater(BlockPos pos, RandomSource random, ServerLevel worldIn, BlockState state) {
 		for(Direction d : Direction.values()) {
 			BlockPos test = pos.relative(d);
 			FluidState fluid = worldIn.getFluidState(test);
@@ -99,11 +100,11 @@ public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlo
 		}
 	}
 
-	private BlockPos teleport(BlockPos pos, Random random, ServerLevel worldIn, BlockState state) {
+	private BlockPos teleport(BlockPos pos, RandomSource random, ServerLevel worldIn, BlockState state) {
 		return teleport(pos, random, worldIn, state, 4, (1.0 - ChorusVegetationModule.teleportDuplicationChance));
 	}
 
-	private BlockPos teleport(BlockPos pos, Random random, ServerLevel worldIn, BlockState state, int range, double growthChance) {
+	private BlockPos teleport(BlockPos pos, RandomSource random, ServerLevel worldIn, BlockState state, int range, double growthChance) {
 		int xOff;
 		int zOff;
 		do {
@@ -144,12 +145,12 @@ public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlo
 	}
 
 	@Override
-	public boolean isBonemealSuccess(@Nonnull Level worldIn, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull BlockState state) {
+	public boolean isBonemealSuccess(@Nonnull Level worldIn, @Nonnull RandomSource rand, @Nonnull BlockPos pos, @Nonnull BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(@Nonnull ServerLevel worldIn, Random rand, @Nonnull BlockPos pos, @Nonnull BlockState state) {
+	public void performBonemeal(@Nonnull ServerLevel worldIn, RandomSource rand, @Nonnull BlockPos pos, @Nonnull BlockState state) {
 		for(int i = 0; i < (3 + rand.nextInt(3)); i++)
 			teleport(pos, rand, worldIn, state, 10, 0);
 		teleport(pos, rand, worldIn, state, 4, 1);
@@ -175,12 +176,6 @@ public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlo
 	@Override
 	public boolean isPathfindable(@Nonnull BlockState state, @Nonnull BlockGetter worldIn, @Nonnull BlockPos pos, @Nonnull PathComputationType type) {
 		return (type == PathComputationType.AIR && !this.hasCollision) || super.isPathfindable(state, worldIn, pos, type);
-	}
-
-	@Nonnull
-	@Override
-	public BlockBehaviour.OffsetType getOffsetType() {
-		return BlockBehaviour.OffsetType.XZ;
 	}
 
 }

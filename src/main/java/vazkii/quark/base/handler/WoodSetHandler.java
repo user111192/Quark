@@ -1,16 +1,28 @@
 package vazkii.quark.base.handler;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.PressurePlateBlock.Sensitivity;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -24,7 +36,17 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.block.*;
+import vazkii.quark.base.block.IQuarkBlock;
+import vazkii.quark.base.block.QuarkBlock;
+import vazkii.quark.base.block.QuarkDoorBlock;
+import vazkii.quark.base.block.QuarkFenceBlock;
+import vazkii.quark.base.block.QuarkFenceGateBlock;
+import vazkii.quark.base.block.QuarkPillarBlock;
+import vazkii.quark.base.block.QuarkPressurePlateBlock;
+import vazkii.quark.base.block.QuarkStandingSignBlock;
+import vazkii.quark.base.block.QuarkTrapdoorBlock;
+import vazkii.quark.base.block.QuarkWallSignBlock;
+import vazkii.quark.base.block.QuarkWoodenButtonBlock;
 import vazkii.quark.base.client.render.QuarkBoatRenderer;
 import vazkii.quark.base.item.QuarkSignItem;
 import vazkii.quark.base.item.boat.QuarkBoat;
@@ -36,9 +58,11 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.building.block.VariantBookshelfBlock;
 import vazkii.quark.content.building.block.VariantLadderBlock;
 import vazkii.quark.content.building.block.WoodPostBlock;
-import vazkii.quark.content.building.module.*;
-
-import java.util.*;
+import vazkii.quark.content.building.module.VariantBookshelvesModule;
+import vazkii.quark.content.building.module.VariantChestsModule;
+import vazkii.quark.content.building.module.VariantLaddersModule;
+import vazkii.quark.content.building.module.VerticalPlanksModule;
+import vazkii.quark.content.building.module.WoodenPostsModule;
 
 public class WoodSetHandler {
 
@@ -53,7 +77,8 @@ public class WoodSetHandler {
 				.setCustomClientFactory((spawnEntity, world) -> new QuarkBoat(quarkBoatEntityType, world))
 				.build("quark_boat");
 
-		RegistryHelper.register(quarkBoatEntityType, "quark_boat");
+		RegistryHelper.register(quarkBoatEntityType, "quark_boat", Registry.ENTITY_TYPE_REGISTRY);
+		// TODO 1.19: Chest boat
 	}
 
 	public static void setup(FMLCommonSetupEvent event) {
@@ -66,7 +91,7 @@ public class WoodSetHandler {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void clientSetup(FMLClientSetupEvent event) {
-		EntityRenderers.register(quarkBoatEntityType, QuarkBoatRenderer::new);
+		EntityRenderers.register(quarkBoatEntityType, r -> new QuarkBoatRenderer(r, false));
 
 		event.enqueueWork(() -> {
 			for (WoodSet set : woodSets) {
