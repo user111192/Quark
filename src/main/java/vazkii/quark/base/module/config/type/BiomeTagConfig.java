@@ -1,14 +1,12 @@
 package vazkii.quark.base.module.config.type;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import vazkii.quark.base.module.config.Config;
@@ -17,7 +15,7 @@ import vazkii.quark.base.module.config.ConfigFlagManager;
 public class BiomeTagConfig extends AbstractConfigType implements IBiomeConfig {
 
 	private final Object mutex = new Object();
-	
+
 	@Config(name = "Biome Tags")
 	private List<String> biomeTagStrings;
 
@@ -41,24 +39,19 @@ public class BiomeTagConfig extends AbstractConfigType implements IBiomeConfig {
 		biomeTagStrings = new LinkedList<>();
 		biomeTagStrings.addAll(Arrays.asList(types));
 	}
-	
+
 	@Override
 	public boolean canSpawn(Holder<Biome> biome) {
-		if(resource == null)
+		if(biome == null)
 			return false;
-		
-		ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, resource);
-		Set<TagKey<Biome>> biomeTags = new HashSet<>(); // TODO figure out how to load tags 
 
 		synchronized (mutex) {
 			if(tags == null)
 				updateTypes();
-			
-			for(TagKey<Biome> type : biomeTags) {
-				for(TagKey<Biome> type2 : tags)
-					if(type2.equals(type)) {
-						return !isBlacklist;
-					}
+
+			for(TagKey<Biome> tag : tags) {
+				if(biome.is(tag))
+					return !isBlacklist;
 			}
 
 			return isBlacklist;
@@ -71,13 +64,13 @@ public class BiomeTagConfig extends AbstractConfigType implements IBiomeConfig {
 			updateTypes();
 		}
 	}
-	
+
 	public void updateTypes() {
 		tags = new LinkedList<>();
 		for (String s : biomeTagStrings) {
-			TagKey<Biome> tag = null; // TODO 1.19: implement
-			
-			if (tag != null)
+			TagKey<Biome> tag = TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(s));
+
+			if(tag != null)
 				tags.add(tag);
 		}
 	}
