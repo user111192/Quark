@@ -2,7 +2,7 @@ from jsongen import *
 
 copy([
 	('block_model_door_bottom_left.json', 'assets/{modid}/models/block/{name}_door_bottom_left.json'),
-	('block_model_door_bottom_left_opem.json', 'assets/{modid}/models/block/{name}_door_bottom_left_opem.json'),
+	('block_model_door_bottom_left_open.json', 'assets/{modid}/models/block/{name}_door_bottom_left_opem.json'),
 	('block_model_door_bottom_right.json', 'assets/{modid}/models/block/{name}_door_bottom_right.json'),
 	('block_model_door_bottom_right_open.json', 'assets/{modid}/models/block/{name}_door_bottom_right_open.json'),
 	('block_model_door_top_left.json', 'assets/{modid}/models/block/{name}_door_top_left.json'),
