@@ -2,6 +2,7 @@ package vazkii.quark.content.client.module;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.common.collect.Lists;
 
@@ -74,11 +75,15 @@ public class GreenerGrassModule extends QuarkModule {
 		for(String id : ids) {
 			Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(id));
 			if (block != null) {
-				if (block.builtInRegistryHolder() == null)
-					return;
-				BlockColor color = map.get(block.builtInRegistryHolder());
-				if(color != null)
-					colors.register(getGreenerColor(color, leaves), block);
+				Optional<Reference<Block>> optDelegate = ForgeRegistries.BLOCKS.getDelegate(block);
+				
+				if(optDelegate != null && optDelegate.isPresent()) {
+					Reference<Block> delegate = optDelegate.get();
+					
+					BlockColor color = map.get(delegate);
+					if(color != null)
+						colors.register(getGreenerColor(color, leaves), block);
+				}
 			}
 		}
 	}
