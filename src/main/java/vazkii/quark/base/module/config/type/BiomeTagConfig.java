@@ -1,6 +1,7 @@
 package vazkii.quark.base.module.config.type;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -47,7 +48,7 @@ public class BiomeTagConfig extends AbstractConfigType implements IBiomeConfig {
 			return false;
 		
 		ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, resource);
-		Set<TagKey<Biome>> biomeTags = null; // TODO 1.19: implement
+		Set<TagKey<Biome>> biomeTags = new HashSet<>(); // TODO 1.19: implement
 
 		synchronized (mutex) {
 			if(tags == null)
