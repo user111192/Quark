@@ -1,6 +1,6 @@
 package vazkii.quark.base.module.config.type;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Holder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import vazkii.quark.base.module.config.Config;
@@ -53,7 +53,7 @@ public class CompoundBiomeConfig extends AbstractConfigType implements IBiomeCon
 	}
 
 	@Override
-	public boolean canSpawn(ResourceLocation b) {
+	public boolean canSpawn(Holder<Biome> b) {
 		return b != null && tags.canSpawn(b) && biomes.canSpawn(b);
 	}
 

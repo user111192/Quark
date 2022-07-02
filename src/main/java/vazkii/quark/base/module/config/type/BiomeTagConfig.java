@@ -6,9 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import vazkii.quark.base.module.config.Config;
@@ -43,12 +43,12 @@ public class BiomeTagConfig extends AbstractConfigType implements IBiomeConfig {
 	}
 	
 	@Override
-	public boolean canSpawn(ResourceLocation resource) {
+	public boolean canSpawn(Holder<Biome> biome) {
 		if(resource == null)
 			return false;
 		
 		ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, resource);
-		Set<TagKey<Biome>> biomeTags = new HashSet<>(); // TODO 1.19: implement
+		Set<TagKey<Biome>> biomeTags = new HashSet<>(); // TODO figure out how to load tags 
 
 		synchronized (mutex) {
 			if(tags == null)

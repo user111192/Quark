@@ -3,6 +3,7 @@ package vazkii.quark.base.util;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
+// TODO 1.19: add mangrove
 public class VanillaWoods {
 
 	public static record Wood(String name, Block planks, boolean nether) { }

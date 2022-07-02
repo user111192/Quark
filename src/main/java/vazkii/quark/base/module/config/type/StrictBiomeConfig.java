@@ -4,7 +4,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.biome.Biome;
 import vazkii.quark.base.module.config.Config;
 
 public class StrictBiomeConfig extends AbstractConfigType implements IBiomeConfig {
@@ -21,10 +22,13 @@ public class StrictBiomeConfig extends AbstractConfigType implements IBiomeConfi
 		biomeStrings = new LinkedList<>();
 		biomeStrings.addAll(Arrays.asList(biomes));
 	}
-	
+
 	@Override
-	public boolean canSpawn(ResourceLocation res) {
-		return biomeStrings.contains(res.toString()) != isBlacklist;
+	public boolean canSpawn(Holder<Biome> res) {
+		return res.unwrap().map(
+				key -> biomeStrings.contains(key.location().toString()) != isBlacklist,
+				unbound -> false
+				);
 	}
 
 }
