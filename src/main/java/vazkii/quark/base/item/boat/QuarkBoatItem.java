@@ -1,5 +1,10 @@
 package vazkii.quark.base.item.boat;
 
+import java.util.List;
+import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -7,6 +12,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,23 +22,23 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.function.Predicate;
 
 public class QuarkBoatItem extends QuarkItem {
 
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
 
 	public final String type;
+	private final boolean chest;
 
-	public QuarkBoatItem(String type, QuarkModule module) {
-		super(type + "_boat", module, (new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_TRANSPORTATION));
+	public QuarkBoatItem(String type, QuarkModule module, boolean chest) {
+		super(type + (chest ? "_chest" : "") + "_boat", module,
+				(new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_TRANSPORTATION));
 
 		this.type = type;
+		this.chest = chest;
 	}
 
 	// Vanilla copy
@@ -58,8 +64,11 @@ public class QuarkBoatItem extends QuarkItem {
 			}
 
 			if (hitresult.getType() == HitResult.Type.BLOCK) {
-				QuarkBoat boat = new QuarkBoat(world, hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z);
-				boat.setQuarkBoatType(type);
+				Boat boat =
+						chest ? new QuarkChestBoat(world, hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z)
+								: new QuarkBoat(world, hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z);
+
+				((IQuarkBoat) boat).setQuarkBoatTypeObj(WoodSetHandler.getQuarkBoatType(type));
 				boat.setYRot(player.getYRot());
 				if (!world.noCollision(boat, boat.getBoundingBox())) {
 					return InteractionResultHolder.fail(itemstack);

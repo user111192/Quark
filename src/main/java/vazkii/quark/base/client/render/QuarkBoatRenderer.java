@@ -19,11 +19,13 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.vehicle.Boat;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.ModelHandler;
-import vazkii.quark.base.item.boat.QuarkBoat;
+import vazkii.quark.base.handler.WoodSetHandler;
+import vazkii.quark.base.item.boat.IQuarkBoat;
 
-public class QuarkBoatRenderer extends EntityRenderer<QuarkBoat> {
+public class QuarkBoatRenderer extends EntityRenderer<Boat> {
 
 	private record BoatModelTuple(ResourceLocation resloc, BoatModel model) {}
 	
@@ -36,8 +38,9 @@ public class QuarkBoatRenderer extends EntityRenderer<QuarkBoat> {
 	}
 
 	private static Map<String, BoatModelTuple> computeBoatResources(boolean chest, EntityRendererProvider.Context context) {
-		return QuarkBoat.boatTypes().collect(ImmutableMap.toImmutableMap(Functions.identity(), name -> {
-			ResourceLocation texture = new ResourceLocation(Quark.MOD_ID, "textures/model/entity/boat/" + name + ".png");
+		return WoodSetHandler.boatTypes().collect(ImmutableMap.toImmutableMap(Functions.identity(), name -> {
+			String folder = chest ? "chest_boat" : "boat";
+			ResourceLocation texture = new ResourceLocation(Quark.MOD_ID, "textures/model/entity/" + folder + "/" + name + ".png");
 			BoatModel model = new BoatModel(context.bakeLayer(chest ? ModelHandler.quark_boat_chest : ModelHandler.quark_boat), chest);
 
 			return new BoatModelTuple(texture, model);
@@ -47,7 +50,7 @@ public class QuarkBoatRenderer extends EntityRenderer<QuarkBoat> {
 	// All BoatRenderer copy from here on out =====================================================================================================================
 
 	@Override
-	public void render(QuarkBoat boat, float yaw, float partialTicks, PoseStack matrix, @Nonnull MultiBufferSource buffer, int light) {
+	public void render(Boat boat, float yaw, float partialTicks, PoseStack matrix, @Nonnull MultiBufferSource buffer, int light) {
 		matrix.pushPose();
 		matrix.translate(0.0D, 0.375D, 0.0D);
 		matrix.mulPose(Vector3f.YP.rotationDegrees(180.0F - yaw));
@@ -87,12 +90,12 @@ public class QuarkBoatRenderer extends EntityRenderer<QuarkBoat> {
 	@Nonnull
 	@Override
 	@Deprecated // forge: override getModelWithLocation to change the texture / model
-	public ResourceLocation getTextureLocation(@Nonnull QuarkBoat boat) {
+	public ResourceLocation getTextureLocation(@Nonnull Boat boat) {
 		return getModelWithLocation(boat).resloc();
 	}
 
-	public BoatModelTuple getModelWithLocation(QuarkBoat boat) {
-		return this.boatResources.get(boat.getQuarkBoatType());
+	public BoatModelTuple getModelWithLocation(Boat boat) {
+		return this.boatResources.get(((IQuarkBoat) boat).getQuarkBoatTypeObj().name());
 	}
 
 }

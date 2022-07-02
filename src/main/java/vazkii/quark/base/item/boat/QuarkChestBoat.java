@@ -10,22 +10,23 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.ChestBoat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.QuarkBoatType;
 
-public class QuarkBoat extends Boat implements IQuarkBoat {
+public class QuarkChestBoat extends ChestBoat implements IQuarkBoat {
 
-	private static final EntityDataAccessor<String> DATA_QUARK_TYPE = SynchedEntityData.defineId(QuarkBoat.class, EntityDataSerializers.STRING);
+	private static final EntityDataAccessor<String> DATA_QUARK_TYPE = SynchedEntityData.defineId(QuarkChestBoat.class, EntityDataSerializers.STRING);
 
-	public QuarkBoat(EntityType<? extends Boat> entityType, Level world) {
+	public QuarkChestBoat(EntityType<? extends Boat> entityType, Level world) {
 		super(entityType, world);
 	}
 
-	public QuarkBoat(Level world, double x, double y, double z) {
-		this(WoodSetHandler.quarkBoatEntityType, world);
+	public QuarkChestBoat(Level world, double x, double y, double z) {
+		this(WoodSetHandler.quarkChestBoatEntityType, world);
 		this.setPos(x, y, z);
 		this.xo = x;
 		this.yo = y;
@@ -70,7 +71,7 @@ public class QuarkBoat extends Boat implements IQuarkBoat {
 	@Nonnull
 	@Override
 	public Item getDropItem() {
-		return getQuarkBoatTypeObj().boat();
+		return getQuarkBoatTypeObj().chestBoat();
 	}
 
 	@Nonnull
@@ -83,7 +84,7 @@ public class QuarkBoat extends Boat implements IQuarkBoat {
 	public void setType(@Nonnull Type type) {
 		// NO-OP
 	}
-
+	
 	@Override
 	public void setQuarkBoatTypeObj(QuarkBoatType type) {
 		setQuarkBoatType(type.name());

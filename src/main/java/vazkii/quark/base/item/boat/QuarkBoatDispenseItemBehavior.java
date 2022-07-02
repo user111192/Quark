@@ -1,24 +1,28 @@
 package vazkii.quark.base.item.boat;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-
-import javax.annotation.Nonnull;
+import vazkii.quark.base.handler.WoodSetHandler;
 
 // Pretty much just a copy of BoatDispenseItemBehavior but for the quark boat
 public class QuarkBoatDispenseItemBehavior extends DefaultDispenseItemBehavior {
 
 	private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
 	private final String type;
+	private final boolean chest;
 
-	public QuarkBoatDispenseItemBehavior(String type) {
+	public QuarkBoatDispenseItemBehavior(String type, boolean chest) {
 		this.type = type;
+		this.chest = chest;
 	}
 
 	@Nonnull
@@ -41,8 +45,11 @@ public class QuarkBoatDispenseItemBehavior extends DefaultDispenseItemBehavior {
 			offset = 0.0D;
 		}
 
-		QuarkBoat boat = new QuarkBoat(level, boatX, boatY + offset, boatZ);
-		boat.setQuarkBoatType(type);
+		Boat boat = 
+				chest ? new QuarkChestBoat(level, boatX, boatY + offset, boatZ) 
+						: new QuarkBoat(level, boatX, boatY + offset, boatZ);
+
+		((IQuarkBoat) boat).setQuarkBoatTypeObj(WoodSetHandler.getQuarkBoatType(type));
 		boat.setYRot(direction.toYRot());
 		level.addFreshEntity(boat);
 		stack.shrink(1);

@@ -40,14 +40,7 @@ public class QuarkSounds {
 	public static final SoundEvent ENTITY_FOXHOUND_WHINE = register("entity.foxhound.whine");
 	public static final SoundEvent ENTITY_FOXHOUND_EAT = register("entity.foxhound.eat");
 	public static final SoundEvent ENTITY_FOXHOUND_CRACKLE = register("entity.foxhound.crackle");
-
-	public static final SoundEvent ENTITY_FROG_WEDNESDAY = register("entity.frog.wednesday");
-	public static final SoundEvent ENTITY_FROG_JUMP = register("entity.frog.jump");
-	public static final SoundEvent ENTITY_FROG_DIE = register("entity.frog.die");
-	public static final SoundEvent ENTITY_FROG_HURT = register("entity.frog.hurt");
-	public static final SoundEvent ENTITY_FROG_IDLE = register("entity.frog.idle");
-	public static final SoundEvent ENTITY_FROG_SHEAR = register("entity.frog.shear");
-
+	
 	public static final SoundEvent ENTITY_CRAB_DIE = register("entity.crab.die");
 	public static final SoundEvent ENTITY_CRAB_HURT = register("entity.crab.hurt");
 	public static final SoundEvent ENTITY_CRAB_IDLE = register("entity.crab.idle");

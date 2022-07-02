@@ -34,7 +34,7 @@ def makeWood(type):
 	run(f"py sign.py {type}")
 	run(f"py buttons.py texname={type}_planks {type}")
 	run(f"py pressure_plates.py texname={type}_planks {type}")
-	run(f"py generic_item.py {type}_boat")
+	run(f"py generic_item.py {type}_boat {type}_chest_boat")
 	run(f"py wood_set_recipes.py category={category} flag={flag} {type}")
 
 	appendTags(type)
