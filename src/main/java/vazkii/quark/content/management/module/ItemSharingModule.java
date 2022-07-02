@@ -116,7 +116,7 @@ public class ItemSharingModule extends QuarkModule {
 
 			ServerChatEvent event = new ServerChatEvent(serverPlayer, comp.getString(), fullComp);
 			if (!MinecraftForge.EVENT_BUS.post(event)) {
-				players.broadcastMessage(event.getComponent(), ChatType.CHAT, player.getUUID());
+//				players.broadcastChatMessage(event.getComponent(), ChatType.CHAT); TODO 1.19
 
 				ServerGamePacketListenerImpl handler = serverPlayer.connection;
 				int threshold = handler.chatSpamTickCount;

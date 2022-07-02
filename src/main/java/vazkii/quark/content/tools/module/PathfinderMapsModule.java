@@ -78,7 +78,6 @@ public class PathfinderMapsModule extends QuarkModule {
 
 
 	@Config public static int searchRadius = 6400;
-	@Config public static int searchDistanceIncrement = 8;
 	@Config public static int xpFromTrade = 5;
 
 	@Override
@@ -164,7 +163,8 @@ public class PathfinderMapsModule extends QuarkModule {
 		if(!(world instanceof ServerLevel serverLevel))
 			return ItemStack.EMPTY;
 
-		Pair<BlockPos, Holder<Biome>> biomeInfo = serverLevel.findNearestBiome(predicate, pos, searchRadius, searchDistanceIncrement);
+		// from LocateCommand
+		Pair<BlockPos, Holder<Biome>> biomeInfo = serverLevel.findClosestBiome3d(predicate, pos, searchRadius, 32, 64);
 
 		if(biomeInfo == null)
 			return ItemStack.EMPTY;

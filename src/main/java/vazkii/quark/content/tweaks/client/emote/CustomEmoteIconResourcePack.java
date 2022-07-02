@@ -61,24 +61,24 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 
 	@Nonnull
 	@Override
-	public Collection<ResourceLocation> getResources(@Nonnull PackType type, @Nonnull String pathIn, @Nonnull String idk, int maxDepth, @Nonnull Predicate<String> filter) {
+	public Collection<ResourceLocation> getResources(@Nonnull PackType type, @Nonnull String pathIn, @Nonnull String idk, @Nonnull Predicate<ResourceLocation> filter) {
 		File rootPath = new File(this.file, type.getDirectory());
 		List<ResourceLocation> allResources = Lists.newArrayList();
 
 		for (String namespace : this.getNamespaces(type))
-			this.crawl(new File(new File(rootPath, namespace), pathIn), maxDepth, namespace, allResources, pathIn + "/", filter);
+			this.crawl(new File(new File(rootPath, namespace), pathIn), 32, namespace, allResources, pathIn + "/", filter);
 
 		return allResources;
 	}
 
-	private void crawl(File rootPath, int maxDepth, String namespace, List<ResourceLocation> allResources, String path, Predicate<String> filter) {
+	private void crawl(File rootPath, int maxDepth, String namespace, List<ResourceLocation> allResources, String path, Predicate<ResourceLocation> filter) {
 		File[] files = rootPath.listFiles();
 		if (files != null) {
 			for (File file : files) {
 				if (file.isDirectory()) {
 					if (maxDepth > 0)
 						this.crawl(file, maxDepth - 1, namespace, allResources, path + file.getName() + "/", filter);
-				} else if (!file.getName().endsWith(".mcmeta") && filter.test(file.getName())) {
+				} else if (!file.getName().endsWith(".mcmeta") && filter.test(new ResourceLocation(namespace, path + file.getName()))) {
 					try {
 						allResources.add(new ResourceLocation(namespace, path + file.getName()));
 					} catch (ResourceLocationException e) {

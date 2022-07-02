@@ -57,20 +57,6 @@ public class InfluenceCategory implements IRecipeCategory<InfluenceEntry> {
 		return this.icon;
 	}
 
-	@Nonnull
-	@Override
-	@SuppressWarnings("removal")
-	public ResourceLocation getUid() {
-		return UID;
-	}
-
-	@Nonnull
-	@Override
-	@SuppressWarnings("removal")
-	public Class<? extends InfluenceEntry> getRecipeClass() {
-		return InfluenceEntry.class;
-	}
-
 	@Override
 	public void setRecipe(@Nonnull IRecipeLayoutBuilder builder, @Nonnull InfluenceEntry recipe, @Nonnull IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 1, 10)

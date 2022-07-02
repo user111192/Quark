@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.Window;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.language.I18n;
@@ -79,9 +80,10 @@ public class AutoWalkKeybindModule extends QuarkModule {
 	private void acceptInput() {
 		Minecraft mc = Minecraft.getInstance();
 
+		OptionInstance<Boolean> opt = mc.options.autoJump();
 		if(mc.options.keyUp.isDown()) {
 			if(autorunning)
-				mc.options.autoJump = hadAutoJump;
+				opt.set(hadAutoJump);
 			
 			autorunning = false;
 		}
@@ -90,9 +92,9 @@ public class AutoWalkKeybindModule extends QuarkModule {
 			autorunning = !autorunning;
 
 			if(autorunning) {
-				hadAutoJump = mc.options.autoJump;
-				mc.options.autoJump = true;
-			} else mc.options.autoJump = hadAutoJump;
+				hadAutoJump = opt.get();
+				opt.set(true);
+			} else opt.set(hadAutoJump);
 		}
 	}
 

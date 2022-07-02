@@ -176,7 +176,7 @@ public class EmotesModule extends QuarkModule {
 			int tierRow, rowPos;
 
 			Minecraft mc = Minecraft.getInstance();
-			boolean expandDown = mc.options.showSubtitles;
+			boolean expandDown = mc.options.showSubtitles().get();
 
 			Set<Integer> keys = descriptorSorting.keySet();
 			for(int tier : keys) {
