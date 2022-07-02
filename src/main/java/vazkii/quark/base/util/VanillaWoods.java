@@ -14,16 +14,17 @@ public class VanillaWoods {
 	public static Wood JUNGLE = new Wood("jungle", Blocks.JUNGLE_PLANKS, false);
 	public static Wood ACACIA = new Wood("acacia", Blocks.ACACIA_PLANKS, false);
 	public static Wood DARK_OAK = new Wood("dark_oak", Blocks.DARK_OAK_PLANKS, false);
-	
+	public static Wood MANGROVE = new Wood("mangrove", Blocks.MANGROVE_PLANKS, false);
+
 	public static Wood CRIMSON = new Wood("crimson", Blocks.CRIMSON_PLANKS, true);
 	public static Wood WARPED = new Wood("warped", Blocks.WARPED_PLANKS, true);
 
 	public static final Wood[] OVERWORLD_NON_OAK = new Wood[] {
-			SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK
+			SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, MANGROVE
 	};
 
 	public static final Wood[] OVERWORLD = new Wood[] {
-			OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK
+			OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, MANGROVE
 	};
 
 	public static final Wood[] NETHER = new Wood[] {
@@ -31,10 +32,10 @@ public class VanillaWoods {
 	};
 	
 	public static final Wood[] ALL = new Wood[] {
-			OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, CRIMSON, WARPED
+			OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, CRIMSON, WARPED, MANGROVE
 	};
 	
 	public static final Wood[] NON_OAK = new Wood[] {
-			SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, CRIMSON, WARPED
+			SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, CRIMSON, WARPED, MANGROVE
 	};
 }
