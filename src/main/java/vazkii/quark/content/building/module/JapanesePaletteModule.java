@@ -23,7 +23,7 @@ import vazkii.quark.content.building.block.PaperLanternBlock;
 import vazkii.quark.content.building.block.PaperWallBlock;
 
 @LoadModule(category = ModuleCategory.BUILDING)
-public class OrientalPaletteModule extends QuarkModule {
+public class JapanesePaletteModule extends QuarkModule {
 
 	@Config(flag = "paper_decor")
 	public static boolean enablePaperBlocks = true;
