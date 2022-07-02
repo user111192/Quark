@@ -143,7 +143,6 @@ public class WorldGenHandler {
 
 		public static final ResourceLocation RESOURCE = new ResourceLocation(Quark.MOD_ID, "biome_modifier");
 	    private static final RegistryObject<Codec<? extends BiomeModifier>> SERIALIZER = RegistryObject.create(RESOURCE, ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Quark.MOD_ID);
-
 		
 		@Override
 		public void modify(Holder<Biome> biome, Phase phase, Builder builder) {

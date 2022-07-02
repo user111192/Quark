@@ -1,11 +1,11 @@
 package vazkii.quark.base.world;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-
-import javax.annotation.Nonnull;
 
 public class DeferredFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -18,7 +18,6 @@ public class DeferredFeature extends Feature<NoneFeatureConfiguration> {
 
 	@Override
 	public boolean place(@Nonnull FeaturePlaceContext<NoneFeatureConfiguration> context) {
-		System.out.println("Run!!");
 		WorldGenHandler.generateChunk(context, stage);
 		return false;
 	}
