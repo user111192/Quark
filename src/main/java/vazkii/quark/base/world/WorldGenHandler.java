@@ -40,7 +40,6 @@ import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.common.world.ModifiableBiomeInfo.BiomeInfo.Builder;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -53,18 +52,15 @@ import vazkii.quark.base.world.generator.IGenerator;
 @EventBusSubscriber(modid = Quark.MOD_ID)
 public class WorldGenHandler {
 
-	private static final Map<GenerationStep.Decoration, Feature<NoneFeatureConfiguration>> defersBaseFeature = new HashMap<>();
 	private static final Map<GenerationStep.Decoration, Holder<PlacedFeature>> defers = new HashMap<>();
 	private static final Map<GenerationStep.Decoration, SortedSet<WeightedGenerator>> generators = new HashMap<>();
 
 	public static PlacementModifierType<ChunkCornerPlacement> CHUNK_CORNER_PLACEMENT_TYPE = () -> ChunkCornerPlacement.CODEC;
 	public static ChunkCornerPlacement CHUNK_CORNER_PLACEMENT = new ChunkCornerPlacement();
 
-	public static void start() {
-		registerFeatures();
-	}
-
-	private static void registerFeatures() {
+	public static void register() {
+		RegistryHelper.register(CHUNK_CORNER_PLACEMENT_TYPE, "chunk_corner", Registry.PLACEMENT_MODIFIER_REGISTRY);
+		
 		for(GenerationStep.Decoration stage : GenerationStep.Decoration.values()) {
 			Feature<NoneFeatureConfiguration> deferredFeature = new DeferredFeature(stage);
 
@@ -72,26 +68,17 @@ public class WorldGenHandler {
 			// countries like Turkey will use a special character instead of i and well, crash the ResourceLocation.
 			String name = "deferred_feature_" + stage.name().toLowerCase(Locale.ENGLISH);
 			RegistryHelper.register(deferredFeature, name, Registry.FEATURE_REGISTRY);
-			defersBaseFeature.put(stage, deferredFeature);
+			
+			ConfiguredFeature<?, ?> feature = new ConfiguredFeature<>(deferredFeature, FeatureConfiguration.NONE);
+
+			ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, "deferred_feature_" + stage.name().toLowerCase(Locale.ROOT));
+			Holder<ConfiguredFeature<?, ?>> featureHolder = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, resloc, feature);
+
+			PlacedFeature placed = new PlacedFeature(featureHolder, List.of(CHUNK_CORNER_PLACEMENT));
+			Holder<PlacedFeature> placedHolder = BuiltinRegistries.register(BuiltinRegistries.PLACED_FEATURE, resloc, placed);
+
+			defers.put(stage, placedHolder);
 		}
-	}
-
-	public static void loadComplete(FMLLoadCompleteEvent event) {
-		event.enqueueWork(() -> {
-			for(GenerationStep.Decoration stage : GenerationStep.Decoration.values()) {
-				ConfiguredFeature<?, ?> feature = new ConfiguredFeature<>(defersBaseFeature.get(stage), FeatureConfiguration.NONE);
-
-				ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, "deferred_feature_" + stage.name().toLowerCase(Locale.ROOT));
-				Holder<ConfiguredFeature<?, ?>> featureHolder = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, resloc, feature);
-
-				PlacedFeature placed = new PlacedFeature(featureHolder, List.of(CHUNK_CORNER_PLACEMENT));
-				Holder<PlacedFeature> placedHolder = BuiltinRegistries.register(BuiltinRegistries.PLACED_FEATURE, resloc, placed);
-
-				defers.put(stage, placedHolder);
-			}
-
-			Registry.register(Registry.PLACEMENT_MODIFIERS, new ResourceLocation(Quark.MOD_ID, "chunk_corner"), CHUNK_CORNER_PLACEMENT_TYPE);
-		});
 	}
 
 	public static void modifyBiome(Holder<Biome> biome, ModifiableBiomeInfo.BiomeInfo.Builder biomeInfoBuilder) {

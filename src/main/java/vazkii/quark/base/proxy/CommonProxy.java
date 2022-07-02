@@ -53,7 +53,6 @@ public class CommonProxy {
 
 		QuarkSounds.start();
 		ModuleLoader.INSTANCE.start();
-		WorldGenHandler.start();
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		registerListeners(bus);
@@ -86,7 +85,6 @@ public class CommonProxy {
 	public void loadComplete(FMLLoadCompleteEvent event) {
 		ModuleLoader.INSTANCE.loadComplete(event);
 
-		WorldGenHandler.loadComplete(event);
 		FuelHandler.addAllWoods();
 		UndergroundBiomeHandler.init(event);
 	}
@@ -142,6 +140,7 @@ public class CommonProxy {
 
 			ModuleLoader.INSTANCE.register();
 			WoodSetHandler.register();
+			WorldGenHandler.register();
 		}
 
 	}

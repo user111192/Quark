@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.ParallelDispatchEvent;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.QuarkModule;
 
 public final class UndergroundBiomeHandler {
@@ -37,15 +37,19 @@ public final class UndergroundBiomeHandler {
 	@SuppressWarnings("unchecked")
 	private static Proxy proxy() {
 		if(proxy == null) {
-//			if(ModList.get().isLoaded("terrablender")) { TODO 1.19
-//				try {
-//					Class<?> clazz = Class.forName("vazkii.quark.integration.terrablender.TerraBlenderIntegration");
-//					Supplier<UndergroundBiomeHandler.Proxy> supplier = (Supplier<Proxy>) clazz.getConstructor().newInstance();
-//					proxy = supplier.get();
-//				} catch (ReflectiveOperationException e) {
-//					throw new RuntimeException(e);
-//				}
-//			}
+			try {
+				Class<?> testClazz = Class.forName("terrablender.api.Region");
+
+				if(testClazz != null) try {
+					Class<?> clazz = Class.forName("vazkii.quark.integration.terrablender.TerraBlenderIntegration");
+					Supplier<UndergroundBiomeHandler.Proxy> supplier = (Supplier<Proxy>) clazz.getConstructor().newInstance();
+					proxy = supplier.get();
+				} catch (ReflectiveOperationException e) {
+					throw new RuntimeException(e);
+				}
+			} catch (ClassNotFoundException e1) {
+				Quark.LOG.info("TerraBlender not found, using injection method");
+			}
 
 			if(proxy == null)
 				proxy = new Proxy();
