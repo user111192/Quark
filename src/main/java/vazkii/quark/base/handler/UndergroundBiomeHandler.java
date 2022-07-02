@@ -37,15 +37,15 @@ public final class UndergroundBiomeHandler {
 	@SuppressWarnings("unchecked")
 	private static Proxy proxy() {
 		if(proxy == null) {
-			if(ModList.get().isLoaded("terrablender")) {
-				try {
-					Class<?> clazz = Class.forName("vazkii.quark.integration.terrablender.TerraBlenderIntegration");
-					Supplier<UndergroundBiomeHandler.Proxy> supplier = (Supplier<Proxy>) clazz.getConstructor().newInstance();
-					proxy = supplier.get();
-				} catch (ReflectiveOperationException e) {
-					throw new RuntimeException(e);
-				}
-			}
+//			if(ModList.get().isLoaded("terrablender")) { TODO 1.19
+//				try {
+//					Class<?> clazz = Class.forName("vazkii.quark.integration.terrablender.TerraBlenderIntegration");
+//					Supplier<UndergroundBiomeHandler.Proxy> supplier = (Supplier<Proxy>) clazz.getConstructor().newInstance();
+//					proxy = supplier.get();
+//				} catch (ReflectiveOperationException e) {
+//					throw new RuntimeException(e);
+//				}
+//			}
 
 			if(proxy == null)
 				proxy = new Proxy();

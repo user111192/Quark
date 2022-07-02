@@ -20,6 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.item.QuarkMusicDiscItem;
 import vazkii.quark.base.module.LoadModule;
@@ -47,7 +48,7 @@ public class AmbientDiscsModule extends QuarkModule {
 	}
 
 	private void disc(SoundEvent sound) {
-		String name = Registry.SOUND_EVENT.getKey(sound).getPath().replaceAll(".+\\.", "");
+		String name = RegistryHelper.getRegistryName(sound, Registry.SOUND_EVENT).getPath().replaceAll(".+\\.", "");
 		discs.add(new QuarkMusicDiscItem(15, () -> sound, name, this, true));
 	}
 

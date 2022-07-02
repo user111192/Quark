@@ -116,7 +116,7 @@ public class GrateBlock extends QuarkBlock implements SimpleFluidloggedBlock {
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
+	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
 		if (entity instanceof Animal || entity instanceof WaterAnimal)
 			return BlockPathTypes.DAMAGE_OTHER;
 		return null;
@@ -136,7 +136,7 @@ public class GrateBlock extends QuarkBlock implements SimpleFluidloggedBlock {
 
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-		return fluidContained(state).getAttributes().getLuminosity();
+		return fluidContained(state).getFluidType().getLightLevel();
 	}
 
 	@Override

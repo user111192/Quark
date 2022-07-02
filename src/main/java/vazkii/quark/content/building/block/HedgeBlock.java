@@ -12,6 +12,7 @@ import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -51,7 +52,7 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IBlockColorPr
 		this.module = module;
 		this.leaf = leaf;
 
-		ResourceLocation leafRes = RegistryHelper.getInternalName(leaf);
+		ResourceLocation leafRes = RegistryHelper.getRegistryName(leaf, Registry.BLOCK);
 		if (leaf instanceof BlossomLeavesBlock) {
 			String colorName = leafRes.getPath().replaceAll("_blossom_leaves", "");
 			RegistryHelper.registerBlock(this, colorName + "_blossom_hedge");
