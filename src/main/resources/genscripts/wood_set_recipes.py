@@ -3,7 +3,7 @@ from jsongen import *
 def main():
 	copy_tuples([
 		'planks', 'wood', 'stripped_wood', 'fence', 'sign', 'button', 'pressure_plate', 'door', 'trapdoor',
-		'fence_gate', 'boat', 'bookshelf', 'chest', 'chest_wood', 'trapped_chest', 'ladder'
+		'fence_gate', 'boat', 'chest_boat', 'bookshelf', 'chest', 'chest_wood', 'trapped_chest', 'ladder'
 	])
 
 def copy_tuples(values):
