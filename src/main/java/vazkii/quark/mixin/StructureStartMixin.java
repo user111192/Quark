@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -31,12 +32,12 @@ public class StructureStartMixin {
 	private Structure structure;
 
 	@Inject(method = "placeInChunk", at = @At("HEAD"))
-	public void injectReference(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, Random random, BoundingBox bounds, ChunkPos pos, CallbackInfo callback) {
+	public void injectReference(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox bounds, ChunkPos pos, CallbackInfo callback) {
 		StructureBlockReplacementHandler.setActiveStructure(structure, pieceContainer);
 	}
 
 	@Inject(method = "placeInChunk", at = @At("RETURN"))
-	public void resetReference(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, Random random, BoundingBox bounds, ChunkPos pos, CallbackInfo callback) {
+	public void resetReference(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox bounds, ChunkPos pos, CallbackInfo callback) {
 		StructureBlockReplacementHandler.setActiveStructure(null, null);
 	}
 

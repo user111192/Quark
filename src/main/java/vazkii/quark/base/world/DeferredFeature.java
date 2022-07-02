@@ -18,6 +18,7 @@ public class DeferredFeature extends Feature<NoneFeatureConfiguration> {
 
 	@Override
 	public boolean place(@Nonnull FeaturePlaceContext<NoneFeatureConfiguration> context) {
+		System.out.println("Run!!");
 		WorldGenHandler.generateChunk(context, stage);
 		return false;
 	}
