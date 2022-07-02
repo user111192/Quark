@@ -33,7 +33,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
@@ -55,12 +54,7 @@ public class WorldGenHandler {
 	private static final Map<GenerationStep.Decoration, Holder<PlacedFeature>> defers = new HashMap<>();
 	private static final Map<GenerationStep.Decoration, SortedSet<WeightedGenerator>> generators = new HashMap<>();
 
-	public static PlacementModifierType<ChunkCornerPlacement> CHUNK_CORNER_PLACEMENT_TYPE = () -> ChunkCornerPlacement.CODEC;
-	public static ChunkCornerPlacement CHUNK_CORNER_PLACEMENT = new ChunkCornerPlacement();
-
 	public static void register() {
-		RegistryHelper.register(CHUNK_CORNER_PLACEMENT_TYPE, "chunk_corner", Registry.PLACEMENT_MODIFIER_REGISTRY);
-		
 		for(GenerationStep.Decoration stage : GenerationStep.Decoration.values()) {
 			Feature<NoneFeatureConfiguration> deferredFeature = new DeferredFeature(stage);
 
@@ -74,7 +68,7 @@ public class WorldGenHandler {
 			ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, "deferred_feature_" + stage.name().toLowerCase(Locale.ROOT));
 			Holder<ConfiguredFeature<?, ?>> featureHolder = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, resloc, feature);
 
-			PlacedFeature placed = new PlacedFeature(featureHolder, List.of(CHUNK_CORNER_PLACEMENT));
+			PlacedFeature placed = new PlacedFeature(featureHolder, List.of());
 			Holder<PlacedFeature> placedHolder = BuiltinRegistries.register(BuiltinRegistries.PLACED_FEATURE, resloc, placed);
 
 			defers.put(stage, placedHolder);
