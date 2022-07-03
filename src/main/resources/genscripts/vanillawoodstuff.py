@@ -7,7 +7,7 @@ def main():
 	rootdir = 'templates/vanillawoodstuff'
 	tuples = []
 	add_tuples(tuples, rootdir)
-	generate(tuples, ['chest', 'trapped_chest'])
+	generate(tuples, ['bookshelf', 'chest', 'trapped_chest', 'hedge', 'ladder', 'leaf_carpet', 'post', 'trapped_chest', 'stripped_post'])
 
 def add_tuples(tuples, dir):
 	for file in os.listdir(dir):
@@ -26,10 +26,11 @@ def add_tuple(tuples, f):
 	tuples.append((tpl_from, tpl_to))
 
 def generate(tuples, prints):
+	print(tuples)
 	#copy(tuples)
 
 	for obj in prints:
-		fulcaps = obj.replace('_', ' ')
+		fullcaps = obj.replace('_', ' ').title()
 		localize((
 			lambda name, modid: 'block.{modid}.{name}_{thing}'.format(name = name, modid = modid, thing = obj),
 			lambda name, modid: localize_name(name, modid) + ' ' + fullcaps
