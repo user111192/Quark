@@ -9,6 +9,8 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
+import vazkii.quark.base.util.VanillaWoods;
+import vazkii.quark.base.util.VanillaWoods.Wood;
 import vazkii.quark.content.building.block.HedgeBlock;
 import vazkii.quark.content.world.block.BlossomSaplingBlock.BlossomTree;
 import vazkii.quark.content.world.module.BlossomTreesModule;
@@ -20,12 +22,8 @@ public class HedgesModule extends QuarkModule {
 	
 	@Override
 	public void register() {
-		new HedgeBlock(this, Blocks.OAK_FENCE, Blocks.OAK_LEAVES);
-		new HedgeBlock(this, Blocks.BIRCH_FENCE, Blocks.BIRCH_LEAVES);
-		new HedgeBlock(this, Blocks.SPRUCE_FENCE, Blocks.SPRUCE_LEAVES);
-		new HedgeBlock(this, Blocks.JUNGLE_FENCE, Blocks.JUNGLE_LEAVES);
-		new HedgeBlock(this, Blocks.ACACIA_FENCE, Blocks.ACACIA_LEAVES);
-		new HedgeBlock(this, Blocks.DARK_OAK_FENCE, Blocks.DARK_OAK_LEAVES);
+		for(Wood wood : VanillaWoods.OVERWORLD)
+			new HedgeBlock(this, wood.fence(), wood.leaf());
 		
 		new HedgeBlock(this, Blocks.OAK_FENCE, Blocks.AZALEA_LEAVES);
 		new HedgeBlock(this, Blocks.OAK_FENCE, Blocks.FLOWERING_AZALEA_LEAVES);
@@ -34,7 +32,7 @@ public class HedgesModule extends QuarkModule {
 	@Override
 	public void postRegister() {
 		for (BlossomTree tree : BlossomTreesModule.trees.keySet())
-			new HedgeBlock(this, Blocks.OAK_FENCE, tree.leaf.getBlock());
+			new HedgeBlock(this, BlossomTreesModule.woodSet.fence, tree.leaf.getBlock());
 	}
 	
 	@Override

@@ -1,6 +1,8 @@
 package vazkii.quark.content.building.module;
 
-import com.google.common.collect.ImmutableSet;
+import java.util.LinkedList;
+import java.util.List;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
@@ -8,12 +10,11 @@ import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
+import vazkii.quark.base.util.VanillaWoods;
+import vazkii.quark.base.util.VanillaWoods.Wood;
 import vazkii.quark.content.building.block.LeafCarpetBlock;
 import vazkii.quark.content.world.block.BlossomLeavesBlock;
 import vazkii.quark.content.world.module.BlossomTreesModule;
-
-import java.util.LinkedList;
-import java.util.List;
 
 @LoadModule(category = ModuleCategory.BUILDING, antiOverlap = { "woodworks" })
 public class LeafCarpetModule extends QuarkModule {
@@ -22,8 +23,11 @@ public class LeafCarpetModule extends QuarkModule {
 
 	@Override
 	public void register() {
-		ImmutableSet.of(Blocks.OAK_LEAVES, Blocks.SPRUCE_LEAVES, Blocks.BIRCH_LEAVES, Blocks.JUNGLE_LEAVES, Blocks.ACACIA_LEAVES, Blocks.DARK_OAK_LEAVES, Blocks.AZALEA_LEAVES, Blocks.FLOWERING_AZALEA_LEAVES)
-			.forEach(this::carpet);
+		for(Wood wood : VanillaWoods.OVERWORLD)
+			carpet(wood.leaf());
+		
+		carpet(Blocks.AZALEA_LEAVES);
+		carpet(Blocks.FLOWERING_AZALEA_LEAVES);
 	}
 
 	@Override
