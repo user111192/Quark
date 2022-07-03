@@ -130,6 +130,17 @@
         "quark:vertical_warped_planks",
         "quark:vertical_crimson_planks",
         "quark:vertical_azalea_planks",
-        "quark:vertical_blossom_planks"
+        "quark:vertical_blossom_planks",
+        "quark:mangrove_vertical_slab",
+        "quark:mangrove_bookshelf",
+        "quark:mangrove_chest",
+        "quark:mangrove_trapped_chest",
+        "quark:mangrove_hedge",
+        "quark:mangrove_ladder",
+        "quark:mangrove_leaf_carpet",
+        "quark:mangrove_post",
+        "quark:mangrove_trapped_chest",
+        "quark:stripped_mangrove_post",
+        "quark:vertical_mangrove_planks"
     ]
 }
