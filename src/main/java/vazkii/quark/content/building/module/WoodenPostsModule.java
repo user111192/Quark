@@ -23,7 +23,7 @@ public class WoodenPostsModule extends QuarkModule {
 	public void register() {
 		ImmutableList.of(Blocks.OAK_FENCE, Blocks.SPRUCE_FENCE, Blocks.BIRCH_FENCE,
 				Blocks.JUNGLE_FENCE, Blocks.ACACIA_FENCE, Blocks.DARK_OAK_FENCE,
-				Blocks.CRIMSON_FENCE, Blocks.WARPED_FENCE)
+				Blocks.MANGROVE_FENCE, Blocks.CRIMSON_FENCE, Blocks.WARPED_FENCE)
 		.forEach(b -> {
 			boolean nether = b.defaultBlockState().getMaterial() == Material.NETHER_WOOD;
 			WoodPostBlock post = new WoodPostBlock(this, b, "", nether);

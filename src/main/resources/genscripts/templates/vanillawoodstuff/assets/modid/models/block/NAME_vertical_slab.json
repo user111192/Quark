@@ -1,8 +1,0 @@
-{
-    "parent": "%modid%:block/vertical_slab",
-    "textures": {
-        "bottom": "block/%name%_planks",
-        "top": "block/%name%_planks",
-        "side": "block/%name%_planks"
-    }
-}

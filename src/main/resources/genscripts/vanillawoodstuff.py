@@ -7,7 +7,7 @@ def main():
 	rootdir = 'templates/vanillawoodstuff'
 	tuples = []
 	add_tuples(tuples, rootdir)
-	generate(tuples, ['bookshelf', 'chest', 'trapped_chest', 'hedge', 'ladder', 'leaf_carpet', 'post', 'trapped_chest', 'stripped_post'])
+	generate(tuples)
 
 def add_tuples(tuples, dir):
 	for file in os.listdir(dir):
@@ -19,21 +19,31 @@ def add_tuples(tuples, dir):
  
 
 def add_tuple(tuples, f):
-	raw = f.replace('templates/', '')
+	raw = f.replace('templates/', '').replace('\\', '/')
 
+	print(raw)
 	tpl_from = raw
-	tpl_to = raw.replace('vanillawoodstuff\\', '').replace('modid', '{modid}').replace('NAME', '{name}')
+	tpl_to = raw.replace('vanillawoodstuff/', '').replace('modid', '{modid}').replace('NAME', '{name}')
 	tuples.append((tpl_from, tpl_to))
 
-def generate(tuples, prints):
-	print(tuples)
-	#copy(tuples)
+def generate(tuples):
+	copy(tuples)
 
-	for obj in prints:
+	sufixed = ['bookshelf', 'chest', 'trapped_chest', 'hedge', 'ladder', 'leaf_carpet', 'post', 'trapped_chest']
+	afixed = [['stripped', 'post'], ['vertical', 'planks']]
+
+	for obj in sufixed:
 		fullcaps = obj.replace('_', ' ').title()
 		localize((
 			lambda name, modid: 'block.{modid}.{name}_{thing}'.format(name = name, modid = modid, thing = obj),
 			lambda name, modid: localize_name(name, modid) + ' ' + fullcaps
+		))
+
+	for obj in afixed:
+		fullcaps = [e.title() for e in obj]
+		localize((
+			lambda name, modid: 'block.{modid}.{thing0}_{name}_{thing1}'.format(name = name, modid = modid, thing0 = obj[0], thing1 = obj[1]),
+			lambda name, modid: fullcaps[0] + ' ' + localize_name(name, modid) + ' ' + fullcaps[1]
 		))
 
 	import update_tags
