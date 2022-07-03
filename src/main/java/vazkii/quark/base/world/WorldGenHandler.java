@@ -152,6 +152,7 @@ public class WorldGenHandler {
 			}
 		}
 
+		@Override
 	    public Codec<? extends BiomeModifier> codec() {
 	        return (Codec<? extends BiomeModifier>) SERIALIZER.get();
 	    }

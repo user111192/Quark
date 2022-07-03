@@ -94,7 +94,7 @@ dependencies {
     compileOnly fg.deobf("vazkii.autoreglib:AutoRegLib:${config.arl_version}")
     runtimeOnly fg.deobf("vazkii.autoreglib:AutoRegLib:${config.arl_version}")
 
-    compileOnly fg.deobf("mezz.jei:${config.jei_version}:api")
+    compileOnly fg.deobf("mezz.jei:${config.jei_version}")
     runtimeOnly fg.deobf("mezz.jei:${config.jei_version}")
 }
 
