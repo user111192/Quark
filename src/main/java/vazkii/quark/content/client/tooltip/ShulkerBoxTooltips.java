@@ -113,7 +113,6 @@ public class ShulkerBoxTooltips {
 					if (te instanceof RandomizableContainerBlockEntity randomizable)
 						randomizable.setLootTable(null, 0);
 
-					System.out.println("h");
 					LazyOptional<IItemHandler> handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 					handler.ifPresent((capability) -> {
 						ItemStack currentBox = stack;
