@@ -268,9 +268,6 @@ public class ChestSearchingModule extends QuarkModule {
 				return true;
 		}
 
-
-
-
 		for(Map.Entry<Enchantment, Integer> entry : EnchantmentHelper.getEnchantments(stack).entrySet()) {
 			int lvl = entry.getValue();
 			Enchantment e = entry.getKey();
