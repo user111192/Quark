@@ -36,6 +36,9 @@ public class PipesModule extends QuarkModule {
 	@Config(description = "When items eject or are absorbed by pipes, should they make sounds?")
 	public static boolean doPipesWhoosh = true;
 	
+	@Config(flag = "encased_pipes")
+	public static boolean enableEncasedPipes = true;
+	
 	public static Block pipe;
 	public static Block encasedPipe;
 	
