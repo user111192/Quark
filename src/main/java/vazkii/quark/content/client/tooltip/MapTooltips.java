@@ -6,16 +6,13 @@ import javax.annotation.Nonnull;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.datafixers.util.Either;
-import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.GameRenderer;
@@ -67,7 +64,7 @@ public class MapTooltips {
 			RenderSystem.setShaderTexture(0, RES_MAP_BACKGROUND);
 
 			int pad = 7;
-			float size = 135;
+			int size = 135 + pad;
 			float scale = 0.5F;
 
 			pose.pushPose();
@@ -75,16 +72,9 @@ public class MapTooltips {
 			pose.scale(scale, scale, 1F);
 			RenderSystem.enableBlend();
 
+			GuiComponent.blit(pose, -pad, -pad, 0, 0, size, size, size, size);
+
 			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
-			Matrix4f mat = pose.last().pose();
-
-			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-			buffer.vertex(mat, -pad, size, 0.0F).uv(0.0F, 1.0f).endVertex();
-			buffer.vertex(mat, size, size, 0.0F).uv(1.0F, 1.0f).endVertex();
-			buffer.vertex(mat, size, -pad, 0.0F).uv(1.0F, 0.0F).endVertex();
-			buffer.vertex(mat, -pad, -pad, 0.0F).uv(0.0F, 0.0F).endVertex();
-			BufferUploader.draw(buffer.end());
-
 			MultiBufferSource.BufferSource immediateBuffer = MultiBufferSource.immediate(buffer);
 			mc.gameRenderer.getMapRenderer().render(pose, immediateBuffer, mapID, mapdata, true, 240);
 			immediateBuffer.endBatch();
