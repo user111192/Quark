@@ -1,6 +1,20 @@
 package vazkii.quark.addons.oddities.block.be;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Random;
+import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.math.Vector3f;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -27,15 +41,11 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.CapabilityItemHandler;
 import vazkii.arl.block.be.SimpleInventoryBlockEntity;
-import vazkii.quark.addons.oddities.block.PipeBlock;
+import vazkii.quark.addons.oddities.block.pipe.BasePipeBlock;
 import vazkii.quark.addons.oddities.module.PipesModule;
 import vazkii.quark.base.client.handler.NetworkProfilingHandler;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.QuarkSounds;
-
-import javax.annotation.Nonnull;
-import java.util.*;
-import java.util.function.Predicate;
 
 public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 
@@ -66,7 +76,7 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 			serverLevel.sendParticles(new DustParticleOptions(new Vector3f(1.0F, 0.0F, 0.0F), 1.0F), worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, 3, 0.2, 0.2, 0.2, 0);
 
 		BlockState blockAt = level.getBlockState(worldPosition);
-		if(!level.isClientSide && enabled && blockAt.getBlock() instanceof PipeBlock) {
+		if(!level.isClientSide && enabled && blockAt.is(PipesModule.pipesTag)) {
 			for(Direction side : Direction.values()) {
 				if(getConnectionTo(level, worldPosition, side) == ConnectionType.OPENING) {
 					double minX = worldPosition.getX() + 0.25 + 0.5 * Math.min(0, side.getStepX());
@@ -153,6 +163,10 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 	public Iterator<PipeItem> getItemIterator() {
 		return pipeItems.iterator();
 	}
+	
+	public boolean allowsFullConnection(PipeBlockEntity.ConnectionType conn) {
+		return blockState.getBlock() instanceof BasePipeBlock pipe && pipe.allowsFullConnection(conn);
+	}
 
 	public boolean passIn(ItemStack stack, Direction face, Direction backlog, long seed, int time) {
 		PipeItem item = new PipeItem(stack, face, seed);
@@ -219,9 +233,10 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 			double posZ = worldPosition.getZ() + 0.5;
 
 			if (facing != null) {
-				posX -= facing.getStepX() * 0.4;
-				posY -= facing.getStepY() * 0.65;
-				posZ -= facing.getStepZ() * 0.4;
+				double shift = allowsFullConnection(ConnectionType.OPENING) ? 0.7 : 0.4;
+				posX -= facing.getStepX() * shift;
+				posY -= facing.getStepY() * (shift + 0.15);
+				posZ -= facing.getStepZ() * shift;
 			}
 
 			boolean shootOut = isPipeEnabled();
@@ -315,7 +330,7 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 
 	protected boolean isPipeEnabled() {
 		BlockState state = level.getBlockState(worldPosition);
-		return state.getBlock() instanceof PipeBlock && !level.hasNeighborSignal(worldPosition);
+		return state.is(PipesModule.pipesTag) && !level.hasNeighborSignal(worldPosition);
 	}
 
 	@Override
@@ -497,19 +512,28 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 
 		NONE(false, false, false, 0),
 		PIPE(true, true, false, 0),
-		OPENING(false, true, true, -0.125),
+		OPENING(false, true, true, -0.125, 0.1875),
 		TERMINAL(true, true, true, 0.125),
 		TERMINAL_OFFSET(true, true, true, 0.1875);
 
-		ConnectionType(boolean isSolid, boolean allowsItems, boolean isFlared, double flareShift) {
+		ConnectionType(boolean isSolid, boolean allowsItems, boolean isFlared, double flareShift, double fullFlareShift) {
 			this.isSolid = isSolid;
 			this.allowsItems = allowsItems;
 			this.isFlared = isFlared;
 			this.flareShift = flareShift;
+			this.fullFlareShift = fullFlareShift;
+		}
+		
+		ConnectionType(boolean isSolid, boolean allowsItems, boolean isFlared, double flareShift) {
+			this(isSolid, allowsItems, isFlared, flareShift, flareShift);
+		}
+		
+		public double getFlareShift(PipeBlockEntity pipe) {
+			return pipe.allowsFullConnection(this) ? fullFlareShift : flareShift;
 		}
 
 		public final boolean isSolid, allowsItems, isFlared;
-		public final double flareShift;
+		private final double flareShift, fullFlareShift;
 
 	}
 

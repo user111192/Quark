@@ -4,14 +4,17 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import vazkii.arl.util.RegistryHelper;
-import vazkii.quark.addons.oddities.block.PipeBlock;
 import vazkii.quark.addons.oddities.block.be.PipeBlockEntity;
+import vazkii.quark.addons.oddities.block.pipe.EncasedPipeBlock;
+import vazkii.quark.addons.oddities.block.pipe.PipeBlock;
 import vazkii.quark.addons.oddities.client.render.be.PipeRenderer;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
@@ -34,15 +37,25 @@ public class PipesModule extends QuarkModule {
 	public static boolean doPipesWhoosh = true;
 	
 	public static Block pipe;
+	public static Block encasedPipe;
+	
+	public static TagKey<Block> pipesTag;
 	
 	public static int effectivePipeSpeed;
 	
 	@Override
 	public void register() {
 		pipe = new PipeBlock(this);
+		encasedPipe = new EncasedPipeBlock(this);
 		
-		blockEntityType = BlockEntityType.Builder.of(PipeBlockEntity::new, pipe).build(null);
+		blockEntityType = BlockEntityType.Builder.of(PipeBlockEntity::new, pipe, encasedPipe).build(null);
 		RegistryHelper.register(blockEntityType, "pipe", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+	}
+	
+	@Override
+	public void setup() {
+		pipesTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "pipes"));
+
 	}
 	
 	@Override
@@ -63,3 +76,4 @@ public class PipesModule extends QuarkModule {
 	}
 	
 }
+

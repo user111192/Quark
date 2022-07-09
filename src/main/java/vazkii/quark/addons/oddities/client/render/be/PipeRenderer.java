@@ -1,7 +1,13 @@
 package vazkii.quark.addons.oddities.client.render.be;
 
+import java.util.Iterator;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -22,10 +28,6 @@ import vazkii.quark.addons.oddities.block.be.PipeBlockEntity;
 import vazkii.quark.addons.oddities.block.be.PipeBlockEntity.ConnectionType;
 import vazkii.quark.addons.oddities.block.be.PipeBlockEntity.PipeItem;
 import vazkii.quark.base.Quark;
-
-import javax.annotation.Nonnull;
-import java.util.Iterator;
-import java.util.Random;
 
 public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 
@@ -70,7 +72,7 @@ public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 				}
 			}
 
-			matrix.translate(-0.5, -0.5, type.flareShift);
+			matrix.translate(-0.5, -0.5, type.getFlareShift(te));
 			disp.getModelRenderer().renderModel(matrix.last(), buffer.getBuffer(Sheets.cutoutBlockSheet()), null, model, 1.0F, 1.0F, 1.0F, light, OverlayTexture.NO_OVERLAY);
 			matrix.popPose();
 		}
