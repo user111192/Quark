@@ -52,7 +52,8 @@ public class BrewingHandler {
 
 	public static void addPotionMix(String flag, Supplier<Ingredient> reagent, MobEffect effect,
 									@Nullable MobEffect negation, int normalTime, int longTime, int strongTime) {
-		ResourceLocation loc = Registry.MOB_EFFECT.getKey(effect);
+		ResourceLocation loc = RegistryHelper.getRegistryName(effect, Registry.MOB_EFFECT);
+		
 		if (loc != null) {
 			String baseName = loc.getPath();
 			boolean hasStrong = strongTime > 0;
@@ -64,7 +65,7 @@ public class BrewingHandler {
 			addPotionMix(flag, reagent, normalType, longType, strongType);
 
 			if (negation != null) {
-				ResourceLocation negationLoc = Registry.MOB_EFFECT.getKey(negation);
+				ResourceLocation negationLoc = RegistryHelper.getRegistryName(negation, Registry.MOB_EFFECT);
 				if (negationLoc != null) {
 					String negationBaseName = negationLoc.getPath();
 

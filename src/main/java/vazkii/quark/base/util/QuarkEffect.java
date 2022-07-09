@@ -17,11 +17,9 @@ import vazkii.arl.util.RegistryHelper;
 
 public class QuarkEffect extends MobEffect {
 
-	protected final String bareName;
-
 	public QuarkEffect(String name, MobEffectCategory type, int color) {
 		super(type, color);
+		
 		RegistryHelper.register(this, name, Registry.MOB_EFFECT_REGISTRY);
-		bareName = name;
 	}
 }
