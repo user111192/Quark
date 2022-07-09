@@ -8,9 +8,11 @@ import javax.annotation.Nullable;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,6 +45,17 @@ public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IBlockC
 		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
 			super.fillItemCategory(group, items);
 	}
+	
+	@Override
+	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return parent.isFlammable(state, world, pos, face);
+	}
+
+	@Override
+	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return parent.getFlammability(state, world, pos, face);
+	}
+	
 
 	@Nullable
 	@Override

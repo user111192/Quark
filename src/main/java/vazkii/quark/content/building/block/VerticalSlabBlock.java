@@ -64,6 +64,17 @@ public class VerticalSlabBlock extends QuarkBlock implements SimpleWaterloggedBl
 
 		registerDefaultState(defaultBlockState().setValue(TYPE, VerticalSlabType.NORTH).setValue(WATERLOGGED, false));
 	}
+	
+	@Override
+	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return parent.isFlammable(state, world, pos, face);
+	}
+
+	@Override
+	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return parent.getFlammability(state, world, pos, face);
+	}
+	
 
 	@Nonnull
 	@Override

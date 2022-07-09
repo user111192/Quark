@@ -3,9 +3,11 @@ package vazkii.quark.base.block;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,6 +39,16 @@ public class QuarkSlabBlock extends SlabBlock implements IQuarkBlock, IBlockColo
 		RenderLayerHandler.setInherited(this, parent.getBlock());
 	}
 
+	@Override
+	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return parent.isFlammable(state, world, pos, face);
+	}
+
+	@Override
+	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return parent.getFlammability(state, world, pos, face);
+	}
+	
 	@Override
 	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
 		if(parent.isEnabled() || group == CreativeModeTab.TAB_SEARCH)
