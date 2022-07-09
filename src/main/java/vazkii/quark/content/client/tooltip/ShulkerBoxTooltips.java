@@ -49,14 +49,12 @@ public class ShulkerBoxTooltips {
 		ItemStack stack = event.getItemStack();
 		if(SimilarBlockTypeHandler.isShulkerBox(stack)) {
 			CompoundTag cmp = ItemNBTHelper.getCompound(stack, "BlockEntityTag", false);
-
+			
 			if(cmp.contains("LootTable"))
 				return;
 
-			if (!cmp.contains("id")) {
-				cmp = cmp.copy();
-				cmp.putString("id", "minecraft:shulker_box");
-			}
+			if(!cmp.contains("id"))
+				return;
 
 			BlockEntity te = BlockEntity.loadStatic(BlockPos.ZERO, ((BlockItem) stack.getItem()).getBlock().defaultBlockState(), cmp);
 			if (te != null && te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent()) {
@@ -115,6 +113,7 @@ public class ShulkerBoxTooltips {
 					if (te instanceof RandomizableContainerBlockEntity randomizable)
 						randomizable.setLootTable(null, 0);
 
+					System.out.println("h");
 					LazyOptional<IItemHandler> handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 					handler.ifPresent((capability) -> {
 						ItemStack currentBox = stack;
