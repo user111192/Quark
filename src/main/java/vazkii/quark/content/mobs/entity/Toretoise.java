@@ -46,6 +46,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -183,6 +184,7 @@ public class Toretoise extends Animal {
 						playSound(QuarkSounds.ENTITY_TORETOISE_ANGRY, 1F, 0.2F);
 					else if(angeryTicks == 0) {
 						serverLevel.sendParticles(ParticleTypes.CLOUD, x, y, z, 200, dangerRange, 0.5, dangerRange, 0);
+						gameEvent(GameEvent.ENTITY_ROAR);
 					}
 				}
 
@@ -277,6 +279,7 @@ public class Toretoise extends Animal {
 
 		if(dropState != null) {
 			playSound(QuarkSounds.ENTITY_TORETOISE_HARVEST, 1F, 0.6F);
+			gameEvent(GameEvent.ENTITY_INTERACT);
 
 			List<ItemStack> drops = dropState.getDrops(lootContext);
 			for (ItemStack drop : drops) spawnAtLocation(drop, 1.2F);

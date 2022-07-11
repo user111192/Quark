@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -102,6 +103,8 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 					for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, new AABB(minX, minY, minZ, maxX, maxY, maxZ), predicate)) {
 						passIn(item.getItem().copy(), side);
 
+						level.gameEvent(null, GameEvent.PROJECTILE_SHOOT, worldPosition);
+						
 						if (PipesModule.doPipesWhoosh) {
 							if (isTheGoodDay(level))
 								level.playSound(null, item.getX(), item.getY(), item.getZ(), QuarkSounds.BLOCK_PIPE_PICKUP_LENNY, SoundSource.BLOCKS, 1f, 1f);
@@ -245,6 +248,8 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 			if (!shootOut)
 				pitch = 0.025f;
 
+			level.gameEvent(null, GameEvent.PROJECTILE_LAND, worldPosition);
+			
 			if (playSound && PipesModule.doPipesWhoosh) {
 				if (isTheGoodDay(level))
 					level.playSound(null, posX, posY, posZ, QuarkSounds.BLOCK_PIPE_SHOOT_LENNY, SoundSource.BLOCKS, 1f, pitch);

@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.util.TriFunction;
@@ -50,6 +51,8 @@ public class QuarkItemFrameItem extends QuarkItem {
 
 			if (frame.survives()) {
 				if (!world.isClientSide) {
+					world.gameEvent(player, GameEvent.ENTITY_PLACE, frame.position());
+
 					frame.playPlacementSound();
 					world.addFreshEntity(frame);
 				}

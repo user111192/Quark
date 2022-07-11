@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -192,12 +193,12 @@ public class CrateBlockEntity extends BaseContainerBlockEntity implements Worldl
 			boolean flag = blockstate.getValue(CrateBlock.PROPERTY_OPEN);
 			if (!flag) {
 				this.playSound(blockstate, SoundEvents.BARREL_OPEN);
+				level.gameEvent(player, GameEvent.CONTAINER_OPEN, worldPosition);
 				this.setOpenProperty(blockstate, true);
 			}
 
 			this.scheduleTick();
 		}
-
 	}
 
 	private void scheduleTick() {
@@ -209,21 +210,8 @@ public class CrateBlockEntity extends BaseContainerBlockEntity implements Worldl
 		int j = this.worldPosition.getY();
 		int k = this.worldPosition.getZ();
 		this.numPlayersUsing = calculatePlayersUsing(this.level, this, i, j, k);
-		if (this.numPlayersUsing > 0) {
+		if (this.numPlayersUsing > 0)
 			this.scheduleTick();
-		} else {
-			BlockState blockstate = this.getBlockState();
-			if (!blockstate.is(CrateModule.crate)) {
-				this.setRemoved();
-				return;
-			}
-
-			boolean flag = blockstate.getValue(CrateBlock.PROPERTY_OPEN);
-			if (flag) {
-				this.playSound(blockstate, SoundEvents.BARREL_CLOSE);
-				this.setOpenProperty(blockstate, false);
-			}
-		}
 	}
 
 	public static int calculatePlayersUsing(Level world, BaseContainerBlockEntity container, int x, int y, int z) {
@@ -247,6 +235,20 @@ public class CrateBlockEntity extends BaseContainerBlockEntity implements Worldl
 			--this.numPlayersUsing;
 		}
 
+		if(numPlayersUsing <= 0 ){
+			BlockState blockstate = this.getBlockState();
+			if (!blockstate.is(CrateModule.crate)) {
+				this.setRemoved();
+				return;
+			}
+
+			boolean flag = blockstate.getValue(CrateBlock.PROPERTY_OPEN);
+			if (flag) {
+				this.playSound(blockstate, SoundEvents.BARREL_CLOSE);
+				level.gameEvent(player, GameEvent.CONTAINER_OPEN, worldPosition);
+				this.setOpenProperty(blockstate, false);
+			}
+		}
 	}
 
 	private void setOpenProperty(BlockState state, boolean open) {

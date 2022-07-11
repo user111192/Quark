@@ -24,6 +24,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.phys.Vec3;
 import vazkii.arl.util.ItemNBTHelper;
@@ -83,6 +84,7 @@ public class SlimeInABucketItem extends QuarkItem {
 
 			slime.setPos(x, y, z);
 
+            worldIn.gameEvent(playerIn, GameEvent.ENTITY_PLACE, slime.position());
 			worldIn.addFreshEntity(slime);
 			playerIn.swing(hand);
 		}

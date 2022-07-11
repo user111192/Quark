@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -39,8 +40,10 @@ public class BottledCloudItem extends QuarkItem {
 				pos = pos.relative(bresult.getDirection());
 
 			if(world.isEmptyBlock(pos)) {
-				if(!world.isClientSide)
+				if(!world.isClientSide) {
+					world.gameEvent(player, GameEvent.BLOCK_PLACE, pos);
 					world.setBlockAndUpdate(pos, BottledCloudModule.cloud.defaultBlockState());
+				}
 
 				stack.shrink(1);
 
