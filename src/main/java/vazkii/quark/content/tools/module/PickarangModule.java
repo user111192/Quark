@@ -29,6 +29,7 @@ import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.tools.client.render.entity.PickarangRenderer;
 import vazkii.quark.content.tools.config.PickarangType;
 import vazkii.quark.content.tools.entity.rang.AbstractPickarang;
+import vazkii.quark.content.tools.entity.rang.Echorang;
 import vazkii.quark.content.tools.entity.rang.Flamerang;
 import vazkii.quark.content.tools.entity.rang.Pickarang;
 import vazkii.quark.content.tools.item.PickarangItem;
@@ -42,6 +43,9 @@ public class PickarangModule extends QuarkModule {
 	@Config(name = "flamerang")
 	public static PickarangType<Flamerang> flamerangType = new PickarangType<>(Items.NETHERITE_INGOT, Items.NETHERITE_PICKAXE, 20, 4, 1040, 20.0, 3, 10);
 
+	@Config(name = "echorang")
+	public static PickarangType<Echorang> echorangType = new PickarangType<>(Items.ECHO_SHARD, Items.DIAMOND_PICKAXE, 40, 3, 2000, 20.0, 2, 10);
+	
 	@Config(description = "Set this to true to use the recipe without the Heart of Diamond, even if the Heart of Diamond is enabled.", flag = "pickarang_never_uses_heart")
 	public static boolean neverUseHeartOfDiamond = false;
 
@@ -58,6 +62,7 @@ public class PickarangModule extends QuarkModule {
 	public void register() {
 		pickarang = makePickarang(pickarangType, "pickarang", Pickarang::new, Pickarang::new);
 		flamerang = makePickarang(flamerangType, "flamerang", Flamerang::new, Flamerang::new);
+		echorang = makePickarang(echorangType, "echorang", Echorang::new, Echorang::new);
 	}
 
 	private <T extends AbstractPickarang<T>> Item makePickarang(PickarangType<T> type, String name, 
