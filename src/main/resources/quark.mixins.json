@@ -72,8 +72,11 @@
     "client.RenderBuffersMixin",
     "client.ScreenMixin",
     "client.ThrownTridentRendererMixin",
+    "client.MinecartSoundInstanceMixin",
+    
     "client.accessor.AccessorBlockColors",
     "client.accessor.AccessorModelManager",
+    
     "client.variants.BeeRendererMixin",
     "client.variants.ChickenRendererMixin",
     "client.variants.CowRendererMixin",
