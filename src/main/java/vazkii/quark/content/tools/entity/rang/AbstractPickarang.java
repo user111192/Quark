@@ -70,7 +70,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	protected LivingEntity owner;
 	private UUID ownerId;
 
-	private int liveTime;
+	protected int liveTime;
 	private int slot;
 	private int blockHitCount;
 	private IntOpenHashSet entitiesHit;
@@ -159,7 +159,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 		boolean doEntities = true;
 		int tries = 100;
 
-		while(isAlive() && !entityData.get(RETURNING)) {
+		while(isAlive() && !isReturning()) {
 			if(doEntities) {
 				EntityHitResult result = raycastEntities(position, rayEnd);
 				if(result != null)
@@ -169,7 +169,15 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 				HitResult result = level.clip(new ClipContext(position, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 				if(result.getType() == Type.MISS)
 					return;
-				else onHit(result);
+
+				else {
+					BlockPos pos = result instanceof BlockHitResult bhl ? bhl.getBlockPos() : null;
+					BlockState state = level.getBlockState(pos);
+					if(state.is(PickarangModule.pickarangImmuneTag))
+						return;
+
+					onHit(result);
+				}
 			}
 
 			if(tries-- <= 0) {
@@ -205,8 +213,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 			float hardness = state.getDestroySpeed(level, hit);
 			if (hardness <= getPickarangType().maxHardness 
-					&& hardness >= 0
-					&& !state.is(PickarangModule.pickarangImmuneTag)) {
+					&& hardness >= 0) {
 				ItemStack prev = player.getMainHandItem();
 				player.setItemInHand(InteractionHand.MAIN_HAND, getStack());
 
@@ -220,7 +227,6 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 				player.setItemInHand(InteractionHand.MAIN_HAND, prev);
 			} else
 				clank();
-
 		} else if(result.getType() == Type.ENTITY && result instanceof EntityHitResult) {
 			Entity hit = ((EntityHitResult) result).getEntity();
 
@@ -344,7 +350,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 		this.zOld = pos.z;
 		super.tick();
 
-		if(!entityData.get(RETURNING))
+		if(!isReturning())
 			checkImpact();
 
 		Vec3 ourMotion = this.getDeltaMovement();
@@ -364,6 +370,8 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 		setXRot(Mth.lerp(0.2F, this.xRotO, this.getXRot()));
 		setYRot(Mth.lerp(0.2F, this.yRotO, this.getYRot()));
+		
+
 		float drag;
 		if (this.isInWater()) {
 			for(int i = 0; i < 4; ++i) {
@@ -373,7 +381,8 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 			drag = 0.8F;
 		} else drag = 0.99F;
 
-		this.setDeltaMovement(ourMotion.scale(drag));
+		if(hasDrag()) 
+			this.setDeltaMovement(ourMotion.scale(drag));
 
 		pos = position();
 		this.setPos(pos.x, pos.y, pos.z);
@@ -383,8 +392,8 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 		ItemStack stack = getStack();
 		emitParticles(pos, ourMotion);
-		
-		boolean returning = entityData.get(RETURNING);
+
+		boolean returning = isReturning();
 		liveTime++;
 
 		LivingEntity owner = getThrower();
@@ -471,9 +480,17 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 				setDeltaMovement(motion.normalize().scale(0.7 + eff * 0.325F));
 		}
 	}
+	
+	public boolean isReturning() {
+		return entityData.get(RETURNING);
+	}
 
 	protected void emitParticles(Vec3 pos, Vec3 ourMotion) {
 		// NO-OP
+	}
+
+	public boolean hasDrag() {
+		return true;
 	}
 	
 	public abstract PickarangType<T> getPickarangType();
@@ -557,7 +574,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 	@Override
 	public void addAdditionalSaveData(@Nonnull CompoundTag compound) {
-		compound.putBoolean(TAG_RETURNING, entityData.get(RETURNING));
+		compound.putBoolean(TAG_RETURNING, isReturning());
 		compound.putInt(TAG_LIVE_TIME, liveTime);
 		compound.putInt(TAG_BLOCKS_BROKEN, blockHitCount);
 		compound.putInt(TAG_RETURN_SLOT, slot);

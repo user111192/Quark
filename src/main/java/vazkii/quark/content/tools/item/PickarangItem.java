@@ -99,6 +99,8 @@ public class PickarangItem extends QuarkItem {
 			AbstractPickarang<?> entity = type.makePickarang(worldIn, playerIn);
 			entity.setThrowData(slot, itemstack);
 			entity.shoot(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0.0F, 1.5F + eff * 0.325F, 0F);
+			entity.setOwner(playerIn);
+			
 			worldIn.addFreshEntity(entity);
 		}
 

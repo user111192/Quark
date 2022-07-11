@@ -18,6 +18,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RegistryHelper;
@@ -57,6 +58,7 @@ public class PickarangModule extends QuarkModule {
 	private static boolean isEnabled;
 
 	public static TagKey<Block> pickarangImmuneTag;
+	public static TagKey<GameEvent> echorangCanListenTag;
 
 	@Override
 	public void register() {
@@ -99,6 +101,7 @@ public class PickarangModule extends QuarkModule {
 	@Override
 	public void setup() {
 		pickarangImmuneTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "pickarang_immune"));
+		echorangCanListenTag = TagKey.create(Registry.GAME_EVENT_REGISTRY, new ResourceLocation(Quark.MOD_ID, "echorang_can_listen"));
 	}
 
 	@Override
