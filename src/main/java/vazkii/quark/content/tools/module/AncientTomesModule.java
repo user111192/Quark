@@ -179,6 +179,7 @@ public class AncientTomesModule extends QuarkModule {
 	public void onAnvilUpdate(AnvilUpdateEvent event) {
 		ItemStack left = event.getLeft();
 		ItemStack right = event.getRight();
+		String name = event.getName();
 
 		if(!left.isEmpty() && !right.isEmpty() ) {
 			if(right.is(ancient_tome)) {
@@ -189,11 +190,17 @@ public class AncientTomesModule extends QuarkModule {
 					int lvl = enchants.get(ench) + 1;
 					enchants.put(ench, lvl);
 
-					ItemStack copy = left.copy();
-					EnchantmentHelper.setEnchantments(enchants, copy);
+					ItemStack out = left.copy();
+					EnchantmentHelper.setEnchantments(enchants, out);
+					int cost = lvl > ench.getMaxLevel() ? limitBreakUpgradeCost : normalUpgradeCost;
 
-					event.setOutput(copy);
-					event.setCost(lvl > ench.getMaxLevel() ? limitBreakUpgradeCost : normalUpgradeCost);
+					if(name != null && !name.isEmpty() && (!out.hasCustomHoverName() || !out.getHoverName().getString().equals(name))) {
+						out.setHoverName(Component.literal(name));
+						cost++;
+					}
+					
+					event.setOutput(out);
+					event.setCost(cost);
 				}
 			}
 
@@ -246,7 +253,6 @@ public class AncientTomesModule extends QuarkModule {
 					if (hasMatching) {
 						ItemStack out = left.copy();
 						EnchantmentHelper.setEnchantments(currentEnchants, out);
-						String name = event.getName();
 						int cost = normalUpgradeCost;
 
 						if(name != null && !name.isEmpty() && (!out.hasCustomHoverName() || !out.getHoverName().getString().equals(name))) {
