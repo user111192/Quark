@@ -1,7 +1,8 @@
 package vazkii.quark.base.handler;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,10 +12,14 @@ import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 
 public class StructureBlockReplacementHandler {
 
-	public static List<StructureFunction> functions = new ArrayList<>();
+	private static Set<StructureFunction> functions = new HashSet<>();
 
 	private static final ThreadLocal<StructureHolder> structureHolder = new ThreadLocal<>();
 
+	public static void addReplacement(StructureFunction func) {
+		functions.add(func);
+	}
+	
 	public static BlockState getResultingBlockState(ServerLevelAccessor level, BlockState blockstate) {
 		StructureHolder curr = getCurrentStructureHolder();
 

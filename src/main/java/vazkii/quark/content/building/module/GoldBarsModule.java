@@ -33,7 +33,7 @@ public class GoldBarsModule extends QuarkModule {
 	public void register() {
 		gold_bars = new QuarkPaneBlock("gold_bars", this, Properties.copy(Blocks.IRON_BARS), RenderTypeSkeleton.CUTOUT);
 
-		StructureBlockReplacementHandler.functions.add(GoldBarsModule::getGenerationBarBlockState);
+		StructureBlockReplacementHandler.addReplacement(GoldBarsModule::getGenerationBarBlockState);
 	}
 
 	@Override

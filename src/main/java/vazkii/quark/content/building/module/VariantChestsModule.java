@@ -229,7 +229,7 @@ public class VariantChestsModule extends QuarkModule {
 		addChest("purpur", Blocks.PURPUR_BLOCK);
 		addChest("prismarine", Blocks.PRISMARINE);
 
-		StructureBlockReplacementHandler.functions.add(VariantChestsModule::getGenerationChestBlockState);
+		StructureBlockReplacementHandler.addReplacement(VariantChestsModule::getGenerationChestBlockState);
 	}
 
 	@Override
