@@ -2,9 +2,13 @@ package vazkii.quark.content.tweaks.module;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
@@ -18,6 +22,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
@@ -28,6 +33,13 @@ import vazkii.quark.base.network.message.DoubleDoorMessage;
 @LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class DoubleDoorOpeningModule extends QuarkModule {
 
+	public static TagKey<Block> nonDoubleDoorTag;
+	
+	@Override
+	public void setup() {
+		nonDoubleDoorTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "non_double_door"));
+	}
+	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
 		if(!event.getWorld().isClientSide || event.getPlayer().isDiscrete() || event.isCanceled() || event.getResult() == Result.DENY || event.getUseBlock() == Result.DENY)
@@ -36,7 +48,7 @@ public class DoubleDoorOpeningModule extends QuarkModule {
 		Level world = event.getWorld();
 		BlockPos pos = event.getPos();
 
-		if(world.getBlockState(pos).getBlock() instanceof DoorBlock) {
+		if(isDoor(world.getBlockState(pos))) {
 			openDoor(world, event.getPlayer(), pos);
 			QuarkNetwork.sendToServer(new DoubleDoorMessage(pos));
 		}
@@ -47,6 +59,9 @@ public class DoubleDoorOpeningModule extends QuarkModule {
 			return;
 
 		BlockState state = world.getBlockState(pos);
+		if(!isDoor(state))
+			return;
+		
 		Direction direction = state.getValue(DoorBlock.FACING);
 		boolean isOpen = state.getValue(DoorBlock.OPEN);
 		DoorHingeSide isMirrored = state.getValue(DoorBlock.HINGE);
@@ -60,6 +75,10 @@ public class DoubleDoorOpeningModule extends QuarkModule {
 			if(res.getType() == HitResult.Type.BLOCK)
 				other.use(world, player, InteractionHand.MAIN_HAND, res);
 		}
+	}
+	
+	private static boolean isDoor(BlockState state) {
+		return state.getBlock() instanceof DoorBlock && !state.is(nonDoubleDoorTag);
 	}
 
 }
