@@ -58,7 +58,6 @@ public class PipesModule extends QuarkModule {
 	@Override
 	public void setup() {
 		pipesTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "pipes"));
-
 	}
 	
 	@Override

@@ -2,6 +2,9 @@ package vazkii.quark.content.tools.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -10,9 +13,11 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -61,6 +66,8 @@ public class PickarangModule extends QuarkModule {
 
 	private static boolean isEnabled;
 
+	public static TagKey<Block> pickarangImmuneTag;
+	
 	@Override
 	public void register() {
 		pickarangType = EntityType.Builder.<Pickarang>of(Pickarang::new, MobCategory.MISC)
@@ -87,6 +94,11 @@ public class PickarangModule extends QuarkModule {
 			properties.fireResistant();
 
 		return properties;
+	}
+	
+	@Override
+	public void setup() {
+		pickarangImmuneTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "pickarang_immune"));
 	}
 
 	@Override
