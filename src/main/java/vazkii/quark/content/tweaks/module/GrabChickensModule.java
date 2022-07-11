@@ -46,7 +46,12 @@ public class GrabChickensModule extends QuarkModule {
 		Player player = event.getPlayer();
 		Level level = event.getWorld();
 		
-		if(staticEnabled && event.getHand() == InteractionHand.MAIN_HAND && !player.isCrouching() && canPlayerHostChicken(player) && target.getType() == EntityType.CHICKEN) {
+		if(staticEnabled && event.getHand() == InteractionHand.MAIN_HAND 
+				&& !player.isCrouching() 
+				&& player.getMainHandItem().isEmpty()
+				&& canPlayerHostChicken(player) 
+				&& target.getType() == EntityType.CHICKEN
+				&& !((Chicken) target).isBaby()) {
 			List<Entity> passengers = player.getPassengers();
 			
 			boolean changed = false;
