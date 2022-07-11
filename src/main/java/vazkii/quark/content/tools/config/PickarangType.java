@@ -28,13 +28,13 @@ public class PickarangType<T extends AbstractPickarang<T>> extends AbstractConfi
 	@Config(description = "How much damage the Pickarang deals when swung as an item")
 	public int attackDamage;
 	
-	@Config(description = "Set this to true to disable the short cooldown between throwing Pickarangs.")
-	public boolean noCooldown;
+	@Config(description = "How many ticks do you have to wait between using the pickarang again")
+	public int cooldown;
 	
 	private EntityType<T> entityType;
 	private PickarangConstructor<T> pickarangConstructor;
 	
-	public PickarangType(Item repairMaterial, Item pickaxeEquivalent, int timeout, int harvestLevel, int durability, double maxHardness, int attackDamage, boolean noCooldown) {
+	public PickarangType(Item repairMaterial, Item pickaxeEquivalent, int timeout, int harvestLevel, int durability, double maxHardness, int attackDamage, int cooldown) {
 		this.repairMaterial = repairMaterial;
 		this.pickaxeEquivalent = pickaxeEquivalent;
 		
@@ -43,7 +43,7 @@ public class PickarangType<T extends AbstractPickarang<T>> extends AbstractConfi
 		this.durability = durability;
 		this.maxHardness = maxHardness;
 		this.attackDamage = attackDamage;
-		this.noCooldown = noCooldown;
+		this.cooldown = cooldown;
 	}
 	
 	public boolean isFireResistant() {

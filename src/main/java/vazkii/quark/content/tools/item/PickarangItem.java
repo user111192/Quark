@@ -102,8 +102,8 @@ public class PickarangItem extends QuarkItem {
 			worldIn.addFreshEntity(entity);
 		}
 
-		if(!playerIn.getAbilities().instabuild && type.noCooldown) {
-			int cooldown = 10 - eff;
+		if(!playerIn.getAbilities().instabuild && type.cooldown > 0) {
+			int cooldown = type.cooldown - eff;
 			if (cooldown > 0)
 				playerIn.getCooldowns().addCooldown(this, cooldown);
 		}

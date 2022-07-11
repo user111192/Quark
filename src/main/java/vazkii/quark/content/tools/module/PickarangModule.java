@@ -37,10 +37,10 @@ import vazkii.quark.content.tools.item.PickarangItem;
 public class PickarangModule extends QuarkModule {
 
 	@Config(name = "pickarang")
-	public static PickarangType<Pickarang> pickarangType = new PickarangType<>(Items.DIAMOND, Items.DIAMOND_PICKAXE, 20, 3, 800, 20.0, 2, false);
+	public static PickarangType<Pickarang> pickarangType = new PickarangType<>(Items.DIAMOND, Items.DIAMOND_PICKAXE, 20, 3, 800, 20.0, 2, 10);
 
 	@Config(name = "flamerang")
-	public static PickarangType<Flamerang> flamerangType = new PickarangType<>(Items.NETHERITE_INGOT, Items.NETHERITE_PICKAXE, 20, 4, 1040, 20.0, 3, false);
+	public static PickarangType<Flamerang> flamerangType = new PickarangType<>(Items.NETHERITE_INGOT, Items.NETHERITE_PICKAXE, 20, 4, 1040, 20.0, 3, 10);
 
 	@Config(description = "Set this to true to use the recipe without the Heart of Diamond, even if the Heart of Diamond is enabled.", flag = "pickarang_never_uses_heart")
 	public static boolean neverUseHeartOfDiamond = false;
