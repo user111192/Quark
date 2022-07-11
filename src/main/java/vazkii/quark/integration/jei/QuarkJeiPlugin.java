@@ -133,7 +133,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 
 		if (ModuleLoader.INSTANCE.isModuleEnabled(PickarangModule.class)) {
 			registerPickarangAnvilRepairs(PickarangModule.pickarang, Items.DIAMOND, registration, factory);
-			registerPickarangAnvilRepairs(PickarangModule.flamarang, Items.NETHERITE_INGOT, registration, factory);
+			registerPickarangAnvilRepairs(PickarangModule.flamerang, Items.NETHERITE_INGOT, registration, factory);
 		}
 
 		if (ModuleLoader.INSTANCE.isModuleEnabled(ColorRunesModule.class))

@@ -1,7 +1,10 @@
 package vazkii.quark.content.tools.client.render.entity;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
@@ -10,18 +13,16 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
-import vazkii.quark.content.tools.entity.Pickarang;
+import vazkii.quark.content.tools.entity.rang.AbstractPickarang;
 
-import javax.annotation.Nonnull;
-
-public class PickarangRenderer extends EntityRenderer<Pickarang> {
+public class PickarangRenderer extends EntityRenderer<AbstractPickarang<?>> {
 
 	public PickarangRenderer(EntityRendererProvider.Context context) {
 		super(context);
 	}
 
 	@Override
-	public void render(Pickarang entity, float yaw, float partialTicks, PoseStack matrix, @Nonnull MultiBufferSource buffer, int light) {
+	public void render(AbstractPickarang<?> entity, float yaw, float partialTicks, PoseStack matrix, @Nonnull MultiBufferSource buffer, int light) {
 		if (entity.tickCount >= 2) {
 			matrix.pushPose();
 			matrix.translate(0, 0.2, 0);
@@ -39,7 +40,7 @@ public class PickarangRenderer extends EntityRenderer<Pickarang> {
 
 	@Nonnull
 	@Override
-	public ResourceLocation getTextureLocation(@Nonnull Pickarang entity) {
+	public ResourceLocation getTextureLocation(@Nonnull AbstractPickarang<?> entity) {
 		return TextureAtlas.LOCATION_BLOCKS;
 	}
 

@@ -1,8 +1,14 @@
 package vazkii.quark.content.tools.item;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -27,20 +33,16 @@ import net.minecraft.world.phys.Vec3;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.QuarkModule;
-import vazkii.quark.content.tools.entity.Pickarang;
-import vazkii.quark.content.tools.module.PickarangModule;
-
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.HashSet;
+import vazkii.quark.content.tools.config.PickarangType;
+import vazkii.quark.content.tools.entity.rang.AbstractPickarang;
 
 public class PickarangItem extends QuarkItem {
 
-	public final boolean isNetherite;
-
-	public PickarangItem(String regname, QuarkModule module, Properties properties, boolean isNetherite) {
+	public final PickarangType<?> type;
+	
+	public PickarangItem(String regname, QuarkModule module, Properties properties, PickarangType<?> type) {
 		super(regname, module, properties);
-		this.isNetherite = isNetherite;
+		this.type = type;
 	}
 
 	@Override
@@ -51,7 +53,7 @@ public class PickarangItem extends QuarkItem {
 
 	@Override
 	public boolean isCorrectToolForDrops(@Nonnull BlockState blockIn) {
-		return switch (isNetherite ? PickarangModule.netheriteHarvestLevel : PickarangModule.harvestLevel) {
+		return switch (type.harvestLevel) {
 			case 0 -> Items.WOODEN_PICKAXE.isCorrectToolForDrops(blockIn) ||
 					Items.WOODEN_AXE.isCorrectToolForDrops(blockIn) ||
 					Items.WOODEN_SHOVEL.isCorrectToolForDrops(blockIn);
@@ -72,7 +74,7 @@ public class PickarangItem extends QuarkItem {
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
-		return Math.max(isNetherite ? PickarangModule.netheriteDurability : PickarangModule.durability, 0);
+		return Math.max(type.durability, 0);
 	}
 
 	@Override
@@ -94,13 +96,13 @@ public class PickarangItem extends QuarkItem {
 		if(!worldIn.isClientSide) {
 			Inventory inventory = playerIn.getInventory();
 			int slot = handIn == InteractionHand.OFF_HAND ? inventory.getContainerSize() - 1 : inventory.selected;
-			Pickarang entity = new Pickarang(worldIn, playerIn);
-			entity.setThrowData(slot, itemstack, isNetherite);
+			AbstractPickarang<?> entity = type.makePickarang(worldIn, playerIn);
+			entity.setThrowData(slot, itemstack);
 			entity.shoot(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0.0F, 1.5F + eff * 0.325F, 0F);
 			worldIn.addFreshEntity(entity);
 		}
 
-		if(!playerIn.getAbilities().instabuild && (isNetherite ? PickarangModule.netheriteNoCooldown : PickarangModule.noCooldown)) {
+		if(!playerIn.getAbilities().instabuild && type.noCooldown) {
 			int cooldown = 10 - eff;
 			if (cooldown > 0)
 				playerIn.getCooldowns().addCooldown(this, cooldown);
@@ -116,7 +118,7 @@ public class PickarangItem extends QuarkItem {
 		Multimap<Attribute, AttributeModifier> multimap = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
 
 		if (slot == EquipmentSlot.MAINHAND) {
-			multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", isNetherite ? 3 : 2, AttributeModifier.Operation.ADDITION));
+			multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", type.attackDamage, AttributeModifier.Operation.ADDITION));
 			multimap.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -2.8, AttributeModifier.Operation.ADDITION));
 		}
 
@@ -135,12 +137,12 @@ public class PickarangItem extends QuarkItem {
 
 	@Override
 	public boolean isValidRepairItem(@Nonnull ItemStack toRepair, ItemStack repair) {
-		return repair.getItem() == (isNetherite ? Items.NETHERITE_INGOT : Items.DIAMOND);
+		return type.repairMaterial != null && repair.getItem() == type.repairMaterial;
 	}
 
 	@Override
 	public int getEnchantmentValue() {
-		return isNetherite ? Items.NETHERITE_PICKAXE.getEnchantmentValue() : Items.DIAMOND_PICKAXE.getEnchantmentValue();
+		return type.pickaxeEquivalent != null ? type.pickaxeEquivalent.getEnchantmentValue() : 0;
 	}
 
 	@Override

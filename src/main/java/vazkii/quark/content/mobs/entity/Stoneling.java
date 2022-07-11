@@ -77,7 +77,7 @@ import vazkii.quark.content.mobs.ai.ActWaryGoal;
 import vazkii.quark.content.mobs.ai.FavorBlockGoal;
 import vazkii.quark.content.mobs.ai.RunAndPoofGoal;
 import vazkii.quark.content.mobs.module.StonelingsModule;
-import vazkii.quark.content.tools.entity.Pickarang;
+import vazkii.quark.content.tools.entity.rang.Pickarang;
 import vazkii.quark.content.world.module.GlimmeringWealdModule;
 
 public class Stoneling extends PathfinderMob {
