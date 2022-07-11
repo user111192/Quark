@@ -43,6 +43,8 @@
     "TrapDoorBlockMixin",
     "WeatheringCopperMixin",
     "HalfTransparentBlockMixin",
+    "BannerDuplicateRecipeMixin",
+    
     "accessor.AccessorAbstractArrow",
     "accessor.AccessorAbstractChestedHorse",
     "accessor.AccessorLivingEntity",
