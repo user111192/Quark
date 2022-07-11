@@ -171,11 +171,6 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 					return;
 
 				else {
-					BlockPos pos = result instanceof BlockHitResult bhl ? bhl.getBlockPos() : null;
-					BlockState state = level.getBlockState(pos);
-					if(state.is(PickarangModule.pickarangImmuneTag))
-						return;
-
 					onHit(result);
 				}
 			}
@@ -213,7 +208,8 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 			float hardness = state.getDestroySpeed(level, hit);
 			if (hardness <= getPickarangType().maxHardness 
-					&& hardness >= 0) {
+					&& hardness >= 0
+					&& !state.is(PickarangModule.pickarangImmuneTag)) {
 				ItemStack prev = player.getMainHandItem();
 				player.setItemInHand(InteractionHand.MAIN_HAND, getStack());
 

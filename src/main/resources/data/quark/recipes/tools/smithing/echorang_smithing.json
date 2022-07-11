@@ -4,15 +4,15 @@
     "item": "quark:pickarang"
   },
   "addition": {
-    "item": "minecraft:netherite_ingot"
+    "item": "minecraft:echo_shard"
   },
   "result": {
-    "item": "quark:flamerang"
+    "item": "quark:echorang"
   },
   "conditions": [
     {
       "type": "quark:flag",
-      "flag": "flamerang"
+      "flag": "echorang"
     }
   ]
 }

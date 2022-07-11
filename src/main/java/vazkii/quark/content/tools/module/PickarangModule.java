@@ -2,6 +2,7 @@ package vazkii.quark.content.tools.module;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
@@ -46,6 +47,12 @@ public class PickarangModule extends QuarkModule {
 
 	@Config(name = "echorang")
 	public static PickarangType<Echorang> echorangType = new PickarangType<>(Items.ECHO_SHARD, Items.DIAMOND_PICKAXE, 40, 3, 2000, 20.0, 2, 10);
+
+	@Config(flag = "flamerang")
+	public static boolean enableFlamerang = true;
+	
+	@Config(flag = "echorang")
+	public static boolean enableEchorang = true;
 	
 	@Config(description = "Set this to true to use the recipe without the Heart of Diamond, even if the Heart of Diamond is enabled.", flag = "pickarang_never_uses_heart")
 	public static boolean neverUseHeartOfDiamond = false;
@@ -62,14 +69,15 @@ public class PickarangModule extends QuarkModule {
 
 	@Override
 	public void register() {
-		pickarang = makePickarang(pickarangType, "pickarang", Pickarang::new, Pickarang::new);
-		flamerang = makePickarang(flamerangType, "flamerang", Flamerang::new, Flamerang::new);
-		echorang = makePickarang(echorangType, "echorang", Echorang::new, Echorang::new);
+		pickarang = makePickarang(pickarangType, "pickarang", Pickarang::new, Pickarang::new, () -> true);
+		flamerang = makePickarang(flamerangType, "flamerang", Flamerang::new, Flamerang::new, () -> enableFlamerang);
+		echorang = makePickarang(echorangType, "echorang", Echorang::new, Echorang::new, () -> enableEchorang);
 	}
 
 	private <T extends AbstractPickarang<T>> Item makePickarang(PickarangType<T> type, String name, 
 			EntityType.EntityFactory<T> entityFactory,
-			PickarangType.PickarangConstructor<T> thrownFactory) {
+			PickarangType.PickarangConstructor<T> thrownFactory,
+			BooleanSupplier condition) {
 
 		EntityType<T> entityType = EntityType.Builder.<T>of(entityFactory, MobCategory.MISC)
 				.sized(0.4F, 0.4F)
@@ -81,7 +89,7 @@ public class PickarangModule extends QuarkModule {
 
 		knownTypes.add(type);
 		type.setEntityType(entityType, thrownFactory);
-		return new PickarangItem(name, this, propertiesFor(type.durability, type.isFireResistant()), type);
+		return new PickarangItem(name, this, propertiesFor(type.durability, type.isFireResistant()), type).setCondition(condition);
 	}
 
 	private Item.Properties propertiesFor(int durability, boolean fireResist) {
