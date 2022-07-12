@@ -59,7 +59,7 @@ public class TinyPotatoModule extends QuarkModule {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
-		ResourceManager rm = Minecraft.getInstance().getResourceManager()
+		ResourceManager rm = Minecraft.getInstance().getResourceManager();
 		Set<String> usedNames = new HashSet<>(); 
 
 		// Register bosnia taters in packs afterwards so that quark overrides for quark tater
