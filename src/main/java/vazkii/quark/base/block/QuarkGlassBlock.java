@@ -16,8 +16,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.module.QuarkModule;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 /**
  * @author WireSegal
  * Created at 12:46 PM on 8/24/19.

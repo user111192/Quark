@@ -38,8 +38,6 @@ import vazkii.quark.addons.oddities.module.MagnetsModule;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.module.QuarkModule;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class MagnetBlock extends QuarkBlock implements EntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;

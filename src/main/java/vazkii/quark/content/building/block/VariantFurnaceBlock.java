@@ -20,8 +20,6 @@ import vazkii.quark.content.building.module.VariantFurnacesModule;
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class VariantFurnaceBlock extends FurnaceBlock implements IQuarkBlock {
 
 	private final QuarkModule module;

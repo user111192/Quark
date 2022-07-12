@@ -14,8 +14,6 @@ import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class QuarkBushBlock extends BushBlock implements IQuarkBlock {
 
 	private final QuarkModule module;

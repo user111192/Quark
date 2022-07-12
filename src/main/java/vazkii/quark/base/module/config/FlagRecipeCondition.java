@@ -7,8 +7,6 @@ import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
 import vazkii.quark.base.Quark;
 
-import net.minecraftforge.common.crafting.conditions.ICondition.IContext;
-
 /**
  * @author WireSegal
  * Created at 1:23 PM on 8/24/19.

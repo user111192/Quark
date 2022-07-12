@@ -12,8 +12,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.ClientTicker;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
@@ -27,7 +28,7 @@ public class AutoWalkKeybindModule extends QuarkModule {
 
 	@Config public static boolean drawHud = true;
 	@Config public static int hudHeight = 10;
-	
+
 	@OnlyIn(Dist.CLIENT)
 	private KeyMapping keybind;
 
@@ -36,14 +37,13 @@ public class AutoWalkKeybindModule extends QuarkModule {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
-		if(enabled)
-			keybind = ModKeybindHandler.init("autorun", null, ModKeybindHandler.MISC_GROUP);
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+		keybind = ModKeybindHandler.init(event, "autorun", null, ModKeybindHandler.MISC_GROUP);
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onMouseInput(InputEvent.Post event) {
+	public void onMouseInput(InputEvent.MouseButton event) {
 		acceptInput();
 	}
 
@@ -52,31 +52,31 @@ public class AutoWalkKeybindModule extends QuarkModule {
 	public void onKeyInput(InputEvent.Key event) {
 		acceptInput();
 	}
-	
+
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public void drawHUD(RenderGuiOverlayEvent.Post event) {
-		if(drawHud && autorunning && event.getType() == ElementType.ALL) {
+		if(drawHud && autorunning && event.getOverlay() == VanillaGuiOverlay.HOTBAR.type()) {
 			String message = I18n.get("quark.misc.autowalking");
-			
+
 			Minecraft mc = Minecraft.getInstance();
 			int w = mc.font.width("OoO" + message + "oOo");
-			
+
 			Window window = event.getWindow();
 			int x = (window.getGuiScaledWidth() - w) / 2;
 			int y = hudHeight;
-			
+
 			String displayMessage = message;
 			int dots = (ClientTicker.ticksInGame / 10) % 2;
 			switch(dots) {
 			case 0 -> displayMessage = "OoO " + message + " oOo";
 			case 1 -> displayMessage = "oOo " + message + " OoO";
 			}
-			
+
 			mc.font.drawShadow(event.getPoseStack(), displayMessage, x, y, 0xFFFFFFFF);
 		}
 	}
-	
+
 	private void acceptInput() {
 		Minecraft mc = Minecraft.getInstance();
 
@@ -84,10 +84,10 @@ public class AutoWalkKeybindModule extends QuarkModule {
 		if(mc.options.keyUp.isDown()) {
 			if(autorunning)
 				opt.set(hadAutoJump);
-			
+
 			autorunning = false;
 		}
-		
+
 		else if(keybind.isDown()) {
 			autorunning = !autorunning;
 

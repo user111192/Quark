@@ -12,9 +12,6 @@ import net.minecraft.world.level.block.PressurePlateBlock;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.module.QuarkModule;
 
-import net.minecraft.world.level.block.PressurePlateBlock.Sensitivity;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 /**
  * @author WireSegal
  * Created at 9:41 PM on 10/8/19.

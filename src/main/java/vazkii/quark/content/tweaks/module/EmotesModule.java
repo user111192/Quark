@@ -33,10 +33,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.RenderTickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -129,14 +130,18 @@ public class EmotesModule extends QuarkModule {
 	@Override
 	public void clientSetup() {
 		Tween.registerAccessor(HumanoidModel.class, ModelAccessor.INSTANCE);
-
+	}
+	
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
 		int sortOrder = 0;
 
 		emoteKeybinds = new HashMap<>();
 		for (String s : DEFAULT_EMOTE_NAMES)
-			emoteKeybinds.put(ModKeybindHandler.init("quark.emote." + s, null, "", ModKeybindHandler.EMOTE_GROUP, sortOrder++, false), s);
+			emoteKeybinds.put(ModKeybindHandler.init(event, "quark.emote." + s, null, "", ModKeybindHandler.EMOTE_GROUP, sortOrder++, false), s);
 		for (String s : PATREON_EMOTES)
-			emoteKeybinds.put(ModKeybindHandler.init("patreon_emote." + s, null, ModKeybindHandler.EMOTE_GROUP, sortOrder++), s);
+			emoteKeybinds.put(ModKeybindHandler.init(event, "patreon_emote." + s, null, ModKeybindHandler.EMOTE_GROUP, sortOrder++), s);
 	}
 
 	@Override
@@ -255,7 +260,7 @@ public class EmotesModule extends QuarkModule {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public void drawHUD(RenderGuiOverlayEvent.Post event) {
-		if(event.getType() == ElementType.ALL) {
+		if(event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type()) {
 			Minecraft mc = Minecraft.getInstance();
 			Window res = event.getWindow();
 			PoseStack stack = event.getPoseStack();

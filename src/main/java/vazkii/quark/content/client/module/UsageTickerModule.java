@@ -23,7 +23,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -79,7 +79,7 @@ public class UsageTickerModule extends QuarkModule {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public void renderHUD(RenderGuiOverlayEvent.Post event) {
-		if(event.getType() == ElementType.ALL) {
+		if(event.getOverlay() == VanillaGuiOverlay.HOTBAR.type()) {
 			Window window = event.getWindow();
 			Player player = Minecraft.getInstance().player;
 			float partial = event.getPartialTick();

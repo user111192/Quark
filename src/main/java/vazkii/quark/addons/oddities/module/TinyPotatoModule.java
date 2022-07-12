@@ -4,8 +4,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -15,8 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
-import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.client.event.ModelEvent;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.block.TinyPotatoBlock;
 import vazkii.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
@@ -47,30 +48,28 @@ public class TinyPotatoModule extends QuarkModule {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void modelBake(BakingCompleted event) {
+	public void modelBake(ModelEvent.BakingCompleted event) {
 		ResourceLocation tinyPotato = new ModelResourceLocation(new ResourceLocation("quark", "tiny_potato"), "inventory");
-		Map<ResourceLocation, BakedModel> map = event.getModelRegistry();
+		Map<ResourceLocation, BakedModel> map = event.getModels();
 		BakedModel originalPotato = map.get(tinyPotato);
 		map.put(tinyPotato, new TinyPotatoModel(originalPotato));
 	}
 
+	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void modelRegistry() {
-		ForgeModelBakery bakery = ForgeModelBakery.instance();
-		if (bakery != null) {
-			ResourceManager rm = bakery.resourceManager;
+	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+		ModelBakery bakery = Minecraft.getInstance().getModelManager().getModelBakery();
+		ResourceManager rm = bakery.resourceManager;
+		Set<String> usedNames = new HashSet<>(); 
 
-			Set<String> usedNames = new HashSet<>();
-
-			// Register bosnia taters in packs afterwards so that quark overrides for quark tater
-			registerTaters("quark", usedNames, rm);
-			registerTaters("botania", usedNames, rm);
-		}
+		// Register bosnia taters in packs afterwards so that quark overrides for quark tater
+		registerTaters(event, "quark", usedNames, rm);
+		registerTaters(event, "botania", usedNames, rm);
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private void registerTaters(String mod, Set<String> usedNames, ResourceManager rm) {
+	private void registerTaters(ModelEvent.RegisterAdditional event, String mod, Set<String> usedNames, ResourceManager rm) {
 		Map<ResourceLocation, Resource> resources = rm.listResources("models/tiny_potato", r -> r.getPath().endsWith(".json")); 
 		for (ResourceLocation model : resources.keySet()) {
 			if (mod.equals(model.getNamespace())) {
@@ -81,7 +80,7 @@ public class TinyPotatoModule extends QuarkModule {
 				usedNames.add(path);
 
 				path = path.substring("models/".length(), path.length() - ".json".length());
-				ForgeModelBakery.addSpecialModel(new ResourceLocation("quark", path));
+				event.register(new ResourceLocation("quark", path));
 			}
 		}
 	}

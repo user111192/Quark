@@ -47,8 +47,6 @@ import vazkii.quark.content.building.module.RopeModule;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class RopeBlock extends QuarkBlock implements IBlockItemProvider, SimpleWaterloggedBlock {
 
 	private static final VoxelShape SHAPE = box(6, 0, 6, 10, 16, 10);

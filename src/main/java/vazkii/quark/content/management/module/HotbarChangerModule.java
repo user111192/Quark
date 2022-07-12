@@ -18,10 +18,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import net.minecraftforge.client.gui.overlay.NamedGuiOverlay;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -51,13 +51,13 @@ public class HotbarChangerModule extends QuarkModule {
 	public static boolean hotbarChangeOpen, shifting;
 
 	@Override
-	public void clientSetup() {
-		changeHotbarKey = ModKeybindHandler.init("change_hotbar", "z", ModKeybindHandler.MISC_GROUP);
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+		changeHotbarKey = ModKeybindHandler.init(event, "change_hotbar", "z", ModKeybindHandler.MISC_GROUP);
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onMouseInput(InputEvent.Post event) {
+	public void onMouseInput(InputEvent.MouseButton event) {
 		acceptInput();
 	}
 
@@ -92,11 +92,11 @@ public class HotbarChangerModule extends QuarkModule {
 	public void hudPre(RenderGuiOverlayEvent.Pre event) {
 		float shift = -getRealHeight(event.getPartialTick()) + 22;
 		if(shift < 0) {
-			IGuiOverlay overlay = event.getOverlay();
-			if(overlay == ForgeGui.PLAYER_HEALTH_ELEMENT) {
+			NamedGuiOverlay overlay = event.getOverlay();
+			if(overlay == VanillaGuiOverlay.PLAYER_HEALTH.type()) {
 				event.getPoseStack().translate(0, shift, 0);
 				shifting = true;
-			} else if(shifting && (event.getType() == ElementType.DEBUG || overlay == ForgeGui.POTION_ICONS_ELEMENT)) {
+			} else if(shifting && (overlay == VanillaGuiOverlay.DEBUG_TEXT.type() || overlay == VanillaGuiOverlay.POTION_ICONS.type())) {
 				event.getPoseStack().translate(0, -shift, 0);
 				shifting = false;
 			}
@@ -113,7 +113,7 @@ public class HotbarChangerModule extends QuarkModule {
 		Player player = mc.player;
 		PoseStack matrix = event.getPoseStack();
 
-		if(event.getType() == ElementType.ALL) {
+		if(event.getOverlay() == VanillaGuiOverlay.HOTBAR.type()) {
 			Window res = event.getWindow();
 			float realHeight = getRealHeight(event.getPartialTick());
 			float xStart = res.getGuiScaledWidth() / 2f - 91;

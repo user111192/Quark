@@ -19,8 +19,6 @@ import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.item.QuarkDoubleHighBlockItem;
 import vazkii.quark.base.module.QuarkModule;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class QuarkDoorBlock extends DoorBlock implements IQuarkBlock, IBlockItemProvider {
 
 	private final QuarkModule module;

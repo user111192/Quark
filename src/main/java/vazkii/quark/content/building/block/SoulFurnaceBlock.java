@@ -19,8 +19,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import vazkii.quark.base.module.QuarkModule;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class SoulFurnaceBlock extends VariantFurnaceBlock {
 
 	public static final BooleanProperty SOUL = BooleanProperty.create("soul");

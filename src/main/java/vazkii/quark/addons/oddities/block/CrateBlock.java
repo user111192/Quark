@@ -33,8 +33,6 @@ import vazkii.quark.addons.oddities.module.CrateModule;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.module.QuarkModule;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class CrateBlock extends QuarkBlock implements EntityBlock {
 
 	public static final BooleanProperty PROPERTY_OPEN = BlockStateProperties.OPEN;

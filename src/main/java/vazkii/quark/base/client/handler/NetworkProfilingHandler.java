@@ -1,18 +1,18 @@
 package vazkii.quark.base.client.handler;
 
-import net.minecraft.ChatFormatting;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import vazkii.quark.base.Quark;
-import vazkii.quark.base.handler.GeneralConfig;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.minecraft.ChatFormatting;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import vazkii.quark.base.Quark;
+import vazkii.quark.base.handler.GeneralConfig;
 
 @EventBusSubscriber(modid = Quark.MOD_ID, value = Dist.CLIENT)
 public class NetworkProfilingHandler {
@@ -29,7 +29,7 @@ public class NetworkProfilingHandler {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public static void showF3(RenderGuiOverlayEvent.DebugText event) {
+	public static void showF3(CustomizeGuiOverlayEvent.DebugText event) {
 		if(GeneralConfig.enableNetworkProfiling) {
 			event.getLeft().add("");
 

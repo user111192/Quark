@@ -39,8 +39,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.network.MessageSerializer;
@@ -81,8 +82,8 @@ public class LockRotationModule extends QuarkModule {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
-		keybind = ModKeybindHandler.init("lock_rotation", "k", ModKeybindHandler.MISC_GROUP);
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+		keybind = ModKeybindHandler.init(event, "lock_rotation", "k", ModKeybindHandler.MISC_GROUP);
 	}
 
 	public static BlockState fixBlockRotation(BlockState state, BlockPlaceContext ctx) {
@@ -154,7 +155,7 @@ public class LockRotationModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onMouseInput(InputEvent.Post event) {
+	public void onMouseInput(InputEvent.MouseButton event) {
 		acceptInput();
 	}
 
@@ -198,7 +199,7 @@ public class LockRotationModule extends QuarkModule {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public void onHUDRender(RenderGuiOverlayEvent.Post event) {
-		if(event.getType() == ElementType.ALL && clientProfile != null) {
+		if(event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type() && clientProfile != null) {
 			PoseStack matrix = event.getPoseStack();
 
 			RenderSystem.enableBlend();

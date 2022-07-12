@@ -1,13 +1,18 @@
 package vazkii.quark.content.client.module;
 
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.ItemNBTHelper;
@@ -16,11 +21,11 @@ import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.client.resources.AttributeTooltipManager;
-import vazkii.quark.content.client.tooltip.*;
-
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import vazkii.quark.content.client.tooltip.AttributeTooltips;
+import vazkii.quark.content.client.tooltip.EnchantedBookTooltips;
+import vazkii.quark.content.client.tooltip.FoodTooltips;
+import vazkii.quark.content.client.tooltip.MapTooltips;
+import vazkii.quark.content.client.tooltip.ShulkerBoxTooltips;
 
 /**
  * @author WireSegal
@@ -71,15 +76,15 @@ public class ImprovedTooltipsModule extends QuarkModule {
 	private static final String IGNORE_TAG = "quark:no_tooltip";
 
 	public static boolean staticEnabled;
-
+	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
-		register(AttributeTooltips.AttributeComponent.class);
-		register(FoodTooltips.FoodComponent.class);
-		register(ShulkerBoxTooltips.ShulkerComponent.class);
-		register(MapTooltips.MapComponent.class);
-		register(EnchantedBookTooltips.EnchantedBookComponent.class);
+	public void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
+		register(event, AttributeTooltips.AttributeComponent.class);
+		register(event, FoodTooltips.FoodComponent.class);
+		register(event, ShulkerBoxTooltips.ShulkerComponent.class);
+		register(event, MapTooltips.MapComponent.class);
+		register(event, EnchantedBookTooltips.EnchantedBookComponent.class);
 	}
 
 	@Override
@@ -98,8 +103,8 @@ public class ImprovedTooltipsModule extends QuarkModule {
 		return ItemNBTHelper.getBoolean(stack, IGNORE_TAG, false);
 	}
 
-	private static <T extends ClientTooltipComponent & TooltipComponent> void register(Class<T> clazz) {
-		MinecraftForgeClient.registerTooltipComponentFactory(clazz, Function.identity());
+	private static <T extends ClientTooltipComponent & TooltipComponent> void register(RegisterClientTooltipComponentFactoriesEvent event, Class<T> clazz) {
+		event.register(clazz, Function.identity());
 	}
 
 	@SubscribeEvent

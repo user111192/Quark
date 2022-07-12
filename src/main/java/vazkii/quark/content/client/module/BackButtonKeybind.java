@@ -1,7 +1,10 @@
 package vazkii.quark.content.client.module;
 
+import java.util.List;
+
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.platform.InputConstants.Type;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -9,6 +12,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.ScreenEvent.KeyPressed;
 import net.minecraftforge.client.event.ScreenEvent.MouseButtonPressed;
@@ -17,8 +21,6 @@ import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
-
-import java.util.List;
 
 @LoadModule(category = ModuleCategory.CLIENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class BackButtonKeybind extends QuarkModule {
@@ -30,10 +32,11 @@ public class BackButtonKeybind extends QuarkModule {
 	private static List<GuiEventListener> listeners;
 
 	@Override
-	public void clientSetup() {
-		backKey = ModKeybindHandler.initMouse("back", 4, ModKeybindHandler.MISC_GROUP, (modifier, key) -> key.getType() != Type.MOUSE || key.getValue() != 0);
+	@OnlyIn(Dist.CLIENT)
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+		backKey = ModKeybindHandler.initMouse(event, "back", 4, ModKeybindHandler.MISC_GROUP, (modifier, key) -> key.getType() != Type.MOUSE || key.getValue() != 0);
 	}
-
+	
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public void openGui(ScreenEvent.Init event) {

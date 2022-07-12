@@ -13,8 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
 
-import net.minecraft.client.gui.components.Button.OnPress;
-
 public class IconButton extends Button {
 
 	private final ItemStack icon;

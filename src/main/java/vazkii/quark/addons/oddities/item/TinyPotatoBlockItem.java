@@ -23,8 +23,6 @@ import vazkii.quark.addons.oddities.util.TinyPotatoInfo;
 import vazkii.quark.api.IRuneColorProvider;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class TinyPotatoBlockItem extends BlockItem implements IRuneColorProvider {
 	private static final int NOT_MY_NAME = 17;
 	private static final List<String> TYPOS = List.of("vaskii", "vazki", "voskii", "vazkkii", "vazkki", "vazzki", "vaskki", "vozkii", "vazkil", "vaskil", "vazkill", "vaskill", "vaski");

@@ -26,6 +26,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
@@ -164,8 +165,8 @@ public final class InventoryButtonHandler {
 				binding, onKeybind));
 	}
 
-	public static void addButtonProvider(QuarkModule module, ButtonTargetType type, int priority, String keybindName, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider) {
-		KeyMapping keybind = ModKeybindHandler.init(keybindName, null, ModKeybindHandler.INV_GROUP);
+	public static void addButtonProvider(RegisterKeyMappingsEvent event, QuarkModule module, ButtonTargetType type, int priority, String keybindName, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider) {
+		KeyMapping keybind = ModKeybindHandler.init(event, keybindName, null, ModKeybindHandler.INV_GROUP);
 		keybind.setKeyConflictContext(KeyConflictContext.GUI);
 		addButtonProvider(module, type, priority, keybind, onKeybind, provider);
 	}

@@ -1,11 +1,17 @@
 package vazkii.quark.base.module;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
@@ -14,9 +20,6 @@ import vazkii.quark.api.event.ModuleLoadedEvent;
 import vazkii.quark.api.event.ModuleStateChangedEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.config.ConfigFlagManager;
-
-import java.util.List;
-import java.util.function.Consumer;
 
 public class QuarkModule {
 
@@ -85,12 +88,7 @@ public class QuarkModule {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void modelRegistry() {
-		// NO-OP
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public void modelBake(BakingCompleted event) {
+	public void modelBake(ModelEvent.BakingCompleted event) {
 		// NO-OP
 	}
 
@@ -106,6 +104,21 @@ public class QuarkModule {
 
 	@OnlyIn(Dist.CLIENT)
 	public void postTextureStitch(TextureStitchEvent.Post event) {
+		// NO-OP
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+		// NO-OP
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+		// NO-OP
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
 		// NO-OP
 	}
 

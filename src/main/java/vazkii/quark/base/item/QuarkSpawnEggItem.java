@@ -13,8 +13,6 @@ import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class QuarkSpawnEggItem extends ForgeSpawnEggItem implements IQuarkItem {
 
 	private final QuarkModule module;

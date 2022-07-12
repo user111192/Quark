@@ -158,7 +158,7 @@ public class ChestSearchingModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void renderForeground(ContainerScreenEvent.Foreground event) {
+	public void renderForeground(ContainerScreenEvent.Render.Foreground event) {
 		if(searchBar != null && searchEnabled) {
 			PoseStack matrix = event.getPoseStack();
 			AbstractContainerScreen<?> gui = event.getContainerScreen();

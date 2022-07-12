@@ -15,9 +15,6 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-// Mostly a copy of AvoidEntityGoal cleaned up to work with pikes
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class RunAwayFromPikesGoal extends Goal {
 
 	protected final PathfinderMob entity;

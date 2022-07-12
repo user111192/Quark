@@ -8,6 +8,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import vazkii.quark.base.client.handler.InventoryButtonHandler;
 import vazkii.quark.base.client.handler.InventoryButtonHandler.ButtonProvider;
 import vazkii.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
@@ -34,8 +35,8 @@ public class InventorySortingModule extends QuarkModule {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
-		KeyMapping sortPlayer = ModKeybindHandler.init("sort_player", null, ModKeybindHandler.INV_GROUP);
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+		KeyMapping sortPlayer = ModKeybindHandler.init(event, "sort_player", null, ModKeybindHandler.INV_GROUP);
 
 		InventoryButtonHandler.addButtonProvider(this, ButtonTargetType.PLAYER_INVENTORY, 0,
 				sortPlayer,
@@ -47,6 +48,7 @@ public class InventorySortingModule extends QuarkModule {
 					}
 				},
 				provider("sort", true, () -> enablePlayerInventory));
+		
 		InventoryButtonHandler.addButtonProvider(this, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, 0,
 				sortPlayer,
 				(screen) -> {
@@ -57,7 +59,8 @@ public class InventorySortingModule extends QuarkModule {
 					}
 				},
 				provider("sort_inventory", true, () -> enablePlayerInventoryInChests));
-		InventoryButtonHandler.addButtonProvider(this, ButtonTargetType.CONTAINER_INVENTORY, 0,
+		
+		InventoryButtonHandler.addButtonProvider(event, this, ButtonTargetType.CONTAINER_INVENTORY, 0,
 				"sort_container",
 				(screen) -> {
 					if (enableChests) {

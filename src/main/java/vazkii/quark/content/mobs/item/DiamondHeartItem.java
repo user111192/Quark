@@ -26,8 +26,6 @@ import vazkii.quark.content.mobs.module.StonelingsModule;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class DiamondHeartItem extends QuarkItem {
 
 	public DiamondHeartItem(String regname, QuarkModule module, Properties properties) {

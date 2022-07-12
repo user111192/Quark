@@ -15,8 +15,6 @@ import java.util.EnumSet;
 import net.minecraft.world.entity.ai.goal.Goal;
 import vazkii.quark.content.mobs.entity.Crab;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class RaveGoal extends Goal {
 	private final Crab crab;
 

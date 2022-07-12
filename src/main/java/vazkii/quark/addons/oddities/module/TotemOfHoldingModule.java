@@ -10,7 +10,6 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +18,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,7 +45,7 @@ public class TotemOfHoldingModule extends QuarkModule {
 
 	public static EntityType<TotemOfHoldingEntity> totemType;
 
-	public static final ModelResourceLocation MODEL_LOC = new ModelResourceLocation(new ResourceLocation(Quark.MOD_ID, "totem_of_holding"), "inventory");
+	public static final ModelResourceLocation MODEL_LOC = new ModelResourceLocation(Quark.MOD_ID, "totem_of_holding", "inventory");
 
 	@Config(description = "Set this to false to remove the behaviour where totems destroy themselves if the player dies again.")
 	public static boolean darkSoulsMode = true;
@@ -83,10 +82,10 @@ public class TotemOfHoldingModule extends QuarkModule {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void modelRegistry() {
-		ForgeModelBakery.addSpecialModel(MODEL_LOC);
+	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+		event.register(MODEL_LOC);
 	}
-
+	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onPlayerDrops(LivingDropsEvent event) {
 		LivingEntity entity = event.getEntity();

@@ -4,6 +4,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import vazkii.quark.base.client.handler.InventoryButtonHandler;
 import vazkii.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
 import vazkii.quark.base.module.LoadModule;
@@ -23,12 +24,12 @@ public class EasyTransferingModule extends QuarkModule {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
-		addButton(1, "insert", false);
-		addButton(2, "extract", true);
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+		addButton(event, 1, "insert", false);
+		addButton(event, 2, "extract", true);
 
 		if(enableShiftLock)
-			InventoryButtonHandler.addButtonProvider(this, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, 3,
+			InventoryButtonHandler.addButtonProvider(event, this, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, 3,
 					"shift_lock",
 					(screen) -> shiftLocked = !shiftLocked,
 					(parent, x, y) -> new MiniInventoryButton(parent, 4, x, y, "quark.gui.button.shift_lock",
@@ -37,8 +38,8 @@ public class EasyTransferingModule extends QuarkModule {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private void addButton(int priority, String name, boolean restock) {
-		InventoryButtonHandler.addButtonProvider(this, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, priority,
+	private void addButton(RegisterKeyMappingsEvent event, int priority, String name, boolean restock) {
+		InventoryButtonHandler.addButtonProvider(event, this, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, priority,
 				"transfer_" + name,
 				(screen) -> QuarkNetwork.sendToServer(new InventoryTransferMessage(Screen.hasShiftDown(), restock)),
 				(parent, x, y) -> new MiniInventoryButton(parent, priority, x, y, 

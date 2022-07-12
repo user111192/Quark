@@ -7,8 +7,6 @@ import vazkii.quark.base.module.QuarkModule;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class QuarkWoodenButtonBlock extends QuarkButtonBlock {
 
 	public QuarkWoodenButtonBlock(String regname, QuarkModule module, Properties properties) {

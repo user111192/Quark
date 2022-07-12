@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.client.event.ModelEvent.RegisterAdditional;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.block.be.PipeBlockEntity;
 import vazkii.quark.addons.oddities.block.pipe.EncasedPipeBlock;
@@ -70,11 +70,11 @@ public class PipesModule extends QuarkModule {
 	public void clientSetup() {
 		BlockEntityRenderers.register(blockEntityType, PipeRenderer::new);
 	}
-
+	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void modelRegistry() {
-		ForgeModelBakery.addSpecialModel(new ModelResourceLocation(new ResourceLocation(Quark.MOD_ID, "pipe_flare"), "inventory"));
+	public void registerAdditionalModels(RegisterAdditional event) {
+		event.register(new ModelResourceLocation(Quark.MOD_ID, "pipe_flare", "inventory"));
 	}
 	
 }

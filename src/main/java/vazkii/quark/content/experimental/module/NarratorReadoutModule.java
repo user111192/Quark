@@ -24,6 +24,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,16 +47,16 @@ public class NarratorReadoutModule extends QuarkModule {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
 		if(enabled) {
-			keybind = ModKeybindHandler.init("narrator_readout", null, ModKeybindHandler.MISC_GROUP);
-			keybindFull = ModKeybindHandler.init("narrator_full_readout", null, ModKeybindHandler.MISC_GROUP);
+			keybind = ModKeybindHandler.init(event, "narrator_readout", null, ModKeybindHandler.MISC_GROUP);
+			keybindFull = ModKeybindHandler.init(event, "narrator_full_readout", null, ModKeybindHandler.MISC_GROUP);
 		}
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onMouseInput(InputEvent.Post event) {
+	public void onMouseInput(InputEvent.MouseButton event) {
 		boolean down = isDown(event.getButton(), 0, true, keybind);
 		boolean full = isDown(event.getButton(), 0, true, keybindFull);
 

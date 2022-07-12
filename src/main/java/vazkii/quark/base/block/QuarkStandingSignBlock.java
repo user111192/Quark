@@ -9,8 +9,6 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.module.QuarkModule;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class QuarkStandingSignBlock extends StandingSignBlock implements IQuarkBlock {
 
 	private final QuarkModule module;

@@ -1,9 +1,18 @@
 package vazkii.quark.addons.oddities.client.render.be;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -26,20 +35,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.data.EmptyModelData;
 import vazkii.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
 import vazkii.quark.addons.oddities.module.TinyPotatoModule;
 import vazkii.quark.addons.oddities.util.TinyPotatoInfo;
 import vazkii.quark.content.tools.item.RuneItem;
 import vazkii.quark.content.tools.module.ColorRunesModule;
 import vazkii.quark.mixin.client.accessor.AccessorModelManager;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 @OnlyIn(Dist.CLIENT)
 public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEntity> {
@@ -291,7 +292,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 	}
 
 	private void renderModel(PoseStack ms, VertexConsumer buffer, int light, int overlay, BakedModel model) {
-		blockRenderDispatcher.getModelRenderer().renderModel(ms.last(), buffer, null, model, 1, 1, 1, light, overlay, EmptyModelData.INSTANCE);
+		blockRenderDispatcher.getModelRenderer().renderModel(ms.last(), buffer, null, model, 1, 1, 1, light, overlay);
 	}
 
 	private void renderItem(PoseStack ms, MultiBufferSource buffers, int light, int overlay, ItemStack stack) {

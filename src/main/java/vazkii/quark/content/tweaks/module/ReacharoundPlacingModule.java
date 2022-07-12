@@ -36,6 +36,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -75,7 +76,7 @@ public class ReacharoundPlacingModule extends QuarkModule {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public void onRender(RenderGuiOverlayEvent.Pre event) {
-		if(event.getType() != RenderGuiOverlayEvent.ElementType.ALL)
+		if(event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type())
 			return;
 
 		Minecraft mc = Minecraft.getInstance();

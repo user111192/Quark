@@ -17,8 +17,6 @@ import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.automation.entity.Gravisand;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class GravisandBlock extends QuarkBlock {
 
 	public GravisandBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {

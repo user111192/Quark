@@ -36,8 +36,6 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.tools.config.PickarangType;
 import vazkii.quark.content.tools.entity.rang.AbstractPickarang;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class PickarangItem extends QuarkItem {
 
 	public final PickarangType<?> type;

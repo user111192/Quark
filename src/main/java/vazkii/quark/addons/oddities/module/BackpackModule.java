@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ScreenEvent.Open;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -113,7 +113,7 @@ public class BackpackModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onOpenGUI(Open event) {
+	public void onOpenGUI(ScreenEvent.Opening event) {
 		Player player = Minecraft.getInstance().player;
 		if(player != null && isInventoryGUI(event.getScreen()) && !player.getAbilities().instabuild && isEntityWearingBackpack(player) && !player.isInsidePortal) {
 			requestBackpack();

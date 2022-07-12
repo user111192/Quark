@@ -1,6 +1,14 @@
 package vazkii.quark.content.building.block;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -28,15 +36,6 @@ import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.building.block.be.VariantChestBlockEntity;
 import vazkii.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
-import net.minecraft.world.item.Item.Properties;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IBlockItemProvider.class)
 public class VariantChestBlock extends ChestBlock implements IBlockItemProvider, IQuarkBlock, IChestTextureProvider {
@@ -117,7 +116,7 @@ public class VariantChestBlock extends ChestBlock implements IBlockItemProvider,
 			consumer.accept(new IClientItemExtensions() {
 
 				@Override
-				public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+				public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 					Minecraft mc = Minecraft.getInstance();
 
 					return new BlockEntityWithoutLevelRenderer(mc.getBlockEntityRenderDispatcher(), mc.getEntityModels()) {

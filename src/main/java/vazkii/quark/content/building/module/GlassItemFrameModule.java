@@ -3,13 +3,12 @@ package vazkii.quark.content.building.module;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.client.event.ModelEvent;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
@@ -64,8 +63,8 @@ public class GlassItemFrameModule extends QuarkModule {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void modelRegistry() {
-		ForgeModelBakery.addSpecialModel(new ModelResourceLocation(new ResourceLocation(Quark.MOD_ID, "glass_frame"), "inventory")); 
+	@OnlyIn(Dist.CLIENT)	
+	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+		event.register(new ModelResourceLocation(Quark.MOD_ID, "glass_frame", "inventory"));
 	}
 }

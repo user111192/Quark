@@ -31,8 +31,6 @@ import net.minecraft.world.phys.Vec3;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.content.mobs.entity.Stoneling;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class RunAndPoofGoal<T extends Entity> extends Goal {
 
 	private final Predicate<Entity> canBeSeenSelector;

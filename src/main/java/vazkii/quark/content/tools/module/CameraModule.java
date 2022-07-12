@@ -24,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent.Key;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.RenderTickEvent;
@@ -92,10 +93,10 @@ public class CameraModule extends QuarkModule {
 	private static boolean screenshotting = false;
 
 	private static boolean cameraMode;
-
+	
 	@Override
-	public void clientSetup() {
-		cameraModeKey = ModKeybindHandler.init("camera_mode", "f12", ModKeybindHandler.MISC_GROUP);
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+		cameraModeKey = ModKeybindHandler.init(event, "camera_mode", "f12", ModKeybindHandler.MISC_GROUP);
 	}
 
 	@SubscribeEvent

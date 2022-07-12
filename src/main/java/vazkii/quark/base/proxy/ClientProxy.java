@@ -21,9 +21,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
-import net.minecraftforge.client.event.ModelEvent.RegisterGeometryLoaders;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -66,11 +68,12 @@ public class ClientProxy extends CommonProxy {
 
 		bus.addListener(this::clientSetup);
 		bus.addListener(this::registerReloadListeners);
-		bus.addListener(this::modelRegistry);
 		bus.addListener(this::modelBake);
 		bus.addListener(this::modelLayers);
 		bus.addListener(this::textureStitch);
 		bus.addListener(this::postTextureStitch);
+		bus.addListener(this::registerKeybinds);
+		bus.addListener(this::registerAdditionalModels);
 	}
 
 	public void clientSetup(FMLClientSetupEvent event) {
@@ -82,10 +85,6 @@ public class ClientProxy extends CommonProxy {
 
 	public void registerReloadListeners(RegisterClientReloadListenersEvent event) {
 		ModuleLoader.INSTANCE.registerReloadListeners(event);
-	}
-
-	public void modelRegistry(RegisterGeometryLoaders event) {
-		ModuleLoader.INSTANCE.modelRegistry();
 	}
 
 	public void modelBake(BakingCompleted event) {
@@ -103,7 +102,20 @@ public class ClientProxy extends CommonProxy {
 	public void postTextureStitch(TextureStitchEvent.Post event) {
 		ModuleLoader.INSTANCE.postTextureStitch(event);
 	}
+	
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+		ModuleLoader.INSTANCE.registerKeybinds(event);
+	}
+	
+	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+		ModuleLoader.INSTANCE.registerAdditionalModels(event);
+	}
 
+	@OnlyIn(Dist.CLIENT)
+	public void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
+		ModuleLoader.INSTANCE.registerClientTooltipComponentFactories(event);
+	}
+	
 	@Override
 	public void handleQuarkConfigChange() {
 		super.handleQuarkConfigChange();

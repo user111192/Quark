@@ -16,8 +16,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.BooleanSupplier;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class QuarkBlock extends BasicBlock implements IQuarkBlock {
 
 	private final QuarkModule module;

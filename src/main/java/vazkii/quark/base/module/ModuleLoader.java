@@ -1,14 +1,24 @@
 package vazkii.quark.base.module;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+
 import com.google.common.base.Preconditions;
+
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -20,18 +30,12 @@ import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.item.IQuarkItem;
 import vazkii.quark.base.module.config.ConfigResolver;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-
 public final class ModuleLoader {
 
 	private enum Step {
 		CONSTRUCT, CONSTRUCT_CLIENT, REGISTER, POST_REGISTER, CONFIG_CHANGED, CONFIG_CHANGED_CLIENT, SETUP, SETUP_CLIENT,
-		REGISTER_RELOADABLE, MODEL_REGISTRY, MODEL_BAKE, MODEL_LAYERS, TEXTURE_STITCH, POST_TEXTURE_STITCH, LOAD_COMPLETE,
-		FIRST_CLIENT_TICK
+		REGISTER_RELOADABLE, MODEL_BAKE, MODEL_LAYERS, TEXTURE_STITCH, POST_TEXTURE_STITCH, LOAD_COMPLETE,
+		FIRST_CLIENT_TICK, REGISTER_KEYBINDS, REIGSTER_ADDITIONAL_MODELS, REGISTER_TOOLTIP_COMPONENT_FACTORIES
 	}
 
 	public static final ModuleLoader INSTANCE = new ModuleLoader();
@@ -111,11 +115,6 @@ public final class ModuleLoader {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void modelRegistry() {
-		dispatch(Step.MODEL_REGISTRY, QuarkModule::modelRegistry);
-	}
-
-	@OnlyIn(Dist.CLIENT)
 	public void modelBake(BakingCompleted event) {
 		dispatch(Step.MODEL_BAKE, m -> m.modelBake(event));
 	}
@@ -134,7 +133,22 @@ public final class ModuleLoader {
 	public void postTextureStitch(TextureStitchEvent.Post event) {
 		dispatch(Step.POST_TEXTURE_STITCH, m -> m.postTextureStitch(event));
 	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+		dispatch(Step.REGISTER_KEYBINDS, m -> m.registerKeybinds(event));
+	}
 
+	@OnlyIn(Dist.CLIENT)
+	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+		dispatch(Step.REIGSTER_ADDITIONAL_MODELS, m -> m.registerAdditionalModels(event));
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
+		dispatch(Step.REGISTER_TOOLTIP_COMPONENT_FACTORIES, m -> m.registerClientTooltipComponentFactories(event));
+	}
+	
 	public void loadComplete(ParallelDispatchEvent event) {
 		this.event = event;
 		dispatch(Step.LOAD_COMPLETE, QuarkModule::loadComplete);
@@ -150,6 +164,9 @@ public final class ModuleLoader {
 	}
 
 	private void dispatch(Step step, Consumer<QuarkModule> run) {
+		if(stepsHandled.contains(step))
+			throw new RuntimeException("Step " + step + " already ran. This should not be possible.");
+		
 		Quark.LOG.info("Dispatching Module Step " + step);
 		foundModules.values().forEach(run);
 		stepsHandled.add(step);
