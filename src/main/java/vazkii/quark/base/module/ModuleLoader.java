@@ -164,9 +164,6 @@ public final class ModuleLoader {
 	}
 
 	private void dispatch(Step step, Consumer<QuarkModule> run) {
-		if(stepsHandled.contains(step))
-			throw new RuntimeException("Step " + step + " already ran. This should not be possible.");
-		
 		Quark.LOG.info("Dispatching Module Step " + step);
 		foundModules.values().forEach(run);
 		stepsHandled.add(step);
