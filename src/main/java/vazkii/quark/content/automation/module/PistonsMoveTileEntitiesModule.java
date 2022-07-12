@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.WorldTickEvent;
+import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import vazkii.quark.api.IIndirectConnector;
@@ -57,27 +57,27 @@ public class PistonsMoveTileEntitiesModule extends QuarkModule {
 	}
 
 	@SubscribeEvent
-	public void onWorldTick(WorldTickEvent event) {
-		if (!delayedUpdates.containsKey(event.world) || event.phase == Phase.START)
+	public void onWorldTick(LevelTickEvent event) {
+		if (!delayedUpdates.containsKey(event.level) || event.phase == Phase.START)
 			return;
 
-		List<Pair<BlockPos, CompoundTag>> delays = delayedUpdates.get(event.world);
+		List<Pair<BlockPos, CompoundTag>> delays = delayedUpdates.get(event.level);
 		if (delays.isEmpty())
 			return;
 
 		for (Pair<BlockPos, CompoundTag> delay : delays) {
 			BlockPos pos = delay.getLeft();
-			BlockState state = event.world.getBlockState(pos);
+			BlockState state = event.level.getBlockState(pos);
 			BlockEntity tile = BlockEntity.loadStatic(pos, state, delay.getRight());
 
 			if(tile != null) {
 				tile.setBlockState(state);
 				tile.setChanged();
 
-				event.world.setBlockEntity(tile);
+				event.level.setBlockEntity(tile);
 			}
 
-			event.world.updateNeighbourForOutputSignal(pos, state.getBlock());
+			event.level.updateNeighbourForOutputSignal(pos, state.getBlock());
 		}
 
 		delays.clear();

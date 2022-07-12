@@ -94,7 +94,7 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onDrawScreen(ScreenEvent.DrawScreenEvent.Post event) {
+	public void onDrawScreen(ScreenEvent.Render.Post event) {
 		Minecraft mc = Minecraft.getInstance();
 		Screen gui = mc.screen;
 		if (mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui) {

@@ -46,7 +46,7 @@ public final class InventoryButtonHandler {
 	private static final Multimap<ButtonTargetType, Button> currentButtons = Multimaps.newSetMultimap(new HashMap<>(), LinkedHashSet::new);
 
 	@SubscribeEvent
-	public static void initGui(ScreenEvent.InitScreenEvent.Post event) {
+	public static void initGui(ScreenEvent.Init.Post event) {
 		Minecraft mc = Minecraft.getInstance();
 		Screen screen = event.getScreen();
 		if(GeneralConfig.printScreenClassnames) {
@@ -90,7 +90,7 @@ public final class InventoryButtonHandler {
 	}
 
 	@SubscribeEvent
-	public static void mouseInputEvent(ScreenEvent.MouseClickedEvent.Pre pressed) {
+	public static void mouseInputEvent(ScreenEvent.MouseButtonPressed.Pre pressed) {
 		Screen gui = pressed.getScreen();
 		if (gui instanceof AbstractContainerScreen<?> screen) {
 			if(!GeneralConfig.isScreenAllowed(screen))
@@ -110,7 +110,7 @@ public final class InventoryButtonHandler {
 	}
 
 	@SubscribeEvent
-	public static void keyboardInputEvent(ScreenEvent.KeyboardKeyPressedEvent.Post pressed) {
+	public static void keyboardInputEvent(ScreenEvent.KeyPressed.Post pressed) {
 		Screen gui = pressed.getScreen();
 		if (gui instanceof AbstractContainerScreen<?> screen) {
 			if(!GeneralConfig.isScreenAllowed(screen))
@@ -130,7 +130,7 @@ public final class InventoryButtonHandler {
 
 	}
 
-	private static void applyProviders(ScreenEvent.InitScreenEvent.Post event, ButtonTargetType type, AbstractContainerScreen<?> screen, Predicate<Slot> slotPred) {
+	private static void applyProviders(ScreenEvent.Init.Post event, ButtonTargetType type, AbstractContainerScreen<?> screen, Predicate<Slot> slotPred) {
 		Collection<ButtonProviderHolder> holders = providers.get(type);
 		if(!holders.isEmpty()) {
 			for(Slot slot : screen.getMenu().slots)

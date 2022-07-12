@@ -19,7 +19,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.GameRules;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ScreenEvent.InitScreenEvent;
+import net.minecraftforge.client.event.ScreenEvent.Init;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -52,7 +52,7 @@ public class AutomaticRecipeUnlockModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 
 		if(player instanceof ServerPlayer spe) {
 			MinecraftServer server = spe.getServer();
@@ -87,7 +87,7 @@ public class AutomaticRecipeUnlockModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onInitGui(InitScreenEvent.Post event) {
+	public void onInitGui(Init.Post event) {
 		Screen gui = event.getScreen();
 		if(disableRecipeBook && gui instanceof RecipeUpdateListener) {
 			Minecraft.getInstance().player.getRecipeBook().getBookSettings().setOpen(RecipeBookType.CRAFTING, false);

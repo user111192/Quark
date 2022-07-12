@@ -73,7 +73,7 @@ public class ContributorRewardHandler {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void onRenderPlayer(RenderPlayerEvent.Post event) {
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		String uuid = player.getUUID().toString();
 		if(player instanceof AbstractClientPlayer clientPlayer && DEV_UUID.contains(uuid) && !done.contains(uuid)) {
 			if(clientPlayer.isCapeLoaded()) {

@@ -194,10 +194,10 @@ public class VariantAnimalTexturesModule extends QuarkModule {
 
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
-	public void doShinySparkles(LivingEvent.LivingUpdateEvent event) {
+	public void doShinySparkles(LivingEvent.LivingTickEvent event) {
 		if (!shinySparkles)
 			return;
-		LivingEntity entity = event.getEntityLiving();
+		LivingEntity entity = event.getEntity();
 		Level level = entity.getLevel();
 		if (level.isClientSide() && level.getGameTime() % 10 == 0) {
 			if (isShiny(entity)) {

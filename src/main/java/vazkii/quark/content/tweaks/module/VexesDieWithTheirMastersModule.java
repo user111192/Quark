@@ -13,7 +13,7 @@ import vazkii.quark.base.module.QuarkModule;
 public class VexesDieWithTheirMastersModule extends QuarkModule {
 
 	@SubscribeEvent // omae wa mou shindeiru
-	public void checkWhetherAlreadyDead(LivingEvent.LivingUpdateEvent event) {
+	public void checkWhetherAlreadyDead(LivingEvent.LivingTickEvent event) {
 		if (event.getEntity() instanceof Vex vex) {
 			Mob owner = vex.getOwner();
 			if (owner != null && owner.isDeadOrDying() && !vex.isDeadOrDying())

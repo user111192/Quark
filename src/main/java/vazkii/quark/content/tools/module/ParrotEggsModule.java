@@ -34,7 +34,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.RegistryHelper;
@@ -134,7 +134,7 @@ public class ParrotEggsModule extends QuarkModule {
 	@SubscribeEvent
 	public void entityInteract(PlayerInteractEvent.EntityInteract event) {
 		Entity e = event.getTarget();
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		if (e instanceof Parrot parrot) {
 			ItemStack stack = player.getMainHandItem();
 			if (stack.isEmpty() || !stack.is(feedTag)) {
@@ -170,7 +170,7 @@ public class ParrotEggsModule extends QuarkModule {
 	}
 
 	@SubscribeEvent
-	public void entityUpdate(LivingUpdateEvent event) {
+	public void entityUpdate(LivingTickEvent event) {
 		Entity e = event.getEntity();
 		if(e instanceof Parrot parrot) {
 			int time = parrot.getPersistentData().getInt(EGG_TIMER);

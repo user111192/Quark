@@ -35,7 +35,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -74,8 +74,8 @@ public class ReacharoundPlacingModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onRender(RenderGameOverlayEvent.Pre event) {
-		if(event.getType() != RenderGameOverlayEvent.ElementType.ALL)
+	public void onRender(RenderGuiOverlayEvent.Pre event) {
+		if(event.getType() != RenderGuiOverlayEvent.ElementType.ALL)
 			return;
 
 		Minecraft mc = Minecraft.getInstance();
@@ -122,7 +122,7 @@ public class ReacharoundPlacingModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onRightClick(PlayerInteractEvent.RightClickItem event) {
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		ReacharoundTarget target = getPlayerReacharoundTarget(player);
 
 		if(target != null && event.getHand() == target.hand) {

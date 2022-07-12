@@ -37,9 +37,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ContainerScreenEvent;
 import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.client.event.ScreenEvent.KeyboardCharTypedEvent;
-import net.minecraftforge.client.event.ScreenEvent.KeyboardKeyPressedEvent;
-import net.minecraftforge.client.event.ScreenEvent.MouseClickedEvent;
+import net.minecraftforge.client.event.ScreenEvent.CharacterTyped;
+import net.minecraftforge.client.event.ScreenEvent.KeyPressed;
+import net.minecraftforge.client.event.ScreenEvent.MouseButtonPressed;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModContainer;
@@ -89,7 +89,7 @@ public class ChestSearchingModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void initGui(ScreenEvent.InitScreenEvent.Post event) {
+	public void initGui(ScreenEvent.Init.Post event) {
 		Screen gui = event.getScreen();
 		if(!(gui instanceof InventoryScreen) &&
 				gui instanceof AbstractContainerScreen<?> chest &&
@@ -121,7 +121,7 @@ public class ChestSearchingModule extends QuarkModule {
 	}
 
 	@SubscribeEvent
-	public void charTyped(KeyboardCharTypedEvent.Pre event) {
+	public void charTyped(CharacterTyped.Pre event) {
 		if(searchBar != null && searchBar.isFocused() && searchEnabled) {
 			searchBar.charTyped(event.getCodePoint(), event.getModifiers());
 			text = searchBar.getValue();
@@ -131,7 +131,7 @@ public class ChestSearchingModule extends QuarkModule {
 	}
 
 	@SubscribeEvent
-	public void onKeypress(KeyboardKeyPressedEvent.Pre event) {
+	public void onKeypress(KeyPressed.Pre event) {
 		if(searchBar != null && searchBar.isFocused() && searchEnabled) {
 			searchBar.keyPressed(event.getKeyCode(), event.getScanCode(), event.getModifiers());
 			text = searchBar.getValue();
@@ -141,7 +141,7 @@ public class ChestSearchingModule extends QuarkModule {
 	}
 
 	@SubscribeEvent
-	public void onClick(MouseClickedEvent.Pre event) {
+	public void onClick(MouseButtonPressed.Pre event) {
 		if(searchBar != null && searchEnabled && event.getScreen() instanceof AbstractContainerScreen<?> containerScreen) {
 			searchBar.mouseClicked(event.getMouseX() - containerScreen.getGuiLeft(), event.getMouseY() - containerScreen.getGuiTop(), event.getButton());
 
@@ -158,7 +158,7 @@ public class ChestSearchingModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void renderForeground(ContainerScreenEvent.DrawForeground event) {
+	public void renderForeground(ContainerScreenEvent.Foreground event) {
 		if(searchBar != null && searchEnabled) {
 			PoseStack matrix = event.getPoseStack();
 			AbstractContainerScreen<?> gui = event.getContainerScreen();

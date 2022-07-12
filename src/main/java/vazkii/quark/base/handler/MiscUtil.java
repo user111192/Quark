@@ -60,7 +60,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ScreenEvent.KeyboardKeyPressedEvent;
+import net.minecraftforge.client.event.ScreenEvent.KeyPressed;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -282,7 +282,7 @@ public class MiscUtil {
 	private static int progress;
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public static void onKeystroke(KeyboardKeyPressedEvent.Pre event) {
+	public static void onKeystroke(KeyPressed.Pre event) {
 		final String[] ids = new String[] {
 				"-FCYE87P5L0","mybsDDymrsc","6a4BWpBJppI","thpTOAS1Vgg","ZNcBZM5SvbY","_qJEoSa3Ie0",
 				"RWeyOyY_puQ","VBbeuXW8Nko","LIDe-yTxda0","BVVfMFS3mgc","m5qwcYL8a0o","UkY8HvgvBJ8",

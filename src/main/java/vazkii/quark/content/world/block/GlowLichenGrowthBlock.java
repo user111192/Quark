@@ -27,6 +27,8 @@ import vazkii.quark.base.block.QuarkBushBlock;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.QuarkModule;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class GlowLichenGrowthBlock extends QuarkBushBlock implements BonemealableBlock {
 
 	protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);

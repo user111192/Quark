@@ -27,6 +27,8 @@ import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 
+import vazkii.quark.api.ICollateralMover.MoveResult;
+
 public class IronRodBlock extends EndRodBlock implements ICollateralMover, IQuarkBlock {
 
 	private final QuarkModule module;

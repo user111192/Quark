@@ -48,6 +48,8 @@ import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.world.generator.IGenerator;
 
+import net.minecraftforge.common.world.BiomeModifier.Phase;
+
 @EventBusSubscriber(modid = Quark.MOD_ID)
 public class WorldGenHandler {
 

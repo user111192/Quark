@@ -22,8 +22,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.DrawSelectionEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderHighlightEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
@@ -54,7 +54,7 @@ public class AbacusModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onHUDRender(RenderGameOverlayEvent event) {
+	public void onHUDRender(RenderGuiOverlayEvent event) {
 		if(event.getType() == ElementType.ALL) {
 			Minecraft mc = Minecraft.getInstance();
 			Player player = mc.player;
@@ -81,7 +81,7 @@ public class AbacusModule extends QuarkModule {
 	}
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onHighlightBlock(DrawSelectionEvent.HighlightBlock event) {
+	public void onHighlightBlock(RenderHighlightEvent.Block event) {
 		VertexConsumer bufferIn = event.getMultiBufferSource().getBuffer(RenderType.lines());
 
 		Minecraft mc = Minecraft.getInstance();

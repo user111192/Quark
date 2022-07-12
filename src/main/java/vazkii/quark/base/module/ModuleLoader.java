@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -116,7 +116,7 @@ public final class ModuleLoader {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void modelBake(ModelBakeEvent event) {
+	public void modelBake(BakingCompleted event) {
 		dispatch(Step.MODEL_BAKE, m -> m.modelBake(event));
 	}
 

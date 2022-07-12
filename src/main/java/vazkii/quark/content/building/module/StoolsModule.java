@@ -42,10 +42,10 @@ public class StoolsModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void itemUsed(RightClickBlock event) {
-		if(event.getPlayer().isShiftKeyDown() && event.getItemStack().getItem() instanceof BlockItem && event.getFace() == Direction.UP) {
-			BlockState state = event.getWorld().getBlockState(event.getPos());
+		if(event.getEntity().isShiftKeyDown() && event.getItemStack().getItem() instanceof BlockItem && event.getFace() == Direction.UP) {
+			BlockState state = event.getLevel().getBlockState(event.getPos());
 			if(state.getBlock() instanceof StoolBlock stool)
-				stool.blockClicked(event.getWorld(), event.getPos());
+				stool.blockClicked(event.getLevel(), event.getPos());
 		}
 	}
 

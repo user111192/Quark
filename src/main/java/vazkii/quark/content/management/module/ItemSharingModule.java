@@ -78,7 +78,7 @@ public class ItemSharingModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void keyboardEvent(ScreenEvent.KeyboardKeyPressedEvent.Pre event) {
+	public void keyboardEvent(ScreenEvent.KeyPressed.Pre event) {
 		Minecraft mc = Minecraft.getInstance();
 		Options settings = mc.options;
 		Screen screen = event.getScreen();

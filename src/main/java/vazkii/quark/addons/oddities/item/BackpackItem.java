@@ -36,7 +36,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -217,8 +217,8 @@ public class BackpackItem extends DyeableArmorItem implements IQuarkItem, IItemC
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(new IItemRenderProperties() {
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
 
 			@Override
 			public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {

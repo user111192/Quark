@@ -89,7 +89,7 @@ public class TotemOfHoldingModule extends QuarkModule {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onPlayerDrops(LivingDropsEvent event) {
-		LivingEntity entity = event.getEntityLiving();
+		LivingEntity entity = event.getEntity();
 		if (!(entity instanceof Player player))
 			return;
 

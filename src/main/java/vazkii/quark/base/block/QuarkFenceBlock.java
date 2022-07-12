@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.FenceBlock;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.module.QuarkModule;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class QuarkFenceBlock extends FenceBlock implements IQuarkBlock {
 
 	private final QuarkModule module;

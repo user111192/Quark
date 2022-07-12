@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.module.QuarkModule;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class QuarkPillarBlock extends RotatedPillarBlock implements IQuarkBlock {
 
 	private final QuarkModule module;

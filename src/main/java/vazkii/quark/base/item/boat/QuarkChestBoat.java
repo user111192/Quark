@@ -17,6 +17,8 @@ import net.minecraft.world.level.Level;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.QuarkBoatType;
 
+import net.minecraft.world.entity.vehicle.Boat.Type;
+
 public class QuarkChestBoat extends ChestBoat implements IQuarkBoat {
 
 	private static final EntityDataAccessor<String> DATA_QUARK_TYPE = SynchedEntityData.defineId(QuarkChestBoat.class, EntityDataSerializers.STRING);

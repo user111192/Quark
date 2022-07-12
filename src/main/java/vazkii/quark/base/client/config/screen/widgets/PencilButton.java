@@ -10,6 +10,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import vazkii.quark.base.handler.MiscUtil;
 
+import net.minecraft.client.gui.components.Button.OnPress;
+
 public class PencilButton extends Button {
 
 	public PencilButton(int x, int y, OnPress pressable) {

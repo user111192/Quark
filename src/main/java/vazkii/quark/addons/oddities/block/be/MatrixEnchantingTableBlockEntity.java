@@ -232,7 +232,7 @@ public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlo
 		if(item.isEmpty())
 			return;
 
-		enchantability = item.getItem().getItemEnchantability(item);
+		enchantability = item.getItem().getEnchantmentValue(item);
 
 		boolean allowWater = MatrixEnchantingModule.allowUnderwaterEnchanting;
 		float power = 0;

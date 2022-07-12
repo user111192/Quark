@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.ClientTicker;
@@ -43,19 +43,19 @@ public class AutoWalkKeybindModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onMouseInput(InputEvent.MouseInputEvent event) {
+	public void onMouseInput(InputEvent.Post event) {
 		acceptInput();
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onKeyInput(InputEvent.KeyInputEvent event) {
+	public void onKeyInput(InputEvent.Key event) {
 		acceptInput();
 	}
 	
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void drawHUD(RenderGameOverlayEvent.Post event) {
+	public void drawHUD(RenderGuiOverlayEvent.Post event) {
 		if(drawHud && autorunning && event.getType() == ElementType.ALL) {
 			String message = I18n.get("quark.misc.autowalking");
 			
@@ -105,7 +105,7 @@ public class AutoWalkKeybindModule extends QuarkModule {
 		if(mc.player != null && autorunning) {
 			Input input = event.getInput();
 			input.up = true;
-			input.forwardImpulse = ((LocalPlayer) event.getPlayer()).isMovingSlowly() ? 0.3F : 1F;
+			input.forwardImpulse = ((LocalPlayer) event.getEntity()).isMovingSlowly() ? 0.3F : 1F;
 		}
 	}
 

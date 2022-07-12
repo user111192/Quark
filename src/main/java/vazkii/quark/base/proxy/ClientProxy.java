@@ -19,10 +19,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
+import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
+import net.minecraftforge.client.event.ModelEvent.RegisterGeometryLoaders;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -53,7 +53,7 @@ public class ClientProxy extends CommonProxy {
 
 		ModuleLoader.INSTANCE.clientStart();
 
-		ModLoadingContext.get().registerExtensionPoint(ConfigGuiFactory.class, () -> new ConfigGuiFactory((minecraft, screen) -> new QuarkConfigHomeScreen(screen)));
+		ModLoadingContext.get().registerExtensionPoint(ConfigScreenFactory.class, () -> new ConfigScreenFactory((minecraft, screen) -> new QuarkConfigHomeScreen(screen)));
 
 		copyProgrammerArtIfMissing();
 
@@ -84,11 +84,11 @@ public class ClientProxy extends CommonProxy {
 		ModuleLoader.INSTANCE.registerReloadListeners(event);
 	}
 
-	public void modelRegistry(ModelRegistryEvent event) {
+	public void modelRegistry(RegisterGeometryLoaders event) {
 		ModuleLoader.INSTANCE.modelRegistry();
 	}
 
-	public void modelBake(ModelBakeEvent event) {
+	public void modelBake(BakingCompleted event) {
 		ModuleLoader.INSTANCE.modelBake(event);
 	}
 

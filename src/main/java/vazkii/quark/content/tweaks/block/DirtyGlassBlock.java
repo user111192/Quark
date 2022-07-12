@@ -11,6 +11,8 @@ import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 /**
  * @author WireSegal
  * Created at 12:49 PM on 8/24/19.

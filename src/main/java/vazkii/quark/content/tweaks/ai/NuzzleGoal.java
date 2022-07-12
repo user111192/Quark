@@ -21,6 +21,8 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
 public class NuzzleGoal extends Goal {
 
 	private final TamableAnimal creature;

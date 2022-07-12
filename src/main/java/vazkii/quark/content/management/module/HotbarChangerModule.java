@@ -18,10 +18,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.IIngameOverlay;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -57,13 +57,13 @@ public class HotbarChangerModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onMouseInput(InputEvent.MouseInputEvent event) {
+	public void onMouseInput(InputEvent.Post event) {
 		acceptInput();
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onKeyInput(InputEvent.KeyInputEvent event) {
+	public void onKeyInput(InputEvent.Key event) {
 		acceptInput();
 	}
 
@@ -89,14 +89,14 @@ public class HotbarChangerModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void hudPre(RenderGameOverlayEvent.PreLayer event) {
+	public void hudPre(RenderGuiOverlayEvent.Pre event) {
 		float shift = -getRealHeight(event.getPartialTick()) + 22;
 		if(shift < 0) {
-			IIngameOverlay overlay = event.getOverlay();
-			if(overlay == ForgeIngameGui.PLAYER_HEALTH_ELEMENT) {
+			IGuiOverlay overlay = event.getOverlay();
+			if(overlay == ForgeGui.PLAYER_HEALTH_ELEMENT) {
 				event.getPoseStack().translate(0, shift, 0);
 				shifting = true;
-			} else if(shifting && (event.getType() == ElementType.DEBUG || overlay == ForgeIngameGui.POTION_ICONS_ELEMENT)) {
+			} else if(shifting && (event.getType() == ElementType.DEBUG || overlay == ForgeGui.POTION_ICONS_ELEMENT)) {
 				event.getPoseStack().translate(0, -shift, 0);
 				shifting = false;
 			}
@@ -105,7 +105,7 @@ public class HotbarChangerModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void hudPost(RenderGameOverlayEvent.Post event) {
+	public void hudPost(RenderGuiOverlayEvent.Post event) {
 		if(height <= 0)
 			return;
 

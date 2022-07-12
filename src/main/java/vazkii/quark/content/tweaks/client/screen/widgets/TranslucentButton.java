@@ -7,6 +7,8 @@ import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.client.gui.components.Button.OnPress;
+
 public class TranslucentButton extends Button {
 
 	public TranslucentButton(int xIn, int yIn, int widthIn, int heightIn, Component text, OnPress onPress) {

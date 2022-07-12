@@ -14,6 +14,8 @@ import net.minecraft.resources.ResourceLocation;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
 
+import net.minecraft.client.gui.components.Button.OnPress;
+
 public class SocialButton extends Button {
 
 	public static final ResourceLocation SOCIAL_ICONS = new ResourceLocation(Quark.MOD_ID, "textures/gui/social_icons.png");

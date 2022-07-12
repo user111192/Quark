@@ -100,13 +100,13 @@ public class EnhancedLaddersModule extends QuarkModule {
 		if(!allowDroppingDown)
 			return;
 
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		InteractionHand hand = event.getHand();
 		ItemStack stack = player.getItemInHand(hand);
 
 		if(!stack.isEmpty() && stack.is(laddersTag)) {
 			Block block = Block.byItem(stack.getItem());
-			Level world = event.getWorld();
+			Level world = event.getLevel();
 			BlockPos pos = event.getPos();
 			while(world.getBlockState(pos).getBlock() == block) {
 				event.setCanceled(true);
@@ -181,7 +181,7 @@ public class EnhancedLaddersModule extends QuarkModule {
 		if(!allowInventorySneak)
 			return;
 
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		if(player.onClimbable() && !player.getAbilities().flying &&
 				!player.level.getBlockState(player.blockPosition()).isScaffolding(player)
 				&& Minecraft.getInstance().screen != null && !(player.zza == 0 && player.getXRot() > 70) && !player.isOnGround()) {

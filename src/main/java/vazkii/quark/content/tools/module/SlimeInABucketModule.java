@@ -43,7 +43,7 @@ public class SlimeInABucketModule extends QuarkModule {
 	public void entityInteract(PlayerInteractEvent.EntityInteract event) {
 		if(event.getTarget() != null) {
 			if(event.getTarget().getType() == EntityType.SLIME && ((Slime) event.getTarget()).getSize() == 1 && event.getTarget().isAlive()) {
-				Player player = event.getPlayer();
+				Player player = event.getEntity();
 				InteractionHand hand = InteractionHand.MAIN_HAND;
 				ItemStack stack = player.getMainHandItem();
 				if(stack.isEmpty() || stack.getItem() != Items.BUCKET) {
@@ -52,7 +52,7 @@ public class SlimeInABucketModule extends QuarkModule {
 				}
 
 				if(!stack.isEmpty() && stack.getItem() == Items.BUCKET) {
-					if(!event.getWorld().isClientSide) {
+					if(!event.getLevel().isClientSide) {
 						ItemStack outStack = new ItemStack(slime_in_a_bucket);
 						CompoundTag cmp = event.getTarget().serializeNBT();
 						ItemNBTHelper.setCompound(outStack, SlimeInABucketItem.TAG_ENTITY_DATA, cmp);
@@ -67,7 +67,7 @@ public class SlimeInABucketModule extends QuarkModule {
 								player.drop(outStack, false);
 						}
 
-			            event.getWorld().gameEvent(player, GameEvent.ENTITY_INTERACT, event.getTarget().position());
+			            event.getLevel().gameEvent(player, GameEvent.ENTITY_INTERACT, event.getTarget().position());
 						event.getTarget().discard();
 					}
 					else player.swing(hand);

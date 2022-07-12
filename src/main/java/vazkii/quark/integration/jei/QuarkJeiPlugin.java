@@ -218,7 +218,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 	private static ItemStack makeEnchantedDisplayItem(ItemStack input, RandomSource random) {
 		ItemStack stack = input.copy();
 		stack.setHoverName(Component.translatable("quark.jei.any_enchanted"));
-		if (stack.getItemEnchantability() <= 0) { // If it can't take anything in ench. tables...
+		if (stack.getEnchantmentValue() <= 0) { // If it can't take anything in ench. tables...
 			stack.enchant(Enchantments.UNBREAKING, 3); // it probably accepts unbreaking anyways
 			return stack;
 		}

@@ -23,7 +23,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
+import net.minecraftforge.client.event.InputEvent.Key;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.RenderTickEvent;
@@ -106,7 +106,7 @@ public class CameraModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void keystroke(KeyInputEvent event) {
+	public void keystroke(Key event) {
 		Minecraft mc = Minecraft.getInstance();
 		if(mc.level != null && event.getAction() == GLFW.GLFW_PRESS) {
 			if(cameraModeKey.isDown()) {

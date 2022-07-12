@@ -14,6 +14,8 @@ import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class QuarkTrapdoorBlock extends TrapDoorBlock implements IQuarkBlock {
 
 	private final QuarkModule module;

@@ -24,7 +24,7 @@ import java.util.List;
 public class QButtonHandler {
 
 	@SubscribeEvent
-	public static void onGuiInit(ScreenEvent.InitScreenEvent event) {
+	public static void onGuiInit(ScreenEvent.Init event) {
 		Screen gui = event.getScreen();
 
 		if(GeneralConfig.enableQButton && (gui instanceof TitleScreen || gui instanceof PauseScreen)) {

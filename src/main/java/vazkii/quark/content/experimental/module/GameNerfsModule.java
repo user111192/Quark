@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -76,7 +76,7 @@ public class GameNerfsModule extends QuarkModule {
 		if(!nerfMending)
 			return;
 		
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		ExperienceOrb orb = event.getOrb();
 
 		player.takeXpDelay = 2;
@@ -149,7 +149,7 @@ public class GameNerfsModule extends QuarkModule {
 	}
 	
 	@SubscribeEvent
-	public void onTick(LivingUpdateEvent event) {
+	public void onTick(LivingTickEvent event) {
 		if(nerfVillagerDiscount && event.getEntity().getType() == EntityType.ZOMBIE_VILLAGER && !event.getEntity().getPersistentData().contains(TAG_TRADES_ADJUSTED)) {
 			ZombieVillager zombie = (ZombieVillager) event.getEntity();
 			

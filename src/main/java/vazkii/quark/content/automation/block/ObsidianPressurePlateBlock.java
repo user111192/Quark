@@ -18,6 +18,8 @@ import net.minecraft.world.phys.AABB;
 import vazkii.quark.base.block.QuarkPressurePlateBlock;
 import vazkii.quark.base.module.QuarkModule;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 /**
  * @author WireSegal
  * Created at 9:47 PM on 10/8/19.

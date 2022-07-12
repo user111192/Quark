@@ -21,6 +21,8 @@ import net.minecraft.network.chat.MutableComponent;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.MiscUtil;
 
+import net.minecraft.client.gui.components.Button.OnPress;
+
 public class MiniInventoryButton extends Button {
 
 	private final Consumer<List<String>> tooltip;

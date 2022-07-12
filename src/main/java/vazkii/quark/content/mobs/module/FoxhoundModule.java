@@ -86,10 +86,10 @@ public class FoxhoundModule extends QuarkModule {
 	@SubscribeEvent
 	public void onAggro(LivingSetAttackTargetEvent event) {
 		if(event.getTarget() != null 
-				&& event.getEntityLiving().getType() == EntityType.IRON_GOLEM 
+				&& event.getEntity().getType() == EntityType.IRON_GOLEM 
 				&& event.getTarget().getType() == foxhoundType 
 				&& ((Foxhound) event.getTarget()).isTame())
-			((IronGolem) event.getEntityLiving()).setTarget(null);
+			((IronGolem) event.getEntity()).setTarget(null);
 	}
 	
 	@SubscribeEvent

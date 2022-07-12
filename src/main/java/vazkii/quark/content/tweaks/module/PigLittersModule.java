@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -67,7 +67,7 @@ public class PigLittersModule extends QuarkModule {
 	}
 
 	@SubscribeEvent
-	public void onPigAppear(EntityJoinWorldEvent event) {
+	public void onPigAppear(EntityJoinLevelEvent event) {
 		if (pigsEatGoldenCarrots && event.getEntity() instanceof Pig pig) {
 			boolean alreadySetUp = pig.goalSelector.getAvailableGoals().stream()
 					.anyMatch(goal -> goal.getGoal() instanceof TemptGoal tempt && tempt.items.test(new ItemStack(Items.GOLDEN_CARROT)));
@@ -86,8 +86,8 @@ public class PigLittersModule extends QuarkModule {
 	}
 
 	@SubscribeEvent
-	public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
-		LivingEntity entity = event.getEntityLiving();
+	public void onEntityUpdate(LivingEvent.LivingTickEvent event) {
+		LivingEntity entity = event.getEntity();
 		if (entity instanceof Animal animal && !animal.isInLove())
 			animal.getPersistentData().remove(GOLDEN_CARROT_TAG);
 	}

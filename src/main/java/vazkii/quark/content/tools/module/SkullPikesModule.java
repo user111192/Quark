@@ -17,8 +17,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
@@ -67,7 +67,7 @@ public class SkullPikesModule extends QuarkModule {
 		BlockState state = event.getPlacedBlock();
 
 		if(state.is(pikeTrophiesTag)) {
-			LevelAccessor iworld = event.getWorld();
+			LevelAccessor iworld = event.getLevel();
 
 			if(iworld instanceof Level world) {
 				BlockPos pos = event.getPos();
@@ -84,7 +84,7 @@ public class SkullPikesModule extends QuarkModule {
 	}
 
 	@SubscribeEvent
-	public void onMonsterAppear(EntityJoinWorldEvent event) {
+	public void onMonsterAppear(EntityJoinLevelEvent event) {
 		Entity e = event.getEntity();
 		if(e instanceof Monster monster && !(e instanceof PatrollingMonster) && e.canChangeDimensions() && e.isAlive()) {
 			boolean alreadySetUp = monster.goalSelector.getAvailableGoals().stream().anyMatch((goal) -> goal.getGoal() instanceof RunAwayFromPikesGoal);

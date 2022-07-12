@@ -9,6 +9,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 
+import net.minecraft.client.gui.components.Button.OnPress;
+
 public class MatrixEnchantingPlusButton extends Button {
 
 	public MatrixEnchantingPlusButton(int x, int y, OnPress onPress) {

@@ -24,6 +24,8 @@ import vazkii.quark.content.automation.block.be.ChuteBlockEntity;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class ChuteBlock extends QuarkBlock implements EntityBlock {
 
 	private static final VoxelShape INPUT_SHAPE = Block.box(0.0D, 10.0D, 0.0D, 16.0D, 16.0D, 16.0D);

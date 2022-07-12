@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import net.minecraft.client.renderer.RenderStateShard.TextureStateShard;
+import net.minecraft.client.renderer.RenderType.CompositeState;
+
 @OnlyIn(Dist.CLIENT)
 public class GlintRenderTypes extends RenderType {
 	private GlintRenderTypes(String name, VertexFormat vf, VertexFormat.Mode mode, int bufSize, boolean affectsCrumbling, boolean sortOnUpload, Runnable setup, Runnable clean) {

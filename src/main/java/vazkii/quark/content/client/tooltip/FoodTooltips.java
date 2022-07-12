@@ -26,7 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 
 public class FoodTooltips {
@@ -126,7 +126,7 @@ public class FoodTooltips {
 					pose.translate(0, 0, 500);
 					RenderSystem.setShader(GameRenderer::getPositionTexShader);
 					RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-					RenderSystem.setShaderTexture(0, ForgeIngameGui.GUI_ICONS_LOCATION);
+					RenderSystem.setShaderTexture(0, ForgeGui.GUI_ICONS_LOCATION);
 
 					for (int i = 0; i < renderCount; i++) {
 						int x = tooltipX + i * 9 - 1;

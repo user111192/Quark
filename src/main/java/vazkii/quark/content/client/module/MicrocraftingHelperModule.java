@@ -23,7 +23,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ContainerScreenEvent;
-import net.minecraftforge.client.event.ScreenEvent.MouseClickedEvent;
+import net.minecraftforge.client.event.ScreenEvent.MouseButtonPressed;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
@@ -48,7 +48,7 @@ public class MicrocraftingHelperModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onClick(MouseClickedEvent.Pre event) {
+	public void onClick(MouseButtonPressed.Pre event) {
 		Minecraft mc = Minecraft.getInstance();
 		Screen screen = mc.screen;
 
@@ -121,7 +121,7 @@ public class MicrocraftingHelperModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onDrawGui(ContainerScreenEvent.DrawBackground event) {
+	public void onDrawGui(ContainerScreenEvent.Background event) {
 		Minecraft mc = Minecraft.getInstance();
 
 		Screen screen = mc.screen;

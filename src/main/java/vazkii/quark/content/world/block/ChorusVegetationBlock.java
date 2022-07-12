@@ -38,6 +38,8 @@ import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.world.module.ChorusVegetationModule;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.OffsetType;
+
 public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlock, IForgeShearable {
 
 	protected static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 13, 14);

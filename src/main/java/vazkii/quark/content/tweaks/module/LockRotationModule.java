@@ -39,7 +39,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -149,18 +149,18 @@ public class LockRotationModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onPlayerLogoff(PlayerLoggedOutEvent event) {
-		lockProfiles.remove(event.getPlayer().getUUID());
+		lockProfiles.remove(event.getEntity().getUUID());
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onMouseInput(InputEvent.MouseInputEvent event) {
+	public void onMouseInput(InputEvent.Post event) {
 		acceptInput();
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onKeyInput(InputEvent.KeyInputEvent event) {
+	public void onKeyInput(InputEvent.Key event) {
 		acceptInput();
 	}
 
@@ -197,7 +197,7 @@ public class LockRotationModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onHUDRender(RenderGameOverlayEvent.Post event) {
+	public void onHUDRender(RenderGuiOverlayEvent.Post event) {
 		if(event.getType() == ElementType.ALL && clientProfile != null) {
 			PoseStack matrix = event.getPoseStack();
 

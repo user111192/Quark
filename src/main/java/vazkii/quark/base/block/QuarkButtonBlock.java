@@ -12,6 +12,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.BooleanSupplier;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 /**
  * @author WireSegal
  * Created at 9:14 PM on 10/8/19.

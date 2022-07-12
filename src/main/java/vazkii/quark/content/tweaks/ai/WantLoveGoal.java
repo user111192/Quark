@@ -8,6 +8,8 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 import vazkii.quark.content.tweaks.module.PatTheDogsModule;
 
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
 /**
  * @author WireSegal
  * Created at 11:27 AM on 9/2/19.

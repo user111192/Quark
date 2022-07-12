@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.fml.ModList;
 import vazkii.arl.interf.IBlockItemProvider;
 import vazkii.arl.util.RegistryHelper;
@@ -34,6 +34,9 @@ import javax.annotation.Nullable;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IBlockItemProvider.class)
 public class VariantChestBlock extends ChestBlock implements IBlockItemProvider, IQuarkBlock, IChestTextureProvider {
@@ -110,8 +113,8 @@ public class VariantChestBlock extends ChestBlock implements IBlockItemProvider,
 
 		@Override
 		@OnlyIn(Dist.CLIENT)
-		public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-			consumer.accept(new IItemRenderProperties() {
+		public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+			consumer.accept(new IClientItemExtensions() {
 
 				@Override
 				public BlockEntityWithoutLevelRenderer getItemStackRenderer() {

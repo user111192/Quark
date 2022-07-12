@@ -3,7 +3,7 @@ package vazkii.quark.base.client.handler;
 import net.minecraft.ChatFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import vazkii.quark.base.Quark;
@@ -29,7 +29,7 @@ public class NetworkProfilingHandler {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public static void showF3(RenderGameOverlayEvent.Text event) {
+	public static void showF3(RenderGuiOverlayEvent.DebugText event) {
 		if(GeneralConfig.enableNetworkProfiling) {
 			event.getLeft().add("");
 

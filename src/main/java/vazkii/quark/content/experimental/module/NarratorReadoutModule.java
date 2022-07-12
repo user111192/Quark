@@ -55,7 +55,7 @@ public class NarratorReadoutModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onMouseInput(InputEvent.MouseInputEvent event) {
+	public void onMouseInput(InputEvent.Post event) {
 		boolean down = isDown(event.getButton(), 0, true, keybind);
 		boolean full = isDown(event.getButton(), 0, true, keybindFull);
 
@@ -64,7 +64,7 @@ public class NarratorReadoutModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onKeyInput(InputEvent.KeyInputEvent event) {
+	public void onKeyInput(InputEvent.Key event) {
 		boolean down = isDown(event.getKey(), event.getScanCode(), false, keybind);
 		boolean full = isDown(event.getKey(), event.getScanCode(), false, keybindFull);
 

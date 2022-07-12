@@ -35,6 +35,8 @@ import vazkii.quark.content.automation.module.FeedingTroughModule;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 /**
  * @author WireSegal
  * Created at 9:39 AM on 9/20/19.

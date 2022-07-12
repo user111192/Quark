@@ -33,7 +33,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ScreenEvent;
@@ -158,7 +158,7 @@ public class EmotesModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void initGui(ScreenEvent.InitScreenEvent.Post event) {
+	public void initGui(ScreenEvent.Init.Post event) {
 		Screen gui = event.getScreen();
 		if(gui instanceof ChatScreen) {
 			Map<Integer, List<EmoteDescriptor>> descriptorSorting = new TreeMap<>();
@@ -239,7 +239,7 @@ public class EmotesModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onKeyInput(InputEvent.KeyInputEvent event) {
+	public void onKeyInput(InputEvent.Key event) {
 		Minecraft mc = Minecraft.getInstance();
 		if(mc.isWindowActive()) {
 			for(KeyMapping key : emoteKeybinds.keySet()) {
@@ -254,7 +254,7 @@ public class EmotesModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void drawHUD(RenderGameOverlayEvent.Post event) {
+	public void drawHUD(RenderGuiOverlayEvent.Post event) {
 		if(event.getType() == ElementType.ALL) {
 			Minecraft mc = Minecraft.getInstance();
 			Window res = event.getWindow();

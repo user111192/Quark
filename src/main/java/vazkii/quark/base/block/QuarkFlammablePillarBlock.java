@@ -7,6 +7,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.module.QuarkModule;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class QuarkFlammablePillarBlock extends QuarkPillarBlock {
 
 	private final int flammability;

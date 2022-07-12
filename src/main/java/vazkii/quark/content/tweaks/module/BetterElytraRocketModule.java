@@ -18,7 +18,7 @@ public class BetterElytraRocketModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onUseRocket(PlayerInteractEvent.RightClickItem event) {
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		if(!player.isFallFlying() && player.getItemBySlot(EquipmentSlot.CHEST).canElytraFly(player)) {
 			Level world = player.level;
 			ItemStack itemstack = event.getItemStack();

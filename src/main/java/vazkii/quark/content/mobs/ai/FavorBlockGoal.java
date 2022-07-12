@@ -22,6 +22,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
 public class FavorBlockGoal extends Goal {
 
 	private final PathfinderMob creature;

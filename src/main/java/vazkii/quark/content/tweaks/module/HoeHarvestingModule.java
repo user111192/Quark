@@ -21,7 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
@@ -58,7 +58,7 @@ public class HoeHarvestingModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onBlockBroken(BlockEvent.BreakEvent event) {
-		LevelAccessor world = event.getWorld();
+		LevelAccessor world = event.getLevel();
 		if(!(world instanceof Level level))
 			return;
 

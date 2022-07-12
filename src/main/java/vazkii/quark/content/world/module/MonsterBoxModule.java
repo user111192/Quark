@@ -67,7 +67,7 @@ public class MonsterBoxModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onDrops(LivingDropsEvent event) {
-		LivingEntity entity = event.getEntityLiving();
+		LivingEntity entity = event.getEntity();
 		if(enableExtraLootTable && entity.getCommandSenderWorld() instanceof ServerLevel serverLevel
 				&& entity.getPersistentData().getBoolean(TAG_MONSTER_BOX_SPAWNED)
 				&& entity.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)

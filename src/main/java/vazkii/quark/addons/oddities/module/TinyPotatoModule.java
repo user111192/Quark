@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.block.TinyPotatoBlock;
@@ -47,7 +47,7 @@ public class TinyPotatoModule extends QuarkModule {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void modelBake(ModelBakeEvent event) {
+	public void modelBake(BakingCompleted event) {
 		ResourceLocation tinyPotato = new ModelResourceLocation(new ResourceLocation("quark", "tiny_potato"), "inventory");
 		Map<ResourceLocation, BakedModel> map = event.getModelRegistry();
 		BakedModel originalPotato = map.get(tinyPotato);

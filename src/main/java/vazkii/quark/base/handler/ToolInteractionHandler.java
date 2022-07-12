@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import vazkii.quark.base.Quark;
@@ -61,7 +61,7 @@ public final class ToolInteractionHandler {
 
 		if(stack.getItem() == Items.HONEYCOMB) {
 			BlockPos pos = event.getPos();
-			Level world = event.getWorld();
+			Level world = event.getLevel();
 			BlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
@@ -70,9 +70,9 @@ public final class ToolInteractionHandler {
 
 				if(!world.isClientSide)
 					world.setBlockAndUpdate(pos, copyState(state, alternate));
-				world.levelEvent(event.getPlayer(), 3003, pos, 0);
+				world.levelEvent(event.getEntity(), 3003, pos, 0);
 
-				if(!event.getPlayer().getAbilities().instabuild)
+				if(!event.getEntity().getAbilities().instabuild)
 					stack.setCount(stack.getCount() - 1);
 
 				event.setCanceled(true);

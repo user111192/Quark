@@ -14,6 +14,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import vazkii.quark.base.world.generator.multichunk.ClusterBasedGenerator;
 
+import vazkii.quark.base.world.generator.multichunk.ClusterBasedGenerator.IFinishableContext;
+import vazkii.quark.base.world.generator.multichunk.ClusterBasedGenerator.IGenerationContext;
+
 public class UndergroundStyleGenerator<T extends UndergroundStyle> extends ClusterBasedGenerator {
 
 	public final UndergroundStyleConfig<T> info;

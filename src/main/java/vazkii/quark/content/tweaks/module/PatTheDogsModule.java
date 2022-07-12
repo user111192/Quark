@@ -14,7 +14,7 @@ import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.AnimalTameEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -43,7 +43,7 @@ public class PatTheDogsModule extends QuarkModule {
 	public static List<String> pettableDenylist = Lists.newArrayList("minecraft:ender_dragon", "minecraft:wither", "minecraft:armor_stand");
 
 	@SubscribeEvent
-	public void onWolfAppear(EntityJoinWorldEvent event) {
+	public void onWolfAppear(EntityJoinLevelEvent event) {
 		if (dogsWantLove > 0 && event.getEntity() instanceof Wolf wolf) {
 			boolean alreadySetUp = wolf.goalSelector.getAvailableGoals().stream().anyMatch((goal) -> goal.getGoal() instanceof WantLoveGoal);
 
@@ -56,7 +56,7 @@ public class PatTheDogsModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onInteract(PlayerInteractEvent.EntityInteract event) {
-		var player = event.getPlayer();
+		var player = event.getEntity();
 
 		if (player.isDiscrete() && player.getMainHandItem().isEmpty()) {
 			if (event.getTarget() instanceof Wolf wolf) {

@@ -10,8 +10,8 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.client.event.ScreenEvent.KeyboardKeyPressedEvent;
-import net.minecraftforge.client.event.ScreenEvent.MouseClickedEvent;
+import net.minecraftforge.client.event.ScreenEvent.KeyPressed;
+import net.minecraftforge.client.event.ScreenEvent.MouseButtonPressed;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
@@ -36,20 +36,20 @@ public class BackButtonKeybind extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void openGui(ScreenEvent.InitScreenEvent event) {
+	public void openGui(ScreenEvent.Init event) {
 		listeners = event.getListenersList();
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onKeyInput(KeyboardKeyPressedEvent.Post event) {
+	public void onKeyInput(KeyPressed.Post event) {
 		if(backKey.getKey().getType() == Type.KEYSYM && event.getKeyCode() == backKey.getKey().getValue())
 			clicc();
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onMouseInput(MouseClickedEvent.Post event) {
+	public void onMouseInput(MouseButtonPressed.Post event) {
 		if(backKey.getKey().getType() == Type.MOUSE && event.getButton() == backKey.getKey().getValue())
 			clicc();
 	}

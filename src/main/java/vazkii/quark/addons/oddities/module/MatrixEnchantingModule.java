@@ -27,7 +27,7 @@ import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.ItemNBTHelper;
@@ -180,16 +180,16 @@ public class MatrixEnchantingModule extends QuarkModule {
 	@SubscribeEvent
 	public void onBlockPlaced(BlockEvent.EntityPlaceEvent event) {
 		if(event.getPlacedBlock().getBlock().equals(Blocks.ENCHANTING_TABLE) && automaticallyConvert)
-			event.getWorld().setBlock(event.getPos(), matrixEnchanter.defaultBlockState(), 3);
+			event.getLevel().setBlock(event.getPos(), matrixEnchanter.defaultBlockState(), 3);
 	}
 
 	@SubscribeEvent
 	public void onRightClick(PlayerInteractEvent.RightClickBlock event) {
-		if(event.getPlayer() instanceof FakePlayer)
+		if(event.getEntity() instanceof FakePlayer)
 			return;
 
-		if(event.getWorld().getBlockState(event.getPos()).getBlock() == Blocks.ENCHANTING_TABLE && automaticallyConvert)
-			event.getWorld().setBlock(event.getPos(), matrixEnchanter.defaultBlockState(), 3);
+		if(event.getLevel().getBlockState(event.getPos()).getBlock() == Blocks.ENCHANTING_TABLE && automaticallyConvert)
+			event.getLevel().setBlock(event.getPos(), matrixEnchanter.defaultBlockState(), 3);
 	}
 
 	@Override

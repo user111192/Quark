@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.event.world.NoteBlockEvent;
+import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
@@ -30,7 +30,7 @@ public class MoreNoteBlockSounds extends QuarkModule {
 
 	@SubscribeEvent
 	public void noteBlockPlayed(NoteBlockEvent.Play event) {
-		LevelAccessor world = event.getWorld();
+		LevelAccessor world = event.getLevel();
 		BlockPos pos = event.getPos();
 		if(world.getBlockState(pos).getBlock() != Blocks.NOTE_BLOCK)
 			return;

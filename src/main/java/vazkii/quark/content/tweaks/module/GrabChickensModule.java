@@ -43,8 +43,8 @@ public class GrabChickensModule extends QuarkModule {
 	@SubscribeEvent
 	public void playerInteract(PlayerInteractEvent.EntityInteract event) {
 		Entity target = event.getTarget();
-		Player player = event.getPlayer();
-		Level level = event.getWorld();
+		Player player = event.getEntity();
+		Level level = event.getLevel();
 		
 		if(staticEnabled && event.getHand() == InteractionHand.MAIN_HAND 
 				&& !player.isCrouching() 

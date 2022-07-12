@@ -33,6 +33,8 @@ import vazkii.quark.addons.oddities.module.CrateModule;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.module.QuarkModule;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class CrateBlock extends QuarkBlock implements EntityBlock {
 
 	public static final BooleanProperty PROPERTY_OPEN = BlockStateProperties.OPEN;
@@ -74,7 +76,7 @@ public class CrateBlock extends QuarkBlock implements EntityBlock {
 			BlockEntity be = worldIn.getBlockEntity(pos);
 			if(be instanceof CrateBlockEntity crate) {
 				if(player instanceof ServerPlayer serverPlayer)
-					NetworkHooks.openGui(serverPlayer, crate, pos);
+					NetworkHooks.openScreen(serverPlayer, crate, pos);
 
 				PiglinAi.angerNearbyPiglins(player, true);
 			}

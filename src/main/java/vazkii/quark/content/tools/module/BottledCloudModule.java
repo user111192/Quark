@@ -51,7 +51,7 @@ public class BottledCloudModule extends QuarkModule {
 	@SubscribeEvent
 	public void onRightClick(PlayerInteractEvent.RightClickItem event) {
 		ItemStack stack = event.getItemStack();
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		if(stack.getItem() == Items.GLASS_BOTTLE && player.getY() > cloudLevelBottom && player.getY() < cloudLevelTop) {
 			stack.shrink(1);
 			

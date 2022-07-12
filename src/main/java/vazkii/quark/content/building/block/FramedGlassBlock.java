@@ -6,6 +6,8 @@ import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class FramedGlassBlock extends QuarkGlassBlock {
 
 	public FramedGlassBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties, boolean translucent) {

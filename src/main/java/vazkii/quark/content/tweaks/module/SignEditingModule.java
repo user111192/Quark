@@ -49,8 +49,8 @@ public class SignEditingModule extends QuarkModule {
 		if(event.getUseBlock() == Result.DENY)
 			return;
 
-		BlockEntity tile = event.getWorld().getBlockEntity(event.getPos());
-		Player player = event.getPlayer();
+		BlockEntity tile = event.getLevel().getBlockEntity(event.getPos());
+		Player player = event.getEntity();
 		ItemStack stack = player.getMainHandItem();
 
 		if(player instanceof ServerPlayer serverPlayer

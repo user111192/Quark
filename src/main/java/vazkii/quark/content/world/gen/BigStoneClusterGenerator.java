@@ -16,6 +16,8 @@ import vazkii.quark.content.world.config.AirStoneClusterConfig;
 import vazkii.quark.content.world.config.BigStoneClusterConfig;
 import vazkii.quark.content.world.module.BigStoneClustersModule;
 
+import vazkii.quark.base.world.generator.multichunk.ClusterBasedGenerator.IGenerationContext;
+
 public class BigStoneClusterGenerator extends ClusterBasedGenerator {
 
 	private final BigStoneClusterConfig config;

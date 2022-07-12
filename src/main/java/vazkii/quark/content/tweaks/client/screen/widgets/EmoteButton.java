@@ -13,6 +13,8 @@ import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.content.tweaks.client.emote.EmoteDescriptor;
 import vazkii.quark.content.tweaks.module.EmotesModule;
 
+import net.minecraft.client.gui.components.Button.OnPress;
+
 public class EmoteButton extends TranslucentButton {
 
 	public final EmoteDescriptor desc;

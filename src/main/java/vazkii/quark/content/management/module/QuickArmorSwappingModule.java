@@ -21,7 +21,7 @@ public class QuickArmorSwappingModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 
 		if(player.isSpectator() || player.getAbilities().instabuild || !(event.getTarget() instanceof ArmorStand armorStand))
 			return;

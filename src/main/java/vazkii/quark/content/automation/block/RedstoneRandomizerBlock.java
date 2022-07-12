@@ -36,6 +36,8 @@ import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.automation.base.RandomizerPowerState;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 /**
  * @author WireSegal
  * Created at 9:57 AM on 8/26/19.

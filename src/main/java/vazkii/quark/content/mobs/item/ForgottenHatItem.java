@@ -14,7 +14,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
@@ -57,8 +57,8 @@ public class ForgottenHatItem extends ArmorItem implements IQuarkItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(new IItemRenderProperties() {
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
 
 			@Override
 			public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {

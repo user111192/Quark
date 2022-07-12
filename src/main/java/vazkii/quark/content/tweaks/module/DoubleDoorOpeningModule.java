@@ -42,14 +42,14 @@ public class DoubleDoorOpeningModule extends QuarkModule {
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
-		if(!event.getWorld().isClientSide || event.getPlayer().isDiscrete() || event.isCanceled() || event.getResult() == Result.DENY || event.getUseBlock() == Result.DENY)
+		if(!event.getLevel().isClientSide || event.getEntity().isDiscrete() || event.isCanceled() || event.getResult() == Result.DENY || event.getUseBlock() == Result.DENY)
 			return;
 
-		Level world = event.getWorld();
+		Level world = event.getLevel();
 		BlockPos pos = event.getPos();
 
 		if(isDoor(world.getBlockState(pos))) {
-			openDoor(world, event.getPlayer(), pos);
+			openDoor(world, event.getEntity(), pos);
 			QuarkNetwork.sendToServer(new DoubleDoorMessage(pos));
 		}
 	}

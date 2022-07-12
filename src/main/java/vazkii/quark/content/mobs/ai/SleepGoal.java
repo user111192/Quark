@@ -17,6 +17,8 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.goal.Goal;
 import vazkii.quark.content.mobs.entity.Foxhound;
 
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
 public class SleepGoal extends Goal {
 
 	private final Foxhound foxhound;

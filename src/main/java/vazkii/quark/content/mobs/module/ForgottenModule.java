@@ -66,9 +66,9 @@ public class ForgottenModule extends QuarkModule {
 		if (event.getSpawnReason() == MobSpawnType.SPAWNER)
 			return;
 
-		LivingEntity entity = event.getEntityLiving();
+		LivingEntity entity = event.getEntity();
 		Result result = event.getResult();
-		LevelAccessor world = event.getWorld();
+		LevelAccessor world = event.getLevel();
 
 		if(entity.getType() == EntityType.SKELETON && entity instanceof Mob mob && result != Result.DENY && entity.getY() < maxHeightForSpawn && world.getRandom().nextDouble() < forgottenSpawnRate) {
 

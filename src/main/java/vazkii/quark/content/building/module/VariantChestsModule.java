@@ -23,7 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -332,7 +332,7 @@ public class VariantChestsModule extends QuarkModule {
 	@SubscribeEvent
 	public void onClickEntity(PlayerInteractEvent.EntityInteractSpecific event) {
 		Entity target = event.getTarget();
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		ItemStack held = player.getItemInHand(event.getHand());
 
 		if (!held.isEmpty() && target instanceof AbstractChestedHorse horse) {
@@ -362,7 +362,7 @@ public class VariantChestsModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onDeath(LivingDeathEvent event) {
-		Entity target = event.getEntityLiving();
+		Entity target = event.getEntity();
 		if (target instanceof AbstractChestedHorse horse) {
 			ItemStack chest = ItemStack.of(horse.getPersistentData().getCompound(DONK_CHEST));
 			if (!chest.isEmpty() && horse.hasChest())
@@ -371,7 +371,7 @@ public class VariantChestsModule extends QuarkModule {
 	}
 
 	@SubscribeEvent
-	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+	public void onEntityJoinWorld(EntityJoinLevelEvent event) {
 		Entity target = event.getEntity();
 		if (target instanceof ItemEntity item && item.getItem().getItem() == Items.CHEST) {
 			ItemStack local = WAIT_TO_REPLACE_CHEST.get();

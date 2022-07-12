@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ScreenOpenEvent;
+import net.minecraftforge.client.event.ScreenEvent.Open;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -96,7 +96,7 @@ public class BackpackModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onDrops(LivingDropsEvent event) {
-		LivingEntity entity = event.getEntityLiving();
+		LivingEntity entity = event.getEntity();
 		if(enableRavagerHide && entity.getType() == EntityType.RAVAGER) {
 			int amount = baseRavagerHideDrop;
 			double chance = (double) event.getLootingLevel() * extraChancePerLooting;
@@ -113,7 +113,7 @@ public class BackpackModule extends QuarkModule {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onOpenGUI(ScreenOpenEvent event) {
+	public void onOpenGUI(Open event) {
 		Player player = Minecraft.getInstance().player;
 		if(player != null && isInventoryGUI(event.getScreen()) && !player.getAbilities().instabuild && isEntityWearingBackpack(player) && !player.isInsidePortal) {
 			requestBackpack();

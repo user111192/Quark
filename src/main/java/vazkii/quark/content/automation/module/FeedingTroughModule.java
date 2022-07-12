@@ -30,7 +30,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -77,7 +77,7 @@ public class FeedingTroughModule extends QuarkModule {
 	}
 
 	@SubscribeEvent
-	public void onOrbSpawn(EntityJoinWorldEvent event) {
+	public void onOrbSpawn(EntityJoinLevelEvent event) {
 		if (event.getEntity() instanceof ExperienceOrb && breedingOccurred.get()) {
 			event.setCanceled(true);
 			breedingOccurred.remove();

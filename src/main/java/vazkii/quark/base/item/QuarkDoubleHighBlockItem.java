@@ -10,6 +10,8 @@ import vazkii.quark.base.module.QuarkModule;
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class QuarkDoubleHighBlockItem extends DoubleHighBlockItem implements IQuarkItem {
 
 	private final QuarkModule module;

@@ -58,7 +58,7 @@ public class SeedPouchModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onItemPickup(EntityItemPickupEvent event) {
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		ItemStack stack = event.getItem().getItem();
 
 		ItemStack main = player.getMainHandItem();

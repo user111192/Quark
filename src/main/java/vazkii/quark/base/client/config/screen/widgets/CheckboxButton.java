@@ -13,6 +13,8 @@ import net.minecraft.network.chat.Component;
 import vazkii.quark.api.config.IConfigObject;
 import vazkii.quark.base.handler.MiscUtil;
 
+import net.minecraft.client.gui.components.Button.OnPress;
+
 public class CheckboxButton extends Button {
 
 	private final Supplier<Boolean> checkedSupplier;

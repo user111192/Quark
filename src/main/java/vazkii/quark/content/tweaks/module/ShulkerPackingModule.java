@@ -31,7 +31,7 @@ public class ShulkerPackingModule extends QuarkModule {
 	@SubscribeEvent // It's like fedex but eldritch
 	public void callFedEnd(PlayerInteractEvent.RightClickBlock event) {
 		BlockPos pos = event.getHitVec().getBlockPos();
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 
 		if (player.isShiftKeyDown()) {
 			ItemStack mainHand = player.getMainHandItem();

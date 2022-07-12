@@ -4,7 +4,7 @@ import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -18,7 +18,7 @@ import vazkii.quark.base.module.QuarkModule;
 public class VillagersFollowEmeraldsModule extends QuarkModule {
 
 	@SubscribeEvent
-	public void onVillagerAppear(EntityJoinWorldEvent event) {
+	public void onVillagerAppear(EntityJoinLevelEvent event) {
 		if(event.getEntity() instanceof Villager villager) {
 			boolean alreadySetUp = villager.goalSelector.getAvailableGoals().stream().anyMatch((goal) -> goal.getGoal() instanceof TemptGoal);
 

@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.WorldTickEvent;
+import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -58,16 +58,16 @@ public class MagnetSystem {
 	}
 
 	@SubscribeEvent
-	public static void tick(WorldTickEvent event) {
+	public static void tick(LevelTickEvent event) {
 		if(!ModuleLoader.INSTANCE.isModuleEnabled(MagnetsModule.class))
 			return;
 
 		if (event.phase == Phase.START) {
-			getCapability(event.world).ifPresent(IMagnetTracker::clear);
+			getCapability(event.level).ifPresent(IMagnetTracker::clear);
 		} else {
 			if (magnetizableBlocks.isEmpty())
-				loadMagnetizableBlocks(event.world);
-			getCapability(event.world).ifPresent(magnetTracker -> {
+				loadMagnetizableBlocks(event.level);
+			getCapability(event.level).ifPresent(magnetTracker -> {
 				for (BlockPos pos : magnetTracker.getTrackedPositions())
 					magnetTracker.actOnForces(pos);
 				magnetTracker.clear();

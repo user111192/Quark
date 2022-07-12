@@ -7,6 +7,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.module.QuarkModule;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class ElderPrismarineBlock extends QuarkBlock {
 
 	public ElderPrismarineBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {

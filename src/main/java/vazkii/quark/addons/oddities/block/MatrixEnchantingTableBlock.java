@@ -101,7 +101,7 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 
 		if(ModuleLoader.INSTANCE.isModuleEnabled(MatrixEnchantingModule.class)) {
 			if(player instanceof ServerPlayer serverPlayer)
-				NetworkHooks.openGui(serverPlayer, (MatrixEnchantingTableBlockEntity) worldIn.getBlockEntity(pos), pos);
+				NetworkHooks.openScreen(serverPlayer, (MatrixEnchantingTableBlockEntity) worldIn.getBlockEntity(pos), pos);
 		} else
 			worldIn.setBlockAndUpdate(pos, Blocks.ENCHANTING_TABLE.defaultBlockState());
 

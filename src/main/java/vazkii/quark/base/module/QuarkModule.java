@@ -5,7 +5,7 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
@@ -90,7 +90,7 @@ public class QuarkModule {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void modelBake(ModelBakeEvent event) {
+	public void modelBake(BakingCompleted event) {
 		// NO-OP
 	}
 

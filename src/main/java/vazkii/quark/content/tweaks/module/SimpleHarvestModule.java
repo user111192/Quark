@@ -195,9 +195,9 @@ public class SimpleHarvestModule extends QuarkModule {
 		if (isHarvesting)
 			return;
 		isHarvesting = true;
-		if (click(event.getPlayer(), event.getHand(), event.getPos(), event.getHitVec())) {
+		if (click(event.getEntity(), event.getHand(), event.getPos(), event.getHitVec())) {
 			event.setCanceled(true);
-			event.setCancellationResult(InteractionResult.sidedSuccess(event.getWorld().isClientSide));
+			event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
 		}
 		isHarvesting = false;
 	}

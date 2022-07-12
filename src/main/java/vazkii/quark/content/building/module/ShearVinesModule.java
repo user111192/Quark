@@ -39,7 +39,7 @@ public class ShearVinesModule extends QuarkModule {
 		ItemStack stack = event.getItemStack();
 		if(stack.canPerformAction(ToolActions.SHEARS_CARVE)) {
 			BlockPos pos = event.getPos();
-			Level world = event.getWorld();
+			Level world = event.getLevel();
 			BlockState state = world.getBlockState(pos);
 			
 			if(state.getBlock() == Blocks.VINE) {
@@ -60,7 +60,7 @@ public class ShearVinesModule extends QuarkModule {
 					testState = world.getBlockState(testPos);
 				}
 				
-				Player player = event.getPlayer();
+				Player player = event.getEntity();
 				world.playSound(player, pos, SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 0.5F, 1F);
 				if(!player.getAbilities().instabuild)
 					MiscUtil.damageStack(player, event.getHand(), stack, 1);

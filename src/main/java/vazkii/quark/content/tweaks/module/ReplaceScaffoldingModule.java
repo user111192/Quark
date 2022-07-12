@@ -34,10 +34,10 @@ public class ReplaceScaffoldingModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onInteract(PlayerInteractEvent.RightClickBlock event) {
-		Level world = event.getWorld();
+		Level world = event.getLevel();
 		BlockPos pos = event.getPos();
 		BlockState state = world.getBlockState(pos);
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		if(state.getBlock() == Blocks.SCAFFOLDING && !player.isDiscrete()) {
 			Direction dir = event.getFace();
 			ItemStack stack = event.getItemStack();
