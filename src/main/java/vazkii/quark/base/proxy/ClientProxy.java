@@ -74,6 +74,7 @@ public class ClientProxy extends CommonProxy {
 		bus.addListener(this::postTextureStitch);
 		bus.addListener(this::registerKeybinds);
 		bus.addListener(this::registerAdditionalModels);
+		bus.addListener(this::registerClientTooltipComponentFactories);
 	}
 
 	public void clientSetup(FMLClientSetupEvent event) {
@@ -180,3 +181,4 @@ public class ClientProxy extends CommonProxy {
 	}
 
 }
+
