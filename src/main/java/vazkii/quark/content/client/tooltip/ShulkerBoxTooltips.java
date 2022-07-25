@@ -1,15 +1,9 @@
 package vazkii.quark.content.client.tooltip;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -40,6 +34,10 @@ import vazkii.quark.base.handler.SimilarBlockTypeHandler;
 import vazkii.quark.content.client.module.ChestSearchingModule;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ShulkerBoxTooltips {
 
 	public static final ResourceLocation WIDGET_RESOURCE = new ResourceLocation("quark", "textures/misc/shulker_widget.png");
@@ -49,7 +47,7 @@ public class ShulkerBoxTooltips {
 		ItemStack stack = event.getItemStack();
 		if(SimilarBlockTypeHandler.isShulkerBox(stack)) {
 			CompoundTag cmp = ItemNBTHelper.getCompound(stack, "BlockEntityTag", false);
-			
+
 			if(cmp.contains("LootTable"))
 				return;
 
@@ -78,6 +76,7 @@ public class ShulkerBoxTooltips {
 		}
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	public record ShulkerComponent(ItemStack stack) implements ClientTooltipComponent, TooltipComponent {
 
 		private static final int[][] TARGET_RATIOS = new int[][]{

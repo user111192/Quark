@@ -1,5 +1,7 @@
 package vazkii.quark.content.tools.client.tooltip;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,6 +15,7 @@ import vazkii.quark.content.tools.item.SeedPouchItem;
 
 import javax.annotation.Nonnull;
 
+@OnlyIn(Dist.CLIENT)
 public class SeedPouchClientTooltipComponent implements ClientTooltipComponent {
 
 	private final ItemStack stack;

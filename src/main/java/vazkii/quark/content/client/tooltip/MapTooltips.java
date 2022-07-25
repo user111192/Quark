@@ -1,15 +1,10 @@
 package vazkii.quark.content.client.tooltip;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.datafixers.util.Either;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -30,6 +25,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 
+import javax.annotation.Nonnull;
+import java.util.List;
+
 public class MapTooltips {
 
 	private static final ResourceLocation RES_MAP_BACKGROUND = new ResourceLocation("textures/map/map_background.png");
@@ -47,6 +45,7 @@ public class MapTooltips {
 		}
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	public record MapComponent(ItemStack stack) implements ClientTooltipComponent, TooltipComponent {
 
 		@Override

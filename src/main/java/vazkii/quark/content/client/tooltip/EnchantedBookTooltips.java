@@ -159,6 +159,7 @@ public class EnchantedBookTooltips {
 		}
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	public record EnchantedBookComponent(int width, int height,
 										 Enchantment enchantment) implements ClientTooltipComponent, TooltipComponent {
 
