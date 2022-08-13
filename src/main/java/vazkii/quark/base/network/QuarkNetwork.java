@@ -26,7 +26,6 @@ public final class QuarkNetwork {
 		network.register(DoubleDoorMessage.class, NetworkDirection.PLAY_TO_SERVER);
 		network.register(HarvestMessage.class, NetworkDirection.PLAY_TO_SERVER);
 		network.register(RequestEmoteMessage.class, NetworkDirection.PLAY_TO_SERVER);
-		network.register(LinkItemMessage.class, NetworkDirection.PLAY_TO_SERVER);
 		network.register(ChangeHotbarMessage.class, NetworkDirection.PLAY_TO_SERVER);
 		network.register(SetLockProfileMessage.class, NetworkDirection.PLAY_TO_SERVER);
 
@@ -35,7 +34,6 @@ public final class QuarkNetwork {
 		network.register(ScrollCrateMessage.class, NetworkDirection.PLAY_TO_SERVER);
 
 		network.register(DoEmoteMessage.class, NetworkDirection.PLAY_TO_CLIENT);
-		network.register(SpamlessChatMessage.class, NetworkDirection.PLAY_TO_CLIENT);
 		network.register(EditSignMessage.class, NetworkDirection.PLAY_TO_CLIENT);
 		network.register(UpdateTridentMessage.class, NetworkDirection.PLAY_TO_CLIENT);
 	}

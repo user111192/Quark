@@ -105,7 +105,7 @@ public class GrateBlock extends QuarkBlock implements SimpleFluidloggedBlock {
 			boolean onGrate = world.getBlockState(entity.blockPosition().offset(0, -1, 0)).getBlock() instanceof GrateBlock;
 
 			if (preventedType && !leashed && !onGrate) {
-				return getCachedShape(entity.maxUpStep);
+				return getCachedShape(entity.getStepHeight());
 			}
 
 			return TRUE_SHAPE;

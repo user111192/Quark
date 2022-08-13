@@ -10,45 +10,35 @@
  */
 package vazkii.quark.content.management.module;
 
-import java.util.List;
-
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.network.chat.ChatType;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.server.players.PlayerList;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.quark.base.network.QuarkNetwork;
-import vazkii.quark.base.network.message.LinkItemMessage;
+
+import java.util.List;
 
 @LoadModule(category = ModuleCategory.MANAGEMENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class ItemSharingModule extends QuarkModule {
@@ -93,42 +83,19 @@ public class ItemSharingModule extends QuarkModule {
 				}
 
 			Slot slot = gui.getSlotUnderMouse();
-			if(slot != null && slot.container != null) {
+			if(slot != null) {
 				ItemStack stack = slot.getItem();
 
-				if(!stack.isEmpty() && !MinecraftForge.EVENT_BUS.post(new ClientChatEvent(stack.getDisplayName().getString()))) {
-					QuarkNetwork.sendToServer(new LinkItemMessage(stack));
-					event.setCanceled(true);
+				if(!stack.isEmpty()) {
+					LocalPlayer player = mc.player;
+					if (player != null) {
+						Component fullComp = Component.translatable("chat.type.text", player.getDisplayName(), stack.getDisplayName());
+						player.chatSigned(fullComp.getString(), fullComp);
+						event.setCanceled(true);
+					}
 				}
 			}
 		}
-	}
-
-	public static void linkItem(Player player, ItemStack item) {
-		if(!ModuleLoader.INSTANCE.isModuleEnabled(ItemSharingModule.class))
-			return;
-
-		if(!item.isEmpty() && player instanceof ServerPlayer serverPlayer) {
-			Component comp = item.getDisplayName();
-			Component fullComp = Component.translatable("chat.type.text", player.getDisplayName(), comp);
-
-			PlayerList players = serverPlayer.server.getPlayerList();
-
-			ServerChatEvent event = new ServerChatEvent(serverPlayer, comp.getString(), fullComp);
-			if (!MinecraftForge.EVENT_BUS.post(event)) {
-				players.broadcastSystemMessage(event.getComponent(), ChatType.CHAT);
-
-				ServerGamePacketListenerImpl handler = serverPlayer.connection;
-				int threshold = handler.chatSpamTickCount;
-				threshold += 20;
-
-				if (threshold > 200 && !players.isOp(player.getGameProfile()))
-					handler.onDisconnect(Component.translatable("disconnect.spam"));
-
-				handler.chatSpamTickCount = threshold;
-			}
-		}
-
 	}
 
 	public static MutableComponent createStackComponent(ItemStack stack, MutableComponent component) {

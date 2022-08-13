@@ -1,16 +1,15 @@
 package vazkii.quark.addons.oddities.client.screen;
 
-import javax.annotation.Nonnull;
-
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import vazkii.quark.addons.oddities.inventory.EnchantmentMatrix.Piece;
+
+import javax.annotation.Nonnull;
 
 public class MatrixEnchantingPieceList extends ObjectSelectionList<MatrixEnchantingPieceList.PieceEntry> {
 
@@ -48,15 +47,13 @@ public class MatrixEnchantingPieceList extends ObjectSelectionList<MatrixEnchant
 	public void render(@Nonnull PoseStack stack, int mouseX, int mouseY, float partialTicks) {
 		int i = this.getScrollbarPosition();
 		int j = i + 6;
-		int k = this.getRowLeft();
-		int l = this.y0 + 4 - (int)this.getScrollAmount();
 
 		fill(stack, getLeft(), getTop(), getLeft() + getWidth() + 1, getTop() + getHeight(), 0xFF2B2B2B);
 
 		Window main = parent.getMinecraft().getWindow();
 		int res = (int) main.getGuiScale();
 		RenderSystem.enableScissor(getLeft() * res, (main.getGuiScaledHeight() - getBottom()) * res, getWidth() * res, getHeight() * res);
-		renderList(stack, k, l, mouseX, mouseY, partialTicks);
+		renderList(stack, mouseX, mouseY, partialTicks);
 		RenderSystem.disableScissor();
 
 		renderScroll(stack, i, j);

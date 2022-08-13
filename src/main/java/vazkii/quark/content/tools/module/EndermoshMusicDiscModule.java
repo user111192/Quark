@@ -25,22 +25,22 @@ import vazkii.quark.base.module.config.Config;
 public class EndermoshMusicDiscModule extends QuarkModule {
 
 	@Config private boolean playEndermoshDuringEnderdragonFight = false;
-	
+
 	@Config private boolean addToEndCityLoot = true;
 	@Config private int lootWeight = 5;
 	@Config private int lootQuality = 1;
 
 	public static QuarkMusicDiscItem endermosh;
-	
+
 	@OnlyIn(Dist.CLIENT) private boolean isFightingDragon;
 	@OnlyIn(Dist.CLIENT) private int delay;
 	@OnlyIn(Dist.CLIENT) private SimpleSoundInstance sound;
 
 	@Override
 	public void register() {
-		endermosh = new QuarkMusicDiscItem(14, () -> QuarkSounds.MUSIC_ENDERMOSH, "endermosh", this, false);
+		endermosh = new QuarkMusicDiscItem(14, () -> QuarkSounds.MUSIC_ENDERMOSH, "endermosh", this, 3783); // Tick length calculated from endermosh.ogg - 3:09.150
 	}
-	
+
 	@SubscribeEvent
 	public void onLootTableLoad(LootTableLoadEvent event) {
 		if(addToEndCityLoot) {
@@ -63,12 +63,12 @@ public class EndermoshMusicDiscModule extends QuarkModule {
 			boolean wasFightingDragon = isFightingDragon;
 
 			Minecraft mc = Minecraft.getInstance();
-			isFightingDragon = mc.level != null 
+			isFightingDragon = mc.level != null
 					&& mc.level.dimension().location().equals(LevelStem.END.location())
 					&& mc.gui.getBossOverlay().shouldPlayMusic();
-			
+
 			final int targetDelay = 50;
-			
+
 			if(isFightingDragon) {
 				if(delay == targetDelay) {
 					sound = SimpleSoundInstance.forMusic(QuarkSounds.MUSIC_ENDERMOSH);
@@ -81,7 +81,7 @@ public class EndermoshMusicDiscModule extends QuarkModule {
 
 				if(mc.screen == null && ((x*x) + (z*z)) < 3000) // is not in screen and within island
 					delay++;
-				
+
 			} else if(wasFightingDragon && sound != null) {
 				mc.getSoundManager().stop(sound);
 				delay = 0;
