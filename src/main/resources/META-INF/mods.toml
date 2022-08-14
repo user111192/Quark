@@ -20,6 +20,6 @@ description='''Small things, improving Minecraft bit by bit.'''
 [[dependencies.quark]]
     modId="forge"
     mandatory=true
-    versionRange="[41.0.94,)"
+    versionRange="[43.0.8,)"
     ordering="AFTER"
     side="BOTH"
