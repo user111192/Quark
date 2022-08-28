@@ -45,8 +45,6 @@ public class TotemOfHoldingModule extends QuarkModule {
 
 	public static EntityType<TotemOfHoldingEntity> totemType;
 
-	public static final ModelResourceLocation MODEL_LOC = new ModelResourceLocation(Quark.MOD_ID, "totem_of_holding", "inventory");
-
 	@Config(description = "Set this to false to remove the behaviour where totems destroy themselves if the player dies again.")
 	public static boolean darkSoulsMode = true;
 
@@ -83,7 +81,7 @@ public class TotemOfHoldingModule extends QuarkModule {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
-		event.register(MODEL_LOC);
+		event.register(new ModelResourceLocation(Quark.MOD_ID, "totem_of_holding", "inventory"));
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)

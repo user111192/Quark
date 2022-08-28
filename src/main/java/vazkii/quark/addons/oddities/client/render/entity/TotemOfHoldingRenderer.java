@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.ModelManager;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.EntityHitResult;
@@ -22,7 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.ClientTicker;
 import vazkii.quark.addons.oddities.entity.TotemOfHoldingEntity;
-import vazkii.quark.addons.oddities.module.TotemOfHoldingModule;
+import vazkii.quark.base.Quark;
 
 /**
  * @author WireSegal
@@ -31,6 +32,8 @@ import vazkii.quark.addons.oddities.module.TotemOfHoldingModule;
 @OnlyIn(Dist.CLIENT)
 public class TotemOfHoldingRenderer extends EntityRenderer<TotemOfHoldingEntity> {
 
+	private static final ModelResourceLocation LOCATION_MODEL = new ModelResourceLocation(Quark.MOD_ID, "totem_of_holding", "inventory");
+	
 	public TotemOfHoldingRenderer(EntityRendererProvider.Context context) {
 		super(context);
 	}
@@ -56,7 +59,7 @@ public class TotemOfHoldingRenderer extends EntityRenderer<TotemOfHoldingEntity>
 		dispatcher.getModelRenderer().
 				renderModel(matrixStackIn.last(), bufferIn.getBuffer(Sheets.cutoutBlockSheet()),
 						null,
-						modelManager.getModel(TotemOfHoldingModule.MODEL_LOC), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
+						modelManager.getModel(LOCATION_MODEL), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
 		matrixStackIn.popPose();
 
 		super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
