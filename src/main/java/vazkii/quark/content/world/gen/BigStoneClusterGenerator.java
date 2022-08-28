@@ -39,7 +39,7 @@ public class BigStoneClusterGenerator extends ClusterBasedGenerator {
 		BlockPos[] sources;
 		if(chance > 0 && random.nextInt(chance) == 0) {
 			sources = new BlockPos[1];
-			int lower = Math.abs(config.minYLevel);
+			int lower = config.minYLevel;
 			int range = Math.abs(config.maxYLevel - config.minYLevel);
 
 			BlockPos pos = chunkLeft.offset(random.nextInt(16), random.nextInt(range) + lower, random.nextInt(16));
