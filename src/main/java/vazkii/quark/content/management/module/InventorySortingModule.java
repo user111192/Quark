@@ -47,7 +47,8 @@ public class InventorySortingModule extends QuarkModule {
 						QuarkNetwork.sendToServer(new SortInventoryMessage(true));
 					}
 				},
-				provider("sort", true, () -> enablePlayerInventory));
+				provider("sort", true, () -> enablePlayerInventory),
+				() -> enablePlayerInventory);
 		
 		InventoryButtonHandler.addButtonProvider(this, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, 0,
 				sortPlayer,
@@ -58,7 +59,8 @@ public class InventorySortingModule extends QuarkModule {
 						QuarkNetwork.sendToServer(new SortInventoryMessage(true));
 					}
 				},
-				provider("sort_inventory", true, () -> enablePlayerInventoryInChests));
+				provider("sort_inventory", true, () -> enablePlayerInventoryInChests),
+				() -> enablePlayerInventoryInChests);
 		
 		InventoryButtonHandler.addButtonProvider(event, this, ButtonTargetType.CONTAINER_INVENTORY, 0,
 				"sort_container",
@@ -69,7 +71,8 @@ public class InventorySortingModule extends QuarkModule {
 						QuarkNetwork.sendToServer(new SortInventoryMessage(false));
 					}
 				},
-				provider("sort_container", false, () -> enableChests));
+				provider("sort_container", false, () -> enableChests),
+				() -> enableChests);
 	}
 
 	@OnlyIn(Dist.CLIENT)

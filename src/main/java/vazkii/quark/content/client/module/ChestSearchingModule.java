@@ -84,7 +84,8 @@ public class ChestSearchingModule extends QuarkModule {
 					searchEnabled = !searchEnabled;
 					updateSearchStatus();
 					searchBar.setFocus(true);
-				}).setTextureShift(() -> searchEnabled));
+				}).setTextureShift(() -> searchEnabled),
+				null);
 	}
 
 	@SubscribeEvent

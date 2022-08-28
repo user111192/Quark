@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
@@ -160,19 +161,18 @@ public final class InventoryButtonHandler {
 		return currentButtons.get(type);
 	}
 
-	public static void addButtonProvider(QuarkModule module, ButtonTargetType type, int priority, KeyMapping binding, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider) {
-		providers.put(type, new ButtonProviderHolder(module, priority, provider,
-				binding, onKeybind));
+	public static void addButtonProvider(QuarkModule module, ButtonTargetType type, int priority, KeyMapping binding, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider, Supplier<Boolean> enableCond) {
+		providers.put(type, new ButtonProviderHolder(module, priority, provider, binding, onKeybind, enableCond));
 	}
 
-	public static void addButtonProvider(RegisterKeyMappingsEvent event, QuarkModule module, ButtonTargetType type, int priority, String keybindName, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider) {
+	public static void addButtonProvider(RegisterKeyMappingsEvent event, QuarkModule module, ButtonTargetType type, int priority, String keybindName, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider, Supplier<Boolean> enableCond) {
 		KeyMapping keybind = ModKeybindHandler.init(event, keybindName, null, ModKeybindHandler.INV_GROUP);
 		keybind.setKeyConflictContext(KeyConflictContext.GUI);
-		addButtonProvider(module, type, priority, keybind, onKeybind, provider);
+		addButtonProvider(module, type, priority, keybind, onKeybind, provider, enableCond);
 	}
 
-	public static void addButtonProvider(QuarkModule module, ButtonTargetType type, int priority, ButtonProvider provider) {
-		providers.put(type, new ButtonProviderHolder(module, priority, provider));
+	public static void addButtonProvider(QuarkModule module, ButtonTargetType type, int priority, ButtonProvider provider, Supplier<Boolean> enableCond) {
+		providers.put(type, new ButtonProviderHolder(module, priority, provider, enableCond));
 	}
 
 	public enum ButtonTargetType {
@@ -193,17 +193,19 @@ public final class InventoryButtonHandler {
 
 		private final KeyMapping keybind;
 		private final Consumer<AbstractContainerScreen<?>> pressed;
-
-		public ButtonProviderHolder(QuarkModule module, int priority, ButtonProvider provider, KeyMapping keybind, Consumer<AbstractContainerScreen<?>> onPressed) {
+		private final Supplier<Boolean> enableCond;
+		
+		public ButtonProviderHolder(QuarkModule module, int priority, ButtonProvider provider, KeyMapping keybind, Consumer<AbstractContainerScreen<?>> onPressed, Supplier<Boolean> enableCond) {
 			this.module = module;
 			this.priority = priority;
 			this.provider = provider;
 			this.keybind = keybind;
 			this.pressed = onPressed;
+			this.enableCond = enableCond;
 		}
 
-		public ButtonProviderHolder(QuarkModule module, int priority, ButtonProvider provider) {
-			this(module, priority, provider, null, (screen) -> {});
+		public ButtonProviderHolder(QuarkModule module, int priority, ButtonProvider provider, Supplier<Boolean> enableCond) {
+			this(module, priority, provider, null, (screen) -> {}, enableCond);
 		}
 
 		@Override
@@ -212,7 +214,8 @@ public final class InventoryButtonHandler {
 		}
 
 		public Button getButton(AbstractContainerScreen<?> parent, int x, int y) {
-			return module.enabled ? provider.provide(parent, x, y) : null;
+			return (module.enabled && (enableCond == null || enableCond.get())) 
+					? provider.provide(parent, x, y) : null;
 		}
 
 	}

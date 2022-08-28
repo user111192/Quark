@@ -28,13 +28,13 @@ public class EasyTransferingModule extends QuarkModule {
 		addButton(event, 1, "insert", false);
 		addButton(event, 2, "extract", true);
 
-		if(enableShiftLock)
 			InventoryButtonHandler.addButtonProvider(event, this, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, 3,
 					"shift_lock",
 					(screen) -> shiftLocked = !shiftLocked,
 					(parent, x, y) -> new MiniInventoryButton(parent, 4, x, y, "quark.gui.button.shift_lock",
 							(b) -> shiftLocked = !shiftLocked)
-					.setTextureShift(() -> shiftLocked));
+					.setTextureShift(() -> shiftLocked),
+					() -> enableShiftLock);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -45,7 +45,8 @@ public class EasyTransferingModule extends QuarkModule {
 				(parent, x, y) -> new MiniInventoryButton(parent, priority, x, y, 
 						(t) -> t.add(I18n.get("quark.gui.button." + name + (Screen.hasShiftDown() ? "_filtered" : ""))),
 						(b) -> QuarkNetwork.sendToServer(new InventoryTransferMessage(Screen.hasShiftDown(), restock)))
-				.setTextureShift(Screen::hasShiftDown));
+				.setTextureShift(Screen::hasShiftDown),
+				null);
 	}
 
 	public static boolean hasShiftDown(boolean ret) {
