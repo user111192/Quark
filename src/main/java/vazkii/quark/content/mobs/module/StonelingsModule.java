@@ -43,8 +43,8 @@ public class StonelingsModule extends QuarkModule {
 	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(80, 1, 1, CompoundBiomeConfig.fromBiomeTags(true, Tags.Biomes.IS_VOID, BiomeTags.IS_NETHER, BiomeTags.IS_END));
 	@Config(flag = "stoneling_drop_diamond_heart")
 	public static boolean enableDiamondHeart = true;
-	@Config
-	public static boolean cautiousStonelings = true;
+	@Config(description = "When enabled, stonelings are much more aggressive in checking for players")
+	public static boolean cautiousStonelings = false;
 	@Config
 	public static boolean tamableStonelings = true;
 
