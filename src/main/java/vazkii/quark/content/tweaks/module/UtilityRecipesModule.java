@@ -54,6 +54,9 @@ public class UtilityRecipesModule extends QuarkModule {
 
 	@Config(description = "Can bones be smelted down to bone meal?", flag = "bone_meal_utility")
 	public static boolean boneMealUtility = true;
+	
+	@Config(description = "Can Charcoal be crafted into Black Dye?", flag = "charcoal_to_dye")
+	public static boolean charcoalToBlackDye = true;
 
 	private boolean needsChange = false;
 
