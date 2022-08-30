@@ -177,20 +177,6 @@ public class EnchantedBookTooltips {
 				mc.getItemRenderer().renderGuiItem(testStack, 6 + (drawn % 10) * 18, (drawn / 10) * 20);
 				drawn++;
 			}
-	//
-	//			else if(stack.getItem() == Items.ENCHANTED_BOOK || stack.getItem() == AncientTomesModule.ancient_tome) {
-	//				List<EnchantmentInstance> enchants = getEnchantedBookEnchantments(stack);
-	//
-	//				for(EnchantmentInstance ed : enchants) {
-	//					List<ItemStack> items = getItemsForEnchantment(ed.enchantment);
-	//					for(ItemStack testStack : items) {
-	//						mc.getItemRenderer().renderGuiItem(testStack, 6 + (drawn % 10) * 18, tooltipIndex * 20 - 2 + (drawn / 10) * 20);
-	//						drawn++;
-	//					}
-	//
-	//					break;
-	//				}
-	//			}
 
 			modelviewPose.popPose();
 			RenderSystem.applyModelViewMatrix();
