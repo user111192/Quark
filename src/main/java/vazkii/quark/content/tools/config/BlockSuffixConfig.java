@@ -1,5 +1,6 @@
 package vazkii.quark.content.tools.config;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,8 @@ public class BlockSuffixConfig extends AbstractConfigType {
 	
 	private Map<Block, VariantMap> blockVariants = new HashMap<>();
 	
+	private List<String> sortedSuffixes;
+	
 	public BlockSuffixConfig(List<String> knownSuffixes, List<String> testedMods) {
 		this.knownSuffixes = knownSuffixes;
 		this.testedMods = testedMods;
@@ -32,12 +35,21 @@ public class BlockSuffixConfig extends AbstractConfigType {
 	@Override
 	public void onReload(ConfigFlagManager flagManager) {
 		blockVariants.clear();
+		
+		sortedSuffixes = new ArrayList<>(knownSuffixes);
+		sortedSuffixes.sort((s1, s2) -> { // sort by amount of _
+			int ct1 = s1.replaceAll("[^_]", "").length();
+			int ct2 = s2.replaceAll("[^_]", "").length();
+			
+			return ct2 - ct1;
+		});
+		System.out.println(sortedSuffixes);
 	}
 	
 	public String getVariantForBlock(Block block) {
 		String name = Registry.BLOCK.getKey(block).getPath();
 		
-		for(String s : knownSuffixes) {
+		for(String s : sortedSuffixes) {
 			String check = String.format("_%s", s);
 			if(name.endsWith(check))
 				return s;
@@ -52,7 +64,7 @@ public class BlockSuffixConfig extends AbstractConfigType {
 	
 	public Block getBlockForVariant(Block block, String variant) {
 		blockVariants.clear(); // TODO test
-		if(variant == null || !knownSuffixes.contains(variant))
+		if(variant == null || !sortedSuffixes.contains(variant))
 			return block;
 		
 		VariantMap map = getVariants(block);
@@ -69,7 +81,7 @@ public class BlockSuffixConfig extends AbstractConfigType {
 		
 		Map<String, Block> newVariants = new HashMap<>();
 		
-		for(String s : knownSuffixes) {
+		for(String s : sortedSuffixes) {
 			Block suffixed = getSuffixedBlock(block, s);
 			if(suffixed != null)
 				newVariants.put(s, suffixed);
