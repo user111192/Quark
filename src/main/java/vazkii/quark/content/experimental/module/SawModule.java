@@ -1,4 +1,4 @@
-package vazkii.quark.content.tools.module;
+package vazkii.quark.content.experimental.module;
 
 import java.util.Arrays;
 
@@ -22,7 +22,7 @@ import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.tools.config.BlockSuffixConfig;
 import vazkii.quark.content.tools.item.SawItem;
 
-@LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
+@LoadModule(category = ModuleCategory.EXPERIMENTAL, hasSubscriptions = true, enabledByDefault = false)
 public class SawModule extends QuarkModule {
 
 	@Config 

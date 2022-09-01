@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.QuarkModule;
-import vazkii.quark.content.tools.module.SawModule;
+import vazkii.quark.content.experimental.module.SawModule;
 
 public class SawItem extends QuarkItem {
 	
