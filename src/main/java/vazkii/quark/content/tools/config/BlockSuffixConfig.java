@@ -43,7 +43,6 @@ public class BlockSuffixConfig extends AbstractConfigType {
 			
 			return ct2 - ct1;
 		});
-		System.out.println(sortedSuffixes);
 	}
 	
 	public String getVariantForBlock(Block block) {
