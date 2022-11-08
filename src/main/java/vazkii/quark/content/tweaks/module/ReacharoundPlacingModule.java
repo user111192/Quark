@@ -136,8 +136,7 @@ public class ReacharoundPlacingModule extends QuarkModule {
 
 			UseOnContext context = new UseOnContext(player, hand, new BlockHitResult(new Vec3(0.5F, 1F, 0.5F), target.dir, target.pos, false));
 			boolean remote = player.level.isClientSide;
-			Item item = stack.getItem();
-			InteractionResult res = remote ? InteractionResult.SUCCESS : item.useOn(context);
+			InteractionResult res = remote ? InteractionResult.SUCCESS : stack.useOn(context);
 
 			if (res != InteractionResult.PASS) {
 				event.setCanceled(true);
