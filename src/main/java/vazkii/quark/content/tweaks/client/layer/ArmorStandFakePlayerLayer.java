@@ -64,10 +64,17 @@ public class ArmorStandFakePlayerLayer<M extends EntityModel<ArmorStand>> extend
 					}
 				}
 
-				float s = 2F;
 				pose.pushPose();
-				pose.translate(0F, -1.5F, 0F);
-				pose.scale(s, s, s);
+
+				if(armor.isBaby()) {
+					float s = 1F;
+					pose.translate(0F, 0F, 0F);
+					pose.scale(s, s, s);
+				} else {
+					float s = 2F;
+					pose.translate(0F, -1.5F, 0F);
+					pose.scale(s, s, s);
+				}
 
 				PlayerModel<?> model = slim ? playerModelSlim : playerModel;
 
