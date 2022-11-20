@@ -12,7 +12,9 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -71,15 +73,20 @@ public class ForgottenModule extends QuarkModule {
 		LevelAccessor world = event.getLevel();
 
 		if(entity.getType() == EntityType.SKELETON && entity instanceof Mob mob && result != Result.DENY && entity.getY() < maxHeightForSpawn && world.getRandom().nextDouble() < forgottenSpawnRate) {
-
 			if(result == Result.ALLOW || (mob.checkSpawnRules(world, event.getSpawnReason()) && mob.checkSpawnObstruction(world))) {
 				Forgotten forgotten = new Forgotten(forgottenType, entity.level);
 				Vec3 epos = entity.position();
-
+				
 				forgotten.absMoveTo(epos.x, epos.y, epos.z, entity.getYRot(), entity.getXRot());
 				forgotten.prepareEquipment();
-				world.addFreshEntity(forgotten);
-				event.setResult(Result.DENY);
+
+				LivingSpawnEvent.CheckSpawn newEvent = new CheckSpawn(forgotten, world, event.getX(), event.getY(), event.getZ(), event.getSpawner(), event.getSpawnReason());
+				MinecraftForge.EVENT_BUS.post(newEvent);
+				
+				if(newEvent.getResult() != Result.DENY) {
+					world.addFreshEntity(forgotten);
+					event.setResult(Result.DENY);
+				}
 			}
 		}
 	}
