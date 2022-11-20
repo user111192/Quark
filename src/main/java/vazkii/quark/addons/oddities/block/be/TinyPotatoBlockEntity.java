@@ -1,6 +1,12 @@
 package vazkii.quark.addons.oddities.block.be;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +15,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.Nameable;
@@ -23,11 +30,6 @@ import vazkii.quark.addons.oddities.util.TinyPotatoInfo;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.QuarkSounds;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-
 public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements Nameable {
 	public static final String TAG_NAME = "name";
 	public static final String TAG_ANGRY = TinyPotatoBlock.ANGRY;
@@ -35,10 +37,11 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 
 	public int jumpTicks = 0;
 	public Component name = Component.literal("");
-	private int nextDoIt = 0;
+	private int soundCd = 0;
 	public boolean angry = false;
 
 	private static final Map<String, String> GENDER = new HashMap<>();
+	private static final Map<String, SoundEvent> SOUNDS = new HashMap<>();
 
 	static {
 		GENDER.put("girlstater", "daughter");
@@ -65,6 +68,10 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 		GENDER.put("snorps", "children");
 		GENDER.put("systater", "children");
 		GENDER.put("systemtater", "children");
+		
+		SOUNDS.put("shia labeouf", QuarkSounds.BLOCK_POTATO_DO_IT);
+		SOUNDS.put("joe biden", QuarkSounds.BLOCK_POTATO_SODA);
+		SOUNDS.put("kingbdogz", QuarkSounds.BLOCK_POTATO_KINGBDOGZ);
 	}
 
 	public TinyPotatoBlockEntity(BlockPos pos, BlockState state) {
@@ -97,9 +104,11 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 			if (hasCustomName()) {
 				TinyPotatoInfo info = TinyPotatoInfo.fromComponent(name);
 
-				if (info.name().equals("shia labeouf") && nextDoIt == 0) {
-					nextDoIt = 40;
-					level.playSound(null, worldPosition, QuarkSounds.BLOCK_POTATO_DO_IT, SoundSource.BLOCKS, 1F, 1F);
+				String checkName = info.name().toLowerCase().trim();
+				if (SOUNDS.containsKey(checkName) && soundCd == 0) {
+					SoundEvent playSound = SOUNDS.get(checkName);	
+					soundCd = 20;
+					level.playSound(null, worldPosition, playSound, SoundSource.BLOCKS, 1F, 1F);
 				}
 			}
 
@@ -153,8 +162,8 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 			if (level.random.nextInt(100) == 0) {
 				self.jump();
 			}
-			if (self.nextDoIt > 0) {
-				self.nextDoIt--;
+			if (self.soundCd > 0) {
+				self.soundCd--;
 			}
 		}
 	}
@@ -234,3 +243,4 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 		return getName();
 	}
 }
+

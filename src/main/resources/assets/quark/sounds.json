@@ -53,12 +53,12 @@
   "entity.stoneling.michael": {
     "subtitle": "quark.subtitles.michael_here",
     "sounds": [
-      "quark:entity/stoneling/vsauce1",
-      "quark:entity/stoneling/vsauce2",
-      "quark:entity/stoneling/vsauce3",
-      "quark:entity/stoneling/vsauce4",
-      "quark:entity/stoneling/vsauce5",
-      "quark:entity/stoneling/vsauce6"
+      "quark:funny/vsauce1",
+      "quark:funny/vsauce2",
+      "quark:funny/vsauce3",
+      "quark:funny/vsauce4",
+      "quark:funny/vsauce5",
+      "quark:funny/vsauce6"
     ]
   },
   "entity.pickarang.throw": {
@@ -330,7 +330,23 @@
   "block.potato.do_it": {
     "subtitle": "quark.subtitles.do_it",
     "sounds": [
-      "quark:block/do_it"
+      "quark:funny/do_it"
+    ]
+  },
+  "block.potato.soda": {
+    "subtitle": "quark.subtitles.soda",
+    "sounds": [
+      "quark:funny/soda"
+    ]
+  },
+  "block.potato.kingbdogz": {
+    "subtitle": "quark.subtitles.kingbdogz",
+    "sounds": [
+      "quark:funny/kingbdogz1",
+      "quark:funny/kingbdogz2",
+      "quark:funny/kingbdogz3",
+      "quark:funny/kingbdogz4",
+      "quark:funny/kingbdogz5"
     ]
   },
   "block.potato.hurt": {
