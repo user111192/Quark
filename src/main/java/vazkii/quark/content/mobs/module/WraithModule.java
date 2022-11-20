@@ -67,7 +67,7 @@ public class WraithModule extends QuarkModule {
 			);
 
 	@Config
-	public static EntitySpawnConfig spawnConfig = new CostSensitiveEntitySpawnConfig(8, 1, 3, 0.7, 0.15, CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:soul_sand_valley"));
+	public static EntitySpawnConfig spawnConfig = new CostSensitiveEntitySpawnConfig(5, 1, 3, 0.7, 0.15, CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:soul_sand_valley"));
 
 	public static TagKey<Block> wraithSpawnableTag;
 

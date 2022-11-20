@@ -63,7 +63,7 @@ public class Wraith extends Zombie {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 15)
+				.add(Attributes.MAX_HEALTH, 20)
 				.add(Attributes.FOLLOW_RANGE, 35)
 				.add(Attributes.MOVEMENT_SPEED, 0.28)
 				.add(Attributes.ATTACK_DAMAGE, 3)
