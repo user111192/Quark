@@ -24,7 +24,7 @@ public class VariantLadderBlock extends LadderBlock implements IQuarkBlock {
 	private final QuarkModule module;
 	private final boolean flammable;
 
-	private BooleanSupplier condition;
+	private BooleanSupplier condition = () -> true;
 
 	public VariantLadderBlock(String type, QuarkModule module, Block.Properties props, boolean flammable) {
 		super(props);
@@ -68,7 +68,7 @@ public class VariantLadderBlock extends LadderBlock implements IQuarkBlock {
 
 	@Override
 	public boolean doesConditionApply() {
-		return condition != null && condition.getAsBoolean();
+		return condition.getAsBoolean();
 	}
 
 }
