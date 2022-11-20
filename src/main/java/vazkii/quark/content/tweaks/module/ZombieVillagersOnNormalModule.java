@@ -1,4 +1,4 @@
-package vazkii.quark.content.experimental.module;
+package vazkii.quark.content.tweaks.module;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -17,7 +17,7 @@ import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 
-@LoadModule(category = ModuleCategory.EXPERIMENTAL, enabledByDefault = false, hasSubscriptions = true)
+@LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
 public class ZombieVillagersOnNormalModule extends QuarkModule {
 
 	private static boolean staticEnabled;
