@@ -50,7 +50,7 @@ public class WoodPostBlock extends QuarkBlock implements SimpleWaterloggedBlock 
 
 	public WoodPostBlock(QuarkModule module, Block parent, String prefix, boolean nether) {
 		super(IQuarkBlock.inherit(parent, s -> prefix + s.replace("_fence", "_post")), 
-				module, CreativeModeTab.TAB_BUILDING_BLOCKS,
+				module, CreativeModeTab.TAB_DECORATIONS,
 				Properties.copy(parent).sound(nether ? SoundType.STEM : SoundType.WOOD));
 
 		BlockState state = stateDefinition.any().setValue(WATERLOGGED, false).setValue(AXIS, Axis.Y);
