@@ -99,7 +99,7 @@ public class GrabChickensModule extends QuarkModule {
 	}
 	
 	private boolean canPlayerHostChicken(Player player) {
-		return !needsNoHelmet || player.getItemBySlot(EquipmentSlot.HEAD).isEmpty();
+		return (!needsNoHelmet || player.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) && !player.isUnderWater();
 	}
 
 	@OnlyIn(Dist.CLIENT)
