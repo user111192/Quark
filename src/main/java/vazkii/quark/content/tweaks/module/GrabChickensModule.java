@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -48,6 +49,7 @@ public class GrabChickensModule extends QuarkModule {
 		
 		if(staticEnabled && event.getHand() == InteractionHand.MAIN_HAND 
 				&& !player.isCrouching() 
+				&& !(player instanceof FakePlayer)
 				&& player.getMainHandItem().isEmpty()
 				&& canPlayerHostChicken(player) 
 				&& target.getType() == EntityType.CHICKEN
