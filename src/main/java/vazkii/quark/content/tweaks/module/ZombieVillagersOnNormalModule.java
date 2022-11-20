@@ -20,18 +20,8 @@ import vazkii.quark.base.module.QuarkModule;
 @LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
 public class ZombieVillagersOnNormalModule extends QuarkModule {
 
-	private static boolean staticEnabled;
-
-	@Override
-	public void configChanged() {
-		staticEnabled = enabled;
-	}
-
 	@SubscribeEvent
 	public void onConversion(LivingConversionEvent.Pre event) {
-		if(!staticEnabled)
-			return;
-
 		if(event.getEntity().getType() == EntityType.VILLAGER && event.getOutcome() == EntityType.ZOMBIE_VILLAGER) {
 			Villager villager = (Villager) event.getEntity();
 			Level level = villager.level;
