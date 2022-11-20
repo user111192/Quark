@@ -50,7 +50,7 @@ import vazkii.quark.content.tools.item.ParrotEggItem;
 @LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
 public class ParrotEggsModule extends QuarkModule {
 
-	private static final ResourceLocation KOTO = new ResourceLocation("quark", "textures/model/entity/kotobirb.png");
+	private static final ResourceLocation KOTO = new ResourceLocation("quark", "textures/model/entity/variants/kotobirb.png");
 	private static final String EGG_TIMER = "quark:parrot_egg_timer";
 
 	private static final List<String> NAMES = List.of("red_blue", "blue", "green", "yellow_blue", "grey");

@@ -106,11 +106,18 @@ public class Wraith extends Zombie {
 	public void tick() {
 		super.tick();
 
+		double pad = 0.2;
+		
 		AABB aabb = getBoundingBox();
-		double x = aabb.minX + Math.random() * (aabb.maxX - aabb.minX);
-		double y = aabb.minY + Math.random() * (aabb.maxY - aabb.minY);
-		double z = aabb.minZ + Math.random() * (aabb.maxZ - aabb.minZ);
+		double x = aabb.minX + Math.random() * (aabb.maxX - aabb.minX + (pad * 2)) - pad;
+		double y = aabb.minY + Math.random() * (aabb.maxY - aabb.minY + (pad * 2)) - pad;
+		double z = aabb.minZ + Math.random() * (aabb.maxZ - aabb.minZ + (pad * 2)) - pad;
 		getCommandSenderWorld().addParticle(ParticleTypes.MYCELIUM, x, y, z, 0, 0, 0);
+	
+		if(Math.random() < 0.1) {
+			y = aabb.minY + 0.1;
+			getCommandSenderWorld().addParticle(ParticleTypes.SOUL, x, y, z, 0, 0, 0);
+		}
 	}
 
 	@Override

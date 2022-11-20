@@ -1,11 +1,16 @@
 package vazkii.quark.content.mobs.client.model;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
@@ -13,14 +18,11 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import vazkii.quark.content.mobs.entity.Wraith;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
-
 public class WraithModel extends EntityModel<Wraith> {
 
+	public final ModelPart main;
 	public final ModelPart body;
-	public final ModelPart rightArm;
-	public final ModelPart leftArm;
+	public final ModelPart arms;
 
 	private double offset;
 	private float alphaMult;
@@ -28,49 +30,70 @@ public class WraithModel extends EntityModel<Wraith> {
 	public WraithModel(ModelPart root) {
 		super(RenderType::entityTranslucent);
 
-		body = root.getChild("body");
-		rightArm = root.getChild("rightArm");
-		leftArm = root.getChild("leftArm");
+		main = root.getChild("main");
+		body = main.getChild("body");
+		arms = main.getChild("arms");
 	}
 
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition root = mesh.getRoot();
 
-		root.addOrReplaceChild("body",
-				CubeListBuilder.create()
+		PartDefinition main = root.addOrReplaceChild("main", 
+				CubeListBuilder.create(), 
+				PartPose.offset(0.0F, 24.0F, 0.0F));
+
+		main.addOrReplaceChild("arms", 
+			CubeListBuilder.create()
+			.texOffs(35, 5)
+			.addBox(-8.5F, 1.0F, -2.0F, 3.0F, 15.0F, 5.0F, new CubeDeformation(0.0F))
+			
+			.texOffs(0, 55)
+			.addBox(-5.5F, 12.0F, 0.0F, 11.0F, 4.0F, 0.0F, new CubeDeformation(0.0F))
+			
+			.texOffs(46, 3)
+			.addBox(-8.5F, 11.0F, -2.0F, 3.0F, 3.0F, 5.0F, new CubeDeformation(0.25F))
+			
+			.texOffs(35, 5)
+			.mirror()
+			.addBox(5.5F, 1.0F, -2.0F, 3.0F, 15.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false)
+			
+			.texOffs(46, 3)
+			.mirror()
+			.addBox(5.5F, 11.0F, -2.0F, 3.0F, 3.0F, 5.0F, new CubeDeformation(0.25F))
+	
+			.mirror(false), 
+			PartPose.offset(0.0F, -17.0F, -1.0F));
+
+		main.addOrReplaceChild("body", 
+				CubeListBuilder
+				.create()
 				.texOffs(0, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 8, 24, 8),
-				PartPose.offset(0.0F, 0.0F, 0.0F));
-
-		root.addOrReplaceChild("leftArm",
-				CubeListBuilder.create()
-				.mirror()
-				.texOffs(32, 16)
-				.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4),
-				PartPose.offset(5.0F, 2.0F, 0.0F));
-
-		root.addOrReplaceChild("rightArm",
-				CubeListBuilder.create()
-				.texOffs(32, 16)
-				.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4),
-				PartPose.offset(-5.0F, 2.0F, 0.0F));
+				.addBox(-4.5F, -10.0F, -4.0F, 11.0F, 26.0F, 7.0F, new CubeDeformation(0.0F)), 
+				PartPose.offsetAndRotation(-1.0F, -18.0F, 0.0F, 0.3927F, 0.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 64, 64);
 	}
-
+	
 	@Override
 	public void setupAnim(Wraith entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		Random rng = new Random(entity.getId());
-		float time = ageInTicks + rng.nextInt(10000000);
+		int offset1 = rng.nextInt(10000000);
+		int offset2 = rng.nextInt(6000000);
+		int offset3 = rng.nextInt(8000000);
+		
+		float time = ageInTicks + offset1;
+		float time2 = ageInTicks + offset2;
+		float time3 = ageInTicks + offset3;
 
-		leftArm.xRot = (float) Math.toRadians(-50F + rng.nextFloat() * 20F);
-		rightArm.xRot = (float) Math.toRadians(-50F + rng.nextFloat() * 20F);
-		leftArm.zRot = (float) Math.toRadians(-110F + (float) Math.cos(time / (8 + rng.nextInt(2))) * (8F + rng.nextFloat() * 8F));
-		rightArm.zRot = (float) Math.toRadians(110F + (float) Math.cos((time + 300) / (8 + rng.nextInt(2))) * (8F + rng.nextFloat() * 8F));
+		main.xRot = (float) Math.sin(time / 16) * 0.1F - 0.3F; 
+		main.yRot = (float) Math.sin(time2 / 20) * 0.1F; 
+		main.zRot = (float) Math.sin(time3 / 12) * 0.1F; 
+		
+		arms.xRot = (float) Math.sin(time2 / 22) * 0.15F;
 
-		offset = Math.sin(time / 16) * 0.1 + 0.15;
-		alphaMult = 0.5F + (float) Math.sin(time / 20) * 0.3F;
+		offset = Math.sin(time / 16) * 0.1 - 0.25;
+		alphaMult = 0.8F + (float) Math.sin(time2 / 20) * 0.2F;
 	}
 
 	@Override
@@ -78,22 +101,11 @@ public class WraithModel extends EntityModel<Wraith> {
 		alpha *= alphaMult;
 
 		matrix.pushPose();
-		matrix.translate(0, offset, 0);
-		body.render(matrix, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-		leftArm.render(matrix, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-		rightArm.render(matrix, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-
-		for(int i = 0; i < 6; i++) {
-			alpha *= 0.6;
-			matrix.translate(0, 0, 1.5 * offset + 0.1);
-			matrix.scale(0.8F, 0.8F, 0.8F);
-			matrix.mulPose(Vector3f.XP.rotationDegrees(60F * (float) offset));
-			body.render(matrix, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-			leftArm.render(matrix, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-			rightArm.render(matrix, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-		}
+		matrix.translate(0, offset, -0.1); // -0.1 is to ensure the model is inside the hitbox
+		main.render(matrix, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		matrix.popPose();
 
 	}
 
 }
+
