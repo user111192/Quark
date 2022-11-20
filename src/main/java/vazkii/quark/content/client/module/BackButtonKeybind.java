@@ -2,6 +2,8 @@ package vazkii.quark.content.client.module;
 
 import java.util.List;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 
@@ -53,7 +55,8 @@ public class BackButtonKeybind extends QuarkModule {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public void onMouseInput(MouseButtonPressed.Post event) {
-		if(backKey.getKey().getType() == Type.MOUSE && event.getButton() == backKey.getKey().getValue())
+		int btn = event.getButton();
+		if(backKey.getKey().getType() == Type.MOUSE && btn != GLFW.GLFW_MOUSE_BUTTON_LEFT && btn == backKey.getKey().getValue())
 			clicc();
 	}
 
