@@ -83,6 +83,7 @@ public class AncientTomesModule extends QuarkModule {
 			loot(BuiltInLootTables.NETHER_BRIDGE, 0),
 			loot(BuiltInLootTables.UNDERWATER_RUIN_BIG, 0),
 			loot(BuiltInLootTables.UNDERWATER_RUIN_SMALL, 0),
+			loot(BuiltInLootTables.ANCIENT_CITY, 4),
 			loot(MonsterBoxModule.MONSTER_BOX_LOOT_TABLE, 5)
 	);
 
