@@ -27,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import vazkii.quark.addons.oddities.block.be.PipeBlockEntity;
 import vazkii.quark.addons.oddities.block.be.PipeBlockEntity.ConnectionType;
 import vazkii.quark.addons.oddities.block.be.PipeBlockEntity.PipeItem;
+import vazkii.quark.addons.oddities.module.PipesModule;
 import vazkii.quark.base.Quark;
 
 public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
@@ -46,8 +47,9 @@ public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 		ItemRenderer render = Minecraft.getInstance().getItemRenderer();
 		Iterator<PipeItem> items = te.getItemIterator();
 
-		while(items.hasNext())
-			renderItem(items.next(), render, matrix, buffer, partialTicks, light, overlay);
+		if(PipesModule.renderPipeItems)
+			while(items.hasNext())
+				renderItem(items.next(), render, matrix, buffer, partialTicks, light, overlay);
 
 		BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
 		ModelManager modelmanager = blockrendererdispatcher.getBlockModelShaper().getModelManager();

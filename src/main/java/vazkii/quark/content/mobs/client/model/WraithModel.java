@@ -87,8 +87,8 @@ public class WraithModel extends EntityModel<Wraith> {
 		float time3 = ageInTicks + offset3;
 
 		main.xRot = (float) Math.sin(time / 16) * 0.1F - 0.3F; 
-		main.yRot = (float) Math.sin(time2 / 20) * 0.1F; 
-		main.zRot = (float) Math.sin(time3 / 12) * 0.1F; 
+		main.yRot = (float) Math.sin(time2 / 20) * 0.12F; 
+		main.zRot = (float) Math.sin(time3 / 12) * 0.07F; 
 		
 		arms.xRot = (float) Math.sin(time2 / 22) * 0.15F;
 
