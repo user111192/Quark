@@ -25,6 +25,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -44,6 +45,8 @@ public class Wraith extends Zombie {
 	private static final String TAG_IDLE_SOUND = "IdleSound";
 	private static final String TAG_HURT_SOUND = "HurtSound";
 	private static final String TAG_DEATH_SOUND = "DeathSound";
+	
+	boolean aggroed = false;
 
 	public Wraith(EntityType<? extends Wraith> type, Level worldIn) {
 		super(type, worldIn);
@@ -125,7 +128,7 @@ public class Wraith extends Zombie {
 
 		return did;
 	}
-
+	
 	@Override
 	public SpawnGroupData finalizeSpawn(@Nonnull ServerLevelAccessor worldIn, @Nonnull DifficultyInstance difficultyIn, @Nonnull MobSpawnType reason, SpawnGroupData spawnDataIn, CompoundTag dataTag) {
 		int idx = random.nextInt(WraithModule.validWraithSounds.size());
@@ -188,7 +191,18 @@ public class Wraith extends Zombie {
 	public boolean hurt(@Nonnull DamageSource source, float amount) {
 		if (!super.hurt(source, amount)) {
 			return false;
-		} else return this.level instanceof ServerLevel;
+		} else {
+			if(source != null && source.getDirectEntity() instanceof Player)
+				aggroed = true;
+			
+			return this.level instanceof ServerLevel;
+		}
+	}
+	
+	@Override
+	public void setTarget(LivingEntity target) {
+		if(aggroed)
+			super.setTarget(target);
 	}
 
 	@Override
