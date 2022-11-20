@@ -7,7 +7,17 @@ import net.minecraftforge.network.NetworkDirection;
 import vazkii.arl.network.IMessage;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.network.message.*;
+import vazkii.quark.base.network.message.ChangeHotbarMessage;
+import vazkii.quark.base.network.message.DoEmoteMessage;
+import vazkii.quark.base.network.message.DoubleDoorMessage;
+import vazkii.quark.base.network.message.EditSignMessage;
+import vazkii.quark.base.network.message.HarvestMessage;
+import vazkii.quark.base.network.message.InventoryTransferMessage;
+import vazkii.quark.base.network.message.RequestEmoteMessage;
+import vazkii.quark.base.network.message.SetLockProfileMessage;
+import vazkii.quark.base.network.message.ShareItemMessage;
+import vazkii.quark.base.network.message.SortInventoryMessage;
+import vazkii.quark.base.network.message.UpdateTridentMessage;
 import vazkii.quark.base.network.message.oddities.HandleBackpackMessage;
 import vazkii.quark.base.network.message.oddities.MatrixEnchanterOperationMessage;
 import vazkii.quark.base.network.message.oddities.ScrollCrateMessage;
@@ -28,6 +38,7 @@ public final class QuarkNetwork {
 		network.register(RequestEmoteMessage.class, NetworkDirection.PLAY_TO_SERVER);
 		network.register(ChangeHotbarMessage.class, NetworkDirection.PLAY_TO_SERVER);
 		network.register(SetLockProfileMessage.class, NetworkDirection.PLAY_TO_SERVER);
+		network.register(ShareItemMessage.class, NetworkDirection.PLAY_TO_SERVER);
 
 		network.register(HandleBackpackMessage.class, NetworkDirection.PLAY_TO_SERVER);
 		network.register(MatrixEnchanterOperationMessage.class, NetworkDirection.PLAY_TO_SERVER);

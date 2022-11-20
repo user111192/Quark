@@ -10,21 +10,25 @@
  */
 package vazkii.quark.content.management.module;
 
+import java.util.List;
+
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -37,8 +41,8 @@ import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
-
-import java.util.List;
+import vazkii.quark.base.network.QuarkNetwork;
+import vazkii.quark.base.network.message.ShareItemMessage;
 
 @LoadModule(category = ModuleCategory.MANAGEMENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class ItemSharingModule extends QuarkModule {
@@ -87,17 +91,30 @@ public class ItemSharingModule extends QuarkModule {
 				ItemStack stack = slot.getItem();
 
 				if(!stack.isEmpty()) {
-					LocalPlayer player = mc.player;
-					if (player != null) {
-						Component fullComp = Component.translatable("chat.type.text", player.getDisplayName(), stack.getDisplayName());
-						player.chatSigned(fullComp.getString(), fullComp);
-						event.setCanceled(true);
-					}
+					ShareItemMessage message = new ShareItemMessage(slot.index);
+					QuarkNetwork.sendToServer(message);
 				}
 			}
 		}
 	}
 
+	public static void shareItem(ServerPlayer player, int slot) {
+		if (!ModuleLoader.INSTANCE.isModuleEnabled(ItemSharingModule.class))
+			return;
+
+		Inventory inv = player.getInventory();
+		if(slot >= 0 && slot < inv.getContainerSize()) {
+			ItemStack stack = inv.getItem(slot);
+			if(!stack.isEmpty()) {
+				MutableComponent comp = Component.translatable("quark.misc.shared_item", player.getName());
+				Component itemComp = stack.getDisplayName();
+				
+				comp.append(itemComp);
+				player.server.getPlayerList().getPlayers().forEach(p -> p.sendSystemMessage(comp));
+			}
+		}
+	}
+	
 	public static MutableComponent createStackComponent(ItemStack stack, MutableComponent component) {
 		if (!ModuleLoader.INSTANCE.isModuleEnabled(ItemSharingModule.class) || !renderItemsInChat)
 			return component;
