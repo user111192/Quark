@@ -18,7 +18,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,6 +36,7 @@ import vazkii.quark.base.network.message.DoubleDoorMessage;
 public class DoubleDoorOpeningModule extends QuarkModule {
 
 	public static TagKey<Block> nonDoubleDoorTag;
+	private static boolean handling = false;
 	
 	@Override
 	public void setup() {
@@ -42,14 +45,17 @@ public class DoubleDoorOpeningModule extends QuarkModule {
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
-		if(!event.getLevel().isClientSide || event.getEntity().isDiscrete() || event.isCanceled() || event.getResult() == Result.DENY || event.getUseBlock() == Result.DENY)
+		if(!event.getLevel().isClientSide || event.getEntity().isDiscrete() || event.isCanceled() || event.getResult() == Result.DENY || event.getUseBlock() == Result.DENY || handling)
 			return;
 
 		Level world = event.getLevel();
 		BlockPos pos = event.getPos();
 
 		if(isDoor(world.getBlockState(pos))) {
+			handling = true;
 			openDoor(world, event.getEntity(), pos);
+			handling = false;
+			
 			QuarkNetwork.sendToServer(new DoubleDoorMessage(pos));
 		}
 	}
@@ -70,10 +76,17 @@ public class DoubleDoorOpeningModule extends QuarkModule {
 		BlockPos doorPos = state.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER ? mirrorPos : mirrorPos.below();
 		BlockState other = world.getBlockState(doorPos);
 
+
 		if(state.getMaterial() != Material.METAL && other.getBlock() == state.getBlock() && other.getValue(DoorBlock.FACING) == direction && other.getValue(DoorBlock.OPEN) == isOpen && other.getValue(DoorBlock.HINGE) != isMirrored) {
 			BlockHitResult res = new BlockHitResult(new Vec3(doorPos.getX() + 0.5, doorPos.getY() + 0.5, doorPos.getZ() + 0.5), direction, doorPos, false);
-			if(res.getType() == HitResult.Type.BLOCK)
-				other.use(world, player, InteractionHand.MAIN_HAND, res);
+
+			if(res.getType() == HitResult.Type.BLOCK) {
+				RightClickBlock event = new PlayerInteractEvent.RightClickBlock(player, InteractionHand.MAIN_HAND, doorPos, res);
+				boolean eventRes = MinecraftForge.EVENT_BUS.post(event);
+				
+				if(!eventRes)
+					other.use(world, player, InteractionHand.MAIN_HAND, res);
+			}
 		}
 	}
 	
