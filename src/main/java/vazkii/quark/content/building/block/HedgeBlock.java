@@ -110,17 +110,15 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IBlockColorPr
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public BlockColor getBlockColor() {
-		final BlockColors colors = Minecraft.getInstance().getBlockColors();
 		final BlockState leafState = leaf.defaultBlockState();
-		return (state, world, pos, tintIndex) -> colors.getColor(leafState, world, pos, tintIndex);
+		return (state, world, pos, tintIndex) -> Minecraft.getInstance().getBlockColors().getColor(leafState, world, pos, tintIndex);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public ItemColor getItemColor() {
-		final ItemColors colors = Minecraft.getInstance().getItemColors();
 		final ItemStack leafStack = new ItemStack(leaf);
-		return (stack, tintIndex) -> colors.getColor(leafStack, tintIndex);
+		return (stack, tintIndex) -> Minecraft.getInstance().getItemColors().getColor(leafStack, tintIndex);
 	}
 
 	@Override
