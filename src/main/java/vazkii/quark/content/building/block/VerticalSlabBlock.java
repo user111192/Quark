@@ -75,7 +75,6 @@ public class VerticalSlabBlock extends QuarkBlock implements SimpleWaterloggedBl
 		return parent.getFlammability(state, world, pos, face);
 	}
 	
-
 	@Nonnull
 	@Override
 	public BlockState rotate(BlockState state, @Nonnull Rotation rot) {

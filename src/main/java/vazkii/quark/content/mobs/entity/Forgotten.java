@@ -157,6 +157,11 @@ public class Forgotten extends Skeleton {
 	}
 	
 	@Override
+	public boolean canPickUpLoot() {
+		return false;
+	}
+	
+	@Override
 	protected void populateDefaultEquipmentSlots(RandomSource rand, @Nonnull DifficultyInstance difficulty) {
 		super.populateDefaultEquipmentSlots(rand, difficulty);
 
