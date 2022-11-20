@@ -1,9 +1,10 @@
 package vazkii.quark.base.handler;
 
-import com.google.common.collect.Lists;
-import vazkii.quark.base.module.config.Config;
-
 import java.util.List;
+
+import com.google.common.collect.Lists;
+
+import vazkii.quark.base.module.config.Config;
 
 public class GeneralConfig {
 
@@ -81,6 +82,9 @@ public class GeneralConfig {
 
 	@Config(description = "Enables quark network profiling features. Do not enable this unless requested to.")
 	public static boolean enableNetworkProfiling = false;
+	
+	@Config(description = "Used for terrablender integration")
+	public static int terrablenderRegionWeight = 1;
 
 	private GeneralConfig() {
 		// NO-OP

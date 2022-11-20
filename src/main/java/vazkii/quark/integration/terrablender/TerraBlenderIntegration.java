@@ -17,6 +17,7 @@ import terrablender.api.Region;
 import terrablender.api.RegionType;
 import terrablender.api.Regions;
 import vazkii.quark.base.Quark;
+import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.UndergroundBiomeHandler;
 import vazkii.quark.base.handler.UndergroundBiomeHandler.Proxy;
 import vazkii.quark.base.handler.UndergroundBiomeHandler.UndergroundBiomeSkeleton;
@@ -36,11 +37,14 @@ public class TerraBlenderIntegration implements Supplier<UndergroundBiomeHandler
 	class QuarkRegion extends Region {
 
 		public QuarkRegion() {
-			super(new ResourceLocation(Quark.MOD_ID, "biome_provider"), RegionType.OVERWORLD, 1);
+			super(new ResourceLocation(Quark.MOD_ID, "biome_provider"), RegionType.OVERWORLD, GeneralConfig.terrablenderRegionWeight);
 		}
 
 		@Override
 		public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
+			if(GeneralConfig.terrablenderRegionWeight == 0)
+				return;
+			
 			boolean didAnything = false;
 
 			for(UndergroundBiomeSkeleton skeleton : proxy.skeletons)
