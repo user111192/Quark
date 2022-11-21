@@ -68,6 +68,7 @@ public class QuarkSounds {
 	public static final SoundEvent BLOCK_POTATO_DO_IT = register("block.potato.do_it");
 	public static final SoundEvent BLOCK_POTATO_SODA = register("block.potato.soda");
 	public static final SoundEvent BLOCK_POTATO_KINGBDOGZ = register("block.potato.kingbdogz");
+	public static final SoundEvent BLOCK_POTATO_YUNG = register("block.potato.yung");
 	public static final SoundEvent BLOCK_POTATO_HURT = register("block.potato.hurt");
 
 	public static final SoundEvent ITEM_CAMERA_SHUTTER = register("item.camera.shutter");

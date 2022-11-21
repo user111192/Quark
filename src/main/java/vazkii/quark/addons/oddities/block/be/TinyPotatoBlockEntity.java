@@ -71,7 +71,7 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 		
 		SOUNDS.put("shia labeouf", QuarkSounds.BLOCK_POTATO_DO_IT);
 		SOUNDS.put("joe biden", QuarkSounds.BLOCK_POTATO_SODA);
-		SOUNDS.put("kingbdogz", QuarkSounds.BLOCK_POTATO_KINGBDOGZ);
+		SOUNDS.put("yungnickyoung", QuarkSounds.BLOCK_POTATO_YUNG);
 	}
 
 	public TinyPotatoBlockEntity(BlockPos pos, BlockState state) {

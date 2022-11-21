@@ -349,6 +349,17 @@
       "quark:funny/kingbdogz5"
     ]
   },
+  "block.potato.yung": {
+    "subtitle": "quark.subtitles.yung",
+    "sounds": [
+      "quark:funny/yung1",
+      "quark:funny/yung2",
+      "quark:funny/yung3",
+      "quark:funny/yung4",
+      "quark:funny/yung5",
+      "quark:funny/yung6"
+    ]
+  },
   "block.potato.hurt": {
     "subtitle": "quark.subtitles.potato_hurt",
     "sounds": [
