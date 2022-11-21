@@ -56,6 +56,12 @@
       "quark:iron_rod",
       "quark:grate",
       "quark:raw_iron_bricks",
-      "quark:raw_copper_bricks"
+      "quark:raw_copper_bricks",
+      "quark:raw_iron_bricks_stairs",
+      "quark:raw_copper_bricks_stairs",
+      "quark:raw_iron_bricks_slab",
+      "quark:raw_copper_bricks_slab",
+      "quark:raw_iron_bricks_vertical_slab",
+      "quark:raw_copper_bricks_vertical_slab"
   ]
 }
