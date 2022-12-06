@@ -58,6 +58,9 @@ public class UtilityRecipesModule extends QuarkModule {
 	@Config(description = "Can Charcoal be crafted into Black Dye?", flag = "charcoal_to_dye")
 	public static boolean charcoalToBlackDye = true;
 
+	@Config(description = "Can two Logs be used instead of a Chest to make a Hopper?", flag = "easy_hopper")
+	public static boolean easyHopper = true;
+	
 	private boolean needsChange = false;
 
 	@Override
