@@ -1,9 +1,11 @@
 package vazkii.quark.content.automation.module;
 
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import javax.annotation.Nullable;
+
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 
@@ -11,7 +13,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
@@ -21,6 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -49,8 +54,11 @@ import vazkii.quark.content.automation.block.be.FeedingTroughBlockEntity;
  */
 @LoadModule(category = ModuleCategory.AUTOMATION, hasSubscriptions = true)
 public class FeedingTroughModule extends QuarkModule {
+	
 	public static BlockEntityType<FeedingTroughBlockEntity> blockEntityType;
 	public static PoiType feedingTroughPoi;
+	
+	private static final String TAG_CACHE = "quark:feedingTroughCache";
 
 	public static final Predicate<Holder<PoiType>> IS_FEEDER = (holder) -> holder.is(Registry.POINT_OF_INTEREST_TYPE.getKey(feedingTroughPoi));
 
@@ -67,6 +75,9 @@ public class FeedingTroughModule extends QuarkModule {
 	public static double loveChance = 0.333333333;
 
 	@Config public static double range = 10;
+	
+	@Config(description = "Set to false to make it so animals look for a nearby trough every time they want to eat instead of remembering the last one. Can affect performance if false.")
+	public static boolean enableTroughCaching = true;
 
 	private static final ThreadLocal<Boolean> breedingOccurred = ThreadLocal.withInitial(() -> false);
 
@@ -95,28 +106,53 @@ public class FeedingTroughModule extends QuarkModule {
 			return found;
 
 		Vec3 position = animal.position();
-		Pair<BlockPos, FakePlayer> pair = level.getPoiManager().findAllClosestFirstWithType(
+		TroughPointer pointer = null;
+		
+		boolean cached = false;
+		if(enableTroughCaching) {
+			TroughPointer candidate = TroughPointer.fromEntity(animal, goal);
+			if(candidate != null) {
+				pointer = candidate;
+				cached = true;
+			}
+		}
+		
+		if(!cached)
+			pointer = level.getPoiManager().findAllClosestFirstWithType(
 				IS_FEEDER, p -> p.distSqr(new Vec3i(position.x, position.y, position.z)) <= range * range,
 				animal.blockPosition(), (int) range, PoiManager.Occupancy.ANY)
 				.map(Pair::getSecond)
-				.map(pos -> level.getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough ? trough : null)
-				.filter(Objects::nonNull)
-				.map(trough -> Pair.of(trough.getBlockPos(), trough.getFoodHolder(goal)))
-				.filter(p -> p.getSecond() != null)
+				.map(pos -> getTroughFakePlayer(level, pos, goal))
+				.filter(Predicates.notNull())
 				.findFirst()
 				.orElse(null);
 
-		if (pair != null) {
-			BlockPos location = pair.getFirst();
+		if(pointer != null && pointer.exists()) {
+			BlockPos location = pointer.pos();
 			Vec3 eyesPos = goal.mob.position().add(0, goal.mob.getEyeHeight(), 0);
 			Vec3 targetPos = new Vec3(location.getX(), location.getY(), location.getZ()).add(0.5, 0.0625, 0.5);
 			BlockHitResult ray = goal.mob.level.clip(new ClipContext(eyesPos, targetPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, goal.mob));
 
-			if (ray.getType() == HitResult.Type.BLOCK && ray.getBlockPos().equals(location))
-				return pair.getSecond();
+			if (ray.getType() == HitResult.Type.BLOCK && ray.getBlockPos().equals(location)) {
+				if(!cached)
+					pointer.save(animal);
+				
+				return pointer.player();
+			}
 		}
+		
+		// if we got here that means the cache is invalid
+		if(cached)
+			animal.getPersistentData().remove(TAG_CACHE);
 
 		return found;
+	}
+	
+	private static @Nullable TroughPointer getTroughFakePlayer(Level level, BlockPos pos, TemptGoal goal) {
+		if(level.getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough)
+			return new TroughPointer(pos, trough.getFoodHolder(goal));
+		
+		return null;
 	}
 
 	@Override
@@ -133,5 +169,37 @@ public class FeedingTroughModule extends QuarkModule {
 
 	private static Set<BlockState> getBlockStates(Block p_218074_) {
 		return ImmutableSet.copyOf(p_218074_.getStateDefinition().getPossibleStates());
+	}
+	
+	private static record TroughPointer(BlockPos pos, FakePlayer player) {
+		
+		public boolean exists() {
+			return player != null;
+		}
+		
+		public void save(Entity e) {
+			CompoundTag data = e.getPersistentData();
+			CompoundTag tag = new CompoundTag();
+			tag.putInt("x", pos.getX());
+			tag.putInt("y", pos.getY());
+			tag.putInt("z", pos.getZ());
+			
+			data.put(TAG_CACHE, tag);
+		}
+		
+		public static TroughPointer fromEntity(Entity e, TemptGoal goal) {
+			CompoundTag data = e.getPersistentData();
+			if(!data.contains(TAG_CACHE, data.getId()))
+				return null;
+			
+			CompoundTag tag = data.getCompound(TAG_CACHE);
+			int x = tag.getInt("x");
+			int y = tag.getInt("y");
+			int z = tag.getInt("z");
+			
+			BlockPos pos = new BlockPos(x, y, z);
+			return getTroughFakePlayer(e.level, pos, goal);
+		}
+		
 	}
 }
