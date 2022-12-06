@@ -4,20 +4,33 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import vazkii.quark.addons.oddities.module.PipesModule;
 import vazkii.quark.base.module.QuarkModule;
 
 public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
@@ -42,6 +55,35 @@ public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
 	
 	public PipeBlock(QuarkModule module) {
 		super("pipe", module);
+	}
+	
+	@Override
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+		ItemStack stack = player.getItemInHand(handIn);
+		if(stack.is(Items.GLASS) && PipesModule.enableEncasedPipes) {
+			BlockEntity be = worldIn.getBlockEntity(pos);
+			CompoundTag cmp = be.saveWithoutMetadata();
+			
+			if(!worldIn.isClientSide) {
+				worldIn.removeBlockEntity(pos);
+				BlockState target = ((BasePipeBlock) PipesModule.encasedPipe).getTargetState(worldIn, pos, false);
+				worldIn.setBlock(pos, target, 1 | 2);
+				worldIn.updateNeighborsAt(pos, PipesModule.encasedPipe);
+				
+				be = worldIn.getBlockEntity(pos);
+				be.load(cmp);
+			}
+			
+			SoundType type = Blocks.GLASS.defaultBlockState().getSoundType(worldIn, pos, player);
+			SoundEvent sound = type.getPlaceSound();
+			worldIn.playSound(player, pos, sound, SoundSource.BLOCKS, (type.getVolume() + 1.0F) / 2.0F, type.getPitch() * 0.8F);
+			
+			stack.shrink(1);
+			
+			return InteractionResult.SUCCESS;	
+		}
+		
+		return super.use(state, worldIn, pos, player, handIn, hit);
 	}
 	
 	@Override
