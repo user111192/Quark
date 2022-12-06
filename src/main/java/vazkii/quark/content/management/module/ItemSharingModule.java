@@ -91,7 +91,7 @@ public class ItemSharingModule extends QuarkModule {
 				ItemStack stack = slot.getItem();
 
 				if(!stack.isEmpty()) {
-					ShareItemMessage message = new ShareItemMessage(slot.index);
+					ShareItemMessage message = new ShareItemMessage(slot.getSlotIndex());
 					QuarkNetwork.sendToServer(message);
 				}
 			}
