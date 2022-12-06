@@ -61,6 +61,9 @@ public class UtilityRecipesModule extends QuarkModule {
 	@Config(description = "Can two Logs be used instead of a Chest to make a Hopper?", flag = "easy_hopper")
 	public static boolean easyHopper = true;
 	
+	@Config(description = "Can two Logs be used to craft 16 sticks?", flag = "easy_sticks")
+	public static boolean easySticks = true;
+	
 	private boolean needsChange = false;
 
 	@Override
