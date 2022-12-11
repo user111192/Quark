@@ -74,6 +74,7 @@
     "client.ThrownTridentRendererMixin",
     "client.MinecartSoundInstanceMixin",
     "client.BiomeMixin",
+    "client.MinecraftMixin",
     
     "client.accessor.AccessorBlockColors",
     "client.accessor.AccessorModelManager",
