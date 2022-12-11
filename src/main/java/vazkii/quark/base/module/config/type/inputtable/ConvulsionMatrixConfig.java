@@ -1,7 +1,7 @@
 package vazkii.quark.base.module.config.type.inputtable;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -154,7 +154,7 @@ public class ConvulsionMatrixConfig extends AbstractInputtableType<ConvulsionMat
 			this.presetNames = presetNames;
 			this.presets = presets;
 			
-			presetMap = new HashMap<>();
+			presetMap = new LinkedHashMap<>();
 			presetMap.put(IDENTITY_NAME, IDENTITY);
 			for(int i = 0; i < presetNames.length; i++)
 				presetMap.put(presetNames[i], presets[i]);

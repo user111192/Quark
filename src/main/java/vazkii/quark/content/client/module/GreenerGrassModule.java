@@ -26,22 +26,21 @@ import vazkii.quark.mixin.client.accessor.AccessorBlockColors;
 @LoadModule(category = ModuleCategory.CLIENT)
 public class GreenerGrassModule extends QuarkModule {
 
-	private static final String[] PRESET_NAMES = { "Dreary", "Vibrant" };
-	
+	private static final String[] GRASS_PRESET_NAMES = { "Dreary", "Vibrant" };
 	private static final String GRASS_NAME = "Grass Colors";
 	private static final String[] GRASS_BIOMES = { "plains", "forest", "mountains", "jungle", "savanna", "swamp" };
 	private static final int[] GRASS_COLORS = { 0xff91bd59, 0xff79c05a, 0xff8ab689, 0xff59c93c, 0xffbfb755, 0xff6a7039 };
 	private static final int[] FOLLIAGE_COLORS = { 0xff77ab2f, 0xff59ae30, 0xff6da36b, 0xff30bb0b, 0xffaea42a, 0xff6a7039 };
 	private static final double[][] GRASS_PRESETS = {
 			{
-				1.24, 0, 0,
-				0, 0.84, 0,
-				0, 0.16, 0.36
+				1.24, 0.00, 0.00,
+				0.00, 0.84, 0.00,
+				0.00, 0.16, 0.36
 			},
 			{
-				1, 0, 0,
-				0.24, 1, 0.24,
-				0, 0, 0.6
+				1.00, 0.00, 0.00,
+				0.24, 1.00, 0.24,
+				0.00, 0.00, 0.60
 			}
 	};
 	private static final double[] GRASS_DEFAULT = {
@@ -50,29 +49,30 @@ public class GreenerGrassModule extends QuarkModule {
 			0.00, 0.00, 0.89
 	};
 	
+	private static final String[] WATER_PRESET_NAMES = { "Muddy", "Colder" };
 	private static final String WATER_NAME = "Water Colors";
 	private static final String[] WATER_BIOMES = { "generic", "swamp", "meadow", "mangrove", "cold", "warm" }; 
 	private static final int[] WATER_COLORS = { 0xff3f76e4, 0xff617B64, 0xff0e4ecf, 0xff3a7a6a, 0xff3d57D6, 0xff43d5ee };
-	private static final double[][] WATER_PRESETS = { // TODO
+	private static final double[][] WATER_PRESETS = {
 			{
-				1.24, 0, 0,
-				0, 0.84, 0,
-				0, 0.16, 0.36
+				0.76, 0.00, 0.10,
+				0.00, 0.80, 0.00,
+				0.00, 0.00, 0.70
 			},
 			{
-				1, 0, 0,
-				0.24, 1, 0.24,
-				0, 0, 0.6
+				1.00, 0.00, 0.00,
+				0.24, 0.96, 0.24,
+				0.20, 0.52, 1.00
 			}
 	};
-	private static final double[] WATER_DEFAULT = { // TODO
+	private static final double[] WATER_DEFAULT = {
 			0.86, 0.00, 0.00,
 			0.00, 1.00, 0.22,
 			0.00, 0.00, 1.22
 	};
 	
-	private static ConvulsionMatrixConfig.Params GRASS_PARAMS = new ConvulsionMatrixConfig.Params(GRASS_NAME, GRASS_DEFAULT, GRASS_BIOMES, GRASS_COLORS, FOLLIAGE_COLORS, PRESET_NAMES, GRASS_PRESETS);
-	private static ConvulsionMatrixConfig.Params WATER_PARAMS = new ConvulsionMatrixConfig.Params(WATER_NAME, WATER_DEFAULT, WATER_BIOMES, WATER_COLORS, null, PRESET_NAMES, WATER_PRESETS);
+	private static ConvulsionMatrixConfig.Params GRASS_PARAMS = new ConvulsionMatrixConfig.Params(GRASS_NAME, GRASS_DEFAULT, GRASS_BIOMES, GRASS_COLORS, FOLLIAGE_COLORS, GRASS_PRESET_NAMES, GRASS_PRESETS);
+	private static ConvulsionMatrixConfig.Params WATER_PARAMS = new ConvulsionMatrixConfig.Params(WATER_NAME, WATER_DEFAULT, WATER_BIOMES, WATER_COLORS, null, WATER_PRESET_NAMES, WATER_PRESETS);
 
 	private static boolean staticEnabled = false;
 	
