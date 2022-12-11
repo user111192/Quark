@@ -18,12 +18,16 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
+import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.world.block.CorundumClusterBlock;
 import vazkii.quark.content.world.module.CorundumModule;
 
 @LoadModule(category = ModuleCategory.TOOLS)
 public class BeaconRedirectionModule extends QuarkModule {
 
+	@Config 
+	public static int horizontalMoveLimit = 64;
+	
 	public static boolean staticEnabled;
 	
 	@Override
@@ -41,7 +45,7 @@ public class BeaconRedirectionModule extends QuarkModule {
 		BlockPos beaconPos = beacon.getBlockPos();
 		BlockPos currPos = beaconPos;
 
-		int horizontalMoves = 64;
+		int horizontalMoves = horizontalMoveLimit;
 		int targetHeight = world.getHeight(Heightmap.Types.WORLD_SURFACE, beaconPos.getX(), beaconPos.getZ());
 
 		beacon.checkingBeamSections.clear();
@@ -58,6 +62,7 @@ public class BeaconRedirectionModule extends QuarkModule {
 			currPos = currPos.relative(currSegment.dir);
 			if(currSegment.dir.getAxis().isHorizontal())
 				horizontalMoves--;
+			else horizontalMoves = horizontalMoveLimit;
 
 			BlockState blockstate = world.getBlockState(currPos);
 			Block block = blockstate.getBlock();
