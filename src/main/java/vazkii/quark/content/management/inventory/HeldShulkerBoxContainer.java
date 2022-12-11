@@ -33,8 +33,6 @@ public class HeldShulkerBoxContainer implements Container, MenuProvider {
 				gotBe = shulker;
 		}
 		
-		System.out.println("Player is " + player);
-		System.out.println("our be is " + gotBe);
 		be = gotBe;
 	}
 	
@@ -92,7 +90,6 @@ public class HeldShulkerBoxContainer implements Container, MenuProvider {
 
 	@Override
 	public boolean stillValid(Player player) {
-		System.out.println("test");
 		return stack != null && player == this.player && player.getInventory().getItem(slot) == stack;
 	}
 

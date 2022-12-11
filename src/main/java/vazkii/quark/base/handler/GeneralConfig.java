@@ -14,8 +14,7 @@ public class GeneralConfig {
 			"appeng.client.gui.implementations.SkyChestScreen",
 			"com.progwml6.ironchest.client.screen.IronChestScreen",
 			"vazkii.quark.addons.oddities.client.screen.CrateScreen",
-			"vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen",
-			"vazkii.quark.content.management.client.screen.HeldShulkerBoxScreen"
+			"vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen"
 			);
 
 	private static final List<String> STATIC_DENIED_SCREENS = Lists.newArrayList(

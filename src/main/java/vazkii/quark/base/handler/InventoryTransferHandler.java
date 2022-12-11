@@ -12,6 +12,8 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import org.apache.commons.lang3.tuple.Pair;
+
+import vazkii.quark.api.IQuarkButtonAllowed;
 import vazkii.quark.api.ITransferManager;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.module.ModuleLoader;
@@ -74,12 +76,11 @@ public class InventoryTransferHandler {
 		return ((BlockEntity) te).getCapability(QuarkCapabilities.TRANSFER).orElse(null);
 	}
 
-
 	public static boolean accepts(AbstractContainerMenu container, Player player) {
 		if (hasProvider(container))
 			return getProvider(container).acceptsTransfer(player);
 
-		return container.slots.size() - player.getInventory().items.size() >= 27;
+		return container instanceof IQuarkButtonAllowed || (container.slots.size() - player.getInventory().items.size() >= 27);
 	}
 
 	public static class Transfer {

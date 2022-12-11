@@ -8,9 +8,10 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import vazkii.quark.api.IQuarkButtonAllowed;
 import vazkii.quark.content.management.inventory.HeldShulkerBoxMenu;
 
-public class HeldShulkerBoxScreen extends AbstractContainerScreen<HeldShulkerBoxMenu> {
+public class HeldShulkerBoxScreen extends AbstractContainerScreen<HeldShulkerBoxMenu> implements IQuarkButtonAllowed {
 	
 	private static final ResourceLocation CONTAINER_TEXTURE = new ResourceLocation("textures/gui/container/shulker_box.png");
 

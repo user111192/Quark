@@ -60,12 +60,13 @@ public final class InventoryButtonHandler {
 		}
 		currentButtons.clear();
 
-		if(screen instanceof AbstractContainerScreen<?> containerScreen && (screen instanceof IQuarkButtonAllowed || GeneralConfig.isScreenAllowed(screen))) {
+		boolean apiAllowed = screen instanceof IQuarkButtonAllowed;
+		if(screen instanceof AbstractContainerScreen<?> containerScreen && (apiAllowed || GeneralConfig.isScreenAllowed(screen))) {
 
 			if(containerScreen instanceof InventoryScreen || containerScreen.getClass().getName().contains("CuriosScreen"))
 				applyProviders(event, ButtonTargetType.PLAYER_INVENTORY, containerScreen, s -> s.container == mc.player.getInventory() && s.getSlotIndex() == 17);
 			else {
-				if(InventoryTransferHandler.accepts(containerScreen.getMenu(), mc.player)) {
+				if(apiAllowed || InventoryTransferHandler.accepts(containerScreen.getMenu(), mc.player)) {
 					applyProviders(event, ButtonTargetType.CONTAINER_INVENTORY, containerScreen, s -> s.container != mc.player.getInventory() && s.getSlotIndex() == 8);
 					applyProviders(event, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, containerScreen, s -> s.container == mc.player.getInventory() && s.getSlotIndex() == 17);
 				}

@@ -92,11 +92,12 @@ public class ChestSearchingModule extends QuarkModule {
 	@OnlyIn(Dist.CLIENT)
 	public void initGui(ScreenEvent.Init.Post event) {
 		Screen gui = event.getScreen();
+		boolean apiAllowed = gui instanceof IQuarkButtonAllowed; 
 		if(!(gui instanceof InventoryScreen) &&
 				gui instanceof AbstractContainerScreen<?> chest &&
-				(gui instanceof IQuarkButtonAllowed || GeneralConfig.isScreenAllowed(gui))) {
+				(apiAllowed || GeneralConfig.isScreenAllowed(gui))) {
 			Minecraft mc = gui.getMinecraft();
-			if(InventoryTransferHandler.accepts(chest.getMenu(), mc.player)) {
+			if(apiAllowed || InventoryTransferHandler.accepts(chest.getMenu(), mc.player)) {
 				searchBar = new EditBox(mc.font, 18, 6, 117, 10, Component.literal(text));
 
 				searchBar.setValue(text);

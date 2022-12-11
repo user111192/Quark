@@ -9,12 +9,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ShulkerBoxSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import vazkii.quark.api.IQuarkButtonAllowed;
 import vazkii.quark.content.management.module.ExpandedItemInteractionsModule;
 
-public class HeldShulkerBoxMenu extends AbstractContainerMenu {
+public class HeldShulkerBoxMenu extends AbstractContainerMenu implements IQuarkButtonAllowed {
 
 	private final Container container;
-	private final int blockedSlot;
+	public final int blockedSlot;
 
 	public HeldShulkerBoxMenu(int p_40188_, Inventory p_40189_, int blockedSlot) {
 		this(p_40188_, p_40189_, new SimpleContainer(27), blockedSlot);
@@ -47,40 +48,9 @@ public class HeldShulkerBoxMenu extends AbstractContainerMenu {
 		}
 	}
 	
-	public static Slot verify(int i, int blockedSlot, Slot slot) { // TODO remove
-		if(i == blockedSlot) {
-			ItemStack stack = slot.getItem().copy();
-			stack.removeTagKey("BlockEntityTag");
-			
-			Slot anonSlotObj = new Slot(slot.container, i, slot.x, slot.y) {
-				
-				@Override
-				public ItemStack getItem() {
-					return stack;
-				}
-				
-				@Override
-				public boolean mayPickup(Player p_40228_) {
-					return false;
-				}
-				
-				@Override
-				public boolean mayPlace(ItemStack p_40231_) {
-					return false;
-				}
-				
-			};
-			
-			return anonSlotObj;
-		}
-		
-		return slot;
-	}
-	
 	public static HeldShulkerBoxMenu fromNetwork(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
 		int slot = buf.readInt();
 		HeldShulkerBoxContainer container = new HeldShulkerBoxContainer(playerInventory.player, slot);
-		System.out.println("Container is " + container);
 		return new HeldShulkerBoxMenu(windowId, playerInventory, container, slot);
 	}
 
