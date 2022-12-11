@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.Minecraft;
@@ -25,7 +26,54 @@ import vazkii.quark.mixin.client.accessor.AccessorBlockColors;
 @LoadModule(category = ModuleCategory.CLIENT)
 public class GreenerGrassModule extends QuarkModule {
 
+	private static final String[] PRESET_NAMES = { "Dreary", "Vibrant" };
+	
+	public static final String[] GRASS_BIOMES = { "plains", "forest", "mountains", "jungle", "savanna", "swamp" };
+	private static final int[] GRASS_COLORS = { 0xff91bd59, 0xff79c05a, 0xff8ab689, 0xff59c93c, 0xffbfb755, 0xff6a7039 };
+	private static final int[] FOLLIAGE_COLORS = { 0xff77ab2f, 0xff59ae30, 0xff6da36b, 0xff30bb0b, 0xffaea42a, 0xff6a7039 };
+	private static final double[][] GRASS_PRESETS = {
+			{
+				1.24, 0, 0,
+				0, 0.84, 0,
+				0, 0.16, 0.36
+			},
+			{
+				1, 0, 0,
+				0.24, 1, 0.24,
+				0, 0, 0.6
+			}
+	};
+	private static final double[] GRASS_DEFAULT = {
+			0.89, 0.00, 0.00,
+			0.00, 1.11, 0.00,
+			0.00, 0.00, 0.89
+	};
+	
+	public static final String[] WATER_BIOMES = { "generic", "wip", "wip", "wip", "wip", "wip" }; // TODO
+	private static final int[] WATER_COLORS = { 0xff3f76e4, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff }; // TODO
+	private static final double[][] WATER_PRESETS = { // TODO
+			{
+				1.24, 0, 0,
+				0, 0.84, 0,
+				0, 0.16, 0.36
+			},
+			{
+				1, 0, 0,
+				0.24, 1, 0.24,
+				0, 0, 0.6
+			}
+	};
+	private static final double[] WATER_DEFAULT = { // TODO
+			0.89, 0.00, 0.00,
+			0.00, 0.89, 0.00,
+			0.00, 0.00, 1.11
+	};
+	
+	private static ConvulsionMatrixConfig.Params GRASS_PARAMS = new ConvulsionMatrixConfig.Params(GRASS_DEFAULT, GRASS_BIOMES, GRASS_COLORS, FOLLIAGE_COLORS, PRESET_NAMES, GRASS_PRESETS);
+	private static ConvulsionMatrixConfig.Params WATER_PARAMS = new ConvulsionMatrixConfig.Params(WATER_DEFAULT, WATER_BIOMES, WATER_COLORS, null, PRESET_NAMES, WATER_PRESETS);
+
 	@Config public static boolean affectLeaves = true;
+	@Config public static boolean affectWater = false;
 
 	@Config public static List<String> blockList = Lists.newArrayList(
 			"minecraft:large_fern",
@@ -53,20 +101,22 @@ public class GreenerGrassModule extends QuarkModule {
 			"environmental:hanging_willow_leaves",
 			"minecraft:vine");
 
-	@Config public static ConvulsionMatrixConfig colorMatrix = new ConvulsionMatrixConfig(new double[] {
-			0.89, 0.00, 0.00,
-			0.00, 1.11, 0.00,
-			0.00, 0.00, 0.89
-	});
+	@Config public static List<String> waterList = Lists.newArrayList(
+			"minecraft:water");
+	
+	
+	@Config public static ConvulsionMatrixConfig colorMatrix = new ConvulsionMatrixConfig(GRASS_PARAMS);
+	@Config public static ConvulsionMatrixConfig waterMatrix = new ConvulsionMatrixConfig(WATER_PARAMS);
 
 	@Override
 	public void firstClientTick() {
-		registerGreenerColor(blockList, false);
-		registerGreenerColor(leavesList, true);
+		registerGreenerColor(blockList, colorMatrix, () -> true);
+		registerGreenerColor(leavesList, colorMatrix,() -> affectLeaves);
+		registerGreenerColor(waterList, waterMatrix, () -> affectWater);
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private void registerGreenerColor(Iterable<String> ids, boolean leaves) {
+	private void registerGreenerColor(Iterable<String> ids, ConvulsionMatrixConfig config, Supplier<Boolean> condition) {
 		BlockColors colors = Minecraft.getInstance().getBlockColors();
 
 		// Can't be AT'd as it's changed by forge
@@ -82,17 +132,17 @@ public class GreenerGrassModule extends QuarkModule {
 					
 					BlockColor color = map.get(delegate);
 					if(color != null)
-						colors.register(getGreenerColor(color, leaves), block);
+						colors.register(getConvulsedColor(config, color, condition), block);
 				}
 			}
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private BlockColor getGreenerColor(BlockColor color, boolean leaves) {
+	private BlockColor getConvulsedColor(ConvulsionMatrixConfig config, BlockColor color, Supplier<Boolean> condition) {
 		return (state, world, pos, tintIndex) -> {
 			int originalColor = color.getColor(state, world, pos, tintIndex);
-			if(!enabled || (leaves && !affectLeaves))
+			if(!enabled || !condition.get())
 				return originalColor;
 
 			return colorMatrix.convolve(originalColor);

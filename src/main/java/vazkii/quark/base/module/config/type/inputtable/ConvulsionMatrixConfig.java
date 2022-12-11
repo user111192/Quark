@@ -1,5 +1,15 @@
 package vazkii.quark.base.module.config.type.inputtable;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
+
+import com.google.common.base.Preconditions;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.api.config.IConfigElement;
@@ -10,10 +20,7 @@ import vazkii.quark.base.client.config.screen.inputtable.IInputtableConfigType;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.quark.base.module.config.type.AbstractConfigType;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import vazkii.quark.content.client.module.GreenerGrassModule;
 
 public class ConvulsionMatrixConfig extends AbstractConfigType implements IInputtableConfigType<ConvulsionMatrixConfig> {
 
@@ -21,13 +28,14 @@ public class ConvulsionMatrixConfig extends AbstractConfigType implements IInput
 	@Config public List<Double> g;
 	@Config public List<Double> b;
 
-	public final double[] defaultMatrix;
+	public final Params params;
+	
 	public double[] colorMatrix;
 
-	public ConvulsionMatrixConfig(double[] defaultMatrix) {
-		assert defaultMatrix.length == 9;
-
-		this.defaultMatrix = defaultMatrix;
+	public ConvulsionMatrixConfig(Params params) {
+		this.params = params;
+		
+		double[] defaultMatrix = params.defaultMatrix;
 		this.colorMatrix = Arrays.copyOf(defaultMatrix, defaultMatrix.length);
 
 		r = Arrays.asList(defaultMatrix[0], defaultMatrix[1], defaultMatrix[2]);
@@ -45,7 +53,7 @@ public class ConvulsionMatrixConfig extends AbstractConfigType implements IInput
 			};
 		} catch(NumberFormatException | ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
-			colorMatrix = Arrays.copyOf(defaultMatrix, defaultMatrix.length);
+			colorMatrix = Arrays.copyOf(params.defaultMatrix, params.defaultMatrix.length);
 		}
 	}
 
@@ -64,12 +72,12 @@ public class ConvulsionMatrixConfig extends AbstractConfigType implements IInput
 
 	@Override
 	public void inheritDefaults(ConvulsionMatrixConfig other) {
-		colorMatrix = Arrays.copyOf(other.defaultMatrix, other.defaultMatrix.length);
+		colorMatrix = Arrays.copyOf(other.params.defaultMatrix, other.params.defaultMatrix.length);
 	}
 
 	@Override
 	public ConvulsionMatrixConfig copy() {
-		ConvulsionMatrixConfig newMatrix = new ConvulsionMatrixConfig(colorMatrix);
+		ConvulsionMatrixConfig newMatrix = new ConvulsionMatrixConfig(params);
 		newMatrix.inherit(this, false);
 		return newMatrix;
 	}
@@ -112,5 +120,45 @@ public class ConvulsionMatrixConfig extends AbstractConfigType implements IInput
 	public String getSubtitle() {
 		return "[" + Arrays.stream(colorMatrix).boxed().map(d -> String.format("%.1f", d)).collect(Collectors.joining(", ")) + "]";
 	}
+	
+	public static class Params {
+		
+		private static final String IDENTITY_NAME = "Vanilla";
+		public static final double[] IDENTITY = {
+				1, 0, 0,
+				0, 1, 0,
+				0, 0, 1
+			};
+		
+		public final String[] biomeNames;
+		public final double[] defaultMatrix;
+		public final int[] testColors;
+		@Nullable public final int[] folliageTestColors;
+		
+		public final Map<String, double[]> presetMap;
 
+		public Params(double[] defaultMatrix,  String[] biomeNames, int[] testColors, @Nullable int[] folliageColors, String[] presetNames, double[][] presets) {
+			Preconditions.checkArgument(defaultMatrix.length == 9);
+			Preconditions.checkArgument(biomeNames.length == 6);
+			Preconditions.checkArgument(testColors.length == 6);
+			Preconditions.checkArgument(folliageColors == null || folliageColors.length == 6);
+			Preconditions.checkArgument(presetNames.length == presets.length);
+			
+			this.defaultMatrix = defaultMatrix;
+			this.biomeNames = biomeNames;
+			this.testColors = testColors;
+			this.folliageTestColors = folliageColors;
+			
+			presetMap = new HashMap<>();
+			presetMap.put(IDENTITY_NAME, IDENTITY);
+			for(int i = 0; i < presetNames.length; i++)
+				presetMap.put(presetNames[i], presets[i]);
+		}
+		
+		public boolean shouldDisplayFolliage() {
+			return folliageTestColors != null && GreenerGrassModule.affectLeaves;
+		}
+		
+	}
+	
 }

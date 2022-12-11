@@ -43,9 +43,11 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 				}
 			});
 
-		addRenderableWidget(new Button(x, y + 115, w - p, 20, Component.literal("Identity"), this::onSlide));
-		addRenderableWidget(new Button(x + w, y + 115, w - p, 20, Component.literal("Dreary"), this::onSlide));
-		addRenderableWidget(new Button(x + w * 2, y + 115, w - p, 20, Component.literal("Vibrant"), this::onSlide));
+		int i = 0;
+		for(String s : mutable.params.presetMap.keySet()) {
+			addRenderableWidget(new Button(x + (w * i), y + 115, w - p, 20, Component.literal(s), this::onSlide));
+			i++;
+		}
 	}
 
 	@Override
@@ -92,16 +94,22 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 				sliders++;
 			}
 
-		String[] biomes = { "plains", "forest", "mountains", "jungle", "savanna", "swamp" };
-		int[] colors = { 0xff91bd59, 0xff79c05a, 0xff8ab689, 0xff59c93c, 0xffbfb755, 0xff6a7039 };
-		int[] folliageColors = { 0xff77ab2f, 0xff59ae30, 0xff6da36b, 0xff30bb0b, 0xffaea42a, 0xff6a7039 };
+		String[] biomes = mutable.params.biomeNames;
+		int[] colors = mutable.params.testColors;
+		int[] folliageColors =  mutable.params.folliageTestColors;
+		boolean renderFolliage = mutable.params.shouldDisplayFolliage();
+
 		for(int i = 0; i < biomes.length; i++) {
 			String name = biomes[i];
 			int color = colors[i];
-			int folliage = folliageColors[i];
 
 			int convolved = mutable.convolve(color);
-			int convolvedFolliage = mutable.convolve(folliage);
+			
+			int folliage, convolvedFolliage = 0;
+			if(renderFolliage) {
+				folliage = folliageColors[i];
+				convolvedFolliage = mutable.convolve(folliage);
+			}
 
 			int cx = x + (i % 2) * (size + 5);
 			int cy = y + (i / 2) * (size + 5);
@@ -109,15 +117,19 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 			fill(mstack, cx - 1, cy - 1, cx + size + 1, cy + size + 1, 0xFF000000);
 			fill(mstack, cx, cy, cx + size, cy + size, convolved);
 			fill(mstack, cx + size / 2 - 1, cy + size / 2 - 1, cx + size, cy + size, 0x22000000);
-			fill(mstack, cx + size / 2, cy + size / 2, cx + size, cy + size, convolvedFolliage);
+			
+			if(renderFolliage)
+				fill(mstack, cx + size / 2, cy + size / 2, cx + size, cy + size, convolvedFolliage);
 
 			font.draw(mstack, name, cx + 2, cy + 2, 0x55000000);
 
-			minecraft.getItemRenderer().renderGuiItem(new ItemStack(Items.OAK_SAPLING), cx + size - 18, cy + size - 16);
-			mstack.pushPose();
-			mstack.translate(0, 0, 999);
-			fill(mstack, cx + size / 2, cy + size / 2, cx + size, cy + size, convolvedFolliage & 0x55FFFFFF);
-			mstack.popPose();
+			if(renderFolliage) {
+				minecraft.getItemRenderer().renderGuiItem(new ItemStack(Items.OAK_SAPLING), cx + size - 18, cy + size - 16);
+				mstack.pushPose();
+				mstack.translate(0, 0, 999);
+				fill(mstack, cx + size / 2, cy + size / 2, cx + size, cy + size, convolvedFolliage & 0x55FFFFFF);
+				mstack.popPose();
+			}
 		}
 
 		if(needsUpdate)
@@ -142,36 +154,17 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 
 	private void onSlide(AbstractWidget widget) {
 		String name = widget.getMessage().getString();
-		double[][] matrices = {
-				{
-					1, 0, 0,
-					0, 1, 0,
-					0, 0, 1
-				},
-				{
-					1.24, 0, 0,
-					0, 0.84, 0,
-					0, 0.16, 0.36
-				},
-				{
-					1, 0, 0,
-					0.24, 1, 0.24,
-					0, 0, 0.6
-				}
-		};
 
-		int idx = switch (name) {
-			case "Dreary" -> 1;
-			case "Vibrant" -> 2;
-			default -> 0;
-		};
+		double[] matrix = ConvulsionMatrixConfig.Params.IDENTITY;
+		if(mutable.params.presetMap.containsKey(name))
+			matrix = mutable.params.presetMap.get(name);
 
 		int sliders = 0;
-		mutable.colorMatrix = Arrays.copyOf(matrices[idx], matrices[idx].length);
+		mutable.colorMatrix = Arrays.copyOf(matrix, matrix.length);
 
 		for(Widget w : renderables)
 			if(w instanceof ForgeSlider s) {
-				s.setValue(matrices[idx][sliders]);
+				s.setValue(matrix[sliders]);
 				sliders++;
 			}
 		update();

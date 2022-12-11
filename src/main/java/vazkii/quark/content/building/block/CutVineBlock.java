@@ -1,10 +1,10 @@
 package vazkii.quark.content.building.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -20,8 +20,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.interf.IBlockColorProvider;
 import vazkii.quark.base.block.QuarkVineBlock;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
 
 public class CutVineBlock extends QuarkVineBlock implements IBlockColorProvider {
 
