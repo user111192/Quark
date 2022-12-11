@@ -168,7 +168,7 @@ public class LockRotationModule extends QuarkModule {
 	private void acceptInput() {
 		Minecraft mc = Minecraft.getInstance();
 		boolean down = keybind.isDown();
-		if(mc.isWindowActive() && down) {
+		if(mc.isWindowActive() && down && mc.screen == null) {
 			LockProfile newProfile;
 			HitResult result = mc.hitResult;
 
