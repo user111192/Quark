@@ -34,6 +34,7 @@ public abstract class AbstractInputtableConfigTypeScreen<T extends IInputtableCo
 	@Override
 	protected void commit() {
 		original.inherit(mutable, true);
+		original.markDirty(true);
 	}
 	
 	@Override

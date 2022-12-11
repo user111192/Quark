@@ -1,19 +1,5 @@
 package vazkii.quark.base.client.config;
 
-import net.minecraft.client.resources.language.I18n;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import org.apache.commons.lang3.text.WordUtils;
-import vazkii.quark.api.config.IConfigCategory;
-import vazkii.quark.api.config.IConfigElement;
-import vazkii.quark.api.config.IConfigObject;
-import vazkii.quark.base.client.config.external.ExternalCategory;
-import vazkii.quark.base.client.config.screen.CategoryScreen;
-import vazkii.quark.base.client.config.screen.WidgetWrapper;
-import vazkii.quark.base.client.config.screen.widgets.IWidgetProvider;
-import vazkii.quark.base.client.config.screen.widgets.PencilButton;
-import vazkii.quark.base.module.config.type.IConfigType;
-
-import javax.annotation.Nonnull;
 import java.io.PrintStream;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -21,13 +7,30 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import javax.annotation.Nonnull;
+
+import org.apache.commons.lang3.text.WordUtils;
+
+import net.minecraft.client.resources.language.I18n;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+import vazkii.quark.api.config.IConfigCategory;
+import vazkii.quark.api.config.IConfigElement;
+import vazkii.quark.api.config.IConfigObject;
+import vazkii.quark.base.client.config.external.ExternalCategory;
+import vazkii.quark.base.client.config.screen.CategoryScreen;
+import vazkii.quark.base.client.config.screen.WidgetWrapper;
+import vazkii.quark.base.client.config.screen.inputtable.IInputtableConfigType;
+import vazkii.quark.base.client.config.screen.widgets.IWidgetProvider;
+import vazkii.quark.base.client.config.screen.widgets.PencilButton;
+import vazkii.quark.base.module.config.type.IConfigType;
+
 public class ConfigCategory extends AbstractConfigElement implements IConfigCategory, IWidgetProvider {
 
 	public final List<IConfigElement> subElements = new LinkedList<>();
 
 	private final String path;
 	private final int depth;
-	private final Object holderObject;
+	protected final Object holderObject;
 
 	private boolean dirty = false;
 
@@ -66,15 +69,21 @@ public class ConfigCategory extends AbstractConfigElement implements IConfigCate
 
 	@Override
 	public void updateDirty() {
-		dirty = false;
-		for(IConfigElement sub : subElements)
-			if(sub.isDirty()) {
-				dirty = true;
-				break;
-			}
+		dirty = shouldBeDirty();
 
 		if(parent != null)
 			parent.updateDirty();
+	}
+	
+	protected boolean shouldBeDirty() {
+		if(isInputtable())
+			return ((IInputtableConfigType<?>) holderObject).isDirty();
+		
+		for(IConfigElement sub : subElements)
+			if(sub.isDirty())
+				return true;
+		
+		return false;
 	}
 
 	@Override
@@ -85,11 +94,13 @@ public class ConfigCategory extends AbstractConfigElement implements IConfigCate
 
 	@Override
 	public void save() {
-		for (IConfigElement element : subElements) {
-			if (element.isDirty()) {
+		for(IConfigElement element : subElements)
+			if(isInputtable() || element.isDirty())
 				element.save();
-			}
-		}
+	}
+	
+	private boolean isInputtable() {
+		return holderObject instanceof IInputtableConfigType<?>;
 	}
 
 	@Override
@@ -109,10 +120,11 @@ public class ConfigCategory extends AbstractConfigElement implements IConfigCate
 
 	@Override
 	public IConfigCategory addCategory(String name, @Nonnull String comment, Object holderObject) {
+		ConfigCategory newCategory = new ConfigCategory(name, comment, this, holderObject); 
 		if(holderObject instanceof IConfigType configType)
-			configType.setCategory(this);
+			configType.setCategory(newCategory);
 
-		return addCategory(new ConfigCategory(name, comment, this, holderObject));
+		return addCategory(newCategory);
 	}
 
 	public IConfigCategory addCategory(IConfigCategory category) {

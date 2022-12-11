@@ -19,10 +19,9 @@ import vazkii.quark.base.client.config.screen.inputtable.ConvulsionMatrixInputSc
 import vazkii.quark.base.client.config.screen.inputtable.IInputtableConfigType;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
-import vazkii.quark.base.module.config.type.AbstractConfigType;
 import vazkii.quark.content.client.module.GreenerGrassModule;
 
-public class ConvulsionMatrixConfig extends AbstractConfigType implements IInputtableConfigType<ConvulsionMatrixConfig> {
+public class ConvulsionMatrixConfig extends AbstractInputtableType<ConvulsionMatrixConfig> {
 
 	@Config public List<Double> r;
 	@Config public List<Double> g;
@@ -43,6 +42,8 @@ public class ConvulsionMatrixConfig extends AbstractConfigType implements IInput
 
 	@Override
 	public void onReload(ConfigFlagManager flagManager) {
+		super.onReload(flagManager);
+		
 		try {
 			colorMatrix = new double[] {
 					r.get(0), r.get(1), r.get(2),
@@ -59,11 +60,6 @@ public class ConvulsionMatrixConfig extends AbstractConfigType implements IInput
 	public void inherit(ConvulsionMatrixConfig other, boolean committing) {
 		colorMatrix = Arrays.copyOf(other.colorMatrix, other.colorMatrix.length);
 		updateRGB();
-
-		if(committing && category != null) {
-			category.refresh();
-			category.updateDirty();
-		}
 	}
 	
 	private void updateRGB() {

@@ -1,5 +1,8 @@
 package vazkii.quark.base.module.config.type.inputtable;
 
+import java.util.List;
+import java.util.Objects;
+
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -10,12 +13,8 @@ import vazkii.quark.base.client.config.screen.inputtable.IInputtableConfigType;
 import vazkii.quark.base.client.config.screen.inputtable.RGBColorInputScreen;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
-import vazkii.quark.base.module.config.type.AbstractConfigType;
 
-import java.util.List;
-import java.util.Objects;
-
-public class RGBColorConfig extends AbstractConfigType implements IInputtableConfigType<RGBColorConfig> {
+public class RGBColorConfig extends AbstractInputtableType<RGBColorConfig> {
 
 	@Config public double r;
 	@Config public double g;
@@ -79,6 +78,8 @@ public class RGBColorConfig extends AbstractConfigType implements IInputtableCon
 
 	@Override
 	public void onReload(ConfigFlagManager flagManager) {
+		super.onReload(flagManager);
+		
 		color = calculateColor();
 	}
 
@@ -109,10 +110,6 @@ public class RGBColorConfig extends AbstractConfigType implements IInputtableCon
 			dr = other.r;
 			dg = other.g;
 			db = other.b;
-		}
-		else if(category != null) {
-			category.refresh();
-			category.updateDirty();
 		}
 	}
 
