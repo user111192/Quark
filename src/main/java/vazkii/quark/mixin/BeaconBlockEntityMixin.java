@@ -14,7 +14,7 @@ import vazkii.quark.content.tools.module.BeaconRedirectionModule;
 public class BeaconBlockEntityMixin {
 
 	// This captures the for loop inside tick that computes the beacon segments
-	@ModifyConstant(method = "tick", constant = @Constant(intValue = 0))
+	@ModifyConstant(method = "tick", constant = @Constant(intValue = 0, ordinal = 0))
 	private static int tick(int val, Level level, BlockPos pos, BlockState state, BeaconBlockEntity beacon) { 
 		return BeaconRedirectionModule.tickBeacon(beacon);
 	}
