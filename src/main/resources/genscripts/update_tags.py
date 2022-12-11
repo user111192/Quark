@@ -32,6 +32,7 @@ def main():
 	write_file('items/stairs.json', stairs)
 	write_file('items/buttons.json', buttons)
 	write_file('items/fence_gates.json', fence_gates, domain='forge')
+	write_file('items/vertical_slab.json', vertical_slabs, domain='quark')
 
 	write_file('blocks/walls.json', walls)
 	write_file('blocks/slabs.json', slabs)
