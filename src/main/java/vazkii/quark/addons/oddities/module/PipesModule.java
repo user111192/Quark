@@ -39,8 +39,8 @@ public class PipesModule extends QuarkModule {
 	@Config(flag = "encased_pipes")
 	public static boolean enableEncasedPipes = true;
 
-	@Config
-	public static boolean renderPipeItems = true;
+	@Config public static boolean renderPipeItems = true;
+	@Config public static boolean emitVibrations = true; 
 	
 	public static Block pipe;
 	public static Block encasedPipe;

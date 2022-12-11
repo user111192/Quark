@@ -38,6 +38,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gameevent.GameEvent.Context;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -111,6 +112,9 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 							else
 								level.playSound(null, item.getX(), item.getY(), item.getZ(), QuarkSounds.BLOCK_PIPE_PICKUP, SoundSource.BLOCKS, 1f, 1f);
 						}
+						
+						if(PipesModule.emitVibrations)
+							getLevel().gameEvent(GameEvent.PROJECTILE_LAND, getBlockPos(), Context.of(getBlockState()));
 
 						pickedItemsUp = true;
 						item.discard();
@@ -154,7 +158,7 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 
 			queuedItems.clear();
 		}
-
+		
 		if(getComparatorOutput() != currentOut)
 			level.updateNeighbourForOutputSignal(getBlockPos(), getBlockState().getBlock());
 	}
@@ -181,7 +185,7 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 			if(getComparatorOutput() != currentOut)
 				level.updateNeighbourForOutputSignal(getBlockPos(), getBlockState().getBlock());
 		} else queuedItems.add(item);
-
+		
 		return true;
 	}
 
@@ -250,11 +254,16 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 
 			level.gameEvent(null, GameEvent.PROJECTILE_LAND, worldPosition);
 			
-			if (playSound && PipesModule.doPipesWhoosh) {
-				if (isTheGoodDay(level))
-					level.playSound(null, posX, posY, posZ, QuarkSounds.BLOCK_PIPE_SHOOT_LENNY, SoundSource.BLOCKS, 1f, pitch);
-				else
-					level.playSound(null, posX, posY, posZ, QuarkSounds.BLOCK_PIPE_SHOOT, SoundSource.BLOCKS, 1f, pitch);
+			if (playSound) {
+				if(PipesModule.doPipesWhoosh) {
+					if (isTheGoodDay(level))
+						level.playSound(null, posX, posY, posZ, QuarkSounds.BLOCK_PIPE_SHOOT_LENNY, SoundSource.BLOCKS, 1f, pitch);
+					else
+						level.playSound(null, posX, posY, posZ, QuarkSounds.BLOCK_PIPE_SHOOT, SoundSource.BLOCKS, 1f, pitch);
+				}
+				
+				if(PipesModule.emitVibrations)
+					getLevel().gameEvent(GameEvent.PROJECTILE_SHOOT, getBlockPos(), Context.of(getBlockState()));
 			}
 
 			ItemEntity entity = new ItemEntity(level, posX, posY, posZ, stack);
