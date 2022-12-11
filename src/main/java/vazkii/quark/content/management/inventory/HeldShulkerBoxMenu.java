@@ -54,10 +54,12 @@ public class HeldShulkerBoxMenu extends AbstractContainerMenu implements IQuarkB
 		return new HeldShulkerBoxMenu(windowId, playerInventory, container, slot);
 	}
 
+	@Override
 	public boolean stillValid(Player p_40195_) {
 		return this.container.stillValid(p_40195_);
 	}
 
+	@Override
 	public ItemStack quickMoveStack(Player p_40199_, int p_40200_) {
 		ItemStack itemstack = ItemStack.EMPTY;
 		Slot slot = this.slots.get(p_40200_);
@@ -82,6 +84,7 @@ public class HeldShulkerBoxMenu extends AbstractContainerMenu implements IQuarkB
 		return itemstack;
 	}
 
+	@Override
 	public void removed(Player p_40197_) {
 		super.removed(p_40197_);
 		this.container.stopOpen(p_40197_);
