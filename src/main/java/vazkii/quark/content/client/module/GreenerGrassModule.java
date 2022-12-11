@@ -51,8 +51,8 @@ public class GreenerGrassModule extends QuarkModule {
 	};
 	
 	private static final String WATER_NAME = "Water Colors";
-	private static final String[] WATER_BIOMES = { "generic", "wip", "wip", "wip", "wip", "wip" }; // TODO
-	private static final int[] WATER_COLORS = { 0xff3f76e4, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff }; // TODO
+	private static final String[] WATER_BIOMES = { "generic", "swamp", "meadow", "mangrove", "cold", "warm" }; 
+	private static final int[] WATER_COLORS = { 0xff3f76e4, 0xff617B64, 0xff0e4ecf, 0xff3a7a6a, 0xff3d57D6, 0xff43d5ee };
 	private static final double[][] WATER_PRESETS = { // TODO
 			{
 				1.24, 0, 0,
@@ -66,14 +66,16 @@ public class GreenerGrassModule extends QuarkModule {
 			}
 	};
 	private static final double[] WATER_DEFAULT = { // TODO
-			0.89, 0.00, 0.00,
-			0.00, 0.89, 0.00,
-			0.00, 0.00, 1.11
+			0.86, 0.00, 0.00,
+			0.00, 1.00, 0.22,
+			0.00, 0.00, 1.22
 	};
 	
 	private static ConvulsionMatrixConfig.Params GRASS_PARAMS = new ConvulsionMatrixConfig.Params(GRASS_NAME, GRASS_DEFAULT, GRASS_BIOMES, GRASS_COLORS, FOLLIAGE_COLORS, PRESET_NAMES, GRASS_PRESETS);
 	private static ConvulsionMatrixConfig.Params WATER_PARAMS = new ConvulsionMatrixConfig.Params(WATER_NAME, WATER_DEFAULT, WATER_BIOMES, WATER_COLORS, null, PRESET_NAMES, WATER_PRESETS);
 
+	private static boolean staticEnabled = false;
+	
 	@Config public static boolean affectLeaves = true;
 	@Config public static boolean affectWater = false;
 
@@ -102,19 +104,19 @@ public class GreenerGrassModule extends QuarkModule {
 			"environmental:willow_leaves",
 			"environmental:hanging_willow_leaves",
 			"minecraft:vine");
-
-	@Config public static List<String> waterList = Lists.newArrayList(
-			"minecraft:water");
-	
 	
 	@Config public static ConvulsionMatrixConfig colorMatrix = new ConvulsionMatrixConfig(GRASS_PARAMS);
 	@Config public static ConvulsionMatrixConfig waterMatrix = new ConvulsionMatrixConfig(WATER_PARAMS);
 
 	@Override
+	public void configChanged() {
+		staticEnabled = enabled;
+	}
+	
+	@Override
 	public void firstClientTick() {
 		registerGreenerColor(blockList, colorMatrix, () -> true);
 		registerGreenerColor(leavesList, colorMatrix,() -> affectLeaves);
-		registerGreenerColor(waterList, waterMatrix, () -> affectWater);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -149,6 +151,13 @@ public class GreenerGrassModule extends QuarkModule {
 
 			return colorMatrix.convolve(originalColor);
 		};
+	}
+	
+	public static int getWaterColor(int currColor) {
+		if(!staticEnabled || !affectWater)
+			return currColor;
+		
+		return waterMatrix.convolve(currColor);
 	}
 
 }

@@ -73,6 +73,7 @@
     "client.ScreenMixin",
     "client.ThrownTridentRendererMixin",
     "client.MinecartSoundInstanceMixin",
+    "client.BiomeColorsMixin",
     
     "client.accessor.AccessorBlockColors",
     "client.accessor.AccessorModelManager",
