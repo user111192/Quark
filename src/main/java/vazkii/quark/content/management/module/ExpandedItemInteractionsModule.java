@@ -32,6 +32,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
@@ -231,7 +232,9 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 				incoming.isEmpty() && 
 				allowOpeningShulkerBoxes && 
 				!player.hasContainerOpen() &&
-				slot.container == player.getInventory()) {
+				slot.container == player.getInventory() &&
+				SimilarBlockTypeHandler.isShulkerBox(stack) &&
+				slot.mayPickup(player)) {
 			
 			int lockedSlot = slot.getSlotIndex();
 			if(player instanceof ServerPlayer splayer) {
@@ -240,6 +243,7 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 				NetworkHooks.openScreen(splayer, container, buf -> buf.writeInt(lockedSlot));
 			}
 			
+			player.playSound(SoundEvents.SHULKER_BOX_OPEN, 1F, 1F);
 			return true;
 		}
 		

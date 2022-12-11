@@ -1,5 +1,13 @@
 package vazkii.quark.base.handler;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Predicate;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionResult;
@@ -8,7 +16,23 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MinecartItem;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
@@ -22,10 +46,8 @@ import vazkii.quark.addons.oddities.inventory.SlotCachingItemHandler;
 import vazkii.quark.api.ICustomSorting;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.module.ModuleLoader;
+import vazkii.quark.content.management.inventory.HeldShulkerBoxMenu;
 import vazkii.quark.content.management.module.InventorySortingModule;
-
-import java.util.*;
-import java.util.function.Predicate;
 
 public final class SortingHandler {
 
@@ -63,22 +85,31 @@ public final class SortingHandler {
 			return;
 
 		AbstractContainerMenu c = player.containerMenu;
+		AbstractContainerMenu ogc = c;
 		boolean backpack = c instanceof BackpackMenu;
+		boolean heldShulker = c instanceof HeldShulkerBoxMenu;
+
 		if ((!backpack && forcePlayer) || c == null)
 			c = player.inventoryMenu;
 
 		boolean playerContainer = c == player.inventoryMenu || backpack;
+		int[] lockedSlots = null;
+
+		if(heldShulker) {
+			HeldShulkerBoxMenu sbm = (HeldShulkerBoxMenu) ogc;	
+			lockedSlots = new int[] { sbm.blockedSlot };
+		}
 
 		for (Slot s : c.slots) {
 			Container inv = s.container;
 			if ((inv == player.getInventory()) == playerContainer) {
 				if (!playerContainer && s instanceof SlotItemHandler slot) {
-					sortInventory(slot.getItemHandler());
+					sortInventory(slot.getItemHandler(), lockedSlots);
 				} else {
 					InvWrapper wrapper = new InvWrapper(inv);
 					if (playerContainer)
-						sortInventory(wrapper, 9, 36);
-					else sortInventory(wrapper);
+						sortInventory(wrapper, 9, 36, lockedSlots);
+					else sortInventory(wrapper, lockedSlots);
 				}
 				break;
 			}
@@ -87,25 +118,29 @@ public final class SortingHandler {
 		if(backpack)
 			for (Slot s : c.slots)
 				if (s instanceof SlotCachingItemHandler) {
-					sortInventory(((SlotCachingItemHandler) s).getItemHandler());
+					sortInventory(((SlotCachingItemHandler) s).getItemHandler(), lockedSlots);
 					break;
 				}
 	}
 
-	public static void sortInventory(IItemHandler handler) {
-		sortInventory(handler, 0);
+	public static void sortInventory(IItemHandler handler, int[] lockedSlots) {
+		sortInventory(handler, 0, lockedSlots);
 	}
 
-	public static void sortInventory(IItemHandler handler, int iStart) {
-		sortInventory(handler, iStart, handler.getSlots());
+	public static void sortInventory(IItemHandler handler, int iStart, int[] lockedSlots) {
+		sortInventory(handler, iStart, handler.getSlots(), lockedSlots);
 	}
 
-	public static void sortInventory(IItemHandler handler, int iStart, int iEnd) {
+	public static void sortInventory(IItemHandler handler, int iStart, int iEnd, int[] lockedSlots) {
 		List<ItemStack> stacks = new ArrayList<>();
 		List<ItemStack> restore = new ArrayList<>();
 
 		for (int i = iStart; i < iEnd; i++) {
 			ItemStack stackAt = handler.getStackInSlot(i);
+
+			if(isLocked(i, lockedSlots))
+				continue;
+
 			restore.add(stackAt.copy());
 			if (!stackAt.isEmpty())
 				stacks.add(stackAt.copy());
@@ -114,12 +149,15 @@ public final class SortingHandler {
 		mergeStacks(stacks);
 		sortStackList(stacks);
 
-		if (setInventory(handler, stacks, iStart, iEnd) == InteractionResult.FAIL)
-			setInventory(handler, restore, iStart, iEnd);
+		if(setInventory(handler, stacks, iStart, iEnd, lockedSlots) == InteractionResult.FAIL)
+			setInventory(handler, restore, iStart, iEnd, lockedSlots);
 	}
 
-	private static InteractionResult setInventory(IItemHandler inventory, List<ItemStack> stacks, int iStart, int iEnd) {
+	private static InteractionResult setInventory(IItemHandler inventory, List<ItemStack> stacks, int iStart, int iEnd, int[] lockedSlots) {
 		for (int i = iStart; i < iEnd; i++) {
+			if(isLocked(i, lockedSlots))
+				continue;
+			
 			int j = i - iStart;
 			ItemStack stack = j >= stacks.size() ? ItemStack.EMPTY : stacks.get(j);
 
@@ -135,10 +173,16 @@ public final class SortingHandler {
 		}
 
 		for (int i = iStart; i < iEnd; i++) {
+			if(isLocked(i, lockedSlots))
+				continue;
+			
 			inventory.extractItem(i, inventory.getSlotLimit(i), false);
 		}
 
 		for (int i = iStart; i < iEnd; i++) {
+			if(isLocked(i, lockedSlots))
+				continue;
+			
 			int j = i - iStart;
 			ItemStack stack = j >= stacks.size() ? ItemStack.EMPTY : stacks.get(j);
 
@@ -148,6 +192,15 @@ public final class SortingHandler {
 		}
 
 		return InteractionResult.SUCCESS;
+	}
+
+	private static boolean isLocked(int slot, int[] locked) {
+		if(locked == null)
+			return false;
+		for(int i : locked)
+			if(slot == i)
+				return true;
+		return false;
 	}
 
 	public static void mergeStacks(List<ItemStack> list) {
