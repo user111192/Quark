@@ -124,7 +124,7 @@ public class EnchantmentMatrix {
 		if (!simulate) {
 			pieces.put(count, piece);
 			totalValue.put(piece.enchant, totalValue.getOrDefault(piece.enchant, 0) + piece.getValue());
-			benchedPieces.add(count);
+			benchedPieces.add(0, count);
 			count++;
 
 			if (book && count == 1) {
