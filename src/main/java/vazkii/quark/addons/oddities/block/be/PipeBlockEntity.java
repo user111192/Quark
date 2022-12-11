@@ -103,8 +103,6 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 
 					for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, new AABB(minX, minY, minZ, maxX, maxY, maxZ), predicate)) {
 						passIn(item.getItem().copy(), side);
-
-						level.gameEvent(null, GameEvent.PROJECTILE_SHOOT, worldPosition);
 						
 						if (PipesModule.doPipesWhoosh) {
 							if (isTheGoodDay(level))
@@ -251,8 +249,6 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 			float pitch = 1f;
 			if (!shootOut)
 				pitch = 0.025f;
-
-			level.gameEvent(null, GameEvent.PROJECTILE_LAND, worldPosition);
 			
 			if (playSound) {
 				if(PipesModule.doPipesWhoosh) {
