@@ -120,9 +120,10 @@ public class PistonsMoveTileEntitiesModule extends QuarkModule {
 					if (hasCallback(tile))
 						getCallback(tile).onPistonMovementStarted();
 
+					CompoundTag tag = tile.saveWithFullMetadata();
 					world.removeBlockEntity(pos);
 
-					registerMovement(world, pos.relative(facing), tile);
+					registerMovement(world, pos.relative(facing), tile, tag);
 				}
 			}
 		}
@@ -183,11 +184,11 @@ public class PistonsMoveTileEntitiesModule extends QuarkModule {
 		return false; // the value is popped, doesn't matter what we return
 	}
 
-	private static void registerMovement(Level world, BlockPos pos, BlockEntity tile) {
+	private static void registerMovement(Level world, BlockPos pos, BlockEntity tile, CompoundTag nbt) {
 		if (!movements.containsKey(world))
 			movements.put(world, new HashMap<>());
 
-		movements.get(world).put(pos, tile.saveWithFullMetadata());
+		movements.get(world).put(pos, nbt);
 	}
 
 	public static BlockEntity getMovement(Level world, BlockPos pos) {
