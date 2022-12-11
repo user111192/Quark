@@ -59,7 +59,7 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 		int size = 60;
 
 		int titleLeft = width / 2 + 66;
-		drawCenteredString(mstack, font, Component.literal(category.getGuiDisplayName()).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
+		drawCenteredString(mstack, font, Component.literal(mutable.params.name).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
 		drawCenteredString(mstack, font, Component.literal("Presets"), titleLeft, 155, 0xFFFFFF);
 
 		int sliders = 0;
@@ -77,16 +77,16 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 				font.drawShadow(mstack, displayVal, s.x + (float) (s.getWidth() / 2 - font.width(displayVal) / 2) , s.y + 6, 0xFFFFFF);
 
 				switch (sliders) {
-					case 0 -> {
-						font.drawShadow(mstack, "R =", s.x - 20, s.y + 5, 0xFF0000);
-						font.drawShadow(mstack, "R", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0xFF0000);
-					}
-					case 1 -> font.drawShadow(mstack, "G", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0x00FF00);
-					case 2 -> font.drawShadow(mstack, "B", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0x0077FF);
-					case 3 -> font.drawShadow(mstack, "G =", s.x - 20, s.y + 5, 0x00FF00);
-					case 6 -> font.drawShadow(mstack, "B =", s.x - 20, s.y + 5, 0x0077FF);
-					default -> {
-					}
+				case 0 -> {
+					font.drawShadow(mstack, "R =", s.x - 20, s.y + 5, 0xFF0000);
+					font.drawShadow(mstack, "R", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0xFF0000);
+				}
+				case 1 -> font.drawShadow(mstack, "G", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0x00FF00);
+				case 2 -> font.drawShadow(mstack, "B", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0x0077FF);
+				case 3 -> font.drawShadow(mstack, "G =", s.x - 20, s.y + 5, 0x00FF00);
+				case 6 -> font.drawShadow(mstack, "B =", s.x - 20, s.y + 5, 0x0077FF);
+				default -> {
+				}
 				}
 				if((sliders % 3) != 0)
 					font.drawShadow(mstack, "+", s.x - 9, s.y + 5, 0xFFFFFF);
@@ -104,7 +104,7 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 			int color = colors[i];
 
 			int convolved = mutable.convolve(color);
-			
+
 			int folliage, convolvedFolliage = 0;
 			if(renderFolliage) {
 				folliage = folliageColors[i];
@@ -117,7 +117,7 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 			fill(mstack, cx - 1, cy - 1, cx + size + 1, cy + size + 1, 0xFF000000);
 			fill(mstack, cx, cy, cx + size, cy + size, convolved);
 			fill(mstack, cx + size / 2 - 1, cy + size / 2 - 1, cx + size, cy + size, 0x22000000);
-			
+
 			if(renderFolliage)
 				fill(mstack, cx + size / 2, cy + size / 2, cx + size, cy + size, convolvedFolliage);
 
@@ -155,18 +155,21 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 	private void onSlide(AbstractWidget widget) {
 		String name = widget.getMessage().getString();
 
-		double[] matrix = ConvulsionMatrixConfig.Params.IDENTITY;
+		double[] matrix = null;
 		if(mutable.params.presetMap.containsKey(name))
 			matrix = mutable.params.presetMap.get(name);
 
-		int sliders = 0;
-		mutable.colorMatrix = Arrays.copyOf(matrix, matrix.length);
+		if(matrix != null) {
+			int sliders = 0; 
+			mutable.colorMatrix = Arrays.copyOf(matrix, matrix.length);
 
-		for(Widget w : renderables)
-			if(w instanceof ForgeSlider s) {
-				s.setValue(matrix[sliders]);
-				sliders++;
-			}
+			for(Widget w : renderables)
+				if(w instanceof ForgeSlider s) {
+					s.setValue(matrix[sliders]);
+					sliders++;
+				}
+		}
+
 		update();
 	}
 

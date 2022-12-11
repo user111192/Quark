@@ -38,9 +38,7 @@ public class ConvulsionMatrixConfig extends AbstractConfigType implements IInput
 		double[] defaultMatrix = params.defaultMatrix;
 		this.colorMatrix = Arrays.copyOf(defaultMatrix, defaultMatrix.length);
 
-		r = Arrays.asList(defaultMatrix[0], defaultMatrix[1], defaultMatrix[2]);
-		g = Arrays.asList(defaultMatrix[3], defaultMatrix[4], defaultMatrix[5]);
-		b = Arrays.asList(defaultMatrix[6], defaultMatrix[7], defaultMatrix[8]);
+		updateRGB();
 	}
 
 	@Override
@@ -59,15 +57,19 @@ public class ConvulsionMatrixConfig extends AbstractConfigType implements IInput
 
 	@Override
 	public void inherit(ConvulsionMatrixConfig other, boolean committing) {
-		r = other.r;
-		g = other.g;
-		b = other.b;
 		colorMatrix = Arrays.copyOf(other.colorMatrix, other.colorMatrix.length);
+		updateRGB();
 
 		if(committing && category != null) {
 			category.refresh();
 			category.updateDirty();
 		}
+	}
+	
+	private void updateRGB() {
+		r = Arrays.asList(colorMatrix[0], colorMatrix[1], colorMatrix[2]);
+		g = Arrays.asList(colorMatrix[3], colorMatrix[4], colorMatrix[5]);
+		b = Arrays.asList(colorMatrix[6], colorMatrix[7], colorMatrix[8]);
 	}
 
 	@Override
@@ -77,7 +79,7 @@ public class ConvulsionMatrixConfig extends AbstractConfigType implements IInput
 
 	@Override
 	public ConvulsionMatrixConfig copy() {
-		ConvulsionMatrixConfig newMatrix = new ConvulsionMatrixConfig(params);
+		ConvulsionMatrixConfig newMatrix = new ConvulsionMatrixConfig(params.cloneWithNewDefault(colorMatrix));
 		newMatrix.inherit(this, false);
 		return newMatrix;
 	}
@@ -93,7 +95,6 @@ public class ConvulsionMatrixConfig extends AbstractConfigType implements IInput
 
 		return 0xFF000000 | (((outR & 0xFF) << 16) + ((outG & 0xFF) << 8) + (outB & 0xFF));
 	}
-
 
 	private int clamp(int val) {
 		return Math.min(0xFF, Math.max(0, val));
@@ -130,29 +131,41 @@ public class ConvulsionMatrixConfig extends AbstractConfigType implements IInput
 				0, 0, 1
 			};
 		
+		public final String name;
 		public final String[] biomeNames;
 		public final double[] defaultMatrix;
 		public final int[] testColors;
 		@Nullable public final int[] folliageTestColors;
 		
+		private final String[] presetNames;
+		private final double[][] presets;
+		
 		public final Map<String, double[]> presetMap;
 
-		public Params(double[] defaultMatrix,  String[] biomeNames, int[] testColors, @Nullable int[] folliageColors, String[] presetNames, double[][] presets) {
+		public Params(String name, double[] defaultMatrix,  String[] biomeNames, int[] testColors, @Nullable int[] folliageTestColors, String[] presetNames, double[][] presets) {
 			Preconditions.checkArgument(defaultMatrix.length == 9);
 			Preconditions.checkArgument(biomeNames.length == 6);
 			Preconditions.checkArgument(testColors.length == 6);
-			Preconditions.checkArgument(folliageColors == null || folliageColors.length == 6);
+			Preconditions.checkArgument(folliageTestColors == null || folliageTestColors.length == 6);
 			Preconditions.checkArgument(presetNames.length == presets.length);
 			
+			this.name = name;
 			this.defaultMatrix = defaultMatrix;
 			this.biomeNames = biomeNames;
 			this.testColors = testColors;
-			this.folliageTestColors = folliageColors;
+			this.folliageTestColors = folliageTestColors;
+			
+			this.presetNames = presetNames;
+			this.presets = presets;
 			
 			presetMap = new HashMap<>();
 			presetMap.put(IDENTITY_NAME, IDENTITY);
 			for(int i = 0; i < presetNames.length; i++)
 				presetMap.put(presetNames[i], presets[i]);
+		}
+		
+		public Params cloneWithNewDefault(double[] newDefault) {
+			return new Params(name, newDefault, biomeNames, testColors, folliageTestColors, presetNames, presets);
 		}
 		
 		public boolean shouldDisplayFolliage() {
