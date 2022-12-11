@@ -6,18 +6,22 @@ import com.mojang.datafixers.util.Either;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
@@ -34,6 +38,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -41,12 +46,17 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.EmptyHandler;
+import net.minecraftforge.network.NetworkHooks;
 import vazkii.arl.util.ItemNBTHelper;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.SimilarBlockTypeHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.quark.content.management.client.screen.HeldShulkerBoxScreen;
+import vazkii.quark.content.management.inventory.HeldShulkerBoxContainer;
+import vazkii.quark.content.management.inventory.HeldShulkerBoxMenu;
 
 @LoadModule(category = ModuleCategory.MANAGEMENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class ExpandedItemInteractionsModule extends QuarkModule {
@@ -57,9 +67,24 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 	public static boolean enableShulkerBoxInteraction = true;
 	@Config
 	public static boolean enableLavaInteraction = true;
+	@Config
+	public static boolean allowOpeningShulkerBoxes = true;
 
 	private static boolean staticEnabled = false;
 
+	public static MenuType<HeldShulkerBoxMenu> heldShulkerBoxMenuType;
+	
+	@Override
+	public void register() {
+		heldShulkerBoxMenuType = IForgeMenuType.create(HeldShulkerBoxMenu::fromNetwork);
+		RegistryHelper.register(heldShulkerBoxMenuType, "held_shulker_box", Registry.MENU_REGISTRY);
+	}
+	
+	@Override
+	public void clientSetup() {
+		MenuScreens.register(heldShulkerBoxMenuType, HeldShulkerBoxScreen::new);
+	}
+	
 	@Override
 	public void configChanged() {
 		staticEnabled = configEnabled;
@@ -70,7 +95,7 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 			return false;
 
 		ItemStack stackAt = slot.getItem();
-		if (enableShulkerBoxInteraction && shulkerOverride(stack, stackAt, slot, action, player, false, false)) {
+		if (enableShulkerBoxInteraction && shulkerOverride(stack, stackAt, slot, action, player, false)) {
 			if (player.containerMenu != null)
 				player.containerMenu.slotsChanged(slot.container);
 			return true;
@@ -89,7 +114,7 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 		if (enableArmorInteraction && armorOverride(stack, incoming, slot, action, player, false))
 			return true;
 
-		return enableShulkerBoxInteraction && shulkerOverride(stack, incoming, slot, action, player, true, true);
+		return enableShulkerBoxInteraction && shulkerOverride(stack, incoming, slot, action, player, true);
 	}
 
 	@SubscribeEvent
@@ -201,12 +226,28 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 		return false;
 	}
 
-	private static boolean shulkerOverride(ItemStack stack, ItemStack incoming, Slot slot, ClickAction action, Player player, boolean setSlot, boolean allowDump) {
-		if (!incoming.isEmpty() && tryAddToShulkerBox(player, stack, incoming, slot, true, true, allowDump) != null) {
-			ItemStack finished = tryAddToShulkerBox(player, stack, incoming, slot, false, setSlot, allowDump);
+	private static boolean shulkerOverride(ItemStack stack, ItemStack incoming, Slot slot, ClickAction action, Player player, boolean isStackedOnMe) {
+		if(isStackedOnMe && 
+				incoming.isEmpty() && 
+				allowOpeningShulkerBoxes && 
+				!player.hasContainerOpen() &&
+				slot.container == player.getInventory()) {
+			
+			int lockedSlot = slot.getSlotIndex();
+			if(player instanceof ServerPlayer splayer) {
+				HeldShulkerBoxContainer container = new HeldShulkerBoxContainer(splayer, lockedSlot);
+
+				NetworkHooks.openScreen(splayer, container, buf -> buf.writeInt(lockedSlot));
+			}
+			
+			return true;
+		}
+		
+		if (!incoming.isEmpty() && tryAddToShulkerBox(player, stack, incoming, slot, true, true, isStackedOnMe) != null) {
+			ItemStack finished = tryAddToShulkerBox(player, stack, incoming, slot, false, isStackedOnMe, isStackedOnMe);
 
 			if (finished != null) {
-				if (setSlot)
+				if (isStackedOnMe)
 					slot.set(finished);
 				return true;
 			}
@@ -215,7 +256,7 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 		return false;
 	}
 
-	private static BlockEntity getShulkerBoxEntity(ItemStack shulkerBox) {
+	public static BlockEntity getShulkerBoxEntity(ItemStack shulkerBox) {
 		CompoundTag cmp = ItemNBTHelper.getCompound(shulkerBox, "BlockEntityTag", false);
 		if (cmp.contains("LootTable"))
 			return null;
