@@ -16,6 +16,50 @@
           ]
         }
       ]
+    },
+    {
+      "name": "quark:stoneling_map",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "minecraft:map",
+          "functions": [
+            {
+              "function": "quark:pathfinder_map",
+              "destination": "quark:stoneling_pathfinding",
+              "color": "#317546",
+              "underground": true
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "quark:flag",
+              "flag": "pathfinder_maps"
+            },
+            {
+              "condition": "quark:flag",
+              "flag": "stoneling_weald_pathfinder"
+            },
+            {
+              "condition": "minecraft:killed_by_player"
+            },
+            {
+              "condition": "minecraft:random_chance_with_looting",
+              "chance": 0.08,
+              "looting_multiplier": 0.02
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "quark:in_biome",
+                "target": "quark:stoneling_pathfinding"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
