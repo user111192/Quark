@@ -43,9 +43,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.addons.oddities.inventory.BackpackMenu;
 import vazkii.quark.addons.oddities.inventory.SlotCachingItemHandler;
 import vazkii.quark.api.ICustomSorting;
+import vazkii.quark.api.ISortingLockedSlots;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.content.management.inventory.HeldShulkerBoxMenu;
 import vazkii.quark.content.management.module.InventorySortingModule;
 
 public final class SortingHandler {
@@ -86,7 +86,7 @@ public final class SortingHandler {
 		AbstractContainerMenu c = player.containerMenu;
 		AbstractContainerMenu ogc = c;
 		boolean backpack = c instanceof BackpackMenu;
-		boolean heldShulker = c instanceof HeldShulkerBoxMenu;
+		boolean sortingLocked = c instanceof ISortingLockedSlots;
 
 		if ((!backpack && forcePlayer) || c == null)
 			c = player.inventoryMenu;
@@ -94,9 +94,9 @@ public final class SortingHandler {
 		boolean playerContainer = c == player.inventoryMenu || backpack;
 		int[] lockedSlots = null;
 
-		if(heldShulker && playerContainer) {
-			HeldShulkerBoxMenu sbm = (HeldShulkerBoxMenu) ogc;	
-			lockedSlots = new int[] { sbm.blockedSlot };
+		if(sortingLocked) {
+			ISortingLockedSlots sls = (ISortingLockedSlots) ogc;	
+			lockedSlots = sls.getSortingLockedSlots(playerContainer);
 		}
 
 		for (Slot s : c.slots) {
