@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.function.Predicate;
 
 import net.minecraft.resources.ResourceLocation;
@@ -95,7 +94,7 @@ public final class SortingHandler {
 		boolean playerContainer = c == player.inventoryMenu || backpack;
 		int[] lockedSlots = null;
 
-		if(heldShulker) {
+		if(heldShulker && playerContainer) {
 			HeldShulkerBoxMenu sbm = (HeldShulkerBoxMenu) ogc;	
 			lockedSlots = new int[] { sbm.blockedSlot };
 		}
