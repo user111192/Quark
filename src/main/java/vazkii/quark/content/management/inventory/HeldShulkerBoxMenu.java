@@ -10,9 +10,10 @@ import net.minecraft.world.inventory.ShulkerBoxSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import vazkii.quark.api.IQuarkButtonAllowed;
+import vazkii.quark.api.ISortingLockedSlots;
 import vazkii.quark.content.management.module.ExpandedItemInteractionsModule;
 
-public class HeldShulkerBoxMenu extends AbstractContainerMenu implements IQuarkButtonAllowed {
+public class HeldShulkerBoxMenu extends AbstractContainerMenu implements ISortingLockedSlots {
 
 	private final Container container;
 	public final int blockedSlot;
@@ -88,6 +89,11 @@ public class HeldShulkerBoxMenu extends AbstractContainerMenu implements IQuarkB
 	public void removed(Player p_40197_) {
 		super.removed(p_40197_);
 		this.container.stopOpen(p_40197_);
+	}
+
+	@Override
+	public int[] getSortingLockedSlots(boolean sortingPlayerInventory) {
+		return sortingPlayerInventory ? new int[] { blockedSlot } : null;
 	}
 
 }
