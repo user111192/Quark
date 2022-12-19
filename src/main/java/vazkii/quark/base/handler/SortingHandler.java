@@ -137,11 +137,8 @@ public final class SortingHandler {
 		for (int i = iStart; i < iEnd; i++) {
 			ItemStack stackAt = handler.getStackInSlot(i);
 
-			if(isLocked(i, lockedSlots))
-				continue;
-
 			restore.add(stackAt.copy());
-			if (!stackAt.isEmpty())
+			if(!isLocked(i, lockedSlots) && !stackAt.isEmpty())
 				stacks.add(stackAt.copy());
 		}
 
@@ -153,11 +150,14 @@ public final class SortingHandler {
 	}
 
 	private static InteractionResult setInventory(IItemHandler inventory, List<ItemStack> stacks, int iStart, int iEnd, int[] lockedSlots) {
+		int skipped = 0;
 		for (int i = iStart; i < iEnd; i++) {
-			if(isLocked(i, lockedSlots))
+			if(isLocked(i, lockedSlots)) {
+				skipped++;
 				continue;
+			}
 			
-			int j = i - iStart;
+			int j = i - iStart - skipped;
 			ItemStack stack = j >= stacks.size() ? ItemStack.EMPTY : stacks.get(j);
 
 			ItemStack stackInSlot = inventory.getStackInSlot(i);
@@ -178,11 +178,14 @@ public final class SortingHandler {
 			inventory.extractItem(i, inventory.getSlotLimit(i), false);
 		}
 
+		skipped = 0;
 		for (int i = iStart; i < iEnd; i++) {
-			if(isLocked(i, lockedSlots))
+			if(isLocked(i, lockedSlots)) {
+				skipped++;
 				continue;
+			}
 			
-			int j = i - iStart;
+			int j = i - iStart - skipped;
 			ItemStack stack = j >= stacks.size() ? ItemStack.EMPTY : stacks.get(j);
 
 			if (!stack.isEmpty())
