@@ -73,18 +73,18 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 	private static boolean staticEnabled = false;
 
 	public static MenuType<HeldShulkerBoxMenu> heldShulkerBoxMenuType;
-	
+
 	@Override
 	public void register() {
 		heldShulkerBoxMenuType = IForgeMenuType.create(HeldShulkerBoxMenu::fromNetwork);
 		RegistryHelper.register(heldShulkerBoxMenuType, "held_shulker_box", Registry.MENU_REGISTRY);
 	}
-	
+
 	@Override
 	public void clientSetup() {
 		MenuScreens.register(heldShulkerBoxMenuType, HeldShulkerBoxScreen::new);
 	}
-	
+
 	@Override
 	public void configChanged() {
 		staticEnabled = configEnabled;
@@ -136,8 +136,8 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 						gui.renderComponentTooltip(event.getPoseStack(), List.of(Component.translatable("quark.misc.trash_item").withStyle(ChatFormatting.RED)), x, y);
 					} else if (enableShulkerBoxInteraction && tryAddToShulkerBox(mc.player, underStack, held, under, true, true, true) != null) {
 						gui.renderComponentTooltip(event.getPoseStack(), List.of(Component.translatable(
-							 SimilarBlockTypeHandler.isShulkerBox(held) ? "quark.misc.merge_shulker_box" : "quark.misc.insert_shulker_box"
-						).withStyle(ChatFormatting.YELLOW)), x, y, underStack);
+								SimilarBlockTypeHandler.isShulkerBox(held) ? "quark.misc.merge_shulker_box" : "quark.misc.insert_shulker_box"
+								).withStyle(ChatFormatting.YELLOW)), x, y, underStack);
 					} else if (enableShulkerBoxInteraction && SimilarBlockTypeHandler.isShulkerBox(underStack)) {
 						gui.renderComponentTooltip(event.getPoseStack(), gui.getTooltipFromItem(underStack), x, y, underStack);
 					}
@@ -150,7 +150,7 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 	@SubscribeEvent(priority = EventPriority.LOW)
 	@OnlyIn(Dist.CLIENT)
 	public void gatherTooltip(RenderTooltipEvent.GatherComponents event) {
-		if (!enableArmorInteraction)
+		if (!enableArmorInteraction && (!enableShulkerBoxInteraction || !allowOpeningShulkerBoxes))
 			return;
 
 		Minecraft mc = Minecraft.getInstance();
@@ -163,11 +163,13 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 			if (under != null) {
 				ItemStack underStack = under.getItem();
 
-				if (event.getItemStack() == underStack && armorOverride(underStack, ItemStack.EMPTY, under, ClickAction.SECONDARY, mc.player, true)) {
-					event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.equip_armor").withStyle(ChatFormatting.YELLOW)));
-				}
+				if (event.getItemStack() == underStack)
+					if(armorOverride(underStack, ItemStack.EMPTY, under, ClickAction.SECONDARY, mc.player, true))
+						event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.equip_armor").withStyle(ChatFormatting.YELLOW)));
+				
+					else if(canOpenShulkerBox(underStack, ItemStack.EMPTY, under, mc.player))
+						event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.open_shulker").withStyle(ChatFormatting.YELLOW)));
 			}
-
 		}
 	}
 
@@ -226,32 +228,36 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 		return false;
 	}
 
-	private static boolean shulkerOverride(ItemStack stack, ItemStack incoming, Slot slot, ClickAction action, Player player, boolean isStackedOnMe) {
-		if(isStackedOnMe && 
-				incoming.isEmpty() && 
+	public static boolean canOpenShulkerBox(ItemStack stack, ItemStack incoming, Slot slot, Player player) {
+		return incoming.isEmpty() && 
 				allowOpeningShulkerBoxes && 
 				!player.hasContainerOpen() &&
 				slot.container == player.getInventory() &&
 				SimilarBlockTypeHandler.isShulkerBox(stack) &&
-				slot.mayPickup(player)) {
-			
+				slot.mayPickup(player);
+	}
+
+	private static boolean shulkerOverride(ItemStack stack, ItemStack incoming, Slot slot, ClickAction action, Player player, boolean isStackedOnMe) {
+		if(isStackedOnMe && canOpenShulkerBox(stack, incoming, slot, player)) {
 			int lockedSlot = slot.getSlotIndex();
 			if(player instanceof ServerPlayer splayer) {
 				HeldShulkerBoxContainer container = new HeldShulkerBoxContainer(splayer, lockedSlot);
 
 				NetworkHooks.openScreen(splayer, container, buf -> buf.writeInt(lockedSlot));
 			}
-			
+
 			player.playSound(SoundEvents.SHULKER_BOX_OPEN, 1F, 1F);
 			return true;
 		}
-		
+
 		if (!incoming.isEmpty() && tryAddToShulkerBox(player, stack, incoming, slot, true, true, isStackedOnMe) != null) {
 			ItemStack finished = tryAddToShulkerBox(player, stack, incoming, slot, false, isStackedOnMe, isStackedOnMe);
 
 			if (finished != null) {
-				if (isStackedOnMe)
+				if (isStackedOnMe) {
+					player.playSound(SoundEvents.SHULKER_BOX_OPEN, 0.7F, 1.5F);
 					slot.set(finished);
+				}
 				return true;
 			}
 		}
