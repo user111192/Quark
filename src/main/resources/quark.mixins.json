@@ -75,6 +75,7 @@
     "client.MinecartSoundInstanceMixin",
     "client.BiomeMixin",
     "client.MinecraftMixin",
+    "client.ForgeGuiMixin",
     
     "client.accessor.AccessorBlockColors",
     "client.accessor.AccessorModelManager",

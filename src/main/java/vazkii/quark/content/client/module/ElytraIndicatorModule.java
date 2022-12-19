@@ -6,6 +6,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -21,29 +24,42 @@ import vazkii.quark.base.module.QuarkModule;
 public class ElytraIndicatorModule extends QuarkModule {
 
 	private static int shift = 0;
+	private static boolean staticEnabled;
+	
+	@Override
+	public void configChanged() {
+		staticEnabled = enabled;
+	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public void hudPre(RenderGuiOverlayEvent.Pre event) {
 		Minecraft mc = Minecraft.getInstance();
-		if(event.getOverlay() == VanillaGuiOverlay.ARMOR_LEVEL.type() && mc.gui instanceof ForgeGui fg) {
-			shift = 9;
-			
-			PoseStack pose = event.getPoseStack();
-			Window window = event.getWindow();
-			
-			pose.translate(shift, 0, 0);
-			
-			pose.pushPose();
-			pose.translate(0, 0, 100);
-			RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			
-			int x = window.getGuiScaledWidth() / 2 - 100;
-			int y = window.getGuiScaledHeight() - fg.leftHeight;
-			Screen.blit(pose, x, y, 184, 35, 9, 9, 256, 256);
-			
-			pose.popPose();
+		Player player = mc.player;
+		
+		if(event.getOverlay() == VanillaGuiOverlay.ARMOR_LEVEL.type() && mc.gui instanceof ForgeGui fg && fg.shouldDrawSurvivalElements()) {
+	         ItemStack itemstack = player.getItemBySlot(EquipmentSlot.CHEST);
+	         
+	         if(itemstack.canElytraFly(player)) {
+	 			int armor = player.getArmorValue();
+				shift = (armor >= 20 ? 0 : 9);
+				
+				PoseStack pose = event.getPoseStack();
+				Window window = event.getWindow();
+				
+				pose.translate(shift, 0, 0);
+				
+				pose.pushPose();
+				pose.translate(0, 0, 100);
+				RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
+				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+				
+				int x = window.getGuiScaledWidth() / 2 - 100;
+				int y = window.getGuiScaledHeight() - fg.leftHeight;
+				Screen.blit(pose, x, y, 184, 35, 9, 9, 256, 256);
+				
+				pose.popPose();
+	         }
 		}
 	}
 
@@ -56,8 +72,11 @@ public class ElytraIndicatorModule extends QuarkModule {
 		}
 	}
 	
-	public static int getArmorLimit() {
-		return (shift / 9) * 20;
+	public static int getArmorLimit(int curr) {
+		if(!staticEnabled)
+			return curr;
+		
+		return 20 - ((shift / 9) * 2);
 	}
 	
 }
