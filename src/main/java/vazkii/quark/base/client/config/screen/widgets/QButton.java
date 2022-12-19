@@ -1,6 +1,8 @@
 package vazkii.quark.base.client.config.screen.widgets;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,6 +14,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
@@ -78,6 +81,7 @@ public class QButton extends Button {
 
 	private final boolean gay;
 	private Celebration celebrating;
+	private boolean showBubble;
 
 	public QButton(int x, int y) {
 		super(x, y, 20, 20, Component.literal("q"), QButton::click);
@@ -93,6 +97,8 @@ public class QButton extends Button {
 				celebrating = c;
 				break;
 			}
+		
+		showBubble = !getQuarkMarkerFile().exists();
 	}
 
 	@Override
@@ -111,7 +117,7 @@ public class QButton extends Button {
 
 		if(iconIndex > 0) {
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
 			RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
 
 			int rx = x - 2;
@@ -138,9 +144,29 @@ public class QButton extends Button {
 
 			blit(mstack, rx, ry, u, v, w, h);
 		}
+		
+		if(showBubble) {
+			Font font = Minecraft.getInstance().font;
+			int cy = y - 2;
+			if(ClientTicker.total % 20 > 10)
+				cy++;
+			
+			MiscUtil.drawChatBubble(mstack, x + 16, cy, font, I18n.get("quark.misc.configure_quark_here"), alpha, true);			
+		}
+	}
+	
+	private static File getQuarkMarkerFile() {
+		return new File(Minecraft.getInstance().gameDirectory, ".qmenu_opened.marker");
 	}
 
 	public static void click(Button b) {
+		if(b instanceof QButton qb && qb.showBubble)
+			try {
+				getQuarkMarkerFile().createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
 		Minecraft.getInstance().setScreen(new QuarkConfigHomeScreen(Minecraft.getInstance().screen));
 	}
 

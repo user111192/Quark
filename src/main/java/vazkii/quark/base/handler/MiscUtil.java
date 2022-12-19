@@ -14,10 +14,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.minecraft.Util;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.commands.arguments.blocks.BlockStateParser.BlockResult;
@@ -93,6 +97,34 @@ public class MiscUtil {
 			Direction.EAST
 	};
 
+	@OnlyIn(Dist.CLIENT)
+	public static void drawChatBubble(PoseStack matrix, int x, int y, Font font, String text, float alpha, boolean extendRight) {
+		matrix.pushPose();
+		matrix.translate(0, 0, 100);
+		RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
+		int w = font.width(text);
+		int left = x - (extendRight ? 0 : w);
+		int top = y - 8;
+
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
+		
+		if(extendRight) {
+			Screen.blit(matrix, left, top, 227, 9, 6, 17, 256, 256);
+			for(int i = 0; i < w; i++)
+				Screen.blit(matrix, left + i + 6, top, 232, 9, 1, 17, 256, 256);
+			Screen.blit(matrix, left + w + 5, top, 236, 9, 5, 17, 256, 256);			
+		} else {
+			Screen.blit(matrix, left, top, 242, 9, 5, 17, 256, 256);
+			for(int i = 0; i < w; i++)
+				Screen.blit(matrix, left + i + 5, top, 248, 9, 1, 17, 256, 256);
+			Screen.blit(matrix, left + w + 5, top, 250, 9, 6, 17, 256, 256);	
+		}
+
+		int alphaInt = (int) (256F * alpha) << 24;
+		font.draw(matrix, text, left + 5, top + 3, alphaInt);
+		matrix.popPose();
+	}
+	
 	public static void addToLootTable(LootTable table, LootPoolEntryContainer entry) {
 		List<LootPool> pools = ((AccessorLootTable) table).quark$getPools();
 		if (pools != null && !pools.isEmpty()) {

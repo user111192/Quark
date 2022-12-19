@@ -41,23 +41,8 @@ public class EmoteButton extends TranslucentButton {
 
 			boolean hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			if(hovered) {
-				matrix.pushPose();
-				matrix.translate(0, 0, 100);
 				String name = desc.getLocalizedName();
-
-				RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
-				int w = mc.font.width(name);
-				int left = x - w;
-				int top = y - 8;
-
-				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-				blit(matrix, left, top, 242, 9, 5, 17, 256, 256);
-				for(int i = 0; i < w; i++)
-					blit(matrix, left + i + 5, top, 248, 9, 1, 17, 256, 256);
-				blit(matrix, left + w + 5, top, 250, 9, 6, 17, 256, 256);
-
-				mc.font.draw(matrix, name, left + 5, top + 3, 0);
-				matrix.popPose();
+				MiscUtil.drawChatBubble(matrix, x, y, mc.font, name, 1F, false);
 			}
 		}
 	}
