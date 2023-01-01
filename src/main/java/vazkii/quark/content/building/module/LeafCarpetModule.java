@@ -16,7 +16,7 @@ import vazkii.quark.content.building.block.LeafCarpetBlock;
 import vazkii.quark.content.world.block.BlossomLeavesBlock;
 import vazkii.quark.content.world.module.BlossomTreesModule;
 
-@LoadModule(category = ModuleCategory.BUILDING, antiOverlap = { "woodworks" })
+@LoadModule(category = ModuleCategory.BUILDING, antiOverlap = { "woodworks", "immersive_weathering" })
 public class LeafCarpetModule extends QuarkModule {
 
 	public static List<LeafCarpetBlock> carpets = new LinkedList<>();
