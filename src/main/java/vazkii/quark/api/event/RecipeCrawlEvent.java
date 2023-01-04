@@ -1,7 +1,12 @@
 package vazkii.quark.api.event;
 
+import java.util.Collection;
+
+import com.google.common.collect.Multimap;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CustomRecipe;
@@ -13,9 +18,26 @@ import net.minecraftforge.eventbus.api.Event;
 
 public abstract class RecipeCrawlEvent extends Event {
 
-	public static class CrawlStarting extends RecipeCrawlEvent {}
-	public static class CrawlEnded extends RecipeCrawlEvent {}
 	public static class Reset extends RecipeCrawlEvent {}
+	public static class CrawlStarting extends RecipeCrawlEvent {}
+	
+	public static class Digest extends RecipeCrawlEvent {
+		
+		private final Multimap<Item, ItemStack> digestion;
+		
+		public Digest(Multimap<Item, ItemStack> digestion) {
+			this.digestion = digestion;
+		}
+		
+		public boolean has(Item item) {
+			return digestion.containsKey(item);
+		}
+		
+		public Collection<ItemStack> get(Item item) {
+			return digestion.get(item);
+		}
+		
+	}
 	
 	public static abstract class Visit<T extends Recipe<?>> extends RecipeCrawlEvent {
 		

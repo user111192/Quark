@@ -70,18 +70,8 @@ public class MagnetsModule extends QuarkModule {
 	}
 	
 	@SubscribeEvent
-	public void crawlStart(RecipeCrawlEvent.CrawlStarting event) {
-		MagnetSystem.onStartCrawl();
-	}
-	
-	@SubscribeEvent
-	public void crawlStart(RecipeCrawlEvent.CrawlEnded event) {
-		MagnetSystem.onFinishCrawl();
-	}
-	
-	@SubscribeEvent
-	public void visitShaped(RecipeCrawlEvent.Visit<?> event) {
-		MagnetSystem.onVisit(event.recipe);
+	public void crawlDigest(RecipeCrawlEvent.Digest event) {
+		MagnetSystem.onDigest(event);
 	}
 
 }
