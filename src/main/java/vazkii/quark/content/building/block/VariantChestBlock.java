@@ -54,6 +54,11 @@ public class VariantChestBlock extends ChestBlock implements IBlockItemProvider,
 
 		path = (this instanceof Compat ? "compat/" : "") + type + "/";
 	}
+	
+	@Override
+	public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+		return 0;
+	}
 
 	@Override
 	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
@@ -103,7 +108,7 @@ public class VariantChestBlock extends ChestBlock implements IBlockItemProvider,
 	public BlockItem provideItemBlock(Block block, Item.Properties props) {
 		return new Item(block, props);
 	}
-
+	
 	public static class Item extends BlockItem {
 
 		public Item(Block block, Properties props) {

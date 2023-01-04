@@ -52,6 +52,11 @@ public class VariantTrappedChestBlock extends ChestBlock implements IBlockItemPr
 
 		path = (this instanceof Compat ? "compat/" : "") + type + "/";
 	}
+	
+	@Override
+	public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+		return 0;
+	}
 
 	@Override
 	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
