@@ -28,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -46,7 +47,11 @@ public class RecipeCrawlHandler {
 	
 	private static boolean lock = false;
 
-	// TODO add reset on starting reload
+	// We don't actually need to register a reload listener for anything in particular, all that matters is that we unlock
+	@SubscribeEvent
+	public static void addListener(AddReloadListenerEvent event) {
+		clear();
+	}
 	
 	@SubscribeEvent
 	public static void tick(LevelTickEvent event) {
