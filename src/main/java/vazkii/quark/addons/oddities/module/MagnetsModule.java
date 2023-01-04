@@ -1,26 +1,32 @@
 package vazkii.quark.addons.oddities.module;
 
+import java.util.List;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.TickEvent.LevelTickEvent;
+import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.block.MagnetBlock;
 import vazkii.quark.addons.oddities.block.MovingMagnetizedBlock;
 import vazkii.quark.addons.oddities.block.be.MagnetBlockEntity;
 import vazkii.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
 import vazkii.quark.addons.oddities.client.render.be.MagnetizedBlockRenderer;
+import vazkii.quark.addons.oddities.magnetsystem.MagnetSystem;
+import vazkii.quark.api.event.RecipeCrawlEvent;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 
-import java.util.List;
-
-@LoadModule(category = ModuleCategory.ODDITIES)
+@LoadModule(category = ModuleCategory.ODDITIES, hasSubscriptions = true)
 public class MagnetsModule extends QuarkModule {
 
 	public static BlockEntityType<MagnetBlockEntity> magnetType;
@@ -51,6 +57,31 @@ public class MagnetsModule extends QuarkModule {
 	@OnlyIn(Dist.CLIENT)
 	public void clientSetup() {
 		BlockEntityRenderers.register(magnetizedBlockType, MagnetizedBlockRenderer::new);
+	}
+	
+	@SubscribeEvent
+	public void tick(LevelTickEvent event) {
+		MagnetSystem.tick(event.phase == Phase.START, event.level);
+	}
+	
+	@SubscribeEvent
+	public void crawlReset(RecipeCrawlEvent.Reset event) {
+		MagnetSystem.onRecipeReset();
+	}
+	
+	@SubscribeEvent
+	public void crawlStart(RecipeCrawlEvent.CrawlStarting event) {
+		MagnetSystem.onStartCrawl();
+	}
+	
+	@SubscribeEvent
+	public void crawlStart(RecipeCrawlEvent.CrawlEnded event) {
+		MagnetSystem.onFinishCrawl();
+	}
+	
+	@SubscribeEvent
+	public void visitShaped(RecipeCrawlEvent.Visit<?> event) {
+		MagnetSystem.onVisit(event.recipe);
 	}
 
 }
