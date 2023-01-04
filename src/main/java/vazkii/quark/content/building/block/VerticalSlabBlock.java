@@ -148,8 +148,8 @@ public class VerticalSlabBlock extends QuarkBlock implements SimpleWaterloggedBl
 		ItemStack itemstack = useContext.getItemInHand();
 		VerticalSlabType slabtype = state.getValue(TYPE);
 		return slabtype != VerticalSlabType.DOUBLE && itemstack.getItem() == this.asItem() &&
-			(useContext.replacingClickedOnBlock() && (useContext.getClickedFace() == slabtype.direction && getDirectionForPlacement(useContext) == slabtype.direction)
-					|| (!useContext.replacingClickedOnBlock() && useContext.getClickedFace().getAxis() != slabtype.direction.getAxis()));
+			(useContext.replacingClickedOnBlock() && (useContext.getClickedFace() == slabtype.direction && getDirectionForPlacement(useContext) == slabtype.direction) || 
+			(!useContext.replacingClickedOnBlock() && useContext.getClickedFace() != slabtype.direction));
 	}
 
 	@Nonnull
