@@ -164,10 +164,10 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 				ItemStack underStack = under.getItem();
 
 				if (event.getItemStack() == underStack)
-					if(armorOverride(underStack, ItemStack.EMPTY, under, ClickAction.SECONDARY, mc.player, true))
+					if(enableArmorInteraction && armorOverride(underStack, ItemStack.EMPTY, under, ClickAction.SECONDARY, mc.player, true))
 						event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.equip_armor").withStyle(ChatFormatting.YELLOW)));
 				
-					else if(canOpenShulkerBox(underStack, ItemStack.EMPTY, under, mc.player))
+					else if(enableShulkerBoxInteraction && canOpenShulkerBox(underStack, ItemStack.EMPTY, under, mc.player))
 						event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.open_shulker").withStyle(ChatFormatting.YELLOW)));
 			}
 		}
