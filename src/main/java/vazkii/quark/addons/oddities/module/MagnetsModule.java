@@ -71,7 +71,7 @@ public class MagnetsModule extends QuarkModule {
 	
 	@SubscribeEvent
 	public void crawlDigest(RecipeCrawlEvent.Digest event) {
-		MagnetSystem.onDigest(event);
+		MagnetSystem.onDigest();
 	}
 
 }

@@ -18,7 +18,6 @@ import vazkii.quark.addons.oddities.module.MagnetsModule;
 import vazkii.quark.api.IMagnetMoveAction;
 import vazkii.quark.api.IMagnetTracker;
 import vazkii.quark.api.QuarkCapabilities;
-import vazkii.quark.api.event.RecipeCrawlEvent;
 import vazkii.quark.base.handler.RecipeCrawlHandler;
 
 public class MagnetSystem {
@@ -55,7 +54,7 @@ public class MagnetSystem {
 		magnetizableBlocks.clear();
 	}
 	
-	public static void onDigest(RecipeCrawlEvent.Digest event) {
+	public static void onDigest() {
 		RecipeCrawlHandler.recursivelyFindCraftedItemsFromStrings(MagnetsModule.magneticDerivationList, MagnetsModule.magneticWhitelist, MagnetsModule.magneticBlacklist, i -> {
 			if(i instanceof BlockItem bi)
 				magnetizableBlocks.add(bi.getBlock());

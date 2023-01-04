@@ -9,7 +9,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ShulkerBoxSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import vazkii.quark.api.IQuarkButtonAllowed;
 import vazkii.quark.api.ISortingLockedSlots;
 import vazkii.quark.content.management.module.ExpandedItemInteractionsModule;
 
