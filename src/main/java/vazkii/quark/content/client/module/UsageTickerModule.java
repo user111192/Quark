@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import com.mojang.blaze3d.platform.Window;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlot.Type;
@@ -100,6 +101,7 @@ public class UsageTickerModule extends QuarkModule {
 		public ItemStack currStack = ItemStack.EMPTY;
 		public ItemStack currRealStack = ItemStack.EMPTY;
 		public int currCount;
+		public boolean isShowingArrows = false;
 
 		public TickerElement(EquipmentSlot slot) {
 			this.slot = slot;
@@ -108,9 +110,9 @@ public class UsageTickerModule extends QuarkModule {
 		@OnlyIn(Dist.CLIENT)
 		public void tick(Player player) {
 			ItemStack realStack = getStack(player);
-			int count = getStackCount(player, realStack);
+			int count = getStackCount(player, realStack, realStack);
 
-			ItemStack displayedStack = getDisplayedStack(realStack, count);
+			ItemStack displayedStack = getDisplayedStack(realStack, count, player);
 
 			if(displayedStack.isEmpty())
 				liveTicks = 0;
@@ -185,17 +187,16 @@ public class UsageTickerModule extends QuarkModule {
 		}
 
 		@OnlyIn(Dist.CLIENT)
-		public ItemStack getDisplayedStack(ItemStack stack, int count) {
+		public ItemStack getDisplayedStack(ItemStack stack, int count, Player player) {
 			boolean verifySize = true;
-			if((stack.getItem() instanceof BowItem || stack.getItem() instanceof CrossbowItem) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) == 0) {
-				stack = new ItemStack(Items.ARROW);
-				verifySize = false;
-			}
 
-			else if(stack.getItem() instanceof IUsageTickerOverride over) {
+			if(stack.getItem() instanceof IUsageTickerOverride over) {
 
 				stack = over.getUsageTickerItem(stack);
 				verifySize = over.shouldUsageTickerCheckMatchSize(currStack);
+			}
+			else if(isProjectileWeapon(stack)) {
+ 				return player.getProjectile(stack);
 			}
 
 			if(!stack.isStackable() && slot.getType() == Type.HAND)
@@ -207,27 +208,33 @@ public class UsageTickerModule extends QuarkModule {
 			return stack;
 		}
 
+		private static boolean isProjectileWeapon(ItemStack stack) {
+			return (stack.getItem() instanceof BowItem || stack.getItem() instanceof CrossbowItem) && EnchantmentHelper.getTagEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) == 0;
+		}
+
 		@OnlyIn(Dist.CLIENT)
 		public ItemStack getRenderedStack(Player player) {
 			ItemStack stack = getStack(player);
-			int count = getStackCount(player, stack);
-			ItemStack displayStack = getDisplayedStack(stack, count).copy();
+			int count = getStackCount(player, stack, stack);
+			ItemStack displayStack = getDisplayedStack(stack, count, player).copy();
 			if(displayStack != stack)
-				count = getStackCount(player, displayStack);
+				count = getStackCount(player, displayStack, stack);
 			displayStack.setCount(count);
 
 			return displayStack;
 		}
 
 		@OnlyIn(Dist.CLIENT)
-		public int getStackCount(Player player, ItemStack stack) {
-			if(!stack.isStackable())
+		public int getStackCount(Player player, ItemStack displayStack, ItemStack original) {
+			if(!displayStack.isStackable())
 				return 1;
 
-			Predicate<ItemStack> predicate = (stackAt) -> ItemStack.isSame(stackAt, stack) && ItemStack.tagMatches(stackAt, stack);
+			//if(displayStack!=original && isProjectileWeapon(original)){
+				//here i would check for quiver cap. Quiver selected arrow is already accounted for, however multiple ones are not
+			//}
 
-			if(stack.getItem() == Items.ARROW)
-				predicate = (stackAt) -> stackAt.getItem() instanceof ArrowItem;
+			Predicate<ItemStack> predicate = (stackAt) -> ItemStack.isSameItemSameTags(stackAt, displayStack);
+
 
 			int total = 0;
 			Inventory inventory = player.getInventory();
@@ -241,7 +248,7 @@ public class UsageTickerModule extends QuarkModule {
 				}
 			}
 
-			return total;
+			return Math.max(total, displayStack.getCount());
 		}
 
 	}
