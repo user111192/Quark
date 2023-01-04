@@ -94,6 +94,9 @@ public class EmotesModule extends QuarkModule {
 
 	@Config(description = "Enable this to make custom emotes read the file every time they're triggered so you can edit on the fly.\nDO NOT ship enabled this in a modpack, please.")
 	public static boolean customEmoteDebug = false;
+	
+	@Config public static int buttonShiftX = 0;
+	@Config public static int buttonShiftY = 0;
 
 	public static boolean emotesVisible = false;
 	public static File emotesDir;
@@ -193,7 +196,8 @@ public class EmotesModule extends QuarkModule {
 				}
 			}
 
-			int buttonY = (expandDown ? 2 : gui.height - 40);
+			int buttonX = buttonShiftX;
+			int buttonY = (expandDown ? 2 : gui.height - 40) + buttonShiftX;
 
 			List<Button> emoteButtons = new LinkedList<>();
 			for (int tier : keys) {
@@ -204,7 +208,7 @@ public class EmotesModule extends QuarkModule {
 					for (EmoteDescriptor desc : descriptors) {
 						int rowSize = Math.min(descriptors.size() - tierRow * EMOTES_PER_ROW, EMOTES_PER_ROW);
 
-						int x = gui.width - (EMOTE_BUTTON_WIDTH * (EMOTES_PER_ROW + 1)) + (((rowPos + 1) * 2 + EMOTES_PER_ROW - rowSize) * EMOTE_BUTTON_WIDTH / 2 + 1);
+						int x = buttonX + gui.width - (EMOTE_BUTTON_WIDTH * (EMOTES_PER_ROW + 1)) + (((rowPos + 1) * 2 + EMOTES_PER_ROW - rowSize) * EMOTE_BUTTON_WIDTH / 2 + 1);
 						int y = buttonY + (EMOTE_BUTTON_WIDTH * (rows - row)) * (expandDown ? 1 : -1);
 
 						Button button = new EmoteButton(x, y, desc, (b) -> {
@@ -228,7 +232,7 @@ public class EmotesModule extends QuarkModule {
 					row++;
 			}
 
-			event.addListener(new TranslucentButton(gui.width - 1 - EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, buttonY, EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, 20,
+			event.addListener(new TranslucentButton(buttonX + gui.width - 1 - EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, buttonY, EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, 20,
 					Component.translatable("quark.gui.button.emotes"),
 					(b) -> {
 						for(Button bt : emoteButtons)
