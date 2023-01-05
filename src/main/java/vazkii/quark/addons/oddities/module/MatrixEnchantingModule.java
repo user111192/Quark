@@ -100,6 +100,9 @@ public class MatrixEnchantingModule extends QuarkModule {
 	@Config(description = "Matrix Enchanting can be done with water instead of air around the enchanting table. Set this to false to disable this behaviour.")
 	public static boolean allowUnderwaterEnchanting = true;
 
+	@Config(description = "Matrix Enchanting can be done with short (<= 3px blocks) instead of air around the enchanting table. Set this to false to disable this behaviour.")
+	public static boolean allowShortBlockEnchanting = true;
+	
 	@Config(description = "Candles with soul sand below them or below the bookshelves dampen enchantments instead of influence them.")
 	public static boolean soulCandlesInvert = true;
 

@@ -36,6 +36,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.quark.addons.oddities.inventory.EnchantmentMatrix;
@@ -235,10 +238,12 @@ public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlo
 		enchantability = item.getItem().getEnchantmentValue(item);
 
 		boolean allowWater = MatrixEnchantingModule.allowUnderwaterEnchanting;
+		boolean allowShort = MatrixEnchantingModule.allowShortBlockEnchanting;
+		
 		float power = 0;
 		for (int j = -1; j <= 1; ++j) {
 			for (int k = -1; k <= 1; ++k) {
-				if(isAirGap(j, k, allowWater)) {
+				if(isAirGap(j, k, allowWater, allowShort)) {
 					power += getEnchantPowerAt(level, worldPosition.offset(k * 2, 0, j * 2));
 					power += getEnchantPowerAt(level, worldPosition.offset(k * 2, 1, j * 2));
 					if (k != 0 && j != 0) {
@@ -254,16 +259,26 @@ public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlo
 		bookshelfPower = Math.min((int) power, MatrixEnchantingModule.maxBookshelves);
 	}
 
-	private boolean isAirGap(int j, int k, boolean allowWater) {
+	private boolean isAirGap(int j, int k, boolean allowWater, boolean allowShortBlock) {
 		if(j != 0 || k != 0) {
 			BlockPos test = worldPosition.offset(k, 0, j);
 			BlockPos testUp = test.above();
 
-			return (level.isEmptyBlock(test) || (allowWater && level.getBlockState(test).getBlock() == Blocks.WATER))
-					&& (level.isEmptyBlock(testUp) || (allowWater && level.getBlockState(testUp).getBlock() == Blocks.WATER));
+			return (level.isEmptyBlock(test) || (allowWater && level.getBlockState(test).getBlock() == Blocks.WATER) || (allowShortBlock && isShortBlock(level, test)))
+					&& (level.isEmptyBlock(testUp) || (allowWater && level.getBlockState(testUp).getBlock() == Blocks.WATER) || (allowShortBlock && isShortBlock(level, testUp)));
 		}
 
 		return false;
+	}
+	
+	public static boolean isShortBlock(Level level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
+		Block block = state.getBlock();
+		VoxelShape shape = block.getShape(state, level, pos, CollisionContext.empty());
+		AABB bounds = shape.bounds();
+		
+		float f = (1F / 16F) * 3F;
+		return (bounds.minY == 0 && bounds.maxY <= f) || (bounds.maxY == 1F && bounds.minY >= (1F - f)); 
 	}
 
 	private float getEnchantPowerAt(Level world, BlockPos pos) {

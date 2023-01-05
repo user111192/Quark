@@ -114,6 +114,7 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 		boolean enabled = ModuleLoader.INSTANCE.isModuleEnabled(MatrixEnchantingModule.class);
 		boolean showInfluences = enabled && MatrixEnchantingModule.allowInfluencing;
 		boolean allowUnderwater = enabled && MatrixEnchantingModule.allowUnderwaterEnchanting;
+		boolean allowShort = enabled && MatrixEnchantingModule.allowShortBlockEnchanting;
 
 		for(int i = -2; i <= 2; ++i)
 			for(int j = -2; j <= 2; ++j) {
@@ -125,7 +126,9 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 						BlockPos blockpos = pos.offset(i, k, j);
 						BlockState state = worldIn.getBlockState(blockpos);
 						BlockPos test = pos.offset(i / 2, 0, j / 2);
-						if(!(worldIn.isEmptyBlock(test) || (allowUnderwater && worldIn.getBlockState(test).getBlock() == Blocks.WATER)))
+						if(!(worldIn.isEmptyBlock(test) 
+								|| (allowUnderwater && worldIn.getBlockState(test).getBlock() == Blocks.WATER)
+								|| (allowShort && MatrixEnchantingTableBlockEntity.isShortBlock(worldIn, test))))
 							break;
 
 						if(showInfluences) {
