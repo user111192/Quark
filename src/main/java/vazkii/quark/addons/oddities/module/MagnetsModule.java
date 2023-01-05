@@ -38,6 +38,9 @@ public class MagnetsModule extends QuarkModule {
 	@Config public static List<String> magneticWhitelist = Lists.newArrayList("minecraft:chipped_anvil", "minecraft:damaged_anvil");
 	@Config public static List<String> magneticBlacklist = Lists.newArrayList("minecraft:tripwire_hook");
 
+	@Config(flag = "magnet_pre_end")  
+	public static boolean usePreEndRecipe = false;
+	
 	public static Block magnet;
 	public static Block magnetized_block;
 

@@ -3,12 +3,9 @@
   "pattern": [
     "I",
     "I",
-    "R"
+    "I"
   ],
   "key": {
-    "R": {
-      "item": "minecraft:end_rod"
-    },
     "I": {
       "tag": "forge:ingots/iron"
     }
@@ -25,11 +22,8 @@
           "flag": "iron_rod"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "quark:flag",
-            "flag": "iron_rod_pre_end"
-          }
+          "type": "quark:flag",
+          "flag": "iron_rod_pre_end"
         }
       ]
     }
