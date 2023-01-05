@@ -114,7 +114,9 @@ public class BeaconRedirectionModule extends QuarkModule {
 						currColor = mixedColor;
 					}
 					
-					alpha = targetAlpha;
+					if(targetAlpha != -1)
+						alpha = targetAlpha;
+					
 					currSegment = new ExtendedBeamSegment(currSegment.dir, currPos.subtract(beaconPos), mixedColor, alpha);
 				}
 			} else {
