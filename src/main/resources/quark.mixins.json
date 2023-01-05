@@ -44,6 +44,7 @@
     "WeatheringCopperMixin",
     "HalfTransparentBlockMixin",
     "BannerDuplicateRecipeMixin",
+    "BaseCoralPlantTypeBlockMixin",
     
     "accessor.AccessorAbstractArrow",
     "accessor.AccessorAbstractChestedHorse",
