@@ -1,10 +1,13 @@
 package vazkii.quark.content.tools.client.render;
 
+import java.util.List;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
@@ -14,8 +17,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import vazkii.quark.content.tools.module.BeaconRedirectionModule;
 import vazkii.quark.content.tools.module.BeaconRedirectionModule.ExtendedBeamSegment;
-
-import java.util.List;
 
 // Mostly vanilla copypaste but adapted to use ExtendedBeamSegment values
 public class QuarkBeaconBlockEntityRenderer {
@@ -44,7 +45,8 @@ public class QuarkBeaconBlockEntityRenderer {
 	public static void renderBeamSegment(PoseStack matrixStackIn, MultiBufferSource bufferIn, ResourceLocation textureLocation, ExtendedBeamSegment segment, float partialTicks, float textureScale, long totalWorldTime, float beamRadius, float glowRadius) {
 		int height = segment.getHeight();
 		float[] colors = segment.getColor();
-
+		float alpha = segment.alpha;
+		
 		matrixStackIn.pushPose();
 		matrixStackIn.translate(0.5D, 0.5D, 0.5D); // Y translation changed to 0.5
 		matrixStackIn.translate(segment.offset.getX(), segment.offset.getY(), segment.offset.getZ()); // offset by the correct distance
@@ -60,10 +62,10 @@ public class QuarkBeaconBlockEntityRenderer {
 		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(angle * 2.25F - 45.0F));
 		float v2 = -1.0F + partAngle;
 		float v1 = (float)height * textureScale * (0.5F / beamRadius) + v2;
-		renderPart(matrixStackIn, bufferIn.getBuffer(RenderType.beaconBeam(textureLocation, false)), r, g, b, 1.0F, height, 0.0F, beamRadius, beamRadius, 0.0F, -beamRadius, 0.0F, 0.0F, -beamRadius, 0.0F, 1.0F, v1, v2);
+		renderPart(matrixStackIn, bufferIn.getBuffer(RenderType.beaconBeam(textureLocation, alpha < 1F)), r, g, b, alpha, height, 0.0F, beamRadius, beamRadius, 0.0F, -beamRadius, 0.0F, 0.0F, -beamRadius, 0.0F, 1.0F, v1, v2);
 		matrixStackIn.popPose();
 		v1 = (float)height * textureScale + v2;
-		renderPart(matrixStackIn, bufferIn.getBuffer(RenderType.beaconBeam(textureLocation, true)), r, g, b, 0.125F, height, -glowRadius, -glowRadius, glowRadius, -glowRadius, -glowRadius, glowRadius, glowRadius, glowRadius, 0.0F, 1.0F, v1, v2);
+		renderPart(matrixStackIn, bufferIn.getBuffer(RenderType.beaconBeam(textureLocation, true)), r, g, b, alpha * 0.125F, height, -glowRadius, -glowRadius, glowRadius, -glowRadius, -glowRadius, glowRadius, glowRadius, glowRadius, 0.0F, 1.0F, v1, v2);
 		matrixStackIn.popPose();
 	}
 

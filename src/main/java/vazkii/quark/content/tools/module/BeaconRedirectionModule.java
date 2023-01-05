@@ -28,6 +28,9 @@ public class BeaconRedirectionModule extends QuarkModule {
 	@Config 
 	public static int horizontalMoveLimit = 64;
 	
+	@Config
+	public static boolean allowTintedGlassTransparency = true;
+	
 	public static boolean staticEnabled;
 	
 	@Override
@@ -52,11 +55,12 @@ public class BeaconRedirectionModule extends QuarkModule {
 		boolean broke = false;
 		
 		float[] currColor = new float[] { 1, 1, 1 };
-		ExtendedBeamSegment currSegment = new ExtendedBeamSegment(Direction.UP, Vec3i.ZERO, currColor);
+		float alpha = 1F;
+		ExtendedBeamSegment currSegment = new ExtendedBeamSegment(Direction.UP, Vec3i.ZERO, currColor, alpha);
 
 		List<BlockPos> seenPositions = new LinkedList<>();
 		boolean check = true;
-		boolean setColor = false;
+		boolean hardColorSet = false;
 		
 		while(world.isInWorldBounds(currPos) && horizontalMoves > 0) {
 			currPos = currPos.relative(currSegment.dir);
@@ -67,8 +71,14 @@ public class BeaconRedirectionModule extends QuarkModule {
 			BlockState blockstate = world.getBlockState(currPos);
 			Block block = blockstate.getBlock();
 			float[] targetColor = blockstate.getBeaconColorMultiplier(world, currPos, beaconPos);
+			float targetAlpha = -1;
+			
+			if(allowTintedGlassTransparency) {
+				if(block == Blocks.TINTED_GLASS)
+					targetAlpha = (alpha < 0.3F ? 0F : (alpha / 2F));
+			}
 
-			if(isValidBlock(block)) {
+			if(isRedirectingBlock(block)) {
 				Direction dir = blockstate.getValue(BlockStateProperties.FACING);
 				if(dir == currSegment.dir)
 					currSegment.increaseHeight();
@@ -82,24 +92,30 @@ public class BeaconRedirectionModule extends QuarkModule {
 					
 					float[] mixedColor = new float[]{(currColor[0] + targetColor[0] * 3) / 4.0F, (currColor[1] + targetColor[1] * 3) / 4.0F, (currColor[2] + targetColor[2] * 3) / 4.0F};
 					currColor = mixedColor;
-					currSegment = new ExtendedBeamSegment(dir, currPos.subtract(beaconPos), currColor);
+					alpha = 1F;
+					currSegment = new ExtendedBeamSegment(dir, currPos.subtract(beaconPos), currColor, alpha);
 				}
-			} else if(targetColor != null) {
-				if(Arrays.equals(targetColor, currColor))
+			} else if(targetColor != null || targetAlpha != -1) {
+				if(Arrays.equals(targetColor, currColor) && targetAlpha == alpha)
 					currSegment.increaseHeight();
 				else {
 					check = true;
 					beacon.checkingBeamSections.add(currSegment);
 
-					float[] mixedColor = new float[]{(currColor[0] + targetColor[0]) / 2.0F, (currColor[1] + targetColor[1]) / 2.0F, (currColor[2] + targetColor[2]) / 2.0F};
-					
-					if(!setColor) {
-						mixedColor = targetColor;
-						setColor = true;
+					float[] mixedColor = currColor;
+					if(targetColor != null) {
+						mixedColor = new float[]{(currColor[0] + targetColor[0]) / 2.0F, (currColor[1] + targetColor[1]) / 2.0F, (currColor[2] + targetColor[2]) / 2.0F};
+						
+						if(!hardColorSet) {
+							mixedColor = targetColor;
+							hardColorSet = true;
+						}
+						
+						currColor = mixedColor;
 					}
 					
-					currColor = mixedColor;
-					currSegment = new ExtendedBeamSegment(currSegment.dir, currPos.subtract(beaconPos), mixedColor);
+					alpha = targetAlpha;
+					currSegment = new ExtendedBeamSegment(currSegment.dir, currPos.subtract(beaconPos), mixedColor, alpha);
 				}
 			} else {
 				if (block == Blocks.BEDROCK)
@@ -135,7 +151,7 @@ public class BeaconRedirectionModule extends QuarkModule {
 		return Integer.MAX_VALUE;
 	}
 	
-	private static boolean isValidBlock(Block block) {
+	private static boolean isRedirectingBlock(Block block) {
 		return CorundumModule.staticEnabled ? block instanceof CorundumClusterBlock : block == Blocks.AMETHYST_CLUSTER;
 	}
 	
@@ -147,13 +163,15 @@ public class BeaconRedirectionModule extends QuarkModule {
 
 		public final Direction dir;
 		public final Vec3i offset;
+		public final float alpha;
 		
 		private boolean isTurn = false;
 
-		public ExtendedBeamSegment(Direction dir, Vec3i offset, float[] colorsIn) {
+		public ExtendedBeamSegment(Direction dir, Vec3i offset, float[] colorsIn, float alpha) {
 			super(colorsIn);
 			this.offset = offset;
 			this.dir = dir;
+			this.alpha = alpha;
 		}
 
 		public void makeTurn() {
