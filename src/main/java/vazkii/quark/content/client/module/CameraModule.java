@@ -1,4 +1,4 @@
-package vazkii.quark.content.tools.module;
+package vazkii.quark.content.client.module;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -38,7 +38,7 @@ import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.experimental.module.OverlayShaderModule;
 
-@LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
+@LoadModule(category = ModuleCategory.CLIENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class CameraModule extends QuarkModule {
 
 	private static final int RULER_COLOR = 0x33000000;
