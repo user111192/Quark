@@ -20,8 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import vazkii.quark.base.block.QuarkGlassBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.world.module.CorundumModule;
@@ -39,7 +37,7 @@ public class CorundumBlock extends QuarkGlassBlock {
 	public CorundumClusterBlock cluster;
 
 	public CorundumBlock(String regname, int color, QuarkModule module, MaterialColor materialColor, boolean waxed) {
-		super(regname, module, CreativeModeTab.TAB_DECORATIONS,
+		super(regname, module, CreativeModeTab.TAB_DECORATIONS, true,
 				Block.Properties.of(Material.GLASS, materialColor)
 				.strength(0.3F, 0F)
 				.sound(SoundType.AMETHYST)
@@ -53,8 +51,6 @@ public class CorundumBlock extends QuarkGlassBlock {
 		float b = (color & 0xff) / 255f;
 		colorComponents = new float[]{r, g, b};
 		this.waxed = waxed;
-
-		RenderLayerHandler.setRenderType(this, RenderTypeSkeleton.TRANSLUCENT);
 	}
 
 	private boolean canGrow(Level world, BlockPos pos) {

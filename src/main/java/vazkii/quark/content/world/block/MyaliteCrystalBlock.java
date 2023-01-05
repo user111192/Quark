@@ -11,14 +11,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import vazkii.quark.base.block.QuarkGlassBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 
 public class MyaliteCrystalBlock extends QuarkGlassBlock implements IMyaliteColorProvider {
 
 	public MyaliteCrystalBlock(QuarkModule module) {
-		super("myalite_crystal", module, CreativeModeTab.TAB_DECORATIONS,
+		super("myalite_crystal", module, CreativeModeTab.TAB_DECORATIONS, true,
 				Block.Properties.of(Material.GLASS, MaterialColor.COLOR_PURPLE)
 				.strength(0.5F, 1200F)
 				.sound(SoundType.GLASS)
@@ -26,8 +24,6 @@ public class MyaliteCrystalBlock extends QuarkGlassBlock implements IMyaliteColo
 				.requiresCorrectToolForDrops()
 				.randomTicks()
 				.noOcclusion());
-
-		RenderLayerHandler.setRenderType(this, RenderTypeSkeleton.TRANSLUCENT);
 	}
 	
 	private static float[] decompColor(int color) {

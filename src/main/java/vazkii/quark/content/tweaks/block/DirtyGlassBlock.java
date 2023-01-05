@@ -7,8 +7,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.block.QuarkGlassBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 
 /**
@@ -20,8 +18,7 @@ public class DirtyGlassBlock extends QuarkGlassBlock {
 	private static final float[] BEACON_COLOR_MULTIPLIER = new float[] { 0.25F, 0.125F, 0F };
 
 	public DirtyGlassBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
-		super(regname, module, creativeTab, properties);
-		RenderLayerHandler.setRenderType(this, RenderTypeSkeleton.TRANSLUCENT);
+		super(regname, module, creativeTab, true, properties);
 	}
 
 	@Nullable
