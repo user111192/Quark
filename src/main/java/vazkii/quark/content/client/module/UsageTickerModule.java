@@ -7,28 +7,29 @@ import java.util.function.Predicate;
 import com.mojang.blaze3d.platform.Window;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlot.Type;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.api.IUsageTickerOverride;
+import vazkii.quark.api.event.UsageTickerEvent;
+import vazkii.quark.api.event.UsageTickerEvent.GetCount;
+import vazkii.quark.api.event.UsageTickerEvent.GetStack;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -101,7 +102,6 @@ public class UsageTickerModule extends QuarkModule {
 		public ItemStack currStack = ItemStack.EMPTY;
 		public ItemStack currRealStack = ItemStack.EMPTY;
 		public int currCount;
-		public boolean isShowingArrows = false;
 
 		public TickerElement(EquipmentSlot slot) {
 			this.slot = slot;
@@ -110,9 +110,9 @@ public class UsageTickerModule extends QuarkModule {
 		@OnlyIn(Dist.CLIENT)
 		public void tick(Player player) {
 			ItemStack realStack = getStack(player);
-			int count = getStackCount(player, realStack, realStack);
+			int count = getStackCount(player, realStack, realStack, false);
 
-			ItemStack displayedStack = getDisplayedStack(realStack, count, player);
+			ItemStack displayedStack = getLogicalStack(realStack, count, player, false);
 
 			if(displayedStack.isEmpty())
 				liveTicks = 0;
@@ -187,25 +187,58 @@ public class UsageTickerModule extends QuarkModule {
 		}
 
 		@OnlyIn(Dist.CLIENT)
-		public ItemStack getDisplayedStack(ItemStack stack, int count, Player player) {
+		public ItemStack getLogicalStack(ItemStack stack, int count, Player player, boolean renderPass) {
 			boolean verifySize = true;
+			ItemStack returnStack = stack;
+			boolean logicLock = false;
 
 			if(stack.getItem() instanceof IUsageTickerOverride over) {
-
 				stack = over.getUsageTickerItem(stack);
+				returnStack = stack;
 				verifySize = over.shouldUsageTickerCheckMatchSize(currStack);
 			}
 			else if(isProjectileWeapon(stack)) {
- 				return player.getProjectile(stack);
+				returnStack = player.getProjectile(stack);
+				logicLock = true;
 			}
 
-			if(!stack.isStackable() && slot.getType() == Type.HAND)
-				return ItemStack.EMPTY;
+			if(!logicLock) {
+				if(!stack.isStackable() && slot.getType() == Type.HAND)
+					returnStack = ItemStack.EMPTY;
+				else if(verifySize && stack.isStackable() && count == stack.getCount())
+					returnStack = ItemStack.EMPTY;
+			}
 
-			if(verifySize && stack.isStackable() && count == stack.getCount())
-				return ItemStack.EMPTY;
+			UsageTickerEvent.GetStack event = new GetStack(slot, returnStack, stack, count, renderPass, player);
+			MinecraftForge.EVENT_BUS.post(event);
+			return event.isCanceled() ? ItemStack.EMPTY : event.getResultStack();
+		}
 
-			return stack;
+		@OnlyIn(Dist.CLIENT)
+		public int getStackCount(Player player, ItemStack displayStack, ItemStack original, boolean renderPass) {
+			int val = 1;
+			
+			if(displayStack.isStackable()) {
+				Predicate<ItemStack> predicate = (stackAt) -> ItemStack.isSameItemSameTags(stackAt, displayStack);
+
+				int total = 0;
+				Inventory inventory = player.getInventory();
+				for(int i = 0; i < inventory.getContainerSize(); i++) {
+					ItemStack stackAt = inventory.getItem(i);
+					if(predicate.test(stackAt))
+						total += stackAt.getCount();
+
+					else if(stackAt.getItem() instanceof IUsageTickerOverride over) {
+						total += over.getUsageTickerCountForItem(stackAt, predicate);
+					}
+				}
+
+				val = Math.max(total, displayStack.getCount());
+			}
+
+			UsageTickerEvent.GetCount event = new GetCount(slot, displayStack, original, val, renderPass, player);
+			MinecraftForge.EVENT_BUS.post(event);
+			return event.isCanceled() ? 0 : event.getResultCount();
 		}
 
 		private static boolean isProjectileWeapon(ItemStack stack) {
@@ -215,42 +248,17 @@ public class UsageTickerModule extends QuarkModule {
 		@OnlyIn(Dist.CLIENT)
 		public ItemStack getRenderedStack(Player player) {
 			ItemStack stack = getStack(player);
-			int count = getStackCount(player, stack, stack);
-			ItemStack displayStack = getDisplayedStack(stack, count, player).copy();
-			if(displayStack != stack)
-				count = getStackCount(player, displayStack, stack);
-			displayStack.setCount(count);
+			int count = getStackCount(player, stack, stack, true);
+			ItemStack logicalStack = getLogicalStack(stack, count, player, true).copy();
+			if(logicalStack != stack)
+				count = getStackCount(player, logicalStack, stack, true);
+			logicalStack.setCount(count);
 
-			return displayStack;
+			if(logicalStack.isEmpty())
+				return ItemStack.EMPTY;
+			
+			return logicalStack;
 		}
-
-		@OnlyIn(Dist.CLIENT)
-		public int getStackCount(Player player, ItemStack displayStack, ItemStack original) {
-			if(!displayStack.isStackable())
-				return 1;
-
-			//if(displayStack!=original && isProjectileWeapon(original)){
-				//here i would check for quiver cap. Quiver selected arrow is already accounted for, however multiple ones are not
-			//}
-
-			Predicate<ItemStack> predicate = (stackAt) -> ItemStack.isSameItemSameTags(stackAt, displayStack);
-
-
-			int total = 0;
-			Inventory inventory = player.getInventory();
-			for(int i = 0; i < inventory.getContainerSize(); i++) {
-				ItemStack stackAt = inventory.getItem(i);
-				if(predicate.test(stackAt))
-					total += stackAt.getCount();
-
-				else if(stackAt.getItem() instanceof IUsageTickerOverride over) {
-					total += over.getUsageTickerCountForItem(stackAt, predicate);
-				}
-			}
-
-			return Math.max(total, displayStack.getCount());
-		}
-
 	}
 
 }
