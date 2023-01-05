@@ -37,7 +37,7 @@ public class GoldToolsHaveFortuneModule extends QuarkModule {
 	}
 
 	public static int getFortuneLevel(Enchantment enchant, ItemStack stack, int prev) {
-		if(!staticEnabled || enchant != Enchantments.BLOCK_FORTUNE || prev > 0)
+		if(!staticEnabled || enchant != Enchantments.BLOCK_FORTUNE || prev >= fortuneLevel)
 			return prev;
 
 		if(stack.getItem() instanceof DiggerItem di) {
