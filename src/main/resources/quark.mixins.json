@@ -45,6 +45,9 @@
     "HalfTransparentBlockMixin",
     "BannerDuplicateRecipeMixin",
     "BaseCoralPlantTypeBlockMixin",
+    "BonusLevelTableConditionMixin",
+    "DiggerItemMixin",
+    "ApplyBonusCountMixin",
     
     "accessor.AccessorAbstractArrow",
     "accessor.AccessorAbstractChestedHorse",
