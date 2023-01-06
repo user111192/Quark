@@ -35,6 +35,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
@@ -48,6 +50,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -85,7 +88,7 @@ public class AncientTomesModule extends QuarkModule {
 			loot(BuiltInLootTables.UNDERWATER_RUIN_SMALL, 0),
 			loot(BuiltInLootTables.ANCIENT_CITY, 4),
 			loot(MonsterBoxModule.MONSTER_BOX_LOOT_TABLE, 5)
-	);
+			);
 
 	private static final Object2IntMap<ResourceLocation> lootTableWeights = new Object2IntArrayMap<>();
 
@@ -99,8 +102,11 @@ public class AncientTomesModule extends QuarkModule {
 	@Config(name = "Valid Enchantments")
 	public static List<String> enchantNames = generateDefaultEnchantmentList();
 
-	@Config
+	@Config 
 	public static boolean overleveledBooksGlowRainbow = true;
+
+	@Config(description = "When enabled, Efficiency VI Diamond and Netherite pickaxes can instamine Deepslate")
+	public static boolean deepslateTweak = true; 
 
 	@Config(description = "Master Librarians will offer to exchange Ancient Tomes, provided you give them a max-level Enchanted Book of the Tome's enchantment too.")
 	public static boolean librariansExchangeAncientTomes = true;
@@ -115,7 +121,6 @@ public class AncientTomesModule extends QuarkModule {
 
 		tomeEnchantType = new LootItemFunctionType(new EnchantTome.Serializer());
 		Registry.register(Registry.LOOT_FUNCTION_TYPE, new ResourceLocation(Quark.MOD_ID, "tome_enchant"), tomeEnchantType);
-
 	}
 
 	@SubscribeEvent
@@ -199,7 +204,7 @@ public class AncientTomesModule extends QuarkModule {
 						out.setHoverName(Component.literal(name));
 						cost++;
 					}
-					
+
 					event.setOutput(out);
 					event.setCost(cost);
 				}
@@ -266,6 +271,16 @@ public class AncientTomesModule extends QuarkModule {
 					}
 				}
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onGetSpeed(PlayerEvent.BreakSpeed event) {
+		if(deepslateTweak) {
+			ItemStack stack = event.getEntity().getMainHandItem();
+			BlockState state = event.getState();
+			if(state.is(Blocks.DEEPSLATE) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, stack) >= 6 && event.getOriginalSpeed() >= 45F)
+				event.setNewSpeed(100F);
 		}
 	}
 
@@ -402,7 +417,7 @@ public class AncientTomesModule extends QuarkModule {
 
 				if (!ItemStack.isSameItemSameTags(inSlot, offer.getResult()) &&
 						!inSlot.isEmpty() && (currentStack.isEmpty() ? offer.isRequiredItem(inSlot, targetStack) :
-						ItemStack.isSameItemSameTags(targetStack, inSlot))) {
+							ItemStack.isSameItemSameTags(targetStack, inSlot))) {
 					int currentCount = currentStack.isEmpty() ? 0 : currentStack.getCount();
 					int amountToTake = Math.min(targetStack.getMaxStackSize() - currentCount, inSlot.getCount());
 					ItemStack newStack = inSlot.copy();
