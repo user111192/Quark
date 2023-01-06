@@ -20,9 +20,12 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MerchantContainer;
 import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.item.EnchantedBookItem;
@@ -105,8 +108,11 @@ public class AncientTomesModule extends QuarkModule {
 	@Config 
 	public static boolean overleveledBooksGlowRainbow = true;
 
-	@Config(description = "When enabled, Efficiency VI Diamond and Netherite pickaxes can instamine Deepslate")
+	@Config(description = "When enabled, Efficiency VI Diamond and Netherite pickaxes with can instamine Deepslate")
 	public static boolean deepslateTweak = true; 
+	
+	@Config
+	public static boolean deepslateTweakNeedsHaste2 = true;
 
 	@Config(description = "Master Librarians will offer to exchange Ancient Tomes, provided you give them a max-level Enchanted Book of the Tome's enchantment too.")
 	public static boolean librariansExchangeAncientTomes = true;
@@ -277,11 +283,22 @@ public class AncientTomesModule extends QuarkModule {
 	@SubscribeEvent
 	public void onGetSpeed(PlayerEvent.BreakSpeed event) {
 		if(deepslateTweak) {
-			ItemStack stack = event.getEntity().getMainHandItem();
+			Player player = event.getEntity();
+			ItemStack stack = player.getMainHandItem();
 			BlockState state = event.getState();
-			if(state.is(Blocks.DEEPSLATE) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, stack) >= 6 && event.getOriginalSpeed() >= 45F)
+			
+			if(state.is(Blocks.DEEPSLATE) 
+					&& EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, stack) >= 6 
+					&& event.getOriginalSpeed() >= 45F
+					&& (!deepslateTweakNeedsHaste2 || playerHasHaste2(player)))
+				
 				event.setNewSpeed(100F);
 		}
+	}
+	
+	private boolean playerHasHaste2(Player player) {
+		MobEffectInstance inst = player.getEffect(MobEffects.DIG_SPEED);
+		return inst != null && inst.getAmplifier() > 0;
 	}
 
 	private static boolean isOverlevel(ItemStack stack) {
