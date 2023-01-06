@@ -6,42 +6,39 @@
       }
     },
     {
+      "apply": {
+        "model": "quark:block/bamboo_fence_side_north",
+        "uvlock": false
+      },
       "when": {
         "north": "true"
-      },
-      "apply": {
-        "model": "quark:block/bamboo_fence_side",
-        "uvlock": true
       }
     },
     {
+      "apply": {
+        "model": "quark:block/bamboo_fence_side_east",
+        "uvlock": false
+      },
       "when": {
         "east": "true"
-      },
-      "apply": {
-        "model": "quark:block/bamboo_fence_side",
-        "y": 90,
-        "uvlock": true
       }
     },
     {
+      "apply": {
+        "model": "quark:block/bamboo_fence_side_south",
+        "uvlock": false
+      },
       "when": {
         "south": "true"
-      },
-      "apply": {
-        "model": "quark:block/bamboo_fence_side",
-        "y": 180,
-        "uvlock": true
       }
     },
     {
+      "apply": {
+        "model": "quark:block/bamboo_fence_side_west",
+        "uvlock": false
+      },
       "when": {
         "west": "true"
-      },
-      "apply": {
-        "model": "quark:block/bamboo_fence_side",
-        "y": 270,
-        "uvlock": true
       }
     }
   ]

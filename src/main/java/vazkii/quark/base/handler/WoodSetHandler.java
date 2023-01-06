@@ -168,8 +168,8 @@ public class WoodSetHandler {
 		if(hasLog) {
 			ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, set.log, set.strippedLog);
 			ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, set.wood, set.strippedWood);
-			ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, set.post, set.strippedPost);
 		}
+		ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, set.post, set.strippedPost);
 
 		VariantLaddersModule.variantLadders.add(set.ladder);
 
