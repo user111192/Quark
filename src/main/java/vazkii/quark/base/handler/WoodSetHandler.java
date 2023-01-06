@@ -116,10 +116,10 @@ public class WoodSetHandler {
 	}
 
 	public static WoodSet addWoodSet(QuarkModule module, String name, MaterialColor color, MaterialColor barkColor) {
-		return addWoodSet(module, name, color, barkColor, true);
+		return addWoodSet(module, name, color, barkColor, true, true);
 	}
 	
-	public static WoodSet addWoodSet(QuarkModule module, String name, MaterialColor color, MaterialColor barkColor, boolean hasLog) {
+	public static WoodSet addWoodSet(QuarkModule module, String name, MaterialColor color, MaterialColor barkColor, boolean hasLog, boolean hasBoat) {
 		WoodType type = WoodType.register(WoodType.create(Quark.MOD_ID + ":" + name));
 		WoodSet set = new WoodSet(name, module, type);
 
@@ -157,8 +157,11 @@ public class WoodSetHandler {
 		VariantChestsModule.addChest(name, module, Block.Properties.copy(Blocks.CHEST), true);
 
 		set.signItem = new QuarkSignItem(module, set.sign, set.wallSign);
-		set.boatItem = new QuarkBoatItem(name, module, false);
-		set.chestBoatItem = new QuarkBoatItem(name, module, true);
+		
+		if(hasBoat) {
+			set.boatItem = new QuarkBoatItem(name, module, false);
+			set.chestBoatItem = new QuarkBoatItem(name, module, true);
+		}
 
 		makeSignWork(set.sign, set.wallSign);
 
@@ -169,9 +172,13 @@ public class WoodSetHandler {
 		}
 
 		VariantLaddersModule.variantLadders.add(set.ladder);
-		FuelHandler.addFuel(set.boatItem, 60 * 20);
 
-		addQuarkBoatType(name, new QuarkBoatType(name, set.boatItem, set.chestBoatItem, set.planks));
+		if(hasBoat) {
+			FuelHandler.addFuel(set.boatItem, 60 * 20);
+			FuelHandler.addFuel(set.chestBoatItem, 60 * 20);
+
+			addQuarkBoatType(name, new QuarkBoatType(name, set.boatItem, set.chestBoatItem, set.planks));
+		}
 
 		woodSets.add(set);
 

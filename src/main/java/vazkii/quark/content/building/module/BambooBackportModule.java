@@ -14,7 +14,7 @@ public class BambooBackportModule extends QuarkModule {
 	
 	@Override
 	public void register() {
-		woodSet = WoodSetHandler.addWoodSet(this, "bamboo", MaterialColor.COLOR_YELLOW, MaterialColor.COLOR_YELLOW, false);
+		woodSet = WoodSetHandler.addWoodSet(this, "bamboo", MaterialColor.COLOR_YELLOW, MaterialColor.COLOR_YELLOW, false, false);
 	}
 	
 }
