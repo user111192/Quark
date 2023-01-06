@@ -8,12 +8,21 @@
   ],
   "result": {
     "item": "quark:bamboo_planks",
-    "count": 4
+    "count": 2
   },
   "conditions": [
     {
-      "type": "quark:flag",
-      "flag": "bamboo_backport"
+      "type": "forge:and",
+      "values": [
+        {
+          "type": "quark:flag",
+          "flag": "bamboo_backport"
+        },
+        {
+          "type": "quark:flag",
+          "flag": "bamboo_block"
+        }
+      ]
     }
   ]
 }
