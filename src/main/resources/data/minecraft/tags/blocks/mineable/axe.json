@@ -141,6 +141,10 @@
         "quark:mangrove_post",
         "quark:mangrove_trapped_chest",
         "quark:stripped_mangrove_post",
-        "quark:vertical_mangrove_planks"
+        "quark:vertical_mangrove_planks",
+        "quark:bamboo_block",
+        "quark:stripped_bamboo_block",
+        "quark:bamboo_mat",
+        "quark:bamboo_mat_carpet"
     ]
 }

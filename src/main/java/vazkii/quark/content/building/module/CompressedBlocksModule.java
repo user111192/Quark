@@ -12,10 +12,12 @@ import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraftforge.common.ToolActions;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.QuarkFlammableBlock;
 import vazkii.quark.base.block.QuarkFlammablePillarBlock;
 import vazkii.quark.base.handler.FuelHandler;
+import vazkii.quark.base.handler.ToolInteractionHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -39,7 +41,7 @@ public class CompressedBlocksModule extends QuarkModule {
 	@Config.Min(0)
 	public static int stickBlockFuelTime = 900;
 	
-	@Config(name = "Bamboo Bundle Fuel Time")
+	@Config(name = "Bamboo Block Fuel Time")
 	@Config.Min(0)
 	public static int bambooBundleFuelTime = 500;
 	
@@ -80,7 +82,8 @@ public class CompressedBlocksModule extends QuarkModule {
 				.setCondition(() -> enableCharcoalBlock);
 		
 		bamboo_bundle = pillar("sugar_cane", MaterialColor.COLOR_LIGHT_GREEN, true, () -> enableSugarCaneBlock, 200);
-		pillar("bamboo", MaterialColor.COLOR_YELLOW, false, () -> enableBambooBlock, 200);
+		Block bamboo = pillar("bamboo", MaterialColor.COLOR_GREEN, false, () -> enableBambooBlock, 200);
+		Block stripped_bamboo = pillar("stripped_bamboo", MaterialColor.COLOR_YELLOW, false, () -> enableBambooBlock, 200);
 		pillar("cactus", MaterialColor.COLOR_GREEN, true, () -> enableCactusBlock, 50);
 		pillar("chorus_fruit", MaterialColor.COLOR_PURPLE, false, () -> enableChorusFruitBlock, 10);
 		stick_block = pillar("stick", MaterialColor.WOOD, false, () -> enableStickBlock, 300);
@@ -113,6 +116,8 @@ public class CompressedBlocksModule extends QuarkModule {
 				.strength(0.4F)
 				.sound(SoundType.WOOL))
 		.setCondition(() -> enableBondedRabbitHide);
+		
+		ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, bamboo, stripped_bamboo);
 	}
 
 	@Override
