@@ -145,6 +145,24 @@
         "quark:bamboo_block",
         "quark:stripped_bamboo_block",
         "quark:bamboo_mat",
-        "quark:bamboo_mat_carpet"
+        "quark:bamboo_mat_carpet",
+        "quark:bamboo_planks",
+        "quark:bamboo_post",
+        "quark:stripped_bamboo_post",
+        "quark:bamboo_bookshelf",
+        "quark:bamboo_planks_slab",
+        "quark:bamboo_planks_stairs",
+        "quark:bamboo_planks_vertical_slab",
+        "quark:bamboo_fence",
+        "quark:bamboo_fence_gate",
+        "quark:bamboo_door",
+        "quark:bamboo_trapdoor",
+        "quark:bamboo_ladder",
+        "quark:bamboo_sign",
+        "quark:bamboo_wall_sign",
+        "quark:bamboo_chest",
+        "quark:bamboo_trapped_chest",
+        "quark:bamboo_button",
+        "quark:bamboo_pressure_plate"
     ]
 }

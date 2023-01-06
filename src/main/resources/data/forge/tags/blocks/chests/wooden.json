@@ -22,6 +22,8 @@
         "quark:blossom_chest",
         "quark:blossom_trapped_chest",
         "quark:mangrove_chest",
-        "quark:mangrove_trapped_chest"
+        "quark:mangrove_trapped_chest",
+        "quark:bamboo_chest",
+        "quark:bamboo_trapped_chest"
     ]
 }

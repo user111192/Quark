@@ -2,6 +2,7 @@
     "replace": false,
     "values": [
         "quark:azalea_fence",
-        "quark:blossom_fence"
+        "quark:blossom_fence",
+        "quark:bamboo_fence"
     ]
 }

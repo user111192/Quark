@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "boat",
+  "pattern": [
+    "# #",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "quark:bamboo_planks"
+    }
+  },
+  "result": {
+    "item": "quark:bamboo_boat"
+  },
+  "conditions": [
+    {
+      "type": "quark:flag",
+      "flag": "bamboo_backport"
+    }
+  ]
+}

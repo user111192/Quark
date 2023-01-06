@@ -2,6 +2,7 @@
     "replace": false,
     "values": [
         "quark:azalea_button",
-        "quark:blossom_button"
+        "quark:blossom_button",
+        "quark:bamboo_button"
     ]
 }
