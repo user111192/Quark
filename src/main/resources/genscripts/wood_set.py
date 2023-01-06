@@ -4,9 +4,10 @@ from os import system as run
 modid = 'quark'
 category = 'world'
 flag = 'flag%' # using % ensures the game explodes if unset
+nolog = False
 
 def main():
-	global category, flag
+	global category, flag, nolog
 	for arg in sys.argv:
 		if not '.py' in arg:
 			if '=' in arg:
@@ -15,13 +16,18 @@ def main():
 					category = toks[1]
 				elif toks[0] == 'flag':
 					flag = toks[1]
+				elif toks[0] == 'nolog' and toks[1] == 'true':
+					nolog = True
 			else:
 				makeWood(arg)
 
 def makeWood(type):
+	global category, flag, nolog
+
 	run(f"py generic_block.py {type}_planks")
-	run(f"py pillar.py {type}_log stripped_{type}_log")
-	run(f"py wood_block.py {type} stripped_{type}")
+	if not nolog:
+		run(f"py pillar.py {type}_log stripped_{type}_log")
+		run(f"py wood_block.py {type} stripped_{type}")
 	run(f"py stairs_slabs.py category={category} flag={flag} {type}_planks")
 	run(f"py post_modded.py flag={flag} {type} stripped_{type}")
 	run(f"py bookshelves.py {type}")
@@ -40,14 +46,23 @@ def makeWood(type):
 	appendTags(type)
 
 def appendTags(type):
-	addToTag('mineable/axe', type, ["%_planks", "%_log", "%_wood", 
-		"stripped_%_log", "%_wood", "stripped_%_wood", "%_post", 
-		"stripped_%_post", "%_bookshelf", "%_planks_slab", "%_planks_stairs", 
-		"%_planks_vertical_slab", "%_fence", "%_fence_gate", "%_door",
-		 "%_trapdoor", "%_ladder", "%_sign", "%_wall_sign", "%_chest", 
-		 "%_trapped_chest", "%_button", "%_pressure_plate"], False)
+	global category, flag, nolog, modid
 
-	bulkTag(['logs', 'logs_that_burn', f"{modid}:{type}_logs"], type, ["%_log", "stripped_%_log", "%_wood", "stripped_%_wood"])
+	if nolog:
+		addToTag('mineable/axe', type, ["%_planks", "%_post", 
+			"stripped_%_post", "%_bookshelf", "%_planks_slab", "%_planks_stairs", 
+			"%_planks_vertical_slab", "%_fence", "%_fence_gate", "%_door",
+			 "%_trapdoor", "%_ladder", "%_sign", "%_wall_sign", "%_chest", 
+			 "%_trapped_chest", "%_button", "%_pressure_plate"], False)
+	else:
+		addToTag('mineable/axe', type, ["%_planks", "%_log", "%_wood", 
+			"stripped_%_log", "stripped_%_wood", "%_post", 
+			"stripped_%_post", "%_bookshelf", "%_planks_slab", "%_planks_stairs", 
+			"%_planks_vertical_slab", "%_fence", "%_fence_gate", "%_door",
+			 "%_trapdoor", "%_ladder", "%_sign", "%_wall_sign", "%_chest", 
+			 "%_trapped_chest", "%_button", "%_pressure_plate"], False)
+		bulkTag(['logs', 'logs_that_burn', f"{modid}:{type}_logs"], type, ["%_log", "stripped_%_log", "%_wood", "stripped_%_wood"])
+
 	addToTag('quark:ladders', type, ["%_ladder"])
 	addToTag('climbable', type, ["%_ladder"], False)
 	addToTag('planks', type, ["%_planks"])
