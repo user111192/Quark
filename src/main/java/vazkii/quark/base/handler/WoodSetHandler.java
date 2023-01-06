@@ -116,15 +116,22 @@ public class WoodSetHandler {
 	}
 
 	public static WoodSet addWoodSet(QuarkModule module, String name, MaterialColor color, MaterialColor barkColor) {
+		return addWoodSet(module, name, color, barkColor, true);
+	}
+	
+	public static WoodSet addWoodSet(QuarkModule module, String name, MaterialColor color, MaterialColor barkColor, boolean hasLog) {
 		WoodType type = WoodType.register(WoodType.create(Quark.MOD_ID + ":" + name));
 		WoodSet set = new WoodSet(name, module, type);
 
-		set.log = log(name + "_log", module, color, barkColor);
-		set.wood = new QuarkPillarBlock(name + "_wood", module, CreativeModeTab.TAB_BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, barkColor).strength(2.0F).sound(SoundType.WOOD));
+		if(hasLog) {
+			set.log = log(name + "_log", module, color, barkColor);
+			set.wood = new QuarkPillarBlock(name + "_wood", module, CreativeModeTab.TAB_BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, barkColor).strength(2.0F).sound(SoundType.WOOD));
+			set.strippedLog = log("stripped_" + name + "_log", module, color, color);
+			set.strippedWood = new QuarkPillarBlock("stripped_" + name + "_wood", module, CreativeModeTab.TAB_BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F).sound(SoundType.WOOD));
+		}		
+		
 		set.planks = new QuarkBlock(name + "_planks", module, CreativeModeTab.TAB_BUILDING_BLOCKS, Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
-		set.strippedLog = log("stripped_" + name + "_log", module, color, color);
-		set.strippedWood = new QuarkPillarBlock("stripped_" + name + "_wood", module, CreativeModeTab.TAB_BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F).sound(SoundType.WOOD));
-
+		
 		set.slab = VariantHandler.addSlab((IQuarkBlock) set.planks).getBlock();
 		set.stairs = VariantHandler.addStairs((IQuarkBlock) set.planks).getBlock();
 		set.fence = new QuarkFenceBlock(name + "_fence", module, CreativeModeTab.TAB_DECORATIONS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
@@ -141,8 +148,10 @@ public class WoodSetHandler {
 
 		set.bookshelf = new VariantBookshelfBlock(name, module, true).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(VariantBookshelvesModule.class));
 		set.ladder = new VariantLadderBlock(name, module, true).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(VariantLaddersModule.class));
+		
 		set.post = new WoodPostBlock(module, set.fence, "", false).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(WoodenPostsModule.class));
 		set.strippedPost = new WoodPostBlock(module, set.fence, "stripped_", false).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(WoodenPostsModule.class));
+		
 		set.verticalPlanks = VerticalPlanksModule.add(name, set.planks, module).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(VerticalPlanksModule.class));
 
 		VariantChestsModule.addChest(name, module, Block.Properties.copy(Blocks.CHEST), true);
@@ -153,9 +162,11 @@ public class WoodSetHandler {
 
 		makeSignWork(set.sign, set.wallSign);
 
-		ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, set.log, set.strippedLog);
-		ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, set.wood, set.strippedWood);
-		ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, set.post, set.strippedPost);
+		if(hasLog) {
+			ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, set.log, set.strippedLog);
+			ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, set.wood, set.strippedWood);
+			ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, set.post, set.strippedPost);
+		}
 
 		VariantLaddersModule.variantLadders.add(set.ladder);
 		FuelHandler.addFuel(set.boatItem, 60 * 20);
