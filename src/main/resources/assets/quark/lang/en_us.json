@@ -402,6 +402,8 @@
 	"item.quark.music_disc_chatter": "Ambience Disc",
 	"item.quark.music_disc_chatter.desc": "Packed Venue",
 	"item.quark.saw": "Sculk Saw (NYI)",
+	"item.quark.bamboo_boat": "Bamboo Raft",
+	"item.quark.bamboo_chest_boat": "Bamboo Raft with Chest",
 
 	"item.minecraft.potion.effect.quark.resilience": "Potion of Stability",
 	"item.minecraft.splash_potion.effect.quark.resilience": "Splash Potion of Stability",
@@ -1115,9 +1117,7 @@
 	"block.quark.bamboo_fence": "Bamboo Fence",
 	"block.quark.bamboo_sign": "Bamboo Sign",
 	"block.quark.bamboo_button": "Bamboo Button",
-	"block.quark.bamboo_pressure_plate": "Bamboo Pressure Plate",
-	"item.quark.bamboo_boat": "Bamboo Raft",
-	"item.quark.bamboo_chest_boat": "Bamboo Raft with Chest",
+	"block.quark.vertical_bamboo_planks": "Vertical Bamboo Planks",
 
 	"item.quark.stoneling_spawn_egg": "Stoneling Spawn Egg",
 	"item.quark.crab_spawn_egg": "Crab Spawn Egg",
