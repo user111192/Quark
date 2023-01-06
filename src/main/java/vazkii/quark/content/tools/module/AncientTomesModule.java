@@ -108,7 +108,7 @@ public class AncientTomesModule extends QuarkModule {
 	@Config 
 	public static boolean overleveledBooksGlowRainbow = true;
 
-	@Config(description = "When enabled, Efficiency VI Diamond and Netherite pickaxes with can instamine Deepslate")
+	@Config(description = "When enabled, Efficiency VI Diamond and Netherite pickaxes can instamine Deepslate when under Haste 2")
 	public static boolean deepslateTweak = true; 
 	
 	@Config
