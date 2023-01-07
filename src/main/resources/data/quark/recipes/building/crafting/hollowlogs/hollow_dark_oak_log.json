@@ -7,11 +7,11 @@
   ],
   "key": {
     "L": {
-      "item": "%origspace%:%name%"
+      "item": "minecraft:dark_oak_log"
     }
   },
   "result": {
-    "item": "%modid%:hollow_%name%",
+    "item": "quark:hollow_dark_oak_log",
     "count": 4
   },
   "conditions": [

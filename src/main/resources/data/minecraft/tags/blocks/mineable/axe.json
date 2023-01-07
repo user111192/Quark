@@ -165,6 +165,7 @@
         "quark:bamboo_trapped_chest",
         "quark:bamboo_button",
         "quark:bamboo_pressure_plate",
-        "quark:bamboo_mosaic"
+        "quark:bamboo_mosaic",
+        "#quark:hollow_logs"
     ]
 }

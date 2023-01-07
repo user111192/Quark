@@ -7,11 +7,11 @@
   ],
   "key": {
     "L": {
-      "item": "%origspace%:%name%"
+      "item": "minecraft:warped_stem"
     }
   },
   "result": {
-    "item": "%modid%:hollow_%name%",
+    "item": "quark:hollow_warped_stem",
     "count": 4
   },
   "conditions": [

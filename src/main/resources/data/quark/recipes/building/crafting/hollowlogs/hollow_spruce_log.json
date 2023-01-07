@@ -7,11 +7,11 @@
   ],
   "key": {
     "L": {
-      "item": "%origspace%:%name%"
+      "item": "minecraft:spruce_log"
     }
   },
   "result": {
-    "item": "%modid%:hollow_%name%",
+    "item": "quark:hollow_spruce_log",
     "count": 4
   },
   "conditions": [

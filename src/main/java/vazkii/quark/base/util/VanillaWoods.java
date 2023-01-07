@@ -16,8 +16,8 @@ public class VanillaWoods {
 	public static Wood DARK_OAK = new Wood("dark_oak", Blocks.DARK_OAK_LOG, Blocks.DARK_OAK_PLANKS, Blocks.DARK_OAK_LEAVES, Blocks.DARK_OAK_FENCE, false);
 	public static Wood MANGROVE = new Wood("mangrove", Blocks.MANGROVE_LOG, Blocks.MANGROVE_PLANKS, Blocks.MANGROVE_LEAVES, Blocks.MANGROVE_FENCE, false);
 
-	public static Wood CRIMSON = new Wood("crimson", Blocks.CRIMSON_HYPHAE, Blocks.CRIMSON_PLANKS, null, Blocks.CRIMSON_FENCE, true);
-	public static Wood WARPED = new Wood("warped", Blocks.WARPED_HYPHAE, Blocks.WARPED_PLANKS, null, Blocks.WARPED_FENCE, true);
+	public static Wood CRIMSON = new Wood("crimson", Blocks.CRIMSON_STEM, Blocks.CRIMSON_PLANKS, null, Blocks.CRIMSON_FENCE, true);
+	public static Wood WARPED = new Wood("warped", Blocks.WARPED_STEM, Blocks.WARPED_PLANKS, null, Blocks.WARPED_FENCE, true);
 
 	public static final Wood[] OVERWORLD_NON_OAK = new Wood[] {
 			SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, MANGROVE

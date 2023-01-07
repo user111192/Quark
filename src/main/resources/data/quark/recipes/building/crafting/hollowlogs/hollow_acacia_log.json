@@ -7,11 +7,11 @@
   ],
   "key": {
     "L": {
-      "item": "%origspace%:%name%"
+      "item": "minecraft:acacia_log"
     }
   },
   "result": {
-    "item": "%modid%:hollow_%name%",
+    "item": "quark:hollow_acacia_log",
     "count": 4
   },
   "conditions": [
