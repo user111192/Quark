@@ -57,9 +57,11 @@ import vazkii.quark.base.item.boat.QuarkBoatItem;
 import vazkii.quark.base.item.boat.QuarkChestBoat;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
+import vazkii.quark.content.building.block.HollowLogBlock;
 import vazkii.quark.content.building.block.VariantBookshelfBlock;
 import vazkii.quark.content.building.block.VariantLadderBlock;
 import vazkii.quark.content.building.block.WoodPostBlock;
+import vazkii.quark.content.building.module.HollowLogsModule;
 import vazkii.quark.content.building.module.VariantBookshelvesModule;
 import vazkii.quark.content.building.module.VariantChestsModule;
 import vazkii.quark.content.building.module.VariantLaddersModule;
@@ -154,6 +156,10 @@ public class WoodSetHandler {
 		
 		set.verticalPlanks = VerticalPlanksModule.add(name, set.planks, module).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(VerticalPlanksModule.class));
 
+		if(hasLog) {
+			set.hollowLog = new HollowLogBlock(set.log, module, false).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(HollowLogsModule.class));
+		}
+		
 		VariantChestsModule.addChest(name, module, Block.Properties.copy(Blocks.CHEST), true);
 
 		set.signItem = new QuarkSignItem(module, set.sign, set.wallSign);
@@ -220,7 +226,8 @@ public class WoodSetHandler {
 		public Block log, wood, planks, strippedLog, strippedWood,
 		slab, stairs, fence, fenceGate,
 		door, trapdoor, button, pressurePlate, sign, wallSign,
-		bookshelf, ladder, post, strippedPost, verticalPlanks;
+		bookshelf, ladder, post, strippedPost, verticalPlanks,
+		hollowLog;
 
 		public Item signItem, boatItem, chestBoatItem;
 
