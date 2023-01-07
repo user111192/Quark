@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.objectweb.asm.Type;
@@ -23,6 +25,7 @@ import vazkii.quark.base.Quark;
 public final class ModuleFinder {
 
 	private static final Type LOAD_MODULE_TYPE = Type.getType(LoadModule.class);
+	private static final Pattern MODULE_CLASS_PATTERN = Pattern.compile("vazkii\\.quark\\.(?:content|addons)\\.(\\w+)\\.module.\\w+Module");
 
 	private final Map<Class<? extends QuarkModule>, QuarkModule> foundModules = new HashMap<>();
 
@@ -39,7 +42,9 @@ public final class ModuleFinder {
 		try {
 			Type type = target.clazz();
 			String name = type.getClassName();
-			if(!name.matches("vazkii\\.quark\\.(content|addons)\\.\\w+\\.module.\\w+Module"))
+			
+			Matcher m = MODULE_CLASS_PATTERN.matcher(name);
+			if(!m.matches())
 				throw new IllegalArgumentException("Invalid module name " + name);
 			
 			Class<?> clazz = Class.forName(name, false, Quark.class.getClassLoader());
@@ -50,6 +55,11 @@ public final class ModuleFinder {
 			Map<String, Object> vals = target.annotationData();
 			ModuleCategory category = getOrMakeCategory((ModAnnotation.EnumHolder) vals.get("category"));
 
+			String categoryName = category.name;
+			String packageName = m.group(1);
+			if(!categoryName.equals(packageName))
+				throw new IllegalArgumentException("Module " + name + " is defined in " + packageName + " but in category " + categoryName);
+			
 			if(category.isAddon()) {
 				String mod = category.requiredMod;
 				if(mod != null && !mod.isEmpty() && !ModList.get().isLoaded(mod))

@@ -30,7 +30,7 @@ import vazkii.quark.content.tools.ai.RunAwayFromPikesGoal;
 import vazkii.quark.content.tools.client.render.entity.SkullPikeRenderer;
 import vazkii.quark.content.tools.entity.SkullPike;
 
-@LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
+@LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
 public class SkullPikesModule extends QuarkModule {
 
 	public static EntityType<SkullPike> skullPikeType;
