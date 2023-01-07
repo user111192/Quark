@@ -12,8 +12,7 @@ import vazkii.quark.content.tweaks.module.GoldToolsHaveFortuneModule;
 public class DiggerItemMixin {
 
 	@Redirect(method = "isCorrectToolForDrops(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/block/state/BlockState;)Z",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/DiggerItem;getTier()Lnet/minecraft/world/item/Tier;"), 
-			remap = false)
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/DiggerItem;getTier()Lnet/minecraft/world/item/Tier;"))
 	private Tier getTier(DiggerItem item) {
 		Tier realTier = item.getTier();
 		
