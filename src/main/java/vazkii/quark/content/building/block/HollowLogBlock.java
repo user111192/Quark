@@ -33,7 +33,7 @@ public class HollowLogBlock extends QuarkPillarBlock {
 	private final boolean flammable;
 	
 	public HollowLogBlock(Block sourceLog, QuarkModule module, boolean flammable) {
-		super(IQuarkBlock.inherit(sourceLog, s -> ("hollow_" + s.replace("hyphae", "log"))), module, CreativeModeTab.TAB_DECORATIONS, 
+		super(IQuarkBlock.inherit(sourceLog, "hollow_%s"), module, CreativeModeTab.TAB_DECORATIONS, 
 				Properties.copy(sourceLog)
 				.noOcclusion()
 				.isSuffocating((s,g,p) -> false));
