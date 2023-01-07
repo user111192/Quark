@@ -15,6 +15,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.module.QuarkModule;
+import vazkii.quark.content.tools.module.AmbientDiscsModule;
 
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
@@ -66,7 +67,7 @@ public class QuarkMusicDiscItem extends RecordItem implements IQuarkItem {
 			SoundManager soundEngine = mc.getSoundManager();
 			LevelRenderer render = mc.levelRenderer;
 
-			SimpleSoundInstance simplesound = new SimpleSoundInstance(soundSupplier.get().getLocation(), SoundSource.RECORDS, 4.0F, 1.0F, SoundInstance.createUnseededRandom(), true, 0, SoundInstance.Attenuation.LINEAR, pos.getX(), pos.getY(), pos.getZ(), false);
+			SimpleSoundInstance simplesound = new SimpleSoundInstance(soundSupplier.get().getLocation(), SoundSource.RECORDS, (float) AmbientDiscsModule.volume, 1.0F, SoundInstance.createUnseededRandom(), true, 0, SoundInstance.Attenuation.LINEAR, pos.getX(), pos.getY(), pos.getZ(), false);
 
 			render.playingRecords.put(pos, simplesound);
 			soundEngine.play(simplesound);

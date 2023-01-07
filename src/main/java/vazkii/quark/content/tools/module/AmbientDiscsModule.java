@@ -1,5 +1,8 @@
 package vazkii.quark.content.tools.module;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -25,13 +28,11 @@ import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
 public class AmbientDiscsModule extends QuarkModule {
 
 	@Config public static boolean dropOnSpiderKill = true;
+	@Config public static double volume = 3;
 
 	private final List<Item> discs = new ArrayList<>();
 
