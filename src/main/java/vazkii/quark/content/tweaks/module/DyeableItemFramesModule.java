@@ -16,7 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelEvent;
@@ -71,12 +73,21 @@ public class DyeableItemFramesModule extends QuarkModule {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if((stack.is(Items.ITEM_FRAME) || stack.is(Items.GLOW_ITEM_FRAME)) && DyeHandler.isDyed(stack)) {
-			UseOnContext context = new UseOnContext(player, hand, event.getHitVec());
-			InteractionResult result = useOn(context);
+			BlockHitResult blockhit = event.getHitVec();
+			UseOnContext context = new UseOnContext(player, hand, blockhit);
+
+			Level level = player.level;
+			BlockPos pos = event.getPos();
+			BlockState state = level.getBlockState(pos);
 			
-			// TODO overtakes other interactions
-			event.setCanceled(true);
-			event.setCancellationResult(result);
+			InteractionResult result = player.isCrouching() ? InteractionResult.PASS : state.use(level, player, hand, blockhit); 
+			if(result == InteractionResult.PASS)
+				result = useOn(context);
+			
+			if(result != InteractionResult.PASS) {
+				event.setCanceled(true);
+				event.setCancellationResult(result);	
+			}
 		}
 	}
 
