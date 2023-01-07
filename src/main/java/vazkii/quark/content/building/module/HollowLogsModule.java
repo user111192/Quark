@@ -43,7 +43,7 @@ public class HollowLogsModule extends QuarkModule {
 				
 				if(block instanceof HollowLogBlock) {
 					Axis axis = state.getValue(HollowLogBlock.AXIS);
-					if(axis == dir.getAxis()) {
+					if(axis != Axis.Y && axis == dir.getAxis()) {
 						player.setPose(Pose.SWIMMING);
 						player.setSwimming(true);
 						
