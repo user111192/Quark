@@ -5,33 +5,58 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.event.lifecycle.ParallelDispatchEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.recipe.DyeRecipe;
 
+@EventBusSubscriber(modid = Quark.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 public final class DyeHandler {
 	
 	private static final Map<Item, Supplier<Boolean>> dyeableConditions = new HashMap<>();
 	private static final DyeSurrogate SURROGATE = new DyeSurrogate();
 	
-	private static boolean registered = false;
-	
-	public static synchronized void register() {
-		if(!registered) {
-			registered = true;
-			
-			ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":dye_item", DyeRecipe.SERIALIZER);
-		}
+	public static void register() {
+		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":dye_item", DyeRecipe.SERIALIZER);
 	}
-	 
+	
+	@OnlyIn(Dist.CLIENT)
+	public static void clientSetup(ParallelDispatchEvent event) {
+		ResourceLocation res = new ResourceLocation("quark_dyed");
+		ItemColors colors = Minecraft.getInstance().getItemColors();
+		
+		ItemPropertyFunction fun = (s, e, l, i) -> DyeHandler.isDyed(s) ? 1 : 0;
+		ItemColor color = (s, l) -> {
+			if(l != 0 || !isDyed(s))
+				return 0xFFFFFF;
+			
+			return SURROGATE.getColor(s);
+		};
+		
+		event.enqueueWork(() -> {
+			for(Item item : dyeableConditions.keySet()) {
+				ItemProperties.register(item, res, fun);
+				
+				colors.register(color, item);
+			}
+		});
+	}
+	
 	public static void addAlwaysDyeable(Item item) {
 		addDyeable(item, () -> true);
 	}
@@ -41,13 +66,16 @@ public final class DyeHandler {
 	}
 	
 	public static void addDyeable(Item item, Supplier<Boolean> cond) {
-		register();
 		dyeableConditions.put(item, cond);
 	}
-
+	
 	public static boolean isDyeable(ItemStack stack) {
 		Item item = stack.getItem();
 		return dyeableConditions.containsKey(item) && dyeableConditions.get(item).get();
+	}
+	
+	public static boolean isDyed(ItemStack stack) {
+		return isDyeable(stack) && SURROGATE.hasCustomColor(stack);
 	}
 	
 	// Copy of DyeableLeatherItem but for our system

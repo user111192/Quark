@@ -23,6 +23,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.capability.CapabilityHandler;
 import vazkii.quark.base.handler.BrewingHandler;
 import vazkii.quark.base.handler.ContributorRewardHandler;
+import vazkii.quark.base.handler.DyeHandler;
 import vazkii.quark.base.handler.FuelHandler;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.handler.UndergroundBiomeHandler;
@@ -76,6 +77,7 @@ public class CommonProxy {
 	public void setup(FMLCommonSetupEvent event) {
 		QuarkNetwork.setup();
 		BrewingHandler.setup();
+		
 		ModuleLoader.INSTANCE.setup(event);
 		initContributorRewards();
 
@@ -141,6 +143,7 @@ public class CommonProxy {
 			ModuleLoader.INSTANCE.register();
 			WoodSetHandler.register();
 			WorldGenHandler.register();
+			DyeHandler.register();
 		}
 
 	}

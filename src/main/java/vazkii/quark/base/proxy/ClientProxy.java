@@ -35,6 +35,7 @@ import vazkii.quark.base.client.config.IngameConfigHandler;
 import vazkii.quark.base.client.config.external.ExternalConfigHandler;
 import vazkii.quark.base.client.config.screen.QuarkConfigHomeScreen;
 import vazkii.quark.base.handler.ContributorRewardHandler;
+import vazkii.quark.base.handler.DyeHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.module.ModuleLoader;
@@ -80,6 +81,7 @@ public class ClientProxy extends CommonProxy {
 	public void clientSetup(FMLClientSetupEvent event) {
 		RenderLayerHandler.init();
 		WoodSetHandler.clientSetup(event);
+		DyeHandler.clientSetup(event);
 
 		ModuleLoader.INSTANCE.clientSetup(event);
 	}
