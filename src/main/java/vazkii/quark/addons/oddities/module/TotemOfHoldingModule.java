@@ -81,7 +81,7 @@ public class TotemOfHoldingModule extends QuarkModule {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
-		event.register(new ModelResourceLocation(Quark.MOD_ID, "totem_of_holding", "inventory"));
+		event.register(new ModelResourceLocation(Quark.MOD_ID, "extra/totem_of_holding", "inventory"));
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)

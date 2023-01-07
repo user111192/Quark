@@ -77,7 +77,7 @@ public class PipesModule extends QuarkModule {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void registerAdditionalModels(RegisterAdditional event) {
-		event.register(new ModelResourceLocation(Quark.MOD_ID, "pipe_flare", "inventory"));
+		event.register(new ModelResourceLocation(Quark.MOD_ID, "extra/pipe_flare", "inventory"));
 	}
 	
 }
