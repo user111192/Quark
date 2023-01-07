@@ -13,7 +13,7 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 
 @LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
-public class RenewableSporeBlossoms extends QuarkModule {
+public class RenewableSporeBlossomsModule extends QuarkModule {
 	
 	@Config public double boneMealChance = 0.2;
 	

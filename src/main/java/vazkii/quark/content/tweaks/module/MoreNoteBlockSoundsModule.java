@@ -21,7 +21,7 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 
 @LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
-public class MoreNoteBlockSounds extends QuarkModule {
+public class MoreNoteBlockSoundsModule extends QuarkModule {
 
 	@Config
 	public static boolean enableSkullSounds = true;

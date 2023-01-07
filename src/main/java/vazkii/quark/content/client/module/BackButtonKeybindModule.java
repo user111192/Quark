@@ -25,7 +25,7 @@ import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 
 @LoadModule(category = ModuleCategory.CLIENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
-public class BackButtonKeybind extends QuarkModule {
+public class BackButtonKeybindModule extends QuarkModule {
 
 	@OnlyIn(Dist.CLIENT)
 	private static KeyMapping backKey;

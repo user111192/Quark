@@ -38,8 +38,12 @@ public final class ModuleFinder {
 	private void loadModule(AnnotationData target) {
 		try {
 			Type type = target.clazz();
-			Class<?> clazz = Class.forName(type.getClassName(), false, Quark.class.getClassLoader());
-			Quark.LOG.info("Found Quark module class " + type.getClassName());
+			String name = type.getClassName();
+			if(!name.matches("vazkii\\.quark\\.(content|addons)\\.\\w+\\.module.\\w+Module"))
+				throw new IllegalArgumentException("Invalid module name " + name);
+			
+			Class<?> clazz = Class.forName(name, false, Quark.class.getClassLoader());
+			Quark.LOG.info("Found Quark module class " + name);
 			
 			QuarkModule moduleObj = (QuarkModule) clazz.getDeclaredConstructor().newInstance();
 
