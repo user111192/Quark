@@ -62,7 +62,7 @@ public class BlockSuffixConfig extends AbstractConfigType {
 	}
 	
 	public Block getBlockForVariant(Block block, String variant) {
-		blockVariants.clear(); // TODO test
+		blockVariants.clear();
 		if(variant == null || !sortedSuffixes.contains(variant))
 			return block;
 		
