@@ -3,12 +3,10 @@ package vazkii.quark.content.building.module;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,7 +26,7 @@ public class HollowLogsModule extends QuarkModule {
 
 	@Override
 	public void register() {
-		for (Wood wood : VanillaWoods.ALL)
+		for(Wood wood : VanillaWoods.ALL)
 			new HollowLogBlock(wood.log(), this, !wood.nether());
 	}
 
