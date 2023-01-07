@@ -59,7 +59,7 @@ import vazkii.quark.content.building.module.GlassItemFrameModule;
 @OnlyIn(Dist.CLIENT)
 public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 
-	private static final ModelResourceLocation LOCATION_MODEL = new ModelResourceLocation(new ResourceLocation(Quark.MOD_ID, "glass_frame"), "inventory");
+	private static final ModelResourceLocation LOCATION_MODEL = new ModelResourceLocation(new ResourceLocation(Quark.MOD_ID, "extra/glass_item_frame"), "inventory");
 
 	private static final List<Direction> SIGN_DIRECTIONS = List.of(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 

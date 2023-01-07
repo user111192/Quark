@@ -78,6 +78,15 @@ public final class DyeHandler {
 		return isDyeable(stack) && SURROGATE.hasCustomColor(stack);
 	}
 	
+	public static int getDye(ItemStack stack) {
+		return SURROGATE.getColor(stack);
+	}
+	
+	public static void applyDye(ItemStack stack, int color) {
+		if(isDyeable(stack))
+			SURROGATE.setColor(stack, color);
+	}
+	
 	// Copy of DyeableLeatherItem but for our system
 	public static ItemStack dyeItem(ItemStack stack, List<DyeItem> dyes) {
 	      ItemStack itemstack = ItemStack.EMPTY;
