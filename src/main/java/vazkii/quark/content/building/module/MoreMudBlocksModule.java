@@ -1,4 +1,4 @@
-package vazkii.quark.content.building.block;
+package vazkii.quark.content.building.module;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Blocks;
@@ -12,7 +12,7 @@ import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 
 @LoadModule(category = ModuleCategory.BUILDING)
-public class MoreMudBlocks extends QuarkModule {
+public class MoreMudBlocksModule extends QuarkModule {
 
 	@Override
 	public void register() {
