@@ -3,7 +3,6 @@ package vazkii.quark.content.tools.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -20,8 +19,6 @@ import vazkii.quark.content.tools.module.TorchArrowModule;
 
 public class TorchArrow extends AbstractArrow {
 	
-	private boolean dontNock = false;
-
 	public TorchArrow(EntityType<TorchArrow> type, Level level) {
 		super(type, level);
 	}
@@ -84,12 +81,7 @@ public class TorchArrow extends AbstractArrow {
 		
 		super.onHitBlock(result);
 	}
-	
-	@Override
-	public void playSound(SoundEvent sound, float vol, float pitch) {
-		super.playSound(sound, vol, pitch);
-	}
-	
+
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		// incredible hack to ensure we still set entities on fire without rendering the fire texture
