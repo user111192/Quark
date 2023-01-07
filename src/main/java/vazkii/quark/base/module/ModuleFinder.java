@@ -45,7 +45,7 @@ public final class ModuleFinder {
 			
 			Matcher m = MODULE_CLASS_PATTERN.matcher(name);
 			if(!m.matches())
-				throw new IllegalArgumentException("Invalid module name " + name);
+				throw new RuntimeException("Invalid module name " + name);
 			
 			Class<?> clazz = Class.forName(name, false, Quark.class.getClassLoader());
 			Quark.LOG.info("Found Quark module class " + name);
@@ -58,7 +58,7 @@ public final class ModuleFinder {
 			String categoryName = category.name;
 			String packageName = m.group(1);
 			if(!categoryName.equals(packageName))
-				throw new IllegalArgumentException("Module " + name + " is defined in " + packageName + " but in category " + categoryName);
+				throw new RuntimeException("Module " + name + " is defined in " + packageName + " but in category " + categoryName);
 			
 			if(category.isAddon()) {
 				String mod = category.requiredMod;
