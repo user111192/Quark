@@ -43,15 +43,17 @@ import vazkii.quark.base.module.config.Config;
 public class AutomaticTookRestockModule extends QuarkModule {
 
 	@SuppressWarnings("serial")
-	private static final Map<ToolAction, String> ACTION_TO_CLASS = new HashMap<>() {{
-		put(ToolActions.AXE_DIG, "axe");
-		put(ToolActions.HOE_DIG, "hoe");
-		put(ToolActions.SHOVEL_DIG, "shovel");
-		put(ToolActions.PICKAXE_DIG, "pickaxe");
-		put(ToolActions.SWORD_SWEEP, "sword");
-		put(ToolActions.SHEARS_HARVEST, "shears");
-		put(ToolActions.FISHING_ROD_CAST, "fishing_rod");
-	}};
+	private static final Map<ToolAction, String> ACTION_TO_CLASS = new HashMap<>();
+	
+	static {
+		ACTION_TO_CLASS.put(ToolActions.AXE_DIG, "axe");
+		ACTION_TO_CLASS.put(ToolActions.HOE_DIG, "hoe");
+		ACTION_TO_CLASS.put(ToolActions.SHOVEL_DIG, "shovel");
+		ACTION_TO_CLASS.put(ToolActions.PICKAXE_DIG, "pickaxe");
+		ACTION_TO_CLASS.put(ToolActions.SWORD_SWEEP, "sword");
+		ACTION_TO_CLASS.put(ToolActions.SHEARS_HARVEST, "shears");
+		ACTION_TO_CLASS.put(ToolActions.FISHING_ROD_CAST, "fishing_rod");
+	}
 	
 	private static final WeakHashMap<Player, Stack<Pair<Integer, Integer>>> replacements = new WeakHashMap<>();
 

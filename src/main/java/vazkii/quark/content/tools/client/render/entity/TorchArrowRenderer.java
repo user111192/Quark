@@ -14,6 +14,7 @@ public class TorchArrowRenderer extends ArrowRenderer<TorchArrow> {
 		super(p_174399_);
 	}
 
+	@Override
 	public ResourceLocation getTextureLocation(TorchArrow p_116001_) {
 		return new ResourceLocation(Quark.MOD_ID, "textures/model/entity/torch_arrow.png");
 	}

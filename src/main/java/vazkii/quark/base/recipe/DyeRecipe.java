@@ -24,6 +24,7 @@ public class DyeRecipe extends CustomRecipe {
 		super(p_43757_);
 	}
 
+	@Override
 	public boolean matches(CraftingContainer p_43769_, Level p_43770_) {
 		ItemStack itemstack = ItemStack.EMPTY;
 		List<ItemStack> list = Lists.newArrayList();
@@ -50,6 +51,7 @@ public class DyeRecipe extends CustomRecipe {
 		return !itemstack.isEmpty() && !list.isEmpty();
 	}
 
+	@Override
 	public ItemStack assemble(CraftingContainer p_43767_) {
 		List<DyeItem> list = Lists.newArrayList();
 		ItemStack itemstack = ItemStack.EMPTY;
@@ -77,10 +79,12 @@ public class DyeRecipe extends CustomRecipe {
 		return !itemstack.isEmpty() && !list.isEmpty() ? DyeHandler.dyeItem(itemstack, list) : ItemStack.EMPTY;
 	}
 
+	@Override
 	public boolean canCraftInDimensions(int p_43759_, int p_43760_) {
 		return p_43759_ * p_43760_ >= 2;
 	}
 
+	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
 	}
