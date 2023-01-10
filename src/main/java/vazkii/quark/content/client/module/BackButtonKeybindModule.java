@@ -73,7 +73,7 @@ public class BackButtonKeybindModule extends QuarkModule {
 		for(String b : buttons)
 			for(GuiEventListener listener : listeners) {
 				if(listener instanceof Button w) {
-					if(w.getMessage().getString().equals(b) && w.visible && w.active) {
+					if(w.getMessage() != null && w.getMessage().getString().equals(b) && w.visible && w.active) {
 						w.onClick(0, 0);
 						return;
 					}
