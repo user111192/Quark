@@ -43,7 +43,8 @@ def makeWood(type):
 	run(f"py buttons.py texname={type}_planks {type}")
 	run(f"py pressure_plates.py texname={type}_planks {type}")
 	run(f"py generic_item.py {type}_boat {type}_chest_boat")
-	run(f"py vertical_planks.py {type}")
+	run(f"py vertical_planks.py vertical_{type}_planks")
+	run(f"py vertical_planks_recipes.py {type}")
 	
 	run(f"py wood_set_recipes.py category={category} flag={flag} {type}")
 
