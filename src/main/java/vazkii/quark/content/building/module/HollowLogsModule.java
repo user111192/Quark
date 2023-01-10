@@ -21,6 +21,8 @@ import vazkii.quark.content.building.block.HollowLogBlock;
 @LoadModule(category = ModuleCategory.BUILDING, hasSubscriptions = true)
 public class HollowLogsModule extends QuarkModule {
 
+	private static final String TAG_TRYING_TO_CRAWL = "quark:trying_crawl";
+	
 	@Config
 	public static boolean enableAutoCrawl = true;
 
@@ -34,7 +36,10 @@ public class HollowLogsModule extends QuarkModule {
 	public void playerTick(PlayerTickEvent event) {
 		if(enableAutoCrawl && event.phase == Phase.START) {
 			Player player = event.player;
-			if(player.isCrouching() && !player.isSwimming()) {
+			boolean isTrying = player.isCrouching() && !player.isSwimming();
+			boolean wasTrying = player.getPersistentData().getBoolean(TAG_TRYING_TO_CRAWL);
+			
+			if(isTrying && !wasTrying) {
 				Direction dir = player.getDirection();
 				
 				BlockPos pos = player.blockPosition().relative(dir);
@@ -55,6 +60,9 @@ public class HollowLogsModule extends QuarkModule {
 					}
 				}
 			}
+			
+			if(isTrying != wasTrying)
+				player.getPersistentData().putBoolean(TAG_TRYING_TO_CRAWL, isTrying);
 		}
 	}
 
