@@ -70,7 +70,7 @@ def appendTags(type):
 
 	addToTag('quark:ladders', type, ["%_ladder"])
 	addToTag('climbable', type, ["%_ladder"], False)
-	addToTag('planks', type, ["%_planks"])
+	addToTag('planks', type, ["%_planks", "vertical_%_planks"])
 	addToTag('wooden_stairs', type, ["%_planks_stairs"])
 	addToTag('wooden_slabs', type, ["%_planks_slab"])
 	addToTag('quark:wooden_vertical_slabs', type, ["%_planks_vertical_slab"])
@@ -86,6 +86,7 @@ def appendTags(type):
 	bulkTag(['forge:chests', 'forge:chests/wooden', 'guarded_by_piglins'], type, ["%_chest", "%_trapped_chest"])
 	addToTag('forge:chests/trapped', type, ["%_trapped_chest"])
 	addToTag('quark:boatable_chests', type, ["%_chest"], False, False)
+	addToTag('quark:hollow_logs', type, ["%_hollow_log"])
 
 def bulkTag(tags, type, items, mirror=True, is_block=True):
 	for tag in tags:
