@@ -1,4 +1,4 @@
-	import sys, os, json, re
+import sys, os, json, re
 from os import system as run
 
 modid = 'quark'
