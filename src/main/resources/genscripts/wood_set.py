@@ -1,4 +1,4 @@
-import sys, os, json, re
+	import sys, os, json, re
 from os import system as run
 
 modid = 'quark'
@@ -28,6 +28,8 @@ def makeWood(type):
 	if not nolog:
 		run(f"py pillar.py {type}_log stripped_{type}_log")
 		run(f"py wood_block.py {type} stripped_{type}")
+		run(f"py hollow_log.py origspace={modid} {type}_log")
+
 	run(f"py stairs_slabs.py category={category} flag={flag} {type}_planks")
 	run(f"py post_modded.py flag={flag} {type} stripped_{type}")
 	run(f"py bookshelves.py {type}")
@@ -41,6 +43,8 @@ def makeWood(type):
 	run(f"py buttons.py texname={type}_planks {type}")
 	run(f"py pressure_plates.py texname={type}_planks {type}")
 	run(f"py generic_item.py {type}_boat {type}_chest_boat")
+	run(f"py vertical_planks.py {type}")
+	
 	run(f"py wood_set_recipes.py category={category} flag={flag} {type}")
 
 	appendTags(type)
