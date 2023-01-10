@@ -63,6 +63,9 @@ public class UtilityRecipesModule extends QuarkModule {
 	
 	@Config(description = "Can two Logs be used to craft 16 sticks?", flag = "easy_sticks")
 	public static boolean easySticks = true;
+
+	@Config(description = "Can raw ore blocks be smelted, taking 9x the time a normal item?", flag = "smelt_ore_blocks")
+	public static boolean smeltRawOreBlocks = true;
 	
 	private boolean needsChange = false;
 
