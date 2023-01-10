@@ -5,11 +5,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.block.QuarkGlassBlock;
 import vazkii.quark.base.block.QuarkPillarBlock;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
+import vazkii.quark.content.building.block.MudBrickLatticeBlock;
 
 @LoadModule(category = ModuleCategory.BUILDING)
 public class MoreMudBlocksModule extends QuarkModule {
@@ -20,7 +20,7 @@ public class MoreMudBlocksModule extends QuarkModule {
 		
 		new QuarkBlock("carved_mud_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
 		new QuarkPillarBlock("mud_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
-		new QuarkGlassBlock("mud_brick_lattice", this, CreativeModeTab.TAB_BUILDING_BLOCKS, false, props);
+		new MudBrickLatticeBlock(this, props);
 	}
 	
 }
