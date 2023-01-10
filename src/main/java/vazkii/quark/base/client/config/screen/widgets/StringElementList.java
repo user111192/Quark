@@ -44,7 +44,12 @@ public class StringElementList extends ScrollableWidgetList<ListInputScreen, Str
 				field.setMaxLength(256);
 				field.setValue(initialString);
 				field.moveCursorTo(0);
-				field.setResponder(str -> parent.list.set(index, str));
+				field.setResponder(str -> {
+					if(parent.list.isEmpty())
+						parent.list.add(str);
+					else 
+						parent.list.set(index, str);
+				});
 				children.add(new WidgetWrapper(field));
 
 				children.add(new WidgetWrapper(new Button(230, 3, 20, 20, Component.literal("-").withStyle(ChatFormatting.RED), b -> parent.remove(index))));
