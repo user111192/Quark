@@ -9,10 +9,22 @@
     "item": "minecraft:bamboo",
     "count": 9
   },
-  "conditions": [
+   "conditions": [
     {
-      "type": "quark:flag",
-        "flag": "bamboo_block"
+      "type": "forge:and",
+      "values": [
+        {
+          "type": "quark:flag",
+          "flag": "bamboo_block"
+        },
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "quark:flag",
+            "flag": "bamboo_backport"
+          }
+        }
+      ]
     }
   ]
 } 

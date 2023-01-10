@@ -7,12 +7,12 @@
   ],
   "key": {
     "F": {
-      "item": "quark:bamboo_block"
+      "item": "quark:stripped_bamboo_block"
     }
   },
   "result": {
-    "item": "quark:bamboo_post",
-    "count": 8
+    "item": "quark:stripped_bamboo_post",
+    "count": 4
   },
   "conditions": [
     {
