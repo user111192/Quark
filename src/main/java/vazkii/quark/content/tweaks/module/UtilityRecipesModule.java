@@ -96,7 +96,7 @@ public class UtilityRecipesModule extends QuarkModule {
 	public void torchBurnTime(FurnaceFuelBurnTimeEvent event) {
 		if (torchesBurn) {
 			Item item = event.getItemStack().getItem();
-			if (item == Items.TORCH)
+			if (item == Items.TORCH || item == Items.SOUL_TORCH)
 				event.setBurnTime(400);
 		}
 	}
