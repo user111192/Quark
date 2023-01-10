@@ -6,7 +6,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.frog.Tadpole;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
@@ -27,28 +29,34 @@ public class PoisonPotatoUsageModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onInteract(EntityInteract event) {
-		if(event.getTarget() instanceof AgeableMob ageable && event.getItemStack().getItem() == Items.POISONOUS_POTATO) {
-			if(ageable.isBaby() && !isEntityPoisoned(ageable)) {
-				if(!event.getLevel().isClientSide) {
-					Vec3 pos = ageable.position();
-					if(ageable.level.random.nextDouble() < chance) {
-						ageable.playSound(SoundEvents.GENERIC_EAT, 0.5f, 0.25f);
-						ageable.level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.x, pos.y, pos.z, 0.2, 0.8, 0);
-						poisonEntity(ageable);
-						if (poisonEffect)
-							ageable.addEffect(new MobEffectInstance(MobEffects.POISON, 200));
-					} else {
-						ageable.playSound(SoundEvents.GENERIC_EAT, 0.5f, 0.5f + ageable.level.random.nextFloat() / 2);
-						ageable.level.addParticle(ParticleTypes.SMOKE, pos.x, pos.y, pos.z, 0, 0.1, 0);
-					}
+		if(event.getItemStack().getItem() == Items.POISONOUS_POTATO && canPoison(event.getTarget())) {
+			LivingEntity entity = (LivingEntity) event.getTarget();
+			
+			if(!event.getLevel().isClientSide) {
+				Vec3 pos = entity.position();
+				if(entity.level.random.nextDouble() < chance) {
+					entity.playSound(SoundEvents.GENERIC_EAT, 0.5f, 0.25f);
+					entity.level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.x, pos.y, pos.z, 0.2, 0.8, 0);
+					poisonEntity(entity);
+					if (poisonEffect)
+						entity.addEffect(new MobEffectInstance(MobEffects.POISON, 80));
+				} else {
+					entity.playSound(SoundEvents.GENERIC_EAT, 0.5f, 0.5f + entity.level.random.nextFloat() / 2);
+					entity.level.addParticle(ParticleTypes.SMOKE, pos.x, pos.y, pos.z, 0, 0.1, 0);
+				}
 
-					if (!event.getEntity().getAbilities().instabuild)
-						event.getItemStack().shrink(1);
+				if (!event.getEntity().getAbilities().instabuild)
+					event.getItemStack().shrink(1);
 
-				} else event.getEntity().swing(event.getHand());
+			} else event.getEntity().swing(event.getHand());
 
-			}
 		}
+	}
+
+	private boolean canPoison(Entity entity) {
+		return !isEntityPoisoned(entity) &&
+				(entity instanceof AgeableMob ageable && ageable.isBaby()
+				|| entity instanceof Tadpole);
 	}
 
 	@SubscribeEvent
@@ -56,6 +64,11 @@ public class PoisonPotatoUsageModule extends QuarkModule {
 		if(event.getEntity() instanceof Animal animal) {
 			if(animal.isBaby() && isEntityPoisoned(animal))
 				animal.setAge(-24000);
+		}
+		
+		else if(event.getEntity() instanceof Tadpole tadpole) {
+			if(isEntityPoisoned(tadpole))
+				tadpole.setAge(0);
 		}
 	}
 
