@@ -10,11 +10,19 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -53,8 +61,23 @@ public final class DyeHandler {
 				ItemProperties.register(item, res, fun);
 				
 				colors.register(color, item);
+				
+				CauldronInteraction.WATER.put(item, DyeHandler::cauldronInteract);
 			}
 		});
+	}
+	
+	private static InteractionResult cauldronInteract(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
+	      if(!isDyed(stack))
+	         return InteractionResult.PASS;
+	      
+         if(!level.isClientSide) {
+            SURROGATE.clearColor(stack);
+//            p_175632_.awardStat(Stats.CLEAN_ARMOR);
+            LayeredCauldronBlock.lowerFillLevel(state, level, pos);
+         }
+
+         return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 	
 	public static void addAlwaysDyeable(Item item) {
