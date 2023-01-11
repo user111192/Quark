@@ -86,7 +86,7 @@ def appendTags(type):
 	bulkTag(['forge:chests', 'forge:chests/wooden', 'guarded_by_piglins'], type, ["%_chest", "%_trapped_chest"])
 	addToTag('forge:chests/trapped', type, ["%_trapped_chest"])
 	addToTag('quark:boatable_chests', type, ["%_chest"], False, False)
-	addToTag('quark:hollow_logs', type, ["%_hollow_log"])
+	addToTag('quark:hollow_logs', type, ["hollow_%_log"])
 
 def bulkTag(tags, type, items, mirror=True, is_block=True):
 	for tag in tags:
