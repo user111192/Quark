@@ -16,11 +16,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.JukeboxBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
@@ -102,7 +102,7 @@ public class JukeboxAutomationModule extends QuarkModule {
 		@Nonnull
 		@Override
 		public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
-			if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			if (cap == ForgeCapabilities.ITEM_HANDLER)
 				return LazyOptional.of(() -> this).cast();
 
 			return LazyOptional.empty();

@@ -1,9 +1,6 @@
 package vazkii.quark.content.experimental.module;
 
-import java.util.Arrays;
-
 import com.mojang.blaze3d.platform.Window;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -22,29 +19,31 @@ import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.tools.config.BlockSuffixConfig;
 import vazkii.quark.content.tools.item.SawItem;
 
+import java.util.Arrays;
+
 @LoadModule(category = ModuleCategory.EXPERIMENTAL, hasSubscriptions = true, enabledByDefault = false)
 public class SawModule extends QuarkModule {
 
-	@Config 
+	@Config
 	public static BlockSuffixConfig variants = new BlockSuffixConfig(
-			Arrays.asList("slab", "stairs", "wall", "fence", "vertical_slab"), 
+			Arrays.asList("slab", "stairs", "wall", "fence", "vertical_slab"),
 			Arrays.asList("quark"));
-	
+
 	public static Item saw;
-	
+
 	@Override
 	public void register() {
 		saw = new SawItem(this);
 	}
-	
+
 	private String getSavedVariant(Player player) {
 		ItemStack offHand = player.getOffhandItem();
 		if(offHand.getItem() == saw)
 			return SawItem.getSavedVariant(offHand);
-		
+
 		return "";
 	}
-	
+
 	private Block getMainHandVariantBlock(Player player, String variant) {
 		ItemStack mainHand = player.getMainHandItem();
 		if(mainHand.getItem() instanceof BlockItem blockItem) {
@@ -53,20 +52,20 @@ public class SawModule extends QuarkModule {
 			if(variantBlock != null)
 				return variantBlock;
 		}
-		
+
 		return null;
 	}
-	
+
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public void onRender(RenderGuiOverlayEvent.Pre event) {
 		if(event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type())
 			return;
-		
+
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
 		String savedVariant = getSavedVariant(player);
-		
+
 		if(savedVariant != null && !savedVariant.isEmpty()) {
 			Block variantBlock = getMainHandVariantBlock(player, savedVariant);
 			if(variantBlock != null) {
@@ -76,16 +75,16 @@ public class SawModule extends QuarkModule {
 				int x = window.getGuiScaledWidth() / 2;
 				int y = window.getGuiScaledHeight() / 2 + 12;
 				int pad = 8;
-				
+
 				ItemStack mainHand = player.getMainHandItem();
 				ItemStack displayLeft = mainHand.copy();
 				displayLeft.setCount(1);
-				
+
 				mc.font.draw(event.getPoseStack(), "->", x - 5, y + 5, 0xFFFFFF);
-				mc.getItemRenderer().renderAndDecorateItem(displayLeft, (int) x - 16 - pad, (int) y);
-				mc.getItemRenderer().renderAndDecorateItem(displayRight, (int) x + pad, (int) y);
+				mc.getItemRenderer().renderAndDecorateItem(displayLeft, x - 16 - pad, y);
+				mc.getItemRenderer().renderAndDecorateItem(displayRight, x + pad, y);
 			}
 		}
 	}
-	
+
 }

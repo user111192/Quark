@@ -25,9 +25,9 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 import vazkii.quark.base.util.MovableFakePlayer;
 import vazkii.quark.content.building.module.GlassItemFrameModule;
@@ -63,7 +63,7 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 			BlockPos behind = getBehindPos();
 			BlockEntity tile = level.getBlockEntity(behind);
 
-			if(tile != null && tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent()) {
+			if(tile != null && tile.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent()) {
 				BlockState behindState = level.getBlockState(behind);
 				InteractionResult result = behindState.use(level, player, hand, new BlockHitResult(new Vec3(getX(), getY(), getZ()), direction, behind, true));
 

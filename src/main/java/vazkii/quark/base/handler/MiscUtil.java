@@ -1,15 +1,5 @@
 package vazkii.quark.base.handler;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nonnull;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -18,19 +8,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-
 import net.minecraft.Util;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.commands.arguments.blocks.BlockStateParser.BlockResult;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.*;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -65,11 +49,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ScreenEvent.KeyPressed;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -81,6 +65,15 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.config.screen.AbstractQScreen;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
 import vazkii.quark.mixin.accessor.AccessorLootTable;
+
+import javax.annotation.Nonnull;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @EventBusSubscriber(modid = Quark.MOD_ID)
 public class MiscUtil {
@@ -107,24 +100,24 @@ public class MiscUtil {
 		int top = y - 8;
 
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-		
+
 		if(extendRight) {
 			Screen.blit(matrix, left, top, 227, 9, 6, 17, 256, 256);
 			for(int i = 0; i < w; i++)
 				Screen.blit(matrix, left + i + 6, top, 232, 9, 1, 17, 256, 256);
-			Screen.blit(matrix, left + w + 5, top, 236, 9, 5, 17, 256, 256);			
+			Screen.blit(matrix, left + w + 5, top, 236, 9, 5, 17, 256, 256);
 		} else {
 			Screen.blit(matrix, left, top, 242, 9, 5, 17, 256, 256);
 			for(int i = 0; i < w; i++)
 				Screen.blit(matrix, left + i + 5, top, 248, 9, 1, 17, 256, 256);
-			Screen.blit(matrix, left + w + 5, top, 250, 9, 6, 17, 256, 256);	
+			Screen.blit(matrix, left + w + 5, top, 250, 9, 6, 17, 256, 256);
 		}
 
 		int alphaInt = (int) (256F * alpha) << 24;
 		font.draw(matrix, text, left + 5, top + 3, alphaInt);
 		matrix.popPose();
 	}
-	
+
 	public static void addToLootTable(LootTable table, LootPoolEntryContainer entry) {
 		List<LootPool> pools = ((AccessorLootTable) table).quark$getPools();
 		if (pools != null && !pools.isEmpty()) {
@@ -224,7 +217,7 @@ public class MiscUtil {
 		if(level != null && blockPos != null && level.getBlockState(blockPos).getBlock() instanceof WorldlyContainerHolder holder) {
 			handler = new SidedInvWrapper(holder.getContainer(level.getBlockState(blockPos), level, blockPos), face);
 		} else if(tile != null) {
-			LazyOptional<IItemHandler> opt = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, face);
+			LazyOptional<IItemHandler> opt = tile.getCapability(ForgeCapabilities.ITEM_HANDLER, face);
 			if(opt.isPresent())
 				handler = opt.orElse(new ItemStackHandler());
 			else if(tile instanceof WorldlyContainer container)

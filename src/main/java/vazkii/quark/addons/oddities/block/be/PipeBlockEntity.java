@@ -1,20 +1,6 @@
 package vazkii.quark.addons.oddities.block.be;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Random;
-import java.util.function.Predicate;
-
-import javax.annotation.Nonnull;
-
 import com.mojang.math.Vector3f;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -41,13 +27,17 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.GameEvent.Context;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import vazkii.arl.block.be.SimpleInventoryBlockEntity;
 import vazkii.quark.addons.oddities.block.pipe.BasePipeBlock;
 import vazkii.quark.addons.oddities.module.PipesModule;
 import vazkii.quark.base.client.handler.NetworkProfilingHandler;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.QuarkSounds;
+
+import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.function.Predicate;
 
 public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 
@@ -103,14 +93,14 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 
 					for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, new AABB(minX, minY, minZ, maxX, maxY, maxZ), predicate)) {
 						passIn(item.getItem().copy(), side);
-						
+
 						if (PipesModule.doPipesWhoosh) {
 							if (isTheGoodDay(level))
 								level.playSound(null, item.getX(), item.getY(), item.getZ(), QuarkSounds.BLOCK_PIPE_PICKUP_LENNY, SoundSource.BLOCKS, 1f, 1f);
 							else
 								level.playSound(null, item.getX(), item.getY(), item.getZ(), QuarkSounds.BLOCK_PIPE_PICKUP, SoundSource.BLOCKS, 1f, 1f);
 						}
-						
+
 						if(PipesModule.emitVibrations)
 							getLevel().gameEvent(GameEvent.PROJECTILE_LAND, getBlockPos(), Context.of(getBlockState()));
 
@@ -156,7 +146,7 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 
 			queuedItems.clear();
 		}
-		
+
 		if(getComparatorOutput() != currentOut)
 			level.updateNeighbourForOutputSignal(getBlockPos(), getBlockState().getBlock());
 	}
@@ -168,7 +158,7 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 	public Iterator<PipeItem> getItemIterator() {
 		return pipeItems.iterator();
 	}
-	
+
 	public boolean allowsFullConnection(PipeBlockEntity.ConnectionType conn) {
 		return blockState.getBlock() instanceof BasePipeBlock pipe && pipe.allowsFullConnection(conn);
 	}
@@ -183,7 +173,7 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 			if(getComparatorOutput() != currentOut)
 				level.updateNeighbourForOutputSignal(getBlockPos(), getBlockState().getBlock());
 		} else queuedItems.add(item);
-		
+
 		return true;
 	}
 
@@ -249,7 +239,7 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 			float pitch = 1f;
 			if (!shootOut)
 				pitch = 0.025f;
-			
+
 			if (playSound) {
 				if(PipesModule.doPipesWhoosh) {
 					if (isTheGoodDay(level))
@@ -257,7 +247,7 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 					else
 						level.playSound(null, posX, posY, posZ, QuarkSounds.BLOCK_PIPE_SHOOT, SoundSource.BLOCKS, 1f, pitch);
 				}
-				
+
 				if(PipesModule.emitVibrations)
 					getLevel().gameEvent(GameEvent.PROJECTILE_SHOOT, getBlockPos(), Context.of(getBlockState()));
 			}
@@ -389,7 +379,7 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 		if(tile != null) {
 			if(tile instanceof PipeBlockEntity)
 				return ConnectionType.PIPE;
-			else if(tile instanceof Container || tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, face.getOpposite()).isPresent())
+			else if(tile instanceof Container || tile.getCapability(ForgeCapabilities.ITEM_HANDLER, face.getOpposite()).isPresent())
 				return tile instanceof ChestBlockEntity ? ConnectionType.TERMINAL_OFFSET : ConnectionType.TERMINAL;
 		}
 
@@ -533,11 +523,11 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 			this.flareShift = flareShift;
 			this.fullFlareShift = fullFlareShift;
 		}
-		
+
 		ConnectionType(boolean isSolid, boolean allowsItems, boolean isFlared, double flareShift) {
 			this(isSolid, allowsItems, isFlared, flareShift, flareShift);
 		}
-		
+
 		public double getFlareShift(PipeBlockEntity pipe) {
 			return pipe.allowsFullConnection(this) ? fullFlareShift : flareShift;
 		}

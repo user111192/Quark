@@ -1,9 +1,6 @@
 package vazkii.quark.content.management.module;
 
-import java.util.List;
-
 import com.mojang.datafixers.util.Either;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -23,12 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ElytraItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -38,11 +30,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.EmptyHandler;
@@ -57,6 +49,8 @@ import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.management.client.screen.HeldShulkerBoxScreen;
 import vazkii.quark.content.management.inventory.HeldShulkerBoxContainer;
 import vazkii.quark.content.management.inventory.HeldShulkerBoxMenu;
+
+import java.util.List;
 
 @LoadModule(category = ModuleCategory.MANAGEMENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class ExpandedItemInteractionsModule extends QuarkModule {
@@ -166,7 +160,7 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 				if (event.getItemStack() == underStack)
 					if(enableArmorInteraction && armorOverride(underStack, ItemStack.EMPTY, under, ClickAction.SECONDARY, mc.player, true))
 						event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.equip_armor").withStyle(ChatFormatting.YELLOW)));
-				
+
 					else if(enableShulkerBoxInteraction && canOpenShulkerBox(underStack, ItemStack.EMPTY, under, mc.player))
 						event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.open_shulker").withStyle(ChatFormatting.YELLOW)));
 			}
@@ -229,8 +223,8 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 	}
 
 	public static boolean canOpenShulkerBox(ItemStack stack, ItemStack incoming, Slot slot, Player player) {
-		return incoming.isEmpty() && 
-				allowOpeningShulkerBoxes && 
+		return incoming.isEmpty() &&
+				allowOpeningShulkerBoxes &&
 				!player.hasContainerOpen() &&
 				slot.container == player.getInventory() &&
 				SimilarBlockTypeHandler.isShulkerBox(stack) &&
@@ -293,13 +287,13 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 		BlockEntity tile = getShulkerBoxEntity(shulkerBox);
 
 		if (tile != null) {
-			LazyOptional<IItemHandler> handlerHolder = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			LazyOptional<IItemHandler> handlerHolder = tile.getCapability(ForgeCapabilities.ITEM_HANDLER, null);
 			if (handlerHolder.isPresent()) {
 				IItemHandler handler = handlerHolder.orElseGet(EmptyHandler::new);
 				if (SimilarBlockTypeHandler.isShulkerBox(stack) && allowDump) {
 					BlockEntity otherShulker = getShulkerBoxEntity(stack);
 					if (otherShulker != null) {
-						LazyOptional<IItemHandler> otherHolder = otherShulker.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+						LazyOptional<IItemHandler> otherHolder = otherShulker.getCapability(ForgeCapabilities.ITEM_HANDLER, null);
 						if (otherHolder.isPresent()) {
 							IItemHandler otherHandler = otherHolder.orElseGet(EmptyHandler::new);
 							boolean any = false;
