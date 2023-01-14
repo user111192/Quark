@@ -57,7 +57,7 @@ public class VariantHandler {
 
 		FlowerPotBlock potted = new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> block, props);
 		RenderLayerHandler.setRenderType(potted, RenderTypeSkeleton.CUTOUT);
-		ResourceLocation resLoc = Registry.BLOCK.getKey(block);
+		ResourceLocation resLoc = RegistryHelper.getRegistryName(block, Registry.BLOCK);
 		if (resLoc == null)
 			resLoc = new ResourceLocation("missingno");
 
