@@ -2,15 +2,18 @@ package vazkii.quark.content.world.block;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -24,6 +27,8 @@ import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSi
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import vazkii.quark.base.block.QuarkSaplingBlock;
@@ -43,10 +48,11 @@ public class AncientSaplingBlock extends QuarkSaplingBlock {
 		public AncientTree() {
 			config = (new TreeConfiguration.TreeConfigurationBuilder(
 					BlockStateProvider.simple(AncientWoodModule.woodSet.log),
-					new MultiFolliageStraightTrunkPlacer(15, 4, 6, 5, 3),
+					new MultiFolliageStraightTrunkPlacer(17, 4, 6, 5, 3),
 					BlockStateProvider.simple(AncientWoodModule.ancient_leaves),
-					new FancyFoliagePlacer(UniformInt.of(2, 4), UniformInt.of(1, 2), 2),
+					new FancyFoliagePlacer(UniformInt.of(2, 4), ConstantInt.of(-3) , 2),
 					new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))))
+					.decorators(Lists.newArrayList(new AncientTreeTopperDecorator()))
 					.ignoreVines()
 					.build();
 		}
@@ -72,7 +78,6 @@ public class AncientSaplingBlock extends QuarkSaplingBlock {
 		public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader p_226147_, BiConsumer<BlockPos, BlockState> p_226148_, RandomSource p_226149_, int p_226150_, BlockPos p_226151_, TreeConfiguration p_226152_) {
 			setDirtAt(p_226147_, p_226148_, p_226149_, p_226151_.below(), p_226152_);
 
-			
 			List<BlockPos> folliagePositions = new ArrayList<>();
 			
 			int placed = 0;
@@ -96,8 +101,36 @@ public class AncientSaplingBlock extends QuarkSaplingBlock {
 
 		@Override
 		protected TrunkPlacerType<?> type() {
-			return null; // TODO register
+			return null;
 		}
+	}
+	
+	public static class AncientTreeTopperDecorator extends TreeDecorator {
+
+		@Override
+		public void place(Context ctx) {
+			Optional<BlockPos> pos = ctx.logs().stream().max((a, b) -> a.getY() - b.getY());
+			if(pos.isPresent()) {
+				BlockPos top = pos.get();
+				
+				ImmutableSet<BlockPos> leafPos = ImmutableSet.of(
+						top.above(), top.east(), top.west(), top.north(), top.south()
+				);
+				
+				BlockState state = AncientWoodModule.ancient_leaves.defaultBlockState();
+				leafPos.forEach(p -> {
+					if(ctx.isAir(p))
+						ctx.setBlock(p, state);
+				});
+			}
+		}
+		
+		@Override
+		protected TreeDecoratorType<?> type() {
+			return null;
+		}
+
+		
 	}
 
 }
