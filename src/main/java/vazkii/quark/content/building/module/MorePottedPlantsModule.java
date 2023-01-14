@@ -48,6 +48,7 @@ public class MorePottedPlantsModule extends QuarkModule {
 		Block vine = add(Blocks.VINE, "vine");
 		add(Blocks.WEEPING_VINES, "weeping_vines");
 		add(Blocks.WHEAT, "wheat");
+		VariantHandler.addFlowerPot(Blocks.CAVE_VINES, "cave_vines", p -> p.lightLevel(b -> 14));
 		
 		tintedBlocks.put(grass, Blocks.GRASS);
 		tintedBlocks.put(largeFern, Blocks.LARGE_FERN);
