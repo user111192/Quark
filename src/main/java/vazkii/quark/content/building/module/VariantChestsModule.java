@@ -1,7 +1,16 @@
 package vazkii.quark.content.building.module;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BooleanSupplier;
+
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -46,9 +55,6 @@ import vazkii.quark.content.building.block.be.VariantTrappedChestBlockEntity;
 import vazkii.quark.content.building.client.render.be.VariantChestRenderer;
 import vazkii.quark.content.building.recipe.MixedExclusionRecipe;
 import vazkii.quark.mixin.accessor.AccessorAbstractChestedHorse;
-
-import java.util.*;
-import java.util.function.BooleanSupplier;
 
 @LoadModule(category = ModuleCategory.BUILDING, hasSubscriptions = true, antiOverlap = { "woodworks" })
 public class VariantChestsModule extends QuarkModule {
@@ -274,13 +280,10 @@ public class VariantChestsModule extends QuarkModule {
 
 	private static BlockState getGenerationChestBlockState(ServerLevelAccessor accessor, BlockState current, StructureHolder structure) {
 		if (staticEnabled && replaceWorldgenChests && current.getBlock() == Blocks.CHEST) {
-			Optional<ResourceLocation> res = accessor.registryAccess().registry(Registry.STRUCTURE_REGISTRY).map(
-					(it) -> it.getKey(structure.currentStructure));
-			if (res.isEmpty())
-				return null; // no change
+			ResourceLocation res = StructureBlockReplacementHandler.getStructureRes(accessor, structure);
 
-			if (chestMappings.containsKey(res.get())) {
-				Block block = chestMappings.get(res.get());
+			if(res != null && chestMappings.containsKey(res)) {
+				Block block = chestMappings.get(res);
 				return block.withPropertiesOf(current);
 			}
 		}

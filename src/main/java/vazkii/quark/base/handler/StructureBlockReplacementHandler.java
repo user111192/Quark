@@ -2,8 +2,14 @@ package vazkii.quark.base.handler;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -18,6 +24,27 @@ public class StructureBlockReplacementHandler {
 
 	public static void addReplacement(StructureFunction func) {
 		functions.add(func);
+	}
+	
+	@Nullable
+	public static ResourceKey<Structure> getStructureKey(ServerLevelAccessor accessor, StructureHolder structure) {
+		Optional<ResourceKey<Structure>> res = accessor.registryAccess().registry(Registry.STRUCTURE_REGISTRY).flatMap(
+				(it) -> it.getResourceKey(structure.currentStructure));
+		
+		return res.isEmpty() ? null : res.get();
+	}
+	
+	@Nullable
+	public static ResourceLocation getStructureRes(ServerLevelAccessor accessor, StructureHolder structure) {
+		Optional<ResourceLocation> res = accessor.registryAccess().registry(Registry.STRUCTURE_REGISTRY).map(
+				(it) -> it.getKey(structure.currentStructure));
+		
+		return res.isEmpty() ? null : res.get();
+	}
+	
+	public static boolean isStructure(ServerLevelAccessor accessor, StructureHolder structure, ResourceKey<Structure> target) {
+		ResourceKey<Structure> curr = getStructureKey(accessor, structure);
+		return curr != null && curr.equals(target);
 	}
 	
 	public static BlockState getResultingBlockState(ServerLevelAccessor level, BlockState blockstate) {
