@@ -42,7 +42,6 @@ import vazkii.quark.base.module.config.Config;
 @LoadModule(category = ModuleCategory.MANAGEMENT, hasSubscriptions = true, antiOverlap = "inventorytweaks")
 public class AutomaticTookRestockModule extends QuarkModule {
 
-	@SuppressWarnings("serial")
 	private static final Map<ToolAction, String> ACTION_TO_CLASS = new HashMap<>();
 	
 	static {

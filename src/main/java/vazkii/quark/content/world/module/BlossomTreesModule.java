@@ -72,7 +72,7 @@ public class BlossomTreesModule extends QuarkModule {
 	private void add(String colorName, MaterialColor color, BlossomTreeConfig config) {
 		BlossomLeavesBlock leaves = new BlossomLeavesBlock(colorName, this, color);
 		BlossomTree tree = new BlossomTree(leaves);
-		BlossomSaplingBlock sapling = new BlossomSaplingBlock(colorName, this, tree, leaves);
+		BlossomSaplingBlock sapling = new BlossomSaplingBlock(colorName, this, tree);
 		VariantHandler.addFlowerPot(sapling, RegistryHelper.getInternalName(sapling).getPath(), Functions.identity());
 
 		trees.put(tree, config);
