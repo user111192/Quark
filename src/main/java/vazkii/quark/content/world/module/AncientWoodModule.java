@@ -17,7 +17,7 @@ import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.WoodSet;
-import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.BalancedDietModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -56,7 +56,7 @@ public class AncientWoodModule extends QuarkModule {
 
 		VariantHandler.addFlowerPot(ancient_sapling, RegistryHelper.getInternalName(ancient_sapling).getPath(), Functions.identity());
 		
-		AdvancementModificationHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit)));
+		QuarkAdvancementHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit)));
 	}
 	
 	@SubscribeEvent

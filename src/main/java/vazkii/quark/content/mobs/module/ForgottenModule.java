@@ -22,7 +22,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.EntityAttributeHandler;
-import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.MonsterHunterModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -60,7 +60,7 @@ public class ForgottenModule extends QuarkModule {
 
 		EntityAttributeHandler.put(forgottenType, Forgotten::registerAttributes);
 		
-		AdvancementModificationHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType)));
+		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType)));
 	}
 
 	@Override

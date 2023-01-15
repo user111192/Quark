@@ -1226,5 +1226,8 @@
 	"block.quark.tiny_potato": "Tiny Potato",
 	"block.quark.tiny_potato.angry": "Angry Potato",
 
-	"biome.quark.glimmering_weald": "Glimmering Weald"
+	"biome.quark.glimmering_weald": "Glimmering Weald",
+
+	"advancements.quark.pat_potato.title": "Potato, Potato",
+	"advancements.quark.pat_potato.description": "Pet a Tiny Potato"
 }

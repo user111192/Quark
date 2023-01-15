@@ -1,9 +1,13 @@
 package vazkii.quark.addons.oddities.block;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -45,9 +49,6 @@ import vazkii.quark.addons.oddities.item.TinyPotatoBlockItem;
 import vazkii.quark.addons.oddities.module.TinyPotatoModule;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author WireSegal
@@ -126,6 +127,10 @@ public class TinyPotatoBlock extends QuarkBlock implements SimpleWaterloggedBloc
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof TinyPotatoBlockEntity tater) {
 			tater.interact(player, hand, player.getItemInHand(hand), hit.getDirection());
+			
+			if(player instanceof ServerPlayer sp)
+				TinyPotatoModule.patPotatoTrigger.trigger(sp);
+			
 			if (!world.isClientSide) {
 				AABB box = SHAPE.bounds();
 				((ServerLevel) world).sendParticles(ParticleTypes.HEART, pos.getX() + box.minX + Math.random() * (box.maxX - box.minX), pos.getY() + box.maxY, pos.getZ() + box.minZ + Math.random() * (box.maxZ - box.minZ), 1, 0, 0, 0, 0);

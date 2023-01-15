@@ -40,7 +40,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.handler.UndergroundBiomeHandler;
 import vazkii.quark.base.handler.VariantHandler;
-import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.AdventuringTimeModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -89,7 +89,7 @@ public class GlimmeringWealdModule extends QuarkModule {
 		RegistryHelper.register(makeBiome(), Registry.BIOME_REGISTRY);
 		UndergroundBiomeHandler.addUndergroundBiome(this, Climate.parameters(FULL_RANGE, FULL_RANGE, FULL_RANGE, FULL_RANGE, Climate.Parameter.span(1.55F, 2F), FULL_RANGE, 0F), BIOME_NAME);
 		
-		AdvancementModificationHandler.addModifier(new AdventuringTimeModifier(this, ImmutableSet.of(BIOME_KEY)));
+		QuarkAdvancementHandler.addModifier(new AdventuringTimeModifier(this, ImmutableSet.of(BIOME_KEY)));
 	}
 
 	@Override

@@ -86,6 +86,12 @@ public class GeneralConfig {
 	@Config(description = "Used for terrablender integration")
 	public static int terrablenderRegionWeight = 1;
 
+	@Config(description = "Set to false to stop quark from adding its own items to multi-requirement vanilla advancements")
+	public static boolean enableAdvancementModification = true;
+	
+	@Config(description = "Set to false to stop quark from adding its own advancements")
+	public static boolean enableQuarkAdvancements = true;
+	
 	private GeneralConfig() {
 		// NO-OP
 	}

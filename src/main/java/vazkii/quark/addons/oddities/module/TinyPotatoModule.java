@@ -22,6 +22,8 @@ import vazkii.quark.addons.oddities.block.TinyPotatoBlock;
 import vazkii.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
 import vazkii.quark.addons.oddities.client.model.TinyPotatoModel;
 import vazkii.quark.addons.oddities.client.render.be.TinyPotatoRenderer;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -31,6 +33,7 @@ import vazkii.quark.base.module.config.Config;
 public class TinyPotatoModule extends QuarkModule {
 
 	public static BlockEntityType<TinyPotatoBlockEntity> blockEntityType;
+	public static QuarkGenericTrigger patPotatoTrigger;
 
 	public static Block tiny_potato;
 
@@ -43,6 +46,8 @@ public class TinyPotatoModule extends QuarkModule {
 
 		blockEntityType = BlockEntityType.Builder.of(TinyPotatoBlockEntity::new, tiny_potato).build(null);
 		RegistryHelper.register(blockEntityType, "tiny_potato", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		
+		patPotatoTrigger = QuarkAdvancementHandler.registerGenericTrigger("pat_potato");
 	}
 
 	@Override

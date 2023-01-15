@@ -27,7 +27,7 @@ import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.BrewingHandler;
 import vazkii.quark.base.handler.EntityAttributeHandler;
-import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.BalancedDietModifier;
 import vazkii.quark.base.handler.advancement.mod.FuriousCocktailModifier;
 import vazkii.quark.base.handler.advancement.mod.TwoByTwoModifier;
@@ -104,10 +104,10 @@ public class CrabsModule extends QuarkModule {
 
 		EntityAttributeHandler.put(crabType, Crab::prepareAttributes);
 		
-		AdvancementModificationHandler.addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
+		QuarkAdvancementHandler.addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
 				.setCondition(() -> enableResillienceEffect));
-		AdvancementModificationHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType)));
-		AdvancementModificationHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(crabLeg, cookedCrabLeg)));
+		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType)));
+		QuarkAdvancementHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(crabLeg, cookedCrabLeg)));
 	}
 
 	@Override

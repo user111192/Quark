@@ -23,7 +23,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.EntityAttributeHandler;
-import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.MonsterHunterModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -104,7 +104,7 @@ public class WraithModule extends QuarkModule {
 
 		EntityAttributeHandler.put(wraithType, Wraith::registerAttributes);
 		
-		AdvancementModificationHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(wraithType)));
+		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(wraithType)));
 	}
 
 	@Override

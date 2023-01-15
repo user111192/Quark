@@ -8,6 +8,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ReloadableServerResources;
 import net.minecraft.server.ServerAdvancementManager;
@@ -16,9 +17,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import vazkii.quark.base.Quark;
+import vazkii.quark.base.handler.GeneralConfig;
 
 @EventBusSubscriber(bus = Bus.FORGE, modid = Quark.MOD_ID)
-public final class AdvancementModificationHandler {
+public final class QuarkAdvancementHandler {
 
 	private static Multimap<ResourceLocation, AdvancementModifier> modifiers = HashMultimap.create();
 	
@@ -26,6 +28,14 @@ public final class AdvancementModificationHandler {
 		Set<ResourceLocation> targets = mod.getTargets();
 		for(ResourceLocation r : targets)
 			modifiers.put(r, mod);
+	}
+	
+	public static QuarkGenericTrigger registerGenericTrigger(String name) {
+		ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, name);
+		QuarkGenericTrigger trigger = new QuarkGenericTrigger(resloc);
+		CriteriaTriggers.register(trigger);
+		
+		return trigger;
 	}
 
 	@SubscribeEvent
@@ -44,6 +54,9 @@ public final class AdvancementModificationHandler {
 	}
 	
 	private static void onAdvancementsLoaded(ServerAdvancementManager manager) {
+		if(!GeneralConfig.enableAdvancementModification)
+			return;
+		
 		for(ResourceLocation res : modifiers.keySet()) {
 			Advancement adv = manager.getAdvancement(res);
 			

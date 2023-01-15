@@ -26,7 +26,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.EntityAttributeHandler;
-import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.MonsterHunterModifier;
 import vazkii.quark.base.handler.advancement.mod.TwoByTwoModifier;
 import vazkii.quark.base.module.LoadModule;
@@ -77,8 +77,8 @@ public class FoxhoundModule extends QuarkModule {
 
 		EntityAttributeHandler.put(foxhoundType, Wolf::createAttributes);
 		
-		AdvancementModificationHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType)));
-		AdvancementModificationHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType)));
+		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType)));
+		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType)));
 	}
 
 	@Override

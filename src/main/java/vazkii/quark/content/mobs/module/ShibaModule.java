@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.EntityAttributeHandler;
-import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.TwoByTwoModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -51,7 +51,7 @@ public class ShibaModule extends QuarkModule {
 		
 		EntityAttributeHandler.put(shibaType, Wolf::createAttributes);
 		
-		AdvancementModificationHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(shibaType)));
+		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(shibaType)));
 	}
 
 	@Override
