@@ -23,6 +23,7 @@ import vazkii.quark.base.handler.GeneralConfig;
 public final class QuarkAdvancementHandler {
 
 	private static Multimap<ResourceLocation, AdvancementModifier> modifiers = HashMultimap.create();
+	private static boolean first = true;
 	
 	public static void addModifier(AdvancementModifier mod) {
 		Set<ResourceLocation> targets = mod.getTargets();
@@ -31,6 +32,11 @@ public final class QuarkAdvancementHandler {
 	}
 	
 	public static QuarkGenericTrigger registerGenericTrigger(String name) {
+		if(first) {
+			first = false;
+			registerGenericTrigger("none"); // temporary fallback for wip advancements
+		}
+		
 		ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, name);
 		QuarkGenericTrigger trigger = new QuarkGenericTrigger(resloc);
 		CriteriaTriggers.register(trigger);

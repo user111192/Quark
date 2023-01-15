@@ -137,7 +137,7 @@ public class MatrixEnchantingModule extends QuarkModule {
 			"Format is: \"blockstate;strength;color;enchantments\", i.e. \"minecraft:sea_pickle[pickles=1,waterlogged=false];1;#008000;minecraft:aqua_affinity,minecraft:depth_strider,minecraft:riptide\" (etc) or \"minecraft:anvil[facing=north];#808080;-minecraft:thorns,minecraft:unbreaking\" (etc)")
 	private static List<String> statesToInfluences = Lists.newArrayList();
 
-	@Config(description = "Set to false to disable the ability to influence enchantment outcomes with candles")
+	@Config(description = "Set to false to disable the ability to influence enchantment outcomes with candles", flag = "candle_influencing")
 	public static boolean allowInfluencing = true;
 
 	public static boolean candleInfluencingFailed = false;

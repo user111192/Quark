@@ -31,8 +31,11 @@ import vazkii.quark.content.world.item.AncientFruitItem;
 @LoadModule(category = ModuleCategory.WORLD, hasSubscriptions = true)
 public class AncientWoodModule extends QuarkModule {
 
-	@Config(description = "Set to 0 to disable Ancient Fruit giving exp")
-	@Min(0)
+	@Config(flag = "ancient_fruit_xp")
+	public static boolean ancientFruitGivesExp = true;
+	
+	@Config
+	@Min(1)
 	public static int ancientFruitExpValue = 10;
 	
 	@Config(description = "Set to 0 to disable loot chest generation")

@@ -307,7 +307,7 @@ public class Toretoise extends Animal {
 	}
 
 	private void popOre(boolean natural) {
-		if (!natural && ToretoiseModule.regrowChance == 0)
+		if (!natural && ToretoiseModule.allowToretoiseToRegrow)
 			return;
 		if(getOreType() == 0 && (natural || level.random.nextInt(ToretoiseModule.regrowChance) == 0)) {
 			int ore = random.nextInt(ORE_TYPES) + 1;

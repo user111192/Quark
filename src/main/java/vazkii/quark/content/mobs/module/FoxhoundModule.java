@@ -53,6 +53,9 @@ public class FoxhoundModule extends QuarkModule {
 	@Config(description = "The chance coal will tame a foxhound")
 	public static double tameChance = 0.05;
 
+	@Config(flag = "foxhound_furnace")
+	public static boolean foxhoundsSpeedUpFurnaces = true;
+	
 	@Config
 	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(30, 1, 2, CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:nether_wastes", "minecraft:basalt_deltas"));
 

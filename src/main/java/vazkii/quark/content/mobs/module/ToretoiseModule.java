@@ -42,8 +42,11 @@ public class ToretoiseModule extends QuarkModule {
 	@Config(description="The items that can be fed to toretoises to make them regrow ores.")
 	public static List<String> foods = Lists.newArrayList("minecraft:glow_berries");
 
+	@Config(flag = "toretoise_regrow")
+	public static boolean allowToretoiseToRegrow = true;
+	
 	@Config(description="Feeding a toretoise after cooldown will regrow them with a one-in-this-number chance. "
-			+ "Set to 1 to always regrow, or 0 to disable.")
+			+ "Set to 1 to always regrow, higher = lower chance.")
 	public static int regrowChance = 3;
 
 	@Config

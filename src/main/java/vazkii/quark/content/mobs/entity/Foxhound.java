@@ -208,7 +208,7 @@ public class Foxhound extends Wolf implements Enemy {
 
 		}
 
-		if(isTame()) {
+		if(isTame() && FoxhoundModule.foxhoundsSpeedUpFurnaces) {
 			BlockPos below = blockPosition().below();
 			BlockEntity tile = level.getBlockEntity(below);
 			if (tile instanceof AbstractFurnaceBlockEntity furnace) {

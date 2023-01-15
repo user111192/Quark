@@ -23,7 +23,7 @@ public class AncientFruitItem extends QuarkItem {
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
 		ItemStack ret = super.finishUsingItem(stack, level, living);
 		
-		if(AncientWoodModule.ancientFruitExpValue > 0 && living instanceof Player player) {
+		if(AncientWoodModule.ancientFruitGivesExp && living instanceof Player player) {
 			player.giveExperiencePoints(AncientWoodModule.ancientFruitExpValue);
 			player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 1F, 1F);
 		}
