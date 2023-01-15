@@ -1,5 +1,9 @@
 package vazkii.quark.content.mobs.module;
 
+import static net.minecraftforge.event.entity.living.LivingChangeTargetEvent.LivingTargetType.BEHAVIOR_TARGET;
+
+import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -22,6 +26,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.EntityAttributeHandler;
+import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.mod.MonsterHunterModifier;
+import vazkii.quark.base.handler.advancement.mod.TwoByTwoModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -32,8 +39,6 @@ import vazkii.quark.base.module.config.type.EntitySpawnConfig;
 import vazkii.quark.base.world.EntitySpawnHandler;
 import vazkii.quark.content.mobs.client.render.entity.FoxhoundRenderer;
 import vazkii.quark.content.mobs.entity.Foxhound;
-
-import static net.minecraftforge.event.entity.living.LivingChangeTargetEvent.LivingTargetType.BEHAVIOR_TARGET;
 
 /**
  * @author WireSegal
@@ -71,6 +76,9 @@ public class FoxhoundModule extends QuarkModule {
 		EntitySpawnHandler.addEgg(foxhoundType, 0x890d0d, 0xf2af4b, spawnConfig);
 
 		EntityAttributeHandler.put(foxhoundType, Wolf::createAttributes);
+		
+		AdvancementModificationHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType)));
+		AdvancementModificationHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType)));
 	}
 
 	@Override

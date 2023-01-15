@@ -3,6 +3,7 @@ package vazkii.quark.content.mobs.module;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -22,6 +23,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.EntityAttributeHandler;
+import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.mod.MonsterHunterModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -100,6 +103,8 @@ public class WraithModule extends QuarkModule {
 		EntitySpawnHandler.addEgg(wraithType, 0xececec, 0xbdbdbd, spawnConfig);
 
 		EntityAttributeHandler.put(wraithType, Wraith::registerAttributes);
+		
+		AdvancementModificationHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(wraithType)));
 	}
 
 	@Override

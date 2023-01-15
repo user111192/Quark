@@ -1,5 +1,7 @@
 package vazkii.quark.content.mobs.module;
 
+import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
@@ -20,6 +22,8 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.EntityAttributeHandler;
+import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.mod.MonsterHunterModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -55,6 +59,8 @@ public class ForgottenModule extends QuarkModule {
 		EntitySpawnHandler.addEgg(forgottenType, 0x969487, 0x3a3330, this, () -> true);
 
 		EntityAttributeHandler.put(forgottenType, Forgotten::registerAttributes);
+		
+		AdvancementModificationHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType)));
 	}
 
 	@Override

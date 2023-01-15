@@ -1,5 +1,7 @@
 package vazkii.quark.content.mobs.module;
 
+import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.BiomeTags;
@@ -13,6 +15,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.EntityAttributeHandler;
+import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.mod.TwoByTwoModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -46,6 +50,8 @@ public class ShibaModule extends QuarkModule {
 		EntitySpawnHandler.addEgg(shibaType, 0xa86741, 0xe8d5b6, spawnConfig);
 		
 		EntityAttributeHandler.put(shibaType, Wolf::createAttributes);
+		
+		AdvancementModificationHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(shibaType)));
 	}
 
 	@Override

@@ -28,7 +28,9 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.BrewingHandler;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.mod.BalancedDietModifier;
 import vazkii.quark.base.handler.advancement.mod.FuriousCocktailModifier;
+import vazkii.quark.base.handler.advancement.mod.TwoByTwoModifier;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -65,7 +67,7 @@ public class CrabsModule extends QuarkModule {
 
 	@Override
 	public void register() {
-		new QuarkItem("crab_leg", this, new Item.Properties()
+		Item crabLeg = new QuarkItem("crab_leg", this, new Item.Properties()
 				.tab(CreativeModeTab.TAB_FOOD)
 				.food(new FoodProperties.Builder()
 						.meat()
@@ -73,7 +75,7 @@ public class CrabsModule extends QuarkModule {
 						.saturationMod(0.3F)
 						.build()));
 
-		new QuarkItem("cooked_crab_leg", this, new Item.Properties()
+		Item cookedCrabLeg = new QuarkItem("cooked_crab_leg", this, new Item.Properties()
 				.tab(CreativeModeTab.TAB_FOOD)
 				.food(new FoodProperties.Builder()
 						.meat()
@@ -104,6 +106,8 @@ public class CrabsModule extends QuarkModule {
 		
 		AdvancementModificationHandler.addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
 				.setCondition(() -> enableResillienceEffect));
+		AdvancementModificationHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType)));
+		AdvancementModificationHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(crabLeg, cookedCrabLeg)));
 	}
 
 	@Override

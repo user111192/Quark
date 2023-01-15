@@ -29,6 +29,11 @@ public class MutableAdvancement {
 		requirements.add(Lists.newArrayList(name));
 	}
 	
+	public void addOrCriterion(String name, Criterion criterion) {
+		criteria.put(name, criterion);
+		requirements.get(0).add(name);	
+	}
+	
 	private void mutabilize() {
 		this.criteria = Maps.newHashMap(advancement.criteria);
 		this.requirements = new ArrayList<>();

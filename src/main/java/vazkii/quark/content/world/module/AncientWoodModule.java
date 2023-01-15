@@ -1,6 +1,7 @@
 package vazkii.quark.content.world.module;
 
 import com.google.common.base.Functions;
+import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -16,6 +17,8 @@ import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.WoodSet;
+import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.mod.BalancedDietModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -52,6 +55,8 @@ public class AncientWoodModule extends QuarkModule {
 		ancient_fruit = new AncientFruitItem(this);
 
 		VariantHandler.addFlowerPot(ancient_sapling, RegistryHelper.getInternalName(ancient_sapling).getPath(), Functions.identity());
+		
+		AdvancementModificationHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit)));
 	}
 	
 	@SubscribeEvent
