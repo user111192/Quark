@@ -1,5 +1,7 @@
 package vazkii.quark.content.mobs.module;
 
+import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -25,6 +27,8 @@ import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.BrewingHandler;
 import vazkii.quark.base.handler.EntityAttributeHandler;
+import vazkii.quark.base.handler.advancement.AdvancementModificationHandler;
+import vazkii.quark.base.handler.advancement.mod.FuriousCocktailModifier;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -51,9 +55,13 @@ public class CrabsModule extends QuarkModule {
 	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(5, 1, 3, CompoundBiomeConfig.fromBiomeTags(false, BiomeTags.IS_BEACH));
 
 	public static TagKey<Block> crabSpawnableTag;
+	public static MobEffect resilience;
 
 	@Config(flag = "crab_brewing")
 	public static boolean enableBrewing = true;
+	
+	@Config
+	public static boolean enableResillienceEffect = true;
 
 	@Override
 	public void register() {
@@ -76,7 +84,7 @@ public class CrabsModule extends QuarkModule {
 		Item shell = new QuarkItem("crab_shell", this, new Item.Properties().tab(CreativeModeTab.TAB_BREWING))
 				.setCondition(() -> enableBrewing);
 
-		MobEffect resilience = new QuarkEffect("resilience", MobEffectCategory.BENEFICIAL, 0x5b1a04);
+		resilience = new QuarkEffect("resilience", MobEffectCategory.BENEFICIAL, 0x5b1a04);
 		resilience.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, "2ddf3f0a-f386-47b6-aeb0-6bd32851f215", 0.5, AttributeModifier.Operation.ADDITION);
 
 		BrewingHandler.addPotionMix("crab_brewing",
@@ -93,6 +101,9 @@ public class CrabsModule extends QuarkModule {
 		EntitySpawnHandler.addEgg(crabType, 0x893c22, 0x916548, spawnConfig);
 
 		EntityAttributeHandler.put(crabType, Crab::prepareAttributes);
+		
+		AdvancementModificationHandler.addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
+				.setCondition(() -> enableResillienceEffect));
 	}
 
 	@Override

@@ -51,17 +51,18 @@ public final class AdvancementModificationHandler {
 				Collection<AdvancementModifier> found = modifiers.get(res);
 				
 				if(!found.isEmpty()) {
-					boolean didAnything = false;
+					int modifications = 0;
 					MutableAdvancement mutable = new MutableAdvancement(adv);
 					
 					for(AdvancementModifier mod : found)
 						if(mod.isActive() && mod.apply(res, mutable))
-							didAnything = true;
-					
-					if(didAnything)
+							modifications++;
+							
+					if(modifications > 0) {
+						Quark.LOG.info("Modified advancement {} with {} patches", adv.getId(), modifications);
 						mutable.commit();
+					}
 				}
-				
 			}
 		}
 	}
