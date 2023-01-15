@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:husbandry/plant_seed",
+  "criteria": {
+    "get_all_blossom_saplings": {
+      "trigger": "quark:none"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.quark.get_all_blossom_saplings.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "quark:pink_blossom_sapling"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.quark.get_all_blossom_saplings.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_all_blossom_saplings"
+    ]
+  ],
+  "conditions": [
+    {
+      "type": "quark:advancement_flag",
+      "flag": "blossom_trees"
+    }
+  ]
+
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "get_bottled_cloud": {
+      "trigger": "quark:none"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.quark.get_bottled_cloud.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "quark:bottled_cloud"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.quark.get_bottled_cloud.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_bottled_cloud"
+    ]
+  ],
+  "conditions": [
+    {
+      "type": "quark:advancement_flag",
+      "flag": "bottled_cloud"
+    }
+  ]
+
+}

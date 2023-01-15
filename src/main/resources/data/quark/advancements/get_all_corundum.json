@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:story/smelt_iron",
+  "criteria": {
+    "get_all_corundum": {
+      "trigger": "quark:none"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.quark.get_all_corundum.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "quark:blue_corundum_cluster"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.quark.get_all_corundum.title"
+    }
+  },
+  "requirements": [
+    [
+      "get_all_corundum"
+    ]
+  ],
+  "conditions": [
+    {
+      "type": "quark:advancement_flag",
+      "flag": "corundum"
+    }
+  ]
+
+}

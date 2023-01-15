@@ -1,34 +1,34 @@
 {
-  "parent": "minecraft:husbandry/plant_seed",
+  "parent": "minecraft:story/enchant_item",
   "criteria": {
-    "pat": {
-      "trigger": "quark:pat_potato"
+    "overlevel_enchant": {
+      "trigger": "quark:none"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.quark.pat_potato.description"
+      "translate": "advancements.quark.overlevel_enchant.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "quark:tiny_potato"
+      "item": "quark:ancient_tome"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.quark.pat_potato.title"
+      "translate": "advancements.quark.overlevel_enchant.title"
     }
   },
   "requirements": [
     [
-      "pat"
+      "overlevel_enchant"
     ]
   ],
   "conditions": [
     {
       "type": "quark:advancement_flag",
-      "flag": "tiny_potato"
+      "flag": "ancient_tomes"
     }
   ]
 
