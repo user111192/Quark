@@ -18,6 +18,8 @@ import net.minecraftforge.common.Tags;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.EntityAttributeHandler;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -52,12 +54,15 @@ public class StonelingsModule extends QuarkModule {
 	public static boolean wealdPathfinderMaps = true;
 
 	public static TagKey<Biome> stonelingPathfindingTag;
-
+	public static QuarkGenericTrigger makeStonelingTrigger;
+	
 	public static Item diamondHeart;
 
 	@Override
 	public void setup() {
 		stonelingPathfindingTag = TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Quark.MOD_ID, "stoneling_pathfinding"));
+		
+		makeStonelingTrigger = QuarkAdvancementHandler.registerGenericTrigger("make_stoneling");
 	}
 
 	@Override

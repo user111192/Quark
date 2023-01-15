@@ -62,6 +62,8 @@ import vazkii.quark.api.IRuneColorProvider;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
@@ -108,7 +110,7 @@ public class AncientTomesModule extends QuarkModule {
 	@Config 
 	public static boolean overleveledBooksGlowRainbow = true;
 
-	@Config(description = "When enabled, Efficiency VI Diamond and Netherite pickaxes can instamine Deepslate when under Haste 2")
+	@Config(description = "When enabled, Efficiency VI Diamond and Netherite pickaxes can instamine Deepslate when under Haste 2", flag = "deepslate_tweak")
 	public static boolean deepslateTweak = true; 
 	
 	@Config
@@ -121,12 +123,18 @@ public class AncientTomesModule extends QuarkModule {
 	public static final List<Enchantment> validEnchants = new ArrayList<>();
 	private static boolean initialized = false;
 
+	public static QuarkGenericTrigger overlevelTrigger;
+	public static QuarkGenericTrigger instamineDeepslateTrigger;
+	
 	@Override
 	public void register() {
 		ancient_tome = new AncientTomeItem(this);
 
 		tomeEnchantType = new LootItemFunctionType(new EnchantTome.Serializer());
 		Registry.register(Registry.LOOT_FUNCTION_TYPE, new ResourceLocation(Quark.MOD_ID, "tome_enchant"), tomeEnchantType);
+		
+		overlevelTrigger = QuarkAdvancementHandler.registerGenericTrigger("overlevel");
+		instamineDeepslateTrigger = QuarkAdvancementHandler.registerGenericTrigger("instamine_deepslate");
 	}
 
 	@SubscribeEvent

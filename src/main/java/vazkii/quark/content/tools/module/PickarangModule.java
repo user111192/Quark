@@ -24,6 +24,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -66,12 +68,18 @@ public class PickarangModule extends QuarkModule {
 
 	public static TagKey<Block> pickarangImmuneTag;
 	public static TagKey<GameEvent> echorangCanListenTag;
+	
+	public static QuarkGenericTrigger throwPickarangTrigger;
+	public static QuarkGenericTrigger useFlamerangTrigger;
 
 	@Override
 	public void register() {
 		pickarang = makePickarang(pickarangType, "pickarang", Pickarang::new, Pickarang::new, () -> true);
 		flamerang = makePickarang(flamerangType, "flamerang", Flamerang::new, Flamerang::new, () -> enableFlamerang);
 		echorang = makePickarang(echorangType, "echorang", Echorang::new, Echorang::new, () -> enableEchorang);
+		
+		throwPickarangTrigger = QuarkAdvancementHandler.registerGenericTrigger("throw_pickarang");
+		useFlamerangTrigger = QuarkAdvancementHandler.registerGenericTrigger("use_flamerang");
 	}
 
 	private <T extends AbstractPickarang<T>> Item makePickarang(PickarangType<T> type, String name, 

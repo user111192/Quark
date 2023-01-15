@@ -40,6 +40,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.QuarkSounds;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -69,6 +71,8 @@ public class ParrotEggsModule extends QuarkModule {
 	public static boolean enableKotobirb = true;
 
 	private static boolean isEnabled;
+	
+	public static QuarkGenericTrigger throwParrotEggTrigger;
 
 	@Override
 	public void register() {
@@ -97,8 +101,9 @@ public class ParrotEggsModule extends QuarkModule {
 					});
 				}
 			});
-
 		}
+		
+		throwParrotEggTrigger = QuarkAdvancementHandler.registerGenericTrigger("throw_parrot_egg");
 	}
 
 	@Override

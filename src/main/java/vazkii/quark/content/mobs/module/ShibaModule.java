@@ -16,6 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.handler.advancement.mod.TwoByTwoModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -37,6 +38,8 @@ public class ShibaModule extends QuarkModule {
 
 	@Config public static boolean ignoreAreasWithSkylight = false;
 	
+	public static QuarkGenericTrigger shibaHelpTrigger;
+	
 	@Override
 	public void register() {
 		shibaType = EntityType.Builder.of(Shiba::new, MobCategory.CREATURE)
@@ -52,6 +55,8 @@ public class ShibaModule extends QuarkModule {
 		EntityAttributeHandler.put(shibaType, Wolf::createAttributes);
 		
 		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(shibaType)));
+		
+		shibaHelpTrigger = QuarkAdvancementHandler.registerGenericTrigger("shiba_help");
 	}
 
 	@Override

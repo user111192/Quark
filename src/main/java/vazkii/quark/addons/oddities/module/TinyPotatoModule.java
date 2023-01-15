@@ -58,7 +58,6 @@ public class TinyPotatoModule extends QuarkModule {
 		BakedModel originalPotato = map.get(tinyPotato);
 		map.put(tinyPotato, new TinyPotatoModel(originalPotato));
 	}
-
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)

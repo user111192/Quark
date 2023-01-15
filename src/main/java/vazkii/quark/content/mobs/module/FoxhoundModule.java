@@ -27,6 +27,7 @@ import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.handler.advancement.mod.MonsterHunterModifier;
 import vazkii.quark.base.handler.advancement.mod.TwoByTwoModifier;
 import vazkii.quark.base.module.LoadModule;
@@ -59,6 +60,8 @@ public class FoxhoundModule extends QuarkModule {
 	public static EntitySpawnConfig lesserSpawnConfig = new CostSensitiveEntitySpawnConfig(2, 1, 1, 0.7, 0.15, CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:soul_sand_valley"));
 
 	public static TagKey<Block> foxhoundSpawnableTag;
+	
+	public static QuarkGenericTrigger foxhoundFurnaceTrigger;
 
 	@Override
 	public void register() {
@@ -79,6 +82,8 @@ public class FoxhoundModule extends QuarkModule {
 		
 		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType)));
 		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType)));
+		
+		foxhoundFurnaceTrigger = QuarkAdvancementHandler.registerGenericTrigger("foxhound_furnace");
 	}
 
 	@Override

@@ -16,6 +16,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.EntityAttributeHandler;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -50,6 +52,9 @@ public class ToretoiseModule extends QuarkModule {
 	@Config
 	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(120, 2, 4, CompoundBiomeConfig.fromBiomeTags(true, Tags.Biomes.IS_VOID, BiomeTags.IS_NETHER, BiomeTags.IS_END));
 
+	public static QuarkGenericTrigger mineToretoiseTrigger;
+	public static QuarkGenericTrigger mineFedToretoiseTrigger;
+	
 	@Override
 	public void register() {
 		toretoiseType = EntityType.Builder.of(Toretoise::new, MobCategory.CREATURE)
@@ -65,6 +70,9 @@ public class ToretoiseModule extends QuarkModule {
 		EntitySpawnHandler.addEgg(toretoiseType, 0x55413b, 0x383237, spawnConfig);
 
 		EntityAttributeHandler.put(toretoiseType, Toretoise::prepareAttributes);
+		
+		mineToretoiseTrigger = QuarkAdvancementHandler.registerGenericTrigger("mine_toretoise");
+		mineFedToretoiseTrigger = QuarkAdvancementHandler.registerGenericTrigger("mine_fed_toretoise");
 	}
 
 	@Override

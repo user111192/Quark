@@ -1,5 +1,8 @@
 package vazkii.quark.content.world.module;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -16,19 +19,20 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.block.QuarkBlock;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.quark.base.module.config.Config.Max;
+import vazkii.quark.base.module.config.Config.Min;
 import vazkii.quark.base.module.config.type.CompoundBiomeConfig;
 import vazkii.quark.base.module.config.type.DimensionConfig;
 import vazkii.quark.base.world.WorldGenHandler;
 import vazkii.quark.base.world.WorldGenWeights;
 import vazkii.quark.content.world.block.MyaliteCrystalBlock;
 import vazkii.quark.content.world.gen.SpiralSpireGenerator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @LoadModule(category = ModuleCategory.WORLD, hasSubscriptions = true)
 public class SpiralSpiresModule extends QuarkModule {
@@ -42,7 +46,12 @@ public class SpiralSpiresModule extends QuarkModule {
 	@Config public static int rarity = 200;
 	@Config public static int radius = 15;
 
-	@Config(description = "Set to 0 to turn off Myalite Conduits")
+	@Config(flag = "myalite_viaduct")
+	public static boolean enableMyaliteViaducts = true;
+	
+	@Config
+	@Min(2)
+	@Max(1024)
 	public static int myaliteConduitDistance = 24;
 
 	@Config public static boolean renewableMyalite = true;
@@ -50,6 +59,8 @@ public class SpiralSpiresModule extends QuarkModule {
 	public static Block dusky_myalite;
 	public static Block myalite_crystal;
 
+	public static QuarkGenericTrigger useViaductTrigger;
+	
 	@Override
 	public void register() {
 		Block.Properties props = Block.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_PURPLE)
@@ -58,6 +69,8 @@ public class SpiralSpiresModule extends QuarkModule {
 		dusky_myalite = new QuarkBlock("dusky_myalite", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
 
 		myalite_crystal = new MyaliteCrystalBlock(this);
+		
+		useViaductTrigger = QuarkAdvancementHandler.registerGenericTrigger("use_viaduct");
 	}
 
 	@Override
@@ -67,7 +80,7 @@ public class SpiralSpiresModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onTeleport(EntityTeleportEvent event) {
-		if(myaliteConduitDistance <= 0)
+		if(!enableMyaliteViaducts)
 			return;
 
 		Entity entity = event.getEntity();

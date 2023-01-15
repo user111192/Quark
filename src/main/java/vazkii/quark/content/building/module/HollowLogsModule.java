@@ -10,6 +10,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -22,6 +24,8 @@ import vazkii.quark.content.building.block.HollowLogBlock;
 public class HollowLogsModule extends QuarkModule {
 
 	private static final String TAG_TRYING_TO_CRAWL = "quark:trying_crawl";
+
+	public static QuarkGenericTrigger crawlTrigger;
 	
 	@Config
 	public static boolean enableAutoCrawl = true;
@@ -30,6 +34,8 @@ public class HollowLogsModule extends QuarkModule {
 	public void register() {
 		for(Wood wood : VanillaWoods.ALL)
 			new HollowLogBlock(wood.log(), this, !wood.nether());
+		
+		crawlTrigger = QuarkAdvancementHandler.registerGenericTrigger("hollow_log_crawl");
 	}
 
 	@SubscribeEvent

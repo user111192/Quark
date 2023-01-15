@@ -41,6 +41,8 @@ import vazkii.quark.addons.oddities.util.CustomInfluence;
 import vazkii.quark.addons.oddities.util.Influence;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -153,6 +155,8 @@ public class MatrixEnchantingModule extends QuarkModule {
 	public static Map<BlockState, CustomInfluence> customInfluences;
 
 	public static Block matrixEnchanter;
+	
+	public static QuarkGenericTrigger influenceTrigger;
 
 	@Override
 	public void register() {
@@ -163,6 +167,8 @@ public class MatrixEnchantingModule extends QuarkModule {
 
 		blockEntityType = BlockEntityType.Builder.of(MatrixEnchantingTableBlockEntity::new, matrixEnchanter).build(null);
 		RegistryHelper.register(blockEntityType, "matrix_enchanting", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		
+		influenceTrigger = QuarkAdvancementHandler.registerGenericTrigger("influence");
 	}
 
 	@Override

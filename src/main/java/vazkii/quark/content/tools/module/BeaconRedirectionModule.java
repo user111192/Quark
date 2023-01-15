@@ -15,6 +15,8 @@ import net.minecraft.world.level.block.entity.BeaconBlockEntity.BeaconBeamSectio
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -32,6 +34,13 @@ public class BeaconRedirectionModule extends QuarkModule {
 	public static boolean allowTintedGlassTransparency = true;
 	
 	public static boolean staticEnabled;
+	
+	public static QuarkGenericTrigger redirectTrigger;
+	
+	@Override
+	public void register() {
+		redirectTrigger = QuarkAdvancementHandler.registerGenericTrigger("redirect_beacon");
+	}
 	
 	@Override
 	public void configChanged() {

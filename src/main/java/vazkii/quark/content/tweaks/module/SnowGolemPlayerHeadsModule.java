@@ -10,6 +10,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.arl.util.ItemNBTHelper;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -17,6 +19,13 @@ import vazkii.quark.base.module.QuarkModule;
 @LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
 public class SnowGolemPlayerHeadsModule extends QuarkModule {
 
+	public static QuarkGenericTrigger getOwnHeadTrigger;
+	
+	@Override
+	public void register() {
+		getOwnHeadTrigger = QuarkAdvancementHandler.registerGenericTrigger("own_head");
+	}
+	
 	@SubscribeEvent
 	public void onDrops(LivingDropsEvent event) {
 		Entity e = event.getEntity();

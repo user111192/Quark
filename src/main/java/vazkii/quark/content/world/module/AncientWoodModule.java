@@ -18,6 +18,7 @@ import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.WoodSet;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.handler.advancement.mod.BalancedDietModifier;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -47,6 +48,8 @@ public class AncientWoodModule extends QuarkModule {
 	public static Block ancient_sapling;
 	public static Item ancient_fruit;
 	
+	public static QuarkGenericTrigger ancientFruitTrigger;
+	
 	@Override
 	public void register() {
 		woodSet = WoodSetHandler.addWoodSet(this, "ancient", MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE);
@@ -57,6 +60,8 @@ public class AncientWoodModule extends QuarkModule {
 		VariantHandler.addFlowerPot(ancient_sapling, RegistryHelper.getInternalName(ancient_sapling).getPath(), Functions.identity());
 		
 		QuarkAdvancementHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit)));
+		
+		ancientFruitTrigger = QuarkAdvancementHandler.registerGenericTrigger("ancient_fruit_overlevel");
 	}
 	
 	@SubscribeEvent

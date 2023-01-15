@@ -39,6 +39,8 @@ import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -76,7 +78,8 @@ public class PathfinderMapsModule extends QuarkModule {
 	public static LootItemFunctionType pathfinderMapType;
 	public static LootItemConditionType inBiomeConditionType;
 
-
+	public static QuarkGenericTrigger pathfinderMapTrigger;
+	
 	@Config public static int searchRadius = 6400;
 	@Config public static int xpFromTrade = 5;
 
@@ -101,6 +104,8 @@ public class PathfinderMapsModule extends QuarkModule {
 		Registry.register(Registry.LOOT_FUNCTION_TYPE, new ResourceLocation(Quark.MOD_ID, "pathfinder_map"), pathfinderMapType);
 		inBiomeConditionType = new LootItemConditionType(new InBiomeCondition.InBiomeSerializer());
 		Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation(Quark.MOD_ID, "in_biome"), inBiomeConditionType);
+		
+		pathfinderMapTrigger = QuarkAdvancementHandler.registerGenericTrigger("pathfinder_map_center");
 	}
 
 	@SubscribeEvent

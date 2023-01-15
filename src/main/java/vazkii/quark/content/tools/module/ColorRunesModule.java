@@ -36,6 +36,8 @@ import vazkii.quark.api.IRuneColorProvider;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -70,6 +72,9 @@ public class ColorRunesModule extends QuarkModule {
 	@Config public static int desertTempleWeight = 8;
 	@Config public static int itemQuality = 0;
 	@Config public static int applyCost = 5;
+	
+	public static QuarkGenericTrigger applyRuneTrigger;
+	public static QuarkGenericTrigger fullRainbowTrigger;
 
 	public static void setTargetStack(ItemStack stack) {
 		targetStack.set(stack);
@@ -165,6 +170,9 @@ public class ColorRunesModule extends QuarkModule {
 
 		rainbow_rune = new RuneItem("rainbow_rune", this, 16, true);
 		blank_rune = new RuneItem("blank_rune", this, 17, false);
+		
+		applyRuneTrigger = QuarkAdvancementHandler.registerGenericTrigger("apply_rune");
+		fullRainbowTrigger = QuarkAdvancementHandler.registerGenericTrigger("full_rainbow");
 	}
 
 	@Override

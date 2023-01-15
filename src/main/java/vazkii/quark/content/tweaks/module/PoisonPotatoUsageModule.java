@@ -14,6 +14,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -26,6 +28,13 @@ public class PoisonPotatoUsageModule extends QuarkModule {
 
 	@Config public static double chance = 0.1;
 	@Config public static boolean poisonEffect = true;
+	
+	public static QuarkGenericTrigger poisonBabyTrigger;
+	
+	@Override
+	public void register() {
+		poisonBabyTrigger = QuarkAdvancementHandler.registerGenericTrigger("poison_baby");
+	}
 
 	@SubscribeEvent
 	public void onInteract(EntityInteract event) {
