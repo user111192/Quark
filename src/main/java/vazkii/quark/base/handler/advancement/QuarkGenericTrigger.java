@@ -22,6 +22,7 @@ public class QuarkGenericTrigger extends SimpleCriterionTrigger<QuarkGenericTrig
 		trigger(p_148030_, Predicates.alwaysTrue());
 	}
 
+	@Override
 	public ResourceLocation getId() {
 		return this.id;
 	}

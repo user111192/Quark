@@ -75,6 +75,7 @@ public class AncientSaplingBlock extends QuarkSaplingBlock {
 			this.maxBlobs = maxBlobs;
 		}
 
+		@Override
 		public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader p_226147_, BiConsumer<BlockPos, BlockState> p_226148_, RandomSource p_226149_, int p_226150_, BlockPos p_226151_, TreeConfiguration p_226152_) {
 			setDirtAt(p_226147_, p_226148_, p_226149_, p_226151_.below(), p_226152_);
 
