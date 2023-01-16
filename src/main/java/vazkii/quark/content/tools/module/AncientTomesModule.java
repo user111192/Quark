@@ -19,6 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -298,9 +299,13 @@ public class AncientTomesModule extends QuarkModule {
 			if(state.is(Blocks.DEEPSLATE) 
 					&& EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, stack) >= 6 
 					&& event.getOriginalSpeed() >= 45F
-					&& (!deepslateTweakNeedsHaste2 || playerHasHaste2(player)))
+					&& (!deepslateTweakNeedsHaste2 || playerHasHaste2(player))) {
 				
 				event.setNewSpeed(100F);
+				
+				if(player instanceof ServerPlayer sp)
+					instamineDeepslateTrigger.trigger(sp);
+			}
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package vazkii.quark.content.world.item;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -24,6 +25,11 @@ public class AncientFruitItem extends QuarkItem {
 		ItemStack ret = super.finishUsingItem(stack, level, living);
 		
 		if(AncientWoodModule.ancientFruitGivesExp && living instanceof Player player) {
+			if(player instanceof ServerPlayer sp) {
+				if(sp.experienceLevel >= 100)
+					AncientWoodModule.ancientFruitTrigger.trigger(sp);
+			}
+			
 			player.giveExperiencePoints(AncientWoodModule.ancientFruitExpValue);
 			player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 1F, 1F);
 		}

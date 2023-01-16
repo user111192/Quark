@@ -3,6 +3,7 @@ package vazkii.quark.content.building.module;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -63,6 +64,9 @@ public class HollowLogsModule extends QuarkModule {
 						double z = pos.getZ() + 0.5 - ((double) dir.getStepZ() * 0.4);
 						
 						player.setPos(x, y, z);
+						
+						if(player instanceof ServerPlayer sp)
+							crawlTrigger.trigger(sp);
 					}
 				}
 			}

@@ -10,6 +10,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -35,6 +36,7 @@ import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.tools.config.PickarangType;
 import vazkii.quark.content.tools.entity.rang.AbstractPickarang;
+import vazkii.quark.content.tools.module.PickarangModule;
 
 public class PickarangItem extends QuarkItem {
 
@@ -102,6 +104,9 @@ public class PickarangItem extends QuarkItem {
 			entity.setOwner(playerIn);
 			
 			worldIn.addFreshEntity(entity);
+			
+			if(playerIn instanceof ServerPlayer sp)
+				PickarangModule.throwPickarangTrigger.trigger(sp);
 		}
 
 		if(!playerIn.getAbilities().instabuild && type.cooldown > 0) {

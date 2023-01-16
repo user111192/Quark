@@ -1,6 +1,7 @@
 package vazkii.quark.content.tweaks.module;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -47,6 +48,10 @@ public class PoisonPotatoUsageModule extends QuarkModule {
 					entity.playSound(SoundEvents.GENERIC_EAT, 0.5f, 0.25f);
 					entity.level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.x, pos.y, pos.z, 0.2, 0.8, 0);
 					poisonEntity(entity);
+					
+					if(event.getEntity() instanceof ServerPlayer sp)
+						poisonBabyTrigger.trigger(sp);
+					
 					if (poisonEffect)
 						entity.addEffect(new MobEffectInstance(MobEffects.POISON, 80));
 				} else {

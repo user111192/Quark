@@ -1,9 +1,13 @@
 package vazkii.quark.content.automation.block.be;
 
+import java.util.List;
+
 import com.mojang.math.Vector3f;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,8 +24,6 @@ import vazkii.arl.block.be.ARLBlockEntity;
 import vazkii.quark.base.handler.RayTraceHandler;
 import vazkii.quark.content.automation.block.EnderWatcherBlock;
 import vazkii.quark.content.automation.module.EnderWatcherModule;
-
-import java.util.List;
 
 public class EnderWatcherBlockEntity extends ARLBlockEntity {
 
@@ -55,7 +57,12 @@ public class EnderWatcherBlockEntity extends ARLBlockEntity {
 
 				// 0.7071067811865476 being the hypotenuse of an isosceles triangle with cathetus of length 0.5
 				double fract = 1 - (Math.sqrt(x*x + y*y + z*z) / 0.7071067811865476);
-				newWatch = Math.max(newWatch, (int) Math.ceil(fract * 15));
+				int playerWatch = (int) Math.ceil(fract * 15);
+				
+				if(playerWatch == 15 && player instanceof ServerPlayer sp)
+					EnderWatcherModule.watcherCenterTrigger.trigger(sp);
+				
+				newWatch = Math.max(newWatch, playerWatch);
 			}
 		}
 

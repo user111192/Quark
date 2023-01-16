@@ -65,8 +65,10 @@ public class DiamondHeartItem extends QuarkItem {
 						stoneling.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, variant, null);
 						world.addFreshEntity(stoneling);
 
-						if(player instanceof ServerPlayer serverPlayer)
+						if(player instanceof ServerPlayer serverPlayer) {
 							CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayer, stoneling);
+							StonelingsModule.makeStonelingTrigger.trigger(serverPlayer);
+						}
 
 						if (!player.getAbilities().instabuild)
 							stack.shrink(1);

@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -152,6 +153,7 @@ public class Toretoise extends Animal {
 	public void tick() {
 		super.tick();
 
+		
 		AABB aabb = getBoundingBox();
 		double rheight = getOreType() == 0 ? 1 : 1.4;
 		aabb = new AABB(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.minY + rheight, aabb.maxZ);
@@ -246,6 +248,12 @@ public class Toretoise extends Animal {
 					if (living instanceof Player player)
 						lootBuilder.withLuck(player.getLuck());
 					dropOre(ore, lootBuilder);
+					
+					if(living instanceof ServerPlayer sp) {
+						ToretoiseModule.mineToretoiseTrigger.trigger(sp);
+						if(isTamed)
+							ToretoiseModule.mineFedToretoiseTrigger.trigger(sp);
+					}
 				}
 
 				return false;
@@ -307,7 +315,7 @@ public class Toretoise extends Animal {
 	}
 
 	private void popOre(boolean natural) {
-		if (!natural && ToretoiseModule.allowToretoiseToRegrow)
+		if (!natural && !ToretoiseModule.allowToretoiseToRegrow)
 			return;
 		if(getOreType() == 0 && (natural || level.random.nextInt(ToretoiseModule.regrowChance) == 0)) {
 			int ore = random.nextInt(ORE_TYPES) + 1;

@@ -9,6 +9,7 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.Level;
@@ -131,6 +132,9 @@ public class SpiralSpiresModule extends QuarkModule {
 			event.setTargetX(test.getX() + 0.5);
 			event.setTargetY(test.getY() + 0.5);
 			event.setTargetZ(test.getZ() + 0.5);
+			
+			if(event.getEntity() instanceof ServerPlayer sp)
+				useViaductTrigger.trigger(sp);
 
 			if (world instanceof ServerLevel sworld) {
 				for (BlockPos f : found)

@@ -444,7 +444,10 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 				if(!level.isClientSide) {
 					playSound(QuarkSounds.ENTITY_PICKARANG_PICKUP, 1, 1);
-
+					
+					if(player instanceof ServerPlayer sp && (this instanceof Flamerang) && isOnFire() && getPassengers().size() > 0)
+						PickarangModule.useFlamerangTrigger.trigger(sp);
+					
 					if(!stack.isEmpty()) if (player.isAlive() && stackInSlot.isEmpty())
 						inventory.setItem(slot, stack);
 					else if (!player.isAlive() || !inventory.add(stack))
@@ -498,6 +501,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 		if (itemEntity.isAlive()) {
 			// Player could not pick up everything
 			ItemStack drop = itemEntity.getItem();
+			
 			player.drop(drop, false);
 			itemEntity.discard();
 		}
