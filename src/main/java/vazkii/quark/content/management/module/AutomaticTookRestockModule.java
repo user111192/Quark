@@ -71,6 +71,8 @@ public class AutomaticTookRestockModule extends QuarkModule {
 	@Config
 	private boolean unstackablesOnly = false;
 
+	private Object mutex = new Object();
+	
 	@Override
 	public void configChanged() {
 		importantEnchants = MiscUtil.massRegistryGet(enchantNames, ForgeRegistries.ENCHANTMENTS);
@@ -120,9 +122,9 @@ public class AutomaticTookRestockModule extends QuarkModule {
 
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent event) {
-		if(event.phase == Phase.END && replacements.containsKey(event.player)) {
+		if(event.phase == Phase.END && !event.player.level.isClientSide && replacements.containsKey(event.player)) {
 			Stack<Pair<Integer, Integer>> replacementStack = replacements.get(event.player);
-			synchronized(this) {
+			synchronized(mutex) {
 				while(!replacementStack.isEmpty()) {
 					Pair<Integer, Integer> pair = replacementStack.pop();
 					switchItems(event.player, pair.getLeft(), pair.getRight());
@@ -153,26 +155,26 @@ public class AutomaticTookRestockModule extends QuarkModule {
 	}
 
 	private boolean findReplacement(Player player, int currSlot, Predicate<ItemStack> match) {
-		for(int i = 0; i < player.getInventory().items.size(); i++) {
-			if(i == currSlot)
-				continue;
+		synchronized(mutex) {
+			for(int i = 0; i < player.getInventory().items.size(); i++) {
+				if(i == currSlot)
+					continue;
 
-			ItemStack stackAt = player.getInventory().getItem(i);
-			if(!stackAt.isEmpty() && match.test(stackAt)) {
-				pushReplace(player, i, currSlot);
-				return true;
+				ItemStack stackAt = player.getInventory().getItem(i);
+				if(!stackAt.isEmpty() && match.test(stackAt)) {
+					pushReplace(player, i, currSlot);
+					return true;
+				}
 			}
-		}
 
-		return false;
+			return false;
+		}
 	}
 
 	private void pushReplace(Player player, int slot1, int slot2) {
-		synchronized(this) {
-			if(!replacements.containsKey(player))
-				replacements.put(player, new Stack<>());
-			replacements.get(player).push(Pair.of(slot1, slot2));
-		}
+		if(!replacements.containsKey(player))
+			replacements.put(player, new Stack<>());
+		replacements.get(player).push(Pair.of(slot1, slot2));
 	}
 
 	private void switchItems(Player player, int slot1, int slot2) {
