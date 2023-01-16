@@ -2,7 +2,7 @@
   "parent": "minecraft:husbandry/breed_an_animal",
   "criteria": {
     "posion_baby": {
-      "trigger": "quark:none"
+      "trigger": "quark:poison_baby"
     }
   },
   "display": {

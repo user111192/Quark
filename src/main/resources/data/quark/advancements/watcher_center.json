@@ -2,7 +2,7 @@
   "parent": "minecraft:nether/obtain_blaze_rod",
   "criteria": {
     "watcher_center": {
-      "trigger": "quark:none"
+      "trigger": "quark:watcher_center"
     }
   },
   "display": {

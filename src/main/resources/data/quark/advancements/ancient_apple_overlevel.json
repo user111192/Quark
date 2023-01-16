@@ -2,7 +2,7 @@
   "parent": "minecraft:husbandry/plant_seed",
   "criteria": {
     "ancient_apple_overlevel": {
-      "trigger": "quark:none"
+      "trigger": "quark:ancient_fruit_overlevel"
     }
   },
   "display": {

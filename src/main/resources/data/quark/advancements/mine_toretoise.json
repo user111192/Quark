@@ -2,7 +2,7 @@
   "parent": "minecraft:husbandry/root",
   "criteria": {
     "mine_toretoise": {
-      "trigger": "quark:none"
+      "trigger": "quark:mine_toretoise"
     }
   },
   "display": {

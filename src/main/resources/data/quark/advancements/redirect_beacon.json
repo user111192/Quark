@@ -2,7 +2,7 @@
   "parent": "minecraft:nether/create_beacon",
   "criteria": {
     "redirect_beacon": {
-      "trigger": "quark:none"
+      "trigger": "quark:redirect_beacon"
     }
   },
   "display": {

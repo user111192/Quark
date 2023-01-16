@@ -2,7 +2,7 @@
   "parent": "minecraft:story/enchant_item",
   "criteria": {
     "apply_color_rune": {
-      "trigger": "quark:none"
+      "trigger": "quark:apply_rune"
     }
   },
   "display": {

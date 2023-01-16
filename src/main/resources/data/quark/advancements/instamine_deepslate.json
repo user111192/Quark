@@ -2,7 +2,7 @@
   "parent": "quark:overlevel_enchant",
   "criteria": {
     "instamine_deepslate": {
-      "trigger": "quark:none"
+      "trigger": "quark:instamine_deepslate"
     }
   },
   "display": {

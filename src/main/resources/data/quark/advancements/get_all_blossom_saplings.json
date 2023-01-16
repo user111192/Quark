@@ -1,8 +1,77 @@
 {
   "parent": "minecraft:husbandry/plant_seed",
   "criteria": {
-    "get_all_blossom_saplings": {
-      "trigger": "quark:none"
+    "blue": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "quark:blue_blossom_sapling"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "lavender": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "quark:lavender_blossom_sapling"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "orange": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "quark:orange_blossom_sapling"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+   "pink": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "quark:pink_blossom_sapling"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "yellow": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "quark:yellow_blossom_sapling"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "red": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "quark:red_blossom_sapling"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "display": {
@@ -21,9 +90,12 @@
     }
   },
   "requirements": [
-    [
-      "get_all_blossom_saplings"
-    ]
+    [ "blue" ],
+    [ "lavender" ],
+    [ "orange" ],
+    [ "pink" ],
+    [ "yellow" ],
+    [ "red" ]
   ],
   "conditions": [
     {

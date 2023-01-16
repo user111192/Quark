@@ -2,7 +2,7 @@
   "parent": "minecraft:husbandry/tame_an_animal",
   "criteria": {
     "shiba_help": {
-      "trigger": "quark:none"
+      "trigger": "quark:shiba_help"
     }
   },
   "display": {

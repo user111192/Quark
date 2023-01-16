@@ -2,7 +2,7 @@
   "parent": "minecraft:story/enchant_item",
   "criteria": {
     "influence": {
-      "trigger": "quark:none"
+      "trigger": "quark:influence"
     }
   },
   "display": {

@@ -2,7 +2,7 @@
   "parent": "quark:mine_toretoise",
   "criteria": {
     "mine_fed_toretoise": {
-      "trigger": "quark:none"
+      "trigger": "quark:mine_fed_toretoise"
     }
   },
   "display": {

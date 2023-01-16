@@ -2,7 +2,7 @@
   "parent": "quark:tame_foxhound",
   "criteria": {
     "foxhound_speed_up_furnace": {
-      "trigger": "quark:none"
+      "trigger": "quark:foxhound_furnace"
     }
   },
   "display": {

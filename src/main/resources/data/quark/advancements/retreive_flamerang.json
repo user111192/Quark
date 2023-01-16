@@ -2,7 +2,7 @@
   "parent": "quark:throw_pickarang",
   "criteria": {
     "retreive_flamerang": {
-      "trigger": "quark:none"
+      "trigger": "quark:use_flamerang"
     }
   },
   "display": {

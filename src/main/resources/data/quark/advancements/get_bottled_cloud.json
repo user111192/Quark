@@ -2,7 +2,16 @@
   "parent": "minecraft:adventure/root",
   "criteria": {
     "get_bottled_cloud": {
-      "trigger": "quark:none"
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "quark:bottled_cloud"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "display": {

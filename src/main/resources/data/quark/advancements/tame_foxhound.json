@@ -2,7 +2,12 @@
   "parent": "minecraft:nether/brew_potion",
   "criteria": {
     "tame_foxhound": {
-      "trigger": "quark:none"
+      "conditions": {
+        "entity": {
+          "type": "quark:foxhound"
+        }
+      },
+      "trigger": "minecraft:tame_animal"
     }
   },
   "display": {

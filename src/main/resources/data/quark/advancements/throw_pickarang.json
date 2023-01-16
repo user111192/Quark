@@ -2,7 +2,7 @@
   "parent": "minecraft:story/mine_diamond",
   "criteria": {
     "throw_pickarang": {
-      "trigger": "quark:none"
+      "trigger": "quark:throw_pickarang"
     }
   },
   "display": {

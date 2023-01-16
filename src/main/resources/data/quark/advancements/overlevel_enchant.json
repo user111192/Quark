@@ -2,7 +2,7 @@
   "parent": "minecraft:story/enchant_item",
   "criteria": {
     "overlevel_enchant": {
-      "trigger": "quark:none"
+      "trigger": "quark:overlevel"
     }
   },
   "display": {

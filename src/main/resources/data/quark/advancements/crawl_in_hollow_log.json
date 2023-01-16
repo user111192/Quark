@@ -2,7 +2,7 @@
   "parent": "minecraft:adventure/root",
   "criteria": {
     "crawl_in_hollow_log": {
-      "trigger": "quark:none"
+      "trigger": "quark:hollow_log_crawl"
     }
   },
   "display": {

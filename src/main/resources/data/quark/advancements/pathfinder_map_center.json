@@ -2,7 +2,7 @@
   "parent": "minecraft:adventure/trade",
   "criteria": {
     "pathfinder_map_center": {
-      "trigger": "quark:none"
+      "trigger": "quark:pathfinder_map_center"
     }
   },
   "display": {
