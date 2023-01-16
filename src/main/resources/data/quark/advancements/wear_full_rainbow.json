@@ -20,6 +20,9 @@
       "translate": "advancements.quark.wear_full_rainbow.title"
     }
   },
+  "rewards": {
+    "experience": 100
+  },
   "requirements": [
     [
       "wear_full_rainbow"

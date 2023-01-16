@@ -125,6 +125,9 @@
       "translate": "advancements.quark.get_all_corundum.title"
     }
   },
+  "rewards": {
+    "experience": 100
+  },
   "requirements": [
     [ "red" ],
     [ "orange" ],

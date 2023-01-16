@@ -20,6 +20,9 @@
       "translate": "advancements.quark.get_own_head.title"
     }
   },
+  "rewards": {
+    "experience": 100
+  },
   "requirements": [
     [
       "get_own_head"

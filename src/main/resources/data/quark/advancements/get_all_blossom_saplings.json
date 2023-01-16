@@ -89,6 +89,9 @@
       "translate": "advancements.quark.get_all_blossom_saplings.title"
     }
   },
+  "rewards": {
+    "experience": 100
+  },
   "requirements": [
     [ "blue" ],
     [ "lavender" ],

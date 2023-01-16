@@ -20,6 +20,9 @@
       "translate": "advancements.quark.ancient_apple_overlevel.title"
     }
   },
+  "rewards": {
+    "experience": 100
+  },
   "requirements": [
     [
       "ancient_apple_overlevel"

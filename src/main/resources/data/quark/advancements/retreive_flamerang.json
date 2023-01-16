@@ -10,7 +10,7 @@
     "description": {
       "translate": "advancements.quark.retreive_flamerang.description"
     },
-    "frame": "challenge",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "quark:flamerang"
