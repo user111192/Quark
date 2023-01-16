@@ -90,7 +90,8 @@
     "client.variants.DolphinRendererMixin",
     "client.variants.LlamaRendererMixin",
     "client.variants.PigRendererMixin",
-    "client.variants.RabbitRendererMixin"
+    "client.variants.RabbitRendererMixin",
+    "client.variants.SlimeRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
