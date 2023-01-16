@@ -125,6 +125,10 @@ public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlo
 			case OPER_MERGE -> apply(m -> m.merge(arg0, arg1));
 		}
 	}
+	
+	public boolean isMatrixInfluenced() {
+		return matrix.isInfluenced();
+	}
 
 	private void apply(Predicate<EnchantmentMatrix> oper) {
 		if(oper.test(matrix)) {

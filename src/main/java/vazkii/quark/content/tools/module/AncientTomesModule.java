@@ -54,6 +54,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -288,6 +289,15 @@ public class AncientTomesModule extends QuarkModule {
 			}
 		}
 	}
+	
+	@SubscribeEvent
+	public void onAnvilUse(AnvilRepairEvent event) {
+		ItemStack output = event.getOutput();
+		ItemStack right = event.getRight();
+		
+		if(isOverlevel(output) && (right.getItem() == Items.ENCHANTED_BOOK || right.getItem() == ancient_tome) && event.getEntity() instanceof ServerPlayer sp)
+			overlevelTrigger.trigger(sp);
+	}
 
 	@SubscribeEvent
 	public void onGetSpeed(PlayerEvent.BreakSpeed event) {
@@ -315,17 +325,15 @@ public class AncientTomesModule extends QuarkModule {
 	}
 
 	private static boolean isOverlevel(ItemStack stack) {
-		if (stack.getItem() == Items.ENCHANTED_BOOK) {
-			Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(stack);
-			for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
-				Enchantment enchantment = entry.getKey();
-				if (enchantment == null)
-					continue;
+		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(stack);
+		for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
+			Enchantment enchantment = entry.getKey();
+			if (enchantment == null)
+				continue;
 
-				int level = entry.getValue();
-				if (level > enchantment.getMaxLevel()) {
-					return true;
-				}
+			int level = entry.getValue();
+			if (level > enchantment.getMaxLevel()) {
+				return true;
 			}
 		}
 

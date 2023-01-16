@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.block.entity.BeaconBlockEntity.BeaconBeamSectio
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
@@ -60,8 +62,10 @@ public class BeaconRedirectionModule extends QuarkModule {
 		int horizontalMoves = horizontalMoveLimit;
 		int targetHeight = world.getHeight(Heightmap.Types.WORLD_SURFACE, beaconPos.getX(), beaconPos.getZ());
 
-		beacon.checkingBeamSections.clear();
 		boolean broke = false;
+		boolean didRedirection = false;
+		
+		beacon.checkingBeamSections.clear();
 		
 		float[] currColor = new float[] { 1, 1, 1 };
 		float alpha = 1F;
@@ -102,6 +106,7 @@ public class BeaconRedirectionModule extends QuarkModule {
 					float[] mixedColor = new float[]{(currColor[0] + targetColor[0] * 3) / 4.0F, (currColor[1] + targetColor[1] * 3) / 4.0F, (currColor[2] + targetColor[2] * 3) / 4.0F};
 					currColor = mixedColor;
 					alpha = 1F;
+					didRedirection = true;
 					currSegment = new ExtendedBeamSegment(dir, currPos.subtract(beaconPos), currColor, alpha);
 				}
 			} else if(targetColor != null || targetAlpha != -1) {
@@ -150,14 +155,27 @@ public class BeaconRedirectionModule extends QuarkModule {
 		if(horizontalMoves == 0 || currPos.getY() <= 0)
 			broke = true;
 
+		final String tag = "quark:redirected"; 
+		
 		if(!broke) {
 			beacon.checkingBeamSections.add(currSegment);
 			beacon.lastCheckY = targetHeight + 1;
 		} else {
+			beacon.getPersistentData().putBoolean(tag, false);
+
 			beacon.checkingBeamSections.clear();
 			beacon.lastCheckY = targetHeight;
 		}
 		
+		if(!beacon.getPersistentData().getBoolean(tag) && didRedirection && !beacon.checkingBeamSections.isEmpty()) {
+			beacon.getPersistentData().putBoolean(tag, true);
+			
+			int i = beaconPos.getX();
+			int j = beaconPos.getY();
+			int k = beaconPos.getZ();
+            for(ServerPlayer serverplayer : beacon.getLevel().getEntitiesOfClass(ServerPlayer.class, (new AABB((double)i, (double)j, (double)k, (double)i, (double)(j - 4), (double)k)).inflate(10.0D, 5.0D, 10.0D)))
+                redirectTrigger.trigger(serverplayer);
+		}
 
 		return Integer.MAX_VALUE;
 	}

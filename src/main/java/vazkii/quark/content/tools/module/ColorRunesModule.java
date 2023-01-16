@@ -3,16 +3,22 @@ package vazkii.quark.content.tools.module;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.item.DyeColor;
@@ -28,6 +34,8 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.NetworkDirection;
@@ -83,6 +91,10 @@ public class ColorRunesModule extends QuarkModule {
 	public static int changeColor() {
 		ItemStack target = targetStack.get();
 
+		return getStackColor(target);
+	}
+	
+	private static int getStackColor(ItemStack target) {
 		if (target == null)
 			return -1;
 
@@ -226,6 +238,41 @@ public class ColorRunesModule extends QuarkModule {
 			event.setCost(cost);
 			event.setMaterialCost(1);
 		}
+	}
+	
+	@SubscribeEvent
+	public void onAnvilUse(AnvilRepairEvent event) {
+		ItemStack right = event.getRight();
+		
+		if(right.is(runesTag) && event.getEntity() instanceof ServerPlayer sp)
+			applyRuneTrigger.trigger(sp);
+	}
+	
+	@SubscribeEvent
+	public void onPlayerTick(PlayerTickEvent event) {
+		final String tag = "quark:what_are_you_gay_or_something";
+		Player player = event.player;
+		
+		boolean wasRainbow = player.getPersistentData().getBoolean(tag);
+		boolean rainbow = isPlayerRainbow(player);
+		
+		if(wasRainbow != rainbow) {
+			player.getPersistentData().putBoolean(tag, rainbow);
+			if(rainbow && player instanceof ServerPlayer sp)
+				fullRainbowTrigger.trigger(sp);
+		}
+	}
+	
+	private boolean isPlayerRainbow(Player player) {
+		Set<EquipmentSlot> checks = ImmutableSet.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET);
+		
+		for(EquipmentSlot slot : checks) {
+			ItemStack stack = player.getItemBySlot(slot);
+			if(stack.isEmpty() || getStackColor(stack) != 16) // 16 = rainbow rune
+				return false;
+		}
+		
+		return true;
 	}
 
 	private static boolean canHaveRune(ItemStack stack) {

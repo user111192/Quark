@@ -15,15 +15,21 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
@@ -35,9 +41,12 @@ import net.minecraft.world.level.saveddata.maps.MapDecoration.Type;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
@@ -51,6 +60,8 @@ import vazkii.quark.content.tools.loot.PathfinderMapFunction;
 
 @LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
 public class PathfinderMapsModule extends QuarkModule {
+	
+	private static final String TAG_IS_PATHFINDER = "quark:is_pathfinder";
 
 	private static final Object mutex = new Object();
 
@@ -117,6 +128,48 @@ public class PathfinderMapsModule extends QuarkModule {
 					if(info != null)
 						trades.get(info.level).add(new PathfinderMapTrade(info));
 			}
+	}
+	
+	@SubscribeEvent
+	public void playerTick(PlayerTickEvent event) {
+		Player player = event.player;
+		if(!(player instanceof ServerPlayer))
+			return;
+
+		if(!tryCheckCenter(player, InteractionHand.MAIN_HAND))
+			tryCheckCenter(player, InteractionHand.OFF_HAND);
+	}
+	
+	private boolean tryCheckCenter(Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
+		
+		if(stack.getItem() == Items.FILLED_MAP && stack.hasTag() && ItemNBTHelper.getBoolean(stack, TAG_IS_PATHFINDER, false)) {
+			 ListTag decorations = stack.getTag().getList("Decorations", stack.getTag().getId());
+			 
+			 for(int i = 0; i < decorations.size(); i++) {
+				 Tag tag = decorations.get(i);
+				 if(tag instanceof CompoundTag cmp) {
+					 String id = cmp.getString("id");
+					 
+					 if(id.equals("+")) {
+						 double x = cmp.getDouble("x");
+						 double z = cmp.getDouble("z");
+						 
+						 Vec3 pp = player.position();
+						 double px = pp.x;
+						 double pz = pp.z;
+						 
+						 double distSq = (px - x) * (px - x) + (pz - z) * (pz - z); 
+						 if(distSq < 200) {
+							 pathfinderMapTrigger.trigger((ServerPlayer) player);
+							 return true;
+						 }
+					 }
+				 }
+			 }
+		}
+		
+		return false;
 	}
 
 	@Override
@@ -190,6 +243,7 @@ public class PathfinderMapsModule extends QuarkModule {
 		stack.setHoverName(Component.translatable("item.quark.biome_map", biomeComponent));
 
 		stack.getOrCreateTagElement("display").putInt("MapColor", color);
+		ItemNBTHelper.setBoolean(stack, TAG_IS_PATHFINDER, true);
 
 		return stack;
 	}
