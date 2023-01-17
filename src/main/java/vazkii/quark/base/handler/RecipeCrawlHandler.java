@@ -1,5 +1,6 @@
 package vazkii.quark.base.handler;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -38,8 +40,11 @@ import vazkii.quark.base.Quark;
 @EventBusSubscriber(bus = Bus.FORGE, modid = Quark.MOD_ID)
 public class RecipeCrawlHandler {
 
+	private static List<Recipe<?>> recipesToLazyDigest = new ArrayList<>();
 	private static Multimap<Item, ItemStack> recipeDigestion = HashMultimap.create();
 
+	private static Object mutex = new Object();
+	
 	@SubscribeEvent
 	public static void addListener(AddReloadListenerEvent event) {
 		ReloadableServerResources resources = event.getServerResources();
@@ -53,9 +58,9 @@ public class RecipeCrawlHandler {
 
 				.thenCompose(barrier::wait)
 
-				.thenAccept(v -> {
+				.thenRunAsync(() -> {
 					load(recipeManager);
-				});
+				}, applyExec);
 		});
 	}
 
@@ -67,6 +72,7 @@ public class RecipeCrawlHandler {
 		if(!manager.getRecipes().isEmpty()) {
 			MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.CrawlStarting());
 
+			recipesToLazyDigest.clear();
 			recipeDigestion.clear();
 			Collection<Recipe<?>> recipes = manager.getRecipes();
 
@@ -87,11 +93,23 @@ public class RecipeCrawlHandler {
 				else 
 					event = new Visit.Misc(recipe);
 
-				digest(recipe);
+				recipesToLazyDigest.add(recipe);
 				MinecraftForge.EVENT_BUS.post(event);
 			}
-
-			MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.Digest(recipeDigestion));
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onTick(ServerTickEvent tick) {
+		synchronized(mutex) {
+			if(!recipesToLazyDigest.isEmpty()) {
+				recipeDigestion.clear();
+				
+				for(Recipe<?> recipe : recipesToLazyDigest)
+					digest(recipe);
+				
+				MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.Digest(recipeDigestion));
+			}
 		}
 	}
 
