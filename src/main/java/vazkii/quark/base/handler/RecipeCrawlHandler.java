@@ -42,6 +42,7 @@ public class RecipeCrawlHandler {
 
 	private static List<Recipe<?>> recipesToLazyDigest = new ArrayList<>();
 	private static Multimap<Item, ItemStack> recipeDigestion = HashMultimap.create();
+	private static Multimap<Item, ItemStack> backwardsDigestion = HashMultimap.create();
 
 	private static Object mutex = new Object();
 	
@@ -74,6 +75,8 @@ public class RecipeCrawlHandler {
 
 			recipesToLazyDigest.clear();
 			recipeDigestion.clear();
+			backwardsDigestion.clear();
+			
 			Collection<Recipe<?>> recipes = manager.getRecipes();
 
 			for(Recipe<?> recipe : recipes) {
@@ -104,22 +107,26 @@ public class RecipeCrawlHandler {
 		synchronized(mutex) {
 			if(!recipesToLazyDigest.isEmpty()) {
 				recipeDigestion.clear();
+				backwardsDigestion.clear();
 				
 				for(Recipe<?> recipe : recipesToLazyDigest)
 					digest(recipe);
 				
-				MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.Digest(recipeDigestion));
+				MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.Digest(recipeDigestion, backwardsDigestion));
 			}
 		}
 	}
 
 	private static void digest(Recipe<?> recipe) {
 		ItemStack out = recipe.getResultItem();
+		Item outItem = out.getItem();
 
 		NonNullList<Ingredient> ingredients = recipe.getIngredients();
 		for(Ingredient ingredient : ingredients) {
-			for (ItemStack inStack : ingredient.getItems())
+			for (ItemStack inStack : ingredient.getItems()) {
 				recipeDigestion.put(inStack.getItem(), out);
+				backwardsDigestion.put(outItem, inStack);
+			}
 		}
 	}
 
