@@ -31,7 +31,7 @@ public record QuarkBlockWrapper(Block parent,
 
 	@Override
 	public boolean doesConditionApply() {
-		return false;
+		return true;
 	}
 
 	@Override
