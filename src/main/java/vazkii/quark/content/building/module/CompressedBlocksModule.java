@@ -56,6 +56,7 @@ public class CompressedBlocksModule extends QuarkModule {
 	@Config(flag = "golden_apple_crate") public static boolean enableGoldenAppleCrate = true;
 	@Config(flag = "potato_crate") public static boolean enablePotatoCrate = true;
 	@Config(flag = "carrot_crate") public static boolean enableCarrotCrate = true;
+	@Config(flag = "golden_carrot_crate") public static boolean enableGoldenCarrotCrate = true;
 	@Config(flag = "beetroot_crate") public static boolean enableBeetrootCrate = true;
 
 	@Config(flag = "cocoa_beans_sack") public static boolean enableCocoaBeanSack = true;
@@ -92,6 +93,7 @@ public class CompressedBlocksModule extends QuarkModule {
 		crate("apple", MaterialColor.COLOR_RED, true, () -> enableAppleCrate);
 		crate("potato", MaterialColor.COLOR_ORANGE, true, () -> enablePotatoCrate);
 		crate("carrot", MaterialColor.TERRACOTTA_ORANGE, true, () -> enableCarrotCrate);
+		crate("golden_carrot", MaterialColor.GOLD, true, () -> enableGoldenCarrotCrate);
 		crate("beetroot", MaterialColor.COLOR_RED, true, () -> enableBeetrootCrate);
 
 		sack("cocoa_beans", MaterialColor.COLOR_BROWN, true, () -> enableCocoaBeanSack);
