@@ -17,7 +17,6 @@ import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.tools.entity.ParrotEgg;
 import vazkii.quark.content.tools.module.ParrotEggsModule;
-import vazkii.quark.content.tools.module.PickarangModule;
 
 public class ParrotEggItem extends QuarkItem {
 	private final int variant;
