@@ -112,6 +112,7 @@ public class RecipeCrawlHandler {
 				for(Recipe<?> recipe : recipesToLazyDigest)
 					digest(recipe);
 				
+				recipesToLazyDigest.clear();
 				MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.Digest(recipeDigestion, backwardsDigestion));
 			}
 		}
