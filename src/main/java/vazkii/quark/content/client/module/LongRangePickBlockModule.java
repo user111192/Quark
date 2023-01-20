@@ -38,7 +38,6 @@ public class LongRangePickBlockModule extends QuarkModule {
 			Level level = mc.level;
 			
 			if(savedHitResult != null) {
-				System.out.println(savedHitResult);
 				if(savedHitResult instanceof BlockHitResult bhr && !level.getBlockState(bhr.getBlockPos()).isAir())
 					return savedHitResult;
 							
