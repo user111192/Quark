@@ -45,12 +45,10 @@ public class RecipeCrawlHandler {
 	private static Multimap<Item, ItemStack> backwardsDigestion = HashMultimap.create();
 
 	private static Object mutex = new Object();
+	private static boolean needsCrawl = false;
 	
 	@SubscribeEvent
 	public static void addListener(AddReloadListenerEvent event) {
-		ReloadableServerResources resources = event.getServerResources();
-		RecipeManager recipeManager = resources.getRecipeManager();
-
 		event.addListener((barrier, manager, prepFiller, applyFiller, prepExec, applyExec) -> {
 			return 
 				CompletableFuture.runAsync(() -> {
@@ -60,7 +58,7 @@ public class RecipeCrawlHandler {
 				.thenCompose(barrier::wait)
 
 				.thenRunAsync(() -> {
-					load(recipeManager);
+					needsCrawl = true;
 				}, applyExec);
 		});
 	}
@@ -80,7 +78,7 @@ public class RecipeCrawlHandler {
 			Collection<Recipe<?>> recipes = manager.getRecipes();
 
 			for(Recipe<?> recipe : recipes) {
-				if(recipe == null || recipe.getResultItem() == null || recipe.getIngredients() == null)
+				if(recipe == null)
 					continue;
 
 				RecipeCrawlEvent.Visit<?> event;
@@ -105,6 +103,12 @@ public class RecipeCrawlHandler {
 	@SubscribeEvent
 	public static void onTick(ServerTickEvent tick) {
 		synchronized(mutex) {
+			if(needsCrawl) {
+				RecipeManager manager = tick.getServer().getRecipeManager();
+				load(manager);
+				needsCrawl = false;
+			}
+			
 			if(!recipesToLazyDigest.isEmpty()) {
 				recipeDigestion.clear();
 				backwardsDigestion.clear();
