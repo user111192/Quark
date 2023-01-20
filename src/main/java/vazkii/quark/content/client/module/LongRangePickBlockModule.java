@@ -2,9 +2,11 @@ package vazkii.quark.content.client.module;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,6 +36,15 @@ public class LongRangePickBlockModule extends QuarkModule {
 			Minecraft mc = Minecraft.getInstance();
 			Player player = mc.player;
 			Level level = mc.level;
+			
+			if(savedHitResult != null) {
+				System.out.println(savedHitResult);
+				if(savedHitResult instanceof BlockHitResult bhr && !level.getBlockState(bhr.getBlockPos()).isAir())
+					return savedHitResult;
+							
+				if(savedHitResult instanceof EntityHitResult ehr)
+					return savedHitResult;
+			}
 			
 			HitResult result = RayTraceHandler.rayTrace(player, level, player, Block.OUTLINE, Fluid.NONE, 200);
 			if(result != null && result.getType() == Type.BLOCK)
