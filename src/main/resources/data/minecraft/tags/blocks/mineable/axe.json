@@ -64,6 +64,7 @@
         "quark:crate",
         "quark:stick_block",
         "quark:golden_apple_crate",
+        "quark:golden_carrot_crate",
         "quark:apple_crate",
         "quark:potato_crate",
         "quark:carrot_crate",
