@@ -89,11 +89,11 @@ public class CompressedBlocksModule extends QuarkModule {
 		pillar("chorus_fruit", MaterialColor.COLOR_PURPLE, false, () -> enableChorusFruitBlock, 10);
 		stick_block = pillar("stick", MaterialColor.WOOD, false, () -> enableStickBlock, 300);
 
-		crate("golden_apple", MaterialColor.GOLD, true, () -> enableGoldenAppleCrate);
+		crate("golden_apple", MaterialColor.GOLD, false, () -> enableGoldenAppleCrate);
 		crate("apple", MaterialColor.COLOR_RED, true, () -> enableAppleCrate);
 		crate("potato", MaterialColor.COLOR_ORANGE, true, () -> enablePotatoCrate);
 		crate("carrot", MaterialColor.TERRACOTTA_ORANGE, true, () -> enableCarrotCrate);
-		crate("golden_carrot", MaterialColor.GOLD, true, () -> enableGoldenCarrotCrate);
+		crate("golden_carrot", MaterialColor.GOLD, false, () -> enableGoldenCarrotCrate);
 		crate("beetroot", MaterialColor.COLOR_RED, true, () -> enableBeetrootCrate);
 
 		sack("cocoa_beans", MaterialColor.COLOR_BROWN, true, () -> enableCocoaBeanSack);
