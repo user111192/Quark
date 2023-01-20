@@ -10,6 +10,5 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 public interface IRuneColorProvider {
 
-	@OnlyIn(Dist.CLIENT)
 	int getRuneColor(ItemStack stack);
 }

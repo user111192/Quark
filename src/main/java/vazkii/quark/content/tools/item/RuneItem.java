@@ -39,7 +39,6 @@ public class RuneItem extends QuarkItem implements IRuneColorProvider {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public int getRuneColor(ItemStack stack) {
 		return color;
 	}

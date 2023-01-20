@@ -347,7 +347,6 @@ public class AncientTomesModule extends QuarkModule {
 		if (event.getObject().getItem() == Items.ENCHANTED_BOOK) {
 			IRuneColorProvider provider = new IRuneColorProvider() {
 				@Override
-				@OnlyIn(Dist.CLIENT)
 				public int getRuneColor(ItemStack stack) {
 					if (overleveledBooksGlowRainbow && isOverlevel(stack))
 						return 16;
