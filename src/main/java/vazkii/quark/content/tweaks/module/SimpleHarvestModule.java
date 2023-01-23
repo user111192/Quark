@@ -24,6 +24,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -90,7 +92,13 @@ public class SimpleHarvestModule extends QuarkModule {
 	public static final Map<BlockState, BlockState> crops = Maps.newHashMap();
 	public static final Set<Block> rightClickCrops = Sets.newHashSet();
 
-
+	public static TagKey<Block> simpleHarvestBlacklistedTag;
+	
+	@Override
+	public void setup() {
+		simpleHarvestBlacklistedTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "simple_harvest_blacklisted"));
+	}
+	
 	@Override
 	public void configChanged() {
 		crops.clear();
@@ -181,7 +189,7 @@ public class SimpleHarvestModule extends QuarkModule {
 		inWorld.spawnAfterBreak(serverLevel, pos, copy, true); // true = is player
 
 		// ServerLevel sets this to `false` in the constructor, do we really need this check?
-		if (!world.isClientSide) {
+		if (!world.isClientSide && !inWorld.is(simpleHarvestBlacklistedTag)) {
 			BlockState newBlock = crops.get(inWorld);
 			world.levelEvent(2001, pos, Block.getId(newBlock));
 			world.setBlockAndUpdate(pos, newBlock);
@@ -207,14 +215,16 @@ public class SimpleHarvestModule extends QuarkModule {
 			return false;
 
 		BlockState worldBlock = player.level.getBlockState(pos);
-		if (crops.containsKey(worldBlock)) {
-			harvestAndReplant(player.level, pos, worldBlock, player);
-			return true;
-		} else if (doRightClick && rightClickCrops.contains(worldBlock.getBlock())) {
-			if (!player.level.isClientSide)
+		if(!worldBlock.is(simpleHarvestBlacklistedTag)) {
+			if (crops.containsKey(worldBlock)) {
+				harvestAndReplant(player.level, pos, worldBlock, player);
 				return true;
-			return Quark.proxy.clientUseItem(player, player.level, hand,
-					new BlockHitResult(Vec3.atCenterOf(pos), Direction.UP, pos, true)).consumesAction();
+			} else if (doRightClick && rightClickCrops.contains(worldBlock.getBlock())) {
+				if (!player.level.isClientSide)
+					return true;
+				return Quark.proxy.clientUseItem(player, player.level, hand,
+						new BlockHitResult(Vec3.atCenterOf(pos), Direction.UP, pos, true)).consumesAction();
+			}
 		}
 
 		return false;
