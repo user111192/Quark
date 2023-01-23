@@ -93,6 +93,21 @@
 	"quark.category.oddities": "Oddities",
 	"quark.category.experimental": "Experimental",
 
+	"_quark.config.tl_note1": "Additional translation keys for config elements can be added here",
+	"_quark.config.tl_note2": "The format is quark.config.[(category).]+.(name).<name|desc>",
+	"_quark.config.tl_note3": "where (name) is lower case, with spaces replaced with underscores, and all non alphanumerical characters stripped",
+	"_quark.config.tl_note4": "Any non localized entries will revert to the default english values in the config",
+	"_quark.config.tl_note5": "This localization is only for the ingame viewer, and will not affect the config file. Additional .descs can be added at will",
+	"_quark.config.tl_note6": "Descriptions can be removed by translating them to an empty key, if desired. Use \n to split lines",
+	"_quark.config.tl_note7": "See below for examples (with the key prefixed by _) so it doesnt load ingame:",
+
+	"_quark.config.automation.feeding_trough.name": "Test 100",
+	"_quark.config.automation.feeding_trough.desc": "Yeah I'm testing\nWith multiple lines too!",
+	"_quark.config.automation.feeding_trough.max_animals.name": "Testeroni",
+	"_quark.config.automation.feeding_trough.max_animals.desc": "Testerino with one line",
+	"_quark.config.automation.feeding_trough.love_chance.name": "This do be a test doe",
+	"_quark.config.automation.feeding_trough.love_chance.desc": "",
+
 	"quark.camera.filter": "Filter: ",
 	"quark.camera.filter.none": "None",
 	"quark.camera.filter.grayscale": "Grayscale",
