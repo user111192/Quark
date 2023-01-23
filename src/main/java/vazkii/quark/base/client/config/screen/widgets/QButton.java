@@ -23,6 +23,7 @@ import vazkii.arl.util.ClientTicker;
 import vazkii.quark.base.client.config.screen.QuarkConfigHomeScreen;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.ContributorRewardHandler;
+import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.MiscUtil;
 
 public class QButton extends Button {
@@ -145,7 +146,7 @@ public class QButton extends Button {
 			blit(mstack, rx, ry, u, v, w, h);
 		}
 		
-		if(showBubble) {
+		if(showBubble && GeneralConfig.enableOnboarding) {
 			Font font = Minecraft.getInstance().font;
 			int cy = y - 2;
 			if(ClientTicker.total % 20 > 10)

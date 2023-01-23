@@ -92,6 +92,9 @@ public class GeneralConfig {
 	@Config(description = "Set to false to stop quark from adding its own advancements")
 	public static boolean enableQuarkAdvancements = true;
 	
+	@Config(description = "Set to false to disable the popup message telling you that you can config quark in the q menu")
+	public static boolean enableOnboarding = true;
+	
 	private GeneralConfig() {
 		// NO-OP
 	}
