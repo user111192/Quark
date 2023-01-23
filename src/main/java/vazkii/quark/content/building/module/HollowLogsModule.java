@@ -48,32 +48,40 @@ public class HollowLogsModule extends QuarkModule {
 			
 			if(isTrying && !wasTrying) {
 				Direction dir = player.getDirection();
-				
 				BlockPos pos = player.blockPosition().relative(dir);
-				BlockState state = player.level.getBlockState(pos);
-				Block block = state.getBlock();
 				
-				if(block instanceof HollowLogBlock) {
-					Axis axis = state.getValue(HollowLogBlock.AXIS);
-					if(axis != Axis.Y && axis == dir.getAxis()) {
-						player.setPose(Pose.SWIMMING);
-						player.setSwimming(true);
-						
-						double x = pos.getX() + 0.5 - ((double) dir.getStepX() * 0.4);
-						double y = pos.getY() + 0.13;
-						double z = pos.getZ() + 0.5 - ((double) dir.getStepZ() * 0.4);
-						
-						player.setPos(x, y, z);
-						
-						if(player instanceof ServerPlayer sp)
-							crawlTrigger.trigger(sp);
-					}
-				}
+				if(!tryClimb(player, dir, pos))
+					tryClimb(player, dir, pos.above());
 			}
 			
 			if(isTrying != wasTrying)
 				player.getPersistentData().putBoolean(TAG_TRYING_TO_CRAWL, isTrying);
 		}
 	}
-
+	
+	private boolean tryClimb(Player player, Direction dir, BlockPos pos) {
+		BlockState state = player.level.getBlockState(pos);
+		Block block = state.getBlock();
+		
+		if(block instanceof HollowLogBlock) {
+			Axis axis = state.getValue(HollowLogBlock.AXIS);
+			if(axis != Axis.Y && axis == dir.getAxis()) {
+				player.setPose(Pose.SWIMMING);
+				player.setSwimming(true);
+				
+				double x = pos.getX() + 0.5 - ((double) dir.getStepX() * 0.4);
+				double y = pos.getY() + 0.13;
+				double z = pos.getZ() + 0.5 - ((double) dir.getStepZ() * 0.4);
+				
+				player.setPos(x, y, z);
+				
+				if(player instanceof ServerPlayer sp)
+					crawlTrigger.trigger(sp);
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

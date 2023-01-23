@@ -4,11 +4,14 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,6 +20,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -69,6 +73,19 @@ public class HollowLogBlock extends QuarkPillarBlock implements SimpleWaterlogge
 		}
 		
 		return super.getShape(state, world, pos, ctx);
+	}
+	
+	@Override
+	public boolean isLadder(BlockState state, LevelReader level, BlockPos pos, LivingEntity entity) {
+		if(state.getValue(AXIS) != Axis.Y)
+			return false;
+		
+		Vec3 eyePos = entity.getEyePosition();
+		double pad = 2.0 / 16.0;
+		if(eyePos.x > (pos.getX() + pad) && eyePos.z > (pos.getZ() + pad) && eyePos.x < (pos.getX() + 1 - pad) && eyePos.z < (pos.getZ() + 1 - pad))
+			return true;
+		
+		return super.isLadder(state, level, pos, entity);
 	}
 	
 	@Override
