@@ -23,7 +23,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
@@ -168,8 +170,13 @@ public class EnhancedLaddersModule extends QuarkModule {
 						player.level.getBlockState(downPos).isLadder(player.level, downPos, player)) {
 
 					Vec3 move = new Vec3(0, fallSpeed, 0);
-					player.setBoundingBox(player.getBoundingBox().move(move));
-					player.move(MoverType.SELF, move);
+					AABB target = player.getBoundingBox().move(move);
+					
+					Iterable<VoxelShape> collisions = player.level.getBlockCollisions(player, target);
+					if(!collisions.iterator().hasNext()) {
+						player.setBoundingBox(target);
+						player.move(MoverType.SELF, move);
+					}
 				}
 			}
 		}
