@@ -55,7 +55,7 @@ public class VerticalSlabsModule extends QuarkModule {
 			VerticalSlabBlock waxedSlab = new VerticalSlabBlock(p.getRight(), this);
 
 			copperVerticalSlabs.add(cleanSlab);
-			ToolInteractionHandler.registerWaxedBlock(cleanSlab, waxedSlab);
+			ToolInteractionHandler.registerWaxedBlock(this, cleanSlab, waxedSlab);
 		});
 
 		WeatheringCopperVerticalSlabBlock first = copperVerticalSlabs.get(0);

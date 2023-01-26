@@ -1,7 +1,13 @@
 package vazkii.quark.base.handler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.common.collect.HashBiMap;
+
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -16,9 +22,9 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import vazkii.quark.base.Quark;
-
-import java.util.HashMap;
-import java.util.Map;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.mod.WaxModifier;
+import vazkii.quark.base.module.QuarkModule;
 
 @EventBusSubscriber(modid = Quark.MOD_ID)
 public final class ToolInteractionHandler {
@@ -26,9 +32,10 @@ public final class ToolInteractionHandler {
 	private static final Map<Block, Block> cleanToWaxMap = HashBiMap.create();
 	private static final Map<ToolAction, Map<Block, Block>> interactionMaps = new HashMap<>();
 
-	public static void registerWaxedBlock(Block clean, Block waxed) {
+	public static void registerWaxedBlock(QuarkModule module, Block clean, Block waxed) {
 		cleanToWaxMap.put(clean, waxed);
 		registerInteraction(ToolActions.AXE_WAX_OFF, waxed, clean);
+		QuarkAdvancementHandler.addModifier(new WaxModifier(module, clean, waxed));
 	}
 
 	public static void registerInteraction(ToolAction action, Block in, Block out) {
@@ -68,6 +75,9 @@ public final class ToolInteractionHandler {
 			if(cleanToWaxMap.containsKey(block)) {
 				Block alternate = cleanToWaxMap.get(block);
 
+				if(event.getEntity() instanceof ServerPlayer sp)
+					CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(sp, pos, stack);
+				
 				if(!world.isClientSide)
 					world.setBlockAndUpdate(pos, copyState(state, alternate));
 				world.levelEvent(event.getEntity(), 3003, pos, 0);

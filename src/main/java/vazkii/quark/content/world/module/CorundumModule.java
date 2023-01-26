@@ -89,7 +89,7 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 		crystals.add(crystal);
 
 		CorundumBlock waxed = new CorundumBlock("waxed_" + name + "_corundum", color, this, material, true);
-		ToolInteractionHandler.registerWaxedBlock(crystal, waxed);
+		ToolInteractionHandler.registerWaxedBlock(this, crystal, waxed);
 
 		new QuarkInheritedPaneBlock(crystal);
 		CorundumClusterBlock cluster = new CorundumClusterBlock(crystal);
