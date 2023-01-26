@@ -1,11 +1,14 @@
 package vazkii.quark.content.experimental.module;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import com.mojang.serialization.Dynamic;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
@@ -25,10 +28,12 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
+import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
@@ -57,6 +62,12 @@ public class GameNerfsModule extends QuarkModule {
 	@Config(description = "Makes Sheep not drop Wool when killed") 
 	public static boolean disableWoolDrops = true;
 	
+	@Config(description = "Disables mob griefing for only specific entities")
+	public static boolean enableSelectiveMobGriefing = true;
+	
+	@Config 
+	public List<String> nonGriefingEntities = Arrays.asList("minecraft:creeper", "minecraft:enderman");
+
 	private static boolean staticEnabled;
 	
 	@Override
@@ -68,6 +79,16 @@ public class GameNerfsModule extends QuarkModule {
 	// https://gitlab.com/supersaiyansubtlety/ice_boat_nerf/-/blob/master/src/main/java/net/sssubtlety/ice_boat_nerf/mixin/BoatEntityMixin.java
 	public static float getBoatFriction(float glide) {
 		return (staticEnabled && disableIceRoads) ? 0.45F : glide;
+	}
+	
+	@SubscribeEvent
+	public void onMobGriefing(EntityMobGriefingEvent event) {
+		if(!enableSelectiveMobGriefing)
+			return;
+		
+		String name = Registry.ENTITY_TYPE.getKey(event.getEntity().getType()).toString();
+		if(nonGriefingEntities.contains(name))
+			event.setResult(Result.DENY);
 	}
 	
 	// stolen from King Lemming thanks mate
@@ -178,3 +199,4 @@ public class GameNerfsModule extends QuarkModule {
 	}
 	
 }
+
