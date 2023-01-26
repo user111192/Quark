@@ -1,9 +1,16 @@
 package vazkii.quark.base.handler;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -31,11 +38,14 @@ public final class ToolInteractionHandler {
 
 	private static final Map<Block, Block> cleanToWaxMap = HashBiMap.create();
 	private static final Map<ToolAction, Map<Block, Block>> interactionMaps = new HashMap<>();
+	
+	private static final Multimap<QuarkModule, Pair<Block, Block>> waxingByModule = HashMultimap.create();
 
 	public static void registerWaxedBlock(QuarkModule module, Block clean, Block waxed) {
 		cleanToWaxMap.put(clean, waxed);
 		registerInteraction(ToolActions.AXE_WAX_OFF, waxed, clean);
-		QuarkAdvancementHandler.addModifier(new WaxModifier(module, clean, waxed));
+		
+		waxingByModule.put(module, Pair.of(clean, waxed));
 	}
 
 	public static void registerInteraction(ToolAction action, Block in, Block out) {
@@ -45,7 +55,22 @@ public final class ToolInteractionHandler {
 		Map<Block, Block> map = interactionMaps.get(action);
 		map.put(in, out);
 	}
-
+	
+	public static void addModifiers() {
+		for(QuarkModule module : waxingByModule.keySet()) {
+			Collection<Pair<Block, Block>> pairs = waxingByModule.get(module);
+			Set<Block> unwaxed = new HashSet<>();
+			Set<Block> waxed = new HashSet<>();
+			
+			for(Pair<Block, Block> pair : pairs) {
+				unwaxed.add(pair.getLeft());
+				waxed.add(pair.getRight());
+			}
+			
+			QuarkAdvancementHandler.addModifier(new WaxModifier(module, unwaxed, waxed));
+		}
+	}
+	
 	@SubscribeEvent
 	public static void toolActionEvent(BlockEvent.BlockToolModificationEvent event) {
 		ToolAction action = event.getToolAction();

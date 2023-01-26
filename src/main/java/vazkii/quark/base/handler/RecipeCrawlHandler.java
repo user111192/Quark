@@ -16,7 +16,6 @@ import com.google.common.collect.Sets;
 import com.google.common.collect.Streams;
 
 import net.minecraft.core.NonNullList;
-import net.minecraft.server.ReloadableServerResources;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;

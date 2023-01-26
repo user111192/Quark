@@ -18,9 +18,10 @@ public class WaxModifier  extends AdvancementModifier {
 	private static final ResourceLocation TARGET_ON = new ResourceLocation("husbandry/wax_on");
 	private static final ResourceLocation TARGET_OFF = new ResourceLocation("husbandry/wax_off");
 	
-	final Block unwaxed, waxed;
+	private final Set<Block> unwaxed;
+	private final Set<Block> waxed;
 	
-	public WaxModifier(QuarkModule module, Block unwaxed, Block waxed) {
+	public WaxModifier(QuarkModule module, Set<Block> unwaxed, Set<Block> waxed) {
 		super(module);
 		
 		this.unwaxed = unwaxed;
@@ -38,21 +39,21 @@ public class WaxModifier  extends AdvancementModifier {
 		Criterion criterion = adv.criteria.get(title);
 		if(criterion != null && criterion.getTrigger() instanceof ItemInteractWithBlockTrigger.TriggerInstance iib) {
 			Set<Block> blockSet = iib.location.block.blocks;
-			Block block = res.equals(TARGET_ON) ? unwaxed : waxed;
+			Set<Block> ourSet = res.equals(TARGET_ON) ? unwaxed : waxed;;
 			
-			if(!addToBlockSet(blockSet, block)) {
+			if(!addToBlockSet(blockSet, ourSet)) {
 				blockSet = new HashSet<>(blockSet);
 				iib.location.block.blocks = blockSet;
-				addToBlockSet(blockSet, block);
+				addToBlockSet(blockSet, ourSet);
 			}
 		}
 		
 		return true;
 	}
 	
-	private static boolean addToBlockSet(Set<Block> blockSet, Block block) {
+	private static boolean addToBlockSet(Set<Block> blockSet, Set<Block> ourSet) {
 		try {
-			blockSet.add(block);
+			blockSet.addAll(ourSet);
 		} catch(UnsupportedOperationException e) {
 			return false;
 		}

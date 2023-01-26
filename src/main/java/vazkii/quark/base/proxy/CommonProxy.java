@@ -26,6 +26,7 @@ import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.DyeHandler;
 import vazkii.quark.base.handler.FuelHandler;
 import vazkii.quark.base.handler.QuarkSounds;
+import vazkii.quark.base.handler.ToolInteractionHandler;
 import vazkii.quark.base.handler.UndergroundBiomeHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.module.ModuleLoader;
@@ -82,6 +83,7 @@ public class CommonProxy {
 		initContributorRewards();
 
 		WoodSetHandler.setup(event);
+		ToolInteractionHandler.addModifiers();
 	}
 
 	public void loadComplete(FMLLoadCompleteEvent event) {

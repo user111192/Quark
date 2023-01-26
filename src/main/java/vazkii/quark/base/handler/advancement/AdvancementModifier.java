@@ -1,15 +1,14 @@
 package vazkii.quark.base.handler.advancement;
 
-import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import com.google.common.base.Supplier;
 
 import net.minecraft.resources.ResourceLocation;
+import vazkii.quark.api.IAdvancementModifier;
 import vazkii.quark.base.module.QuarkModule;
 
-public abstract class AdvancementModifier {
+public abstract class AdvancementModifier implements IAdvancementModifier {
 
 	public final QuarkModule module;
 	private Supplier<Boolean> cond;
@@ -17,7 +16,8 @@ public abstract class AdvancementModifier {
 	public AdvancementModifier(@Nullable QuarkModule module) {
 		this.module = module;
 	}
-	
+
+	@Override
 	public AdvancementModifier setCondition(Supplier<Boolean> cond) {
 		this.cond = cond;
 		return this;
@@ -27,7 +27,6 @@ public abstract class AdvancementModifier {
 		return (module == null || module.enabled) && (cond == null || cond.get());
 	}
 	
-	public abstract Set<ResourceLocation> getTargets();
 	public abstract boolean apply(ResourceLocation res, MutableAdvancement adv);
 	
 }
