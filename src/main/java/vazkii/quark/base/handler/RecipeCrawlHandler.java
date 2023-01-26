@@ -78,7 +78,7 @@ public class RecipeCrawlHandler {
 			Collection<Recipe<?>> recipes = manager.getRecipes();
 
 			for(Recipe<?> recipe : recipes) {
-				if(recipe == null)
+				if(recipe == null || recipe.getIngredients() == null || recipe.getResultItem() == null)
 					continue;
 
 				RecipeCrawlEvent.Visit<?> event;
