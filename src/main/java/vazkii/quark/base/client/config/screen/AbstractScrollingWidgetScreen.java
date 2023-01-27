@@ -33,11 +33,6 @@ public abstract class AbstractScrollingWidgetScreen extends AbstractQScreen {
 	protected void init() {
 		super.init();
 
-		elementList = createWidgetList();
-		addWidget(elementList);
-		refresh();
-		needsScrollUpdate = true;
-
 		int pad = 3;
 		int bWidth = 121;
 		int left = (width - (bWidth + pad) * 3) / 2;
@@ -46,6 +41,11 @@ public abstract class AbstractScrollingWidgetScreen extends AbstractQScreen {
 		addRenderableWidget(new Button(left, vStart, bWidth, 20, Component.translatable("quark.gui.config.default"), this::onClickDefault));
 		addRenderableWidget(resetButton = new Button(left + bWidth + pad, vStart, bWidth, 20, Component.translatable("quark.gui.config.discard"), this::onClickDiscard));
 		addRenderableWidget(new Button(left + (bWidth + pad) * 2, vStart, bWidth, 20, Component.translatable("gui.done"), this::onClickDone));
+
+		elementList = createWidgetList();
+		addWidget(elementList);
+		refresh();
+		needsScrollUpdate = true;
 	}
 
 	@Override
