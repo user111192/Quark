@@ -3,11 +3,9 @@ package vazkii.quark.api.event;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
-import vazkii.quark.content.tweaks.module.SimpleHarvestModule;
 
 /**
  * Used primarily for double crops which need extra checks before they are considered ready.
@@ -22,8 +20,8 @@ public class SimpleHarvestEvent extends Event {
     public final InteractionHand hand;
     public final Player player;
     public final Source type;
-    public BlockPos newTarget;
-    public SimpleHarvestModule.ActionType action;
+    private BlockPos newTarget;
+    private ActionType action;
 
     public SimpleHarvestEvent(BlockState blockState, BlockPos pos, InteractionHand hand,
                               Player player, boolean isHoe, ActionType actionType) {
@@ -33,6 +31,7 @@ public class SimpleHarvestEvent extends Event {
         this.player = player;
         this.newTarget = pos;
         this.type = isHoe ? Source.HOE : Source.RIGHT_CLICK;
+        this.action = actionType;
     }
 
     /**
@@ -41,6 +40,7 @@ public class SimpleHarvestEvent extends Event {
      * @param pos new target position
      */
     public void setTargetPos(BlockPos pos) {
+        this.newTarget = pos;
     }
 
     public Source getInteractionSource() {

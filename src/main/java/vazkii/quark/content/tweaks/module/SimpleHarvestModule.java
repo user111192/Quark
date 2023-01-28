@@ -51,6 +51,7 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.HarvestMessage;
+import vazkii.quark.content.mobs.entity.Toretoise;
 
 import java.util.Collection;
 import java.util.List;
