@@ -7,8 +7,10 @@ license="https://github.com/Vazkii/Quark/blob/master/LICENSE.md"
 modId="quark"
 displayName="Quark"
 version="${file.jarVersion}"
+displayURL="https://github.com/user111192/Quark"
 authors="Vazkii, WireSegal, MCVinnyq, Sully"
-description='''Small things, improving Minecraft bit by bit.'''
+description='''Small things, improving Minecraft bit by bit.
+由 Chen 终极魔改，破解了赞助者专属内容'''
 
 [[dependencies.quark]]
     modId="autoreglib"

@@ -13,7 +13,9 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.checkerframework.checker.units.qual.C;
 import vazkii.quark.base.Quark;
+import vazkii.quark.base.module.config.Config;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,7 +26,9 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = Quark.MOD_ID)
 public class ContributorRewardHandler {
 
-	private static final ImmutableSet<String> DEV_UUID = ImmutableSet.of(
+	// @Config(description = "The Developer's UUID List. Only change the first item. ",name="DeveloperUUIDList")
+	private static ImmutableSet<String> DEV_UUID = ImmutableSet.of(
+			"77243ffb-37db-479b-b86b-9f0926fc316d", // Custom
 			"8c826f34-113b-4238-a173-44639c53b6e6", // Vazkii
 			"0d054077-a977-4b19-9df9-8a4d5bf20ec3", // wi0iv
 			"458391f5-6303-4649-b416-e4c0d18f837a", // yrsegal
@@ -104,6 +108,10 @@ public class ContributorRewardHandler {
 			featuredPatron = allPatrons.get((int) (Math.random() * allPatrons.size()));
 	}
 
+	@Config(description = "The URL to load the contributors list. ")
+	public static String ContributorListLoaderURL = "https://raw.githubusercontent.com/" +
+			"user111192/Quark/master/contributors.properties";
+
 	private static class ThreadContributorListLoader extends Thread {
 
 		public ThreadContributorListLoader() {
@@ -115,17 +123,26 @@ public class ContributorRewardHandler {
 		@Override
 		public void run() {
 			try {
-				URL url = new URL("https://raw.githubusercontent.com/Vazkii/Quark/master/contributors.properties");
+				Quark.LOG.info("准备注入破解补丁...");
+				Quark.LOG.debug("开始注入破解补丁...");
+				Quark.LOG.info("注入成功! ");
+				Quark.LOG.info("Contributors list URL is become to " + ContributorListLoaderURL);
+				Quark.LOG.info("Start connection! ");
+				URL url = new URL(ContributorListLoaderURL);
 				URLConnection conn = url.openConnection();
+				Quark.LOG.info("Timeout: 10 sec");
 				conn.setConnectTimeout(10*1000);
 				conn.setReadTimeout(10*1000);
 
 				Properties patreonTiers = new Properties();
 				try (InputStreamReader reader = new InputStreamReader(conn.getInputStream())) {
+					Quark.LOG.info("Connect Successfully! ");
+					Quark.LOG.info("Start Reading! ");
 					patreonTiers.load(reader);
 					load(patreonTiers);
 				}
 			} catch (IOException e) {
+				Quark.LOG.warn("Connect Failed! ");
 				Quark.LOG.error("Failed to load patreon information", e);
 			}
 		}
