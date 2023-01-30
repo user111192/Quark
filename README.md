@@ -9,6 +9,14 @@ This mod makes use of the [Java Universal Tween Engine](https://github.com/Aurel
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/user111192/Quark) ![GitHub Release Date](https://img.shields.io/github/release-date/user111192/Quark) ![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/user111192/Quark)
 
+![GitHub Repo stars](https://img.shields.io/github/stars/user111192/Quark?style=social)
+
+Build: ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/user111192/Quark/gradle.yml)
+
+Size: ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/user111192/Quark) ![GitHub repo file count](https://img.shields.io/github/directory-file-count/user111192/Quark)
+
+![GitHub Hacktoberfest combined status](https://img.shields.io/github/hacktoberfest/2023/user111192/Quark) ![GitHub issues](https://img.shields.io/github/issues/user111192/Quark)
+
 ## Contributors
 
 
