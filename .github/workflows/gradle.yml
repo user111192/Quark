@@ -47,27 +47,27 @@ jobs:
         path: build/libs
         # The desired behavior if no files are found using the provided path.
         if-no-files-found: warn
-  publish_pre_release: 
-    runs-on: ubuntu-latest
-    steps: 
-    - name: Pre-Build
-      run: exit 0
-    - name: Set GitHub Token
-      run: export GITHUB_TOKEN=r4tA8ml2YNsQnZSl0ebec1VhDfhfcN01nHR6
-    - name: Auto Release
-      # You may pin to the exact commit or the version.
-      # uses: CupOfTea696/gh-action-auto-release@a8f57f49a805d334ac7abe31b689e7ea24e1ee40
-      uses: CupOfTea696/gh-action-auto-release@v1.0.2
-      with:
-        # Title for the release
-        title: Build Version $semver
-        # Name for the git tag
-        tag: $version
-        # Whether or not this release should be published as a draft
-        draft: false
-        # The path to the CHANGELOG
-        changelog: CHANGELOG.md
-        # String a CHANGELOG entry must contain to be used as the entry for this release
-        changelog-entry: $version
-    - name: Delete Temp Files
-      run: exit 0
+#   publish_pre_release: 
+#     runs-on: ubuntu-latest
+#     steps: 
+#     - name: Pre-Build
+#       run: exit 0
+#     - name: Set GitHub Token
+#       run: export GITHUB_TOKEN=r4tA8ml2YNsQnZSl0ebec1VhDfhfcN01nHR6
+#     - name: Auto Release
+#       # You may pin to the exact commit or the version.
+#       # uses: CupOfTea696/gh-action-auto-release@a8f57f49a805d334ac7abe31b689e7ea24e1ee40
+#       uses: CupOfTea696/gh-action-auto-release@v1.0.2
+#       with:
+#         # Title for the release
+#         title: Build Version $semver
+#         # Name for the git tag
+#         tag: $version
+#         # Whether or not this release should be published as a draft
+#         draft: false
+#         # The path to the CHANGELOG
+#         changelog: CHANGELOG.md
+#         # String a CHANGELOG entry must contain to be used as the entry for this release
+#         changelog-entry: $version
+#     - name: Delete Temp Files
+#       run: exit 0
