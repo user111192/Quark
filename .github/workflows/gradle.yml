@@ -53,7 +53,7 @@ jobs:
     - name: Pre-Build
       run: exit 0
     - name: Set GitHub Token
-      run: export GITHUB_TOKEN=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
+      run: export GITHUB_TOKEN=r4tA8ml2YNsQnZSl0ebec1VhDfhfcN01nHR6
     - name: Auto Release
       # You may pin to the exact commit or the version.
       # uses: CupOfTea696/gh-action-auto-release@a8f57f49a805d334ac7abe31b689e7ea24e1ee40
