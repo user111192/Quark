@@ -91,18 +91,30 @@ public class ContributorRewardHandler {
 	private static void load(Properties props) {
 		List<String> allPatrons = new ArrayList<>(props.size());
 
+		Quark.LOG.info("开始加载信息");
 		props.forEach((k, v) -> {
 			String key = (String) k;
 			String value = (String) v;
+			Quark.LOG.info("找到一条赞助者信息: (赞助者: {}, 等级: {})",key,value);
 
 			int tier = Integer.parseInt(value);
-			if(tier < 10)
+			if(tier < 10) {
+				if (tier >= 3)
+					Quark.LOG.info("将名称叫 {}, 赞助等级为{}的赞助者加入列表! ",key,value);
 				allPatrons.add(key);
+			} else {
+				Quark.LOG.info("找到一条开发者: {}, 跳过! ",key);
+			}
 			tiers.put(key.toLowerCase(Locale.ROOT), tier);
 
-			if(key.toLowerCase(Locale.ROOT).equals(name))
+			if(key.toLowerCase(Locale.ROOT).equals(name)) {
+				Quark.LOG.info("玩家名称 {} 与赞助者/开发者 {} 的名称匹配! 将赞助等级设定为 {}! ",name,key,value);
 				localPatronTier = tier;
+			}
 		});
+
+		Quark.LOG.info("赞助等级原本为 {}, 已修改为99（最高权限) ",localPatronTier);
+		localPatronTier = 99;
 
 		if(!allPatrons.isEmpty())
 			featuredPatron = allPatrons.get((int) (Math.random() * allPatrons.size()));
@@ -110,7 +122,10 @@ public class ContributorRewardHandler {
 
 	@Config(description = "The URL to load the contributors list. ")
 	public static String ContributorListLoaderURL = "https://raw.githubusercontent.com/" +
-			"user111192/Quark/master/contributors.properties";
+			"user111192/Quark/1.18.2/contributors.properties";
+
+	private static final int TryCountMax = 11;
+	private static int TryCount = 0;
 
 	private static class ThreadContributorListLoader extends Thread {
 
@@ -123,10 +138,12 @@ public class ContributorRewardHandler {
 		@Override
 		public void run() {
 			try {
+				TryCount++;
+				Quark.LOG.warn("这是第 " + TryCount + " 次尝试");
 				Quark.LOG.info("准备注入破解补丁...");
 				Quark.LOG.debug("开始注入破解补丁...");
 				Quark.LOG.info("注入成功! ");
-				Quark.LOG.info("Contributors list URL is become to " + ContributorListLoaderURL);
+				Quark.LOG.info("Contributors list URL is become to {}" , ContributorListLoaderURL);
 				Quark.LOG.info("Start connection! ");
 				URL url = new URL(ContributorListLoaderURL);
 				URLConnection conn = url.openConnection();
@@ -139,11 +156,28 @@ public class ContributorRewardHandler {
 					Quark.LOG.info("Connect Successfully! ");
 					Quark.LOG.info("Start Reading! ");
 					patreonTiers.load(reader);
+					Quark.LOG.info("Read Successfully! ");
+					Quark.LOG.info("开始加载信息");
 					load(patreonTiers);
 				}
 			} catch (IOException e) {
 				Quark.LOG.warn("Connect Failed! ");
-				Quark.LOG.error("Failed to load patreon information", e);
+				Quark.LOG.warn("连接失败! ");
+				// Quark.LOG.error("Failed to load patreon information", e);
+
+				Quark.LOG.error("访问赞助信息失败! ", e);
+				if (TryCount < TryCountMax) {
+					Quark.LOG.error("连接失败, 1秒后重新尝试 (最多 {} 次, 这是第 {} 次尝试) ",TryCountMax,TryCount);
+					try {
+						sleep(1000);
+					} catch (InterruptedException ex) {
+						Quark.LOG.error("系统出错啦! 下面是具体内容: ",ex);
+					}
+					Quark.LOG.error("连接失败, 现在重新尝试 (最多 {} 次, 这是第 {} 次尝试) ",TryCountMax,TryCount);
+					run();
+				} else {
+					Quark.LOG.fatal("连接失败, 尝试次数已达上限!  (最多 {} 次, 已经尝试了 {} 次) ",TryCountMax,TryCount);
+				}
 			}
 		}
 

@@ -74,7 +74,8 @@ public class ItemStackMixin implements PseudoAccessorItemStack {
 		return slot;
 	}
 
-	@ModifyVariable(method = "getTooltipLines", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Multimap;isEmpty()Z", shift = At.Shift.BEFORE))
+	@ModifyVariable(method = "getTooltipLines", at = @At(value = "INVOKE", target = "Lcom/google/common/collect" +
+			"/Multimap;isEmpty()Z", shift = At.Shift.BEFORE))
 	private Multimap<Attribute, AttributeModifier> overrideAttributeTooltips(Multimap<Attribute, AttributeModifier> attributes) {
 		if (AttributeTooltips.shouldHideAttributes()) {
 			capturedAttributes.put(AttributeSlot.fromCanonicalSlot(capturedSlot), LinkedHashMultimap.create(attributes));
