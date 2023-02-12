@@ -22,18 +22,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout Repo
+      uses: actions/checkout@v3.3.0
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
-    - name: Validate Gradle wrapper
-      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
     - name: Pre-Build
       run: exit 0
-    - name: Gradle Dependency Submission
-      uses: mikepenz/gradle-dependency-submission@v0.8.3
+#     - name: Validate Gradle wrapper
+#       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
@@ -46,6 +45,39 @@ jobs:
         # Artifact name
         name: Mod File
         # A file, directory or wildcard pattern that describes what to upload
-        path: build/reobfJar
+        path: build/libs
         # The desired behavior if no files are found using the provided path.
-        if-no-files-found: 0
+        if-no-files-found: error
+    - name: Upload a Build Artifact (Resources)
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        # Artifact name
+        name: Resource File
+        # A file, directory or wildcard pattern that describes what to upload
+        path: build/resources
+        # The desired behavior if no files are found using the provided path.
+        if-no-files-found: warn
+#   publish_pre_release: 
+#     runs-on: ubuntu-latest
+#     steps: 
+#     - name: Pre-Build
+#       run: exit 0
+#     - name: Set GitHub Token
+#       run: export GITHUB_TOKEN=r4tA8ml2YNsQnZSl0ebec1VhDfhfcN01nHR6
+#     - name: Auto Release
+#       # You may pin to the exact commit or the version.
+#       # uses: CupOfTea696/gh-action-auto-release@a8f57f49a805d334ac7abe31b689e7ea24e1ee40
+#       uses: CupOfTea696/gh-action-auto-release@v1.0.2
+#       with:
+#         # Title for the release
+#         title: Build Version $semver
+#         # Name for the git tag
+#         tag: $version
+#         # Whether or not this release should be published as a draft
+#         draft: false
+#         # The path to the CHANGELOG
+#         changelog: CHANGELOG.md
+#         # String a CHANGELOG entry must contain to be used as the entry for this release
+#         changelog-entry: $version
+#     - name: Delete Temp Files
+#       run: exit 0
