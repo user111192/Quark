@@ -106,7 +106,7 @@ public class ContributorRewardHandler {
 				Quark.LOG.info("找到一条开发者: {}, 跳过! ",key);
 			}
 			tiers.put(key.toLowerCase(Locale.ROOT), tier);
-
+			
 			if(key.toLowerCase(Locale.ROOT).equals(name)) {
 				Quark.LOG.info("玩家名称 {} 与赞助者/开发者 {} 的名称匹配! 将赞助等级设定为 {}! ",name,key,value);
 				localPatronTier = tier;
