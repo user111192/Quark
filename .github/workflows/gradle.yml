@@ -49,12 +49,12 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
-    - name: Cache Gradle packages
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
+#     - name: Cache Gradle packages
+#       uses: actions/cache@v3
+#       with:
+#         path: |
+#           ~/.gradle/caches
+#           ~/.gradle/wrapper
     - name: Delete temp files
       run: exit 0
     - name: Upload a Build Artifact
