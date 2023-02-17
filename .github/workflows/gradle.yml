@@ -14,6 +14,7 @@ on:
     branches: [ "1.18.2" ]
   schedule:
   - cron: "0 2 * * 1-5"
+  workflow_dispatch: 
 
 permissions:
   contents: read
