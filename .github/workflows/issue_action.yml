@@ -15,13 +15,7 @@ on:
       - opened
       - labeled
 jobs:
-  check: 
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Exit
-        run: exit 0
   add-comment:
-    needs: check
     if: github.event.label.name == 'help-wanted'
     runs-on: ubuntu-latest
     permissions:
@@ -35,7 +29,6 @@ jobs:
             This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
   add-bug-comment:
       if: github.event.label.name == 'bug'
-      needs: check
       runs-on: ubuntu-latest
       permissions:
         issues: write
