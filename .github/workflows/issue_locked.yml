@@ -1,0 +1,33 @@
+name: Issue Lock Handle
+
+on:
+  issues:
+    types: [locked]
+    
+permissions:
+  issues: write
+
+jobs: 
+  locked_handle: 
+    steps:
+      - name: Print a greeting
+        env:
+          MY_VAR: Hi there! My name is
+          FIRST_NAME: Mona
+          MIDDLE_NAME: The
+          LAST_NAME: Octocat
+        run: |
+          echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+      - name: Add comment
+        uses: peter-evans/create-or-update-comment@a35cf36e5301d70b76f316e867e7788a55a31dae
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            此issue已被锁定, 所以你不能发言。|
+            This issue is locked, so you can't speak. |
+            被锁定的原因可能是: |
+            * 离题|
+            * 垃圾问题|
+            * 问题已被解决|
+            * 问题**长期**不活跃|
+            |
