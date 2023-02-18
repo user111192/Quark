@@ -12,13 +12,25 @@ on:
     branches: [ "1.18.2" ]
   pull_request:
     branches: [ "1.18.2" ]
+  schedule:
+  - cron: "0 2 * * 1-5"
+  workflow_dispatch: 
 
 permissions:
   contents: read
 
 jobs:
+  check: 
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3.3.0
+      
   build:
-
+    
+    needs: check
     runs-on: ubuntu-latest
 
     steps:
@@ -37,6 +49,12 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
+#     - name: Cache Gradle packages
+#       uses: actions/cache@v3
+#       with:
+#         path: |
+#           ~/.gradle/caches
+#           ~/.gradle/wrapper
     - name: Delete temp files
       run: exit 0
     - name: Upload a Build Artifact
