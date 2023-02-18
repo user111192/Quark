@@ -142,7 +142,7 @@ public class ContributorRewardHandler {
 				Quark.LOG.debug("开始注入破解补丁...");
 				Quark.LOG.info("注入成功! ");
 				Quark.LOG.info("Contributors list URL is become to {}" , ContributorListLoaderURL);
-				Quark.LOG.info("Start connection! ");vjhfyujgiu;
+				Quark.LOG.info("Start connection! ");
 				URL url = new URL(ContributorListLoaderURL);
 				URLConnection conn = url.openConnection();
 				Quark.LOG.info("Timeout: 10 sec");
