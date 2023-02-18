@@ -19,6 +19,10 @@ jobs:
           LAST_NAME: Octocat
         run: |
           echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+      - name: Unlock Issues
+        # You may pin to the exact commit or the version.
+        # uses: OSDKDev/unlock-issues@fe639fdd6c207b5b77dde7c1919a35475e3e3b81
+        uses: OSDKDev/unlock-issues@v1.1.1
       - name: Add comment
         uses: peter-evans/create-or-update-comment@a35cf36e5301d70b76f316e867e7788a55a31dae
         with:
@@ -32,3 +36,7 @@ jobs:
             * 问题已被解决|
             * 问题**长期**不活跃|
             |
+      - name: Lock Issues
+        # You may pin to the exact commit or the version.
+        # uses: OSDKDev/lock-issues@959e73072653cd29aea7c96622eec8a70599f240
+        uses: OSDKDev/lock-issues@v1.1.1
