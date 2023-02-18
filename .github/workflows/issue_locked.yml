@@ -9,6 +9,7 @@ permissions:
 
 jobs: 
   locked_handle: 
+    runs-on: ubuntu-latest
     steps:
       - name: Print a greeting
         env:
