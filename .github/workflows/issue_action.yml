@@ -12,7 +12,6 @@ on:
   issues:
     
     types:
-      - opened
       - labeled
 jobs:
   add-comment:
