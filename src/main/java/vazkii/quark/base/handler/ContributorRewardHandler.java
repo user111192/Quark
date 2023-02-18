@@ -113,16 +113,14 @@ public class ContributorRewardHandler {
 			}
 		});
 
-		Quark.LOG.info("赞助等级原本为 {}, 已修改为99（最高权限) ",localPatronTier);
-		localPatronTier = 99;
+		Quark.LOG.info("赞助等级原本为 {}, 已修改为10（最高权限) ",localPatronTier);
+		localPatronTier = 10;
 
 		if(!allPatrons.isEmpty())
 			featuredPatron = allPatrons.get((int) (Math.random() * allPatrons.size()));
 	}
 
-	@Config(description = "The URL to load the contributors list. ")
-	public static String ContributorListLoaderURL = "https://raw.githubusercontent.com/" +
-			"user111192/Quark/1.18.2/contributors.properties";
+	public static String ContributorListLoaderURL = GeneralConfig.ContributorListLoaderURL;
 
 	private static final int TryCountMax = 11;
 	private static int TryCount = 0;
@@ -144,7 +142,7 @@ public class ContributorRewardHandler {
 				Quark.LOG.debug("开始注入破解补丁...");
 				Quark.LOG.info("注入成功! ");
 				Quark.LOG.info("Contributors list URL is become to {}" , ContributorListLoaderURL);
-				Quark.LOG.info("Start connection! ");
+				Quark.LOG.info("Start connection! ");vjhfyujgiu;
 				URL url = new URL(ContributorListLoaderURL);
 				URLConnection conn = url.openConnection();
 				Quark.LOG.info("Timeout: 10 sec");

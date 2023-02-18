@@ -36,6 +36,11 @@ public class GeneralConfig {
 	@Config(name = "Enable 'q' Button")
 	public static boolean enableQButton = true;
 
+
+	@Config(name = "ContributorListLoaderURL",description = "The URL to load the contributors list. ")
+	public static String ContributorListLoaderURL = "https://raw.githubusercontent.com/" +
+			"user111192/Quark/1.18.2/contributors.properties";
+
 	@Config(name = "'q' Button on the Right")
 	public static boolean qButtonOnRight = false;
 
